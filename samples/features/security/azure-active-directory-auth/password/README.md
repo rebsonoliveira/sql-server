@@ -15,8 +15,8 @@ Note: A contained user database must exist and a contained database user represe
 Please note that  
 builder["Authentication"] method is set to SqlAuthenticationMethod.ActiveDirectoryPassword.
 
-![screenshot of visual studio showing builder fields to change] (/img/vs-authentication-method-pasword.png)
+![screenshot of visual studio showing builder fields to change] (/samples/features/security/azure-active-directory-auth/img/vs-authentication-method-integrated.png)
 
-When running this program an execution window a prompt for the Azure AD password request for user bob@cqclinic.onmicrosoft.com will appear. Once the password is entered the message should indicate a successful connection to the database followed by ìPlease press any key to stopî:
+When running this program an execution window a prompt for the Azure AD password request for user bob@cqclinic.onmicrosoft.com will appear. Once the password is entered the message should indicate a successful connection to the database followed by ‚ÄúPlease press any key to stop‚Äù:
 
-![screenshot of application after successful authentication- "press any key to stop"] (/img/pwd-press-any-key-to-stop.png)
+![screenshot of application after successful authentication- "press any key to stop"] (/samples/features/security/azure-active-directory-auth/img/pwd-press-any-key-to-stop.png)
