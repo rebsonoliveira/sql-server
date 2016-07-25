@@ -1,5 +1,16 @@
 
+Note: Run this project on a machine joined to a domain that is federated with Azure Active Directory. A contained database user representing your Azure AD principal, or one of the groups, you belong to, must exist in the database and must have the CONNECT permission.
+
+Before building and running the Integrated project:
+‚Ä¢	In Program.cs, locate the following lines of code and replace the server/database name with your server/database name.
+
+builder["Data Source"] = "aad-managed-demo.database.windows.net "; // replace 'aad-managed-demo' with your server name
+builder["Initial Catalog"] = "demo"; // replace with your database name
 
 
-Running this project on a machine joined to a domain that is federated with Azure Active Directory will automatically use your Windows credentials and no password is required. The execution window will indicate a successful connection to the database followed by ìPlease press any key to stopî:
-![screenshot of application after successful authentication- "press any key to stop"] (/img/integrated-press-any-key-to-stop.png)
+Please note that  
+builder["Authentication"] method is set to SqlAuthenticationMethod.ActiveDirectoryIntegrated;
+![screenshot of visual studio showing builder fields to change] (/samples/features/security/azure-active-directory-auth/img/vs-authentication-method-integrated.png)
+
+Running this project on a machine joined to a domain that is federated with Azure Active Directory will automatically use your Windows credentials and no password is required. The execution window will indicate a successful connection to the database followed by ‚ÄúPlease press any key to stop‚Äù:
+![screenshot of application after successful authentication- "press any key to stop"] (/samples/features/security/azure-active-directory-auth/img/integrated-press-any-key-to-stop.png)
