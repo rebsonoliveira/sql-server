@@ -51,9 +51,9 @@ To run this sample, you need the following prerequisites:
 
 <!-- Place sample links here --> 
 
-![Integrated Demo] (/integrated)
+[Integrated Demo] (/integrated)
 
-![Password Demo] (/password)
+[Password Demo] (/password)
 
 <a name=sample-details></a>
 
