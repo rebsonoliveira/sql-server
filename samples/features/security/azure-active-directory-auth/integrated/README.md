@@ -1,7 +1,8 @@
 ## Run this sample
-Note: Run this project on a machine joined to a domain that is federated with Azure Active Directory. A contained database user representing your Azure AD principal, or one of the groups, you belong to, must exist in the database and must have the CONNECT permission.
+Note: Run this project on a machine joined to a domain that is federated with Azure Active Directory. A contained database user representing your Azure AD principal, or one of the groups, you belong to, must exist in the database and must have the CONNECT permission. 
 
 1. Before building and running the Integrated project:
+
 +	In Program.cs, locate the following lines of code and replace the server/database name with your server/database name.
 ```
 builder["Data Source"] = "aad-managed-demo.database.windows.net "; // replace 'aad-managed-demo' with your server name
