@@ -5,20 +5,15 @@ Sample application with database that showcases security features of Azure SQL D
 ## About this sample
 - **Applies to:**  Azure SQL Database, Azure Web App Service, Azure Key Vault
 - **Programming Language:** .NET C#, T-SQL
-- **Authors:** Daniel Rediske [daredis-msft]
+- **Authors:** Jakub Szymaszek [jaszymas-MSFT], Daniel Rediske [daredis-msft]
 
 This project has adopted the [Microsoft Open Source Code of Conduct](http://microsoft.github.io/codeofconduct). For more information see the [Code of Conduct FAQ](http://microsoft.github.io/codeofconduct/faq.md) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments. 
 
 ##Contents
 1. [Prerequisites] (#prerequisites) 
-2. [Estimated Cost of Deployed Resources] (#estimated-cost-of-deployed-resources)
-3. [Setup] (#setup) 
-	* Generate Application ID and Secret
-	* Retrieve TenantID
-	* Retrieve User and Application ObjectID
-	* Deploy to Azure
+2. [Setup] (#setup) 
+	* TODO: TransferSetup
 4. [Azure SQL Security Features] (#azure-sql-security-features) 
-	* Auditing & Threat Detection
 	* Always Encrypted 
 	* Row Level Security 
 	* Dynamic Data Masking
@@ -27,92 +22,19 @@ This project has adopted the [Microsoft Open Source Code of Conduct](http://micr
 
 
 ##Prerequisites
-+ Azure Subscription with resource creation permissions
-+ [Powershell with AzureRM and Azure Modules] (https://azure.microsoft.com/en-us/documentation/articles/powershell-install-configure/)
+1. Visual Studio (Version dependencies?)
 
-##Estimated Cost of Deployed Resources
-The following table is an estimation of the cost of deploying the Demo as of 5/9/2016. 
-
- Resource | Cost/Month | Cost/Hr 
- --- | --- | ---  
-[S1 SQL Database ](https://azure.microsoft.com/en-us/pricing/details/sql-database/) |  $30  | $0.04
-[B1 App Service Plan] (https://azure.microsoft.com/en-us/pricing/details/app-service/) | $55.80  | $0.075
-[Storage Plan] (https://azure.microsoft.com/en-us/pricing/details/storage/) | ~$0 | $0.0036/transaction
-[Azure Key Vault] (https://azure.microsoft.com/en-us/pricing/details/key-vault/)| ~$0| $0.03/10k operations 
-**Monthly Total** | $85.80/mo | ~$0.115/hr
 
 ##Setup
-###Generate Application ID and Secret
-In order to allow your client application to access and use the keys in your Azure Key Vault, we need to provision an application in Azure Active Directory. This will create a Client ID and Secret that your app will use to authenticate to the Azure Key Vault. To do this, head to the [Classic Azure Portal] (https://manage.windowsazure.com/) and log in.
 
-Select &ldquo;Active Directory&rdquo; in the left sidebar, choose the Active Directory you wish to use (or create a new one if it doesn&rsquo;t exist), then click &ldquo;Applications&rdquo;.
-
-Add a new application by filling out the modal window that appears.
-
-Enter a name, select &ldquo;Web Application&rdquo; as the type, and enter any URL for the Sign-On URL and App ID URI.&nbsp; These must include &ldquo;http://&rdquo;, but do not need to be real pages for the purposes of this demo.&nbsp; 
-
-Go to the &ldquo;Configure&rdquo; tab and generate a new client key (also called a &ldquo;secret&rdquo;) by selecting a duration from the dropdown, then saving the configuration.&nbsp; <strong>Copy the client ID and secret out to a text file</strong>, as they will be used in deployment and in enabling the Always Encrypted functionality.
-###Retrieve TenantID 
-
-In order to deploy an Azure Key Vault for use with the Always Encrypted functionality of the demo, you will need to provide your tenantID during the deployment process. This can be copied from Powershell in the response to the `Login-AzureRmAccount` command. After the deployment step, this information is not saved by the application. 
 
 ###Retrieve User and Application ObjectID
 
-In order to create access permissions to the Azure Key Vault during deployment, you will need to collect both your user ObjectID and the Application ObjectID. 
-
-+ Log into your Azure account with powershell using the cmdlet `Login-AzureRmAccount`, and copy down the TenantID returned. 
-
-![Login Example] (/Img/LoginExample.png)
-
-
-+ Run the command: 
-`Get-AzureRMAduser -UserPrincipalName <AccountName>` 
-and copy the ObjectID returned. This is your UserObjectID. 
-
-![User Object ID Example] (/Img/rmaduser.png)
-
-+ Run the command: 
-`Get-AzureRmADServicePrincipal -ServicePrincipalName <ClientID from AAD application step>` 
-and copy the ObjectID returned. This is your ApplicationObjectId.
-
-![Service Principal example] (/Img/RMADSP.png)
-
-###Deploy to Azure 
-Click the Deploy to Azure Button and fill out the fields to deploy the demo to your Azure Subscription.
-
-Note on Passwords: Please use only characters and numbers [a-z A-Z 0-9]. Because of certain implementation decisions made in development of this demo, other characters *may cause deployment issues*.  
-
-[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
 
 ## Azure SQL Security Features 
-### Auditing & Threat Detection
-#### Set up and Test Auditing & Threat Detection 
-
-+ Auditing and Threat Detection should have been turned on during deployment 
-+ You can verify this in the [Azure Portal](portal.azure.com) by viewing the Database Settings (under **Auditing & Threat Detection**)
-	- Auditing should be 'ON'
-	- Threat Detection should be 'ON'
-	- For shared accounts, unselect the **Email Service and Co-Administrators** box and place your own email address in the box. 
-		* This will avoid alarming your Service Admins and Subscription Co-Admins with an Alert Email, should your account have them. 
-+ Execute a SQL injection to show Threat Detection on the /patients page
-	- We left the box at the top of the page vulnerable on purpose, but you ought to take precautions to prevent attacks on your apps. 
-	- Here's a simple injection that just reorders the results. (Simply copy the following code and paste it into the textbox at the top of the patients page)
-	```SQL 
-	` ORDER BY SSN -- 
-	```
-	- Worth saying again: **You _must_ protect against SQL Injection in your app code.** [Learn more about SQL Injection and protecting against it from OWASP.](https://www.owasp.org/index.php/SQL_Injection_Prevention_Cheat_Sheet) 
-	- Note: This injection will cause an error instead of reordering results IF Always Encrypted is enabled. 
-+ Check your inbox for a Threat Detection email 
-	- From *Microsoft Azure Security Alerts* <security-alerts-noreply@mail.windowsazure.com> 
-
-#### How did that work? 
-Threat Detection is designed to detect suspicious database activity- which may indicate malicious access, a breach, or an exploit attempt on the Database. This is designed around machine learning algorithms that look for anomalous database activities over historical data and normal behavior of databases. Because SQL injection is a leading exploit vector for unauthorized access to data, it is flagged by Threat Detection as abnormal behavior. 
-
 ### Always Encrypted 
-
 ####Enable Always Encrypted
-+ Connect to your deployed database using SSMS: 
-	- The server you created will be visible in your [azure portal](https://portal.azure.com), it will begin with the string "contososerv"
++ Connect to your database using SSMS: 
 	- Connect using the Administrator Login (Default was adminLogin) and the password you defined during setup 
 	- For more information on using SSMS to connect to an Azure Database, [click here](https://azure.microsoft.com/en-us/documentation/articles/sql-database-connect-query-ssms/)
 + Encrypt Sensitive Data Columns using the Column Encryption Wizard 
@@ -152,7 +74,7 @@ We had to prepare our application to authenticate against our Key Vault- this co
 Sign in using (Rachel@contoso.com/Password1!) or (alice@contoso.com/Password1!)
 
 ####Enable Row Level Security (RLS) 
-+ Connect to your deployed database using SSMS: [Instructions](https://azure.microsoft.com/en-us/documentation/articles/sql-database-connect-query-ssms/)
++ Connect to your database using SSMS: [Instructions](https://azure.microsoft.com/en-us/documentation/articles/sql-database-connect-query-ssms/)
 + Open Enable-RLS.sql ( [Find it here](Security%20Demo%20Queries/Enable-RLS.sql))
 + Execute the commands 
 + Observe the changes to the results returned on the /visits or /patients page
