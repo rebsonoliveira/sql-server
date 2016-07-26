@@ -60,7 +60,7 @@ To run this sample, you need the following prerequisites:
 
 ## Sample details
 
-This demo provides a tool for exploring Azure Active Directory authentication to Azure SQL DB or Azure SQL DW.
+This demo provides a simple tool for exploring Azure Active Directory authentication to Azure SQL DB or Azure SQL DW.
 
 Azure Active Directory authentication with Azure SQL Database V12 supports the following authentication methods:
 - User/password authentication  
