@@ -39,14 +39,12 @@ TODO: Other Prerequisites
 	- Assuming this application is a daemon/service and not a web application, it doesn't have a sign-in URL or app ID URI. For these two fields, enter http://mytokentest
 	- While still in the Azure portal, click the Configure tab of your application.
 	- Find the Client ID value and copy it aside, you will need this later when configuring your application ( i.e.  a4bbfe26-dbaa-4fec-8ef5-223d229f647d  /see the snapshot below/)
-
 ![active directory portal Client ID image](img/azure-active-directory-application-portal.png)
 
-2. Logon to your Azure SQL Server’s user database as an Azure AD admin and using a T-SQL command
-provision a contained database user for your application principal:
-```sql
-CREATE USER [mytokentest] FROM EXTERNAL PROVIDER
-```
+2. Logon to your Azure SQL Server’s user database as an Azure AD admin and using a T-SQL command provision a contained database user for your application principal:
+	```sql
+	CREATE USER [mytokentest] FROM EXTERNAL PROVIDER
+	```
 	- [See this link](https://azure.microsoft.com/en-us/documentation/articles/sql-database-aad-authentication/) for more details on how to create an Azure Ad admin and a contained database user.
 
 3. On the machine you are going to run the project on, generate and install a self-signed certificate. 
