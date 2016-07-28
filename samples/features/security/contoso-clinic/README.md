@@ -22,15 +22,33 @@ This project has adopted the [Microsoft Open Source Code of Conduct](http://micr
 
 
 ##Prerequisites
-1. Visual Studio (Version dependencies?)
-
+1. Visual Studio 2015 (or newer)
+2. [SQL Server 2016](https://www.microsoft.com/en-us/evalcenter/evaluate-sql-server-2016) OR an Azure SQL Database (V12) [portal link](https://portal.azure.com)  
+3. [SQL Server Management Studio](https://msdn.microsoft.com/en-us/library/mt238290.aspx.) 
 
 ##Setup
+### Set up the Demo Database
+1. Clone/Download the repository
+2. While connected to your database via SSMS, execute TODO: sqlscript/Create-Application-Login.sql link. 
++ You may want to change the default password. 
+3. Import the *Clinic* database contined within TODO: path 
++ Open SSMS and connect to your SQL Server 2016 instance (or Azure SQL Database instance) 
++ In SSMS, right-click on *Databases* in Object Explorer and select *Import Data-tier Application...*. 
++ Locate your copy of the bacpac file, located in the */setup* folder. 
+TODO: Show img
++ Complete the steps of the wizard. 
++ NOTE: the Clinic database contains the ContosoClinicApplication database user, based on the ContosoClinicApplication login, which you provisioned above. The user is assigned a few roles and is granted permissions which are required to complete the demos in this package. 
 
+### Modify and Set up the Sample Application Project
+1. Start Visual Studio and open the Contoso Application solution file- located in /src. 
+2. Modify the connection string in the demo web. 
++ Using Solution Explorer, locate and open the web.config file under the ContosoClinic project. 
++ Look for the line that looks like this:
++ 
+    <add name="DefaultConnection" connectionString="Data Source=aedemo2;Initial Catalog=Clinic;User ID=ContosoClinicApplication;Password={Some Strong Password}" providerName="System.Data.SqlClient" />
 
-###Retrieve User and Application ObjectID
-
-
++ Update the value of the *Data Source* key word in the database connection string to denote your server (either your local SQL Server instance of your logical server in Azure SQL Database) 
++ 
 ## Azure SQL Security Features 
 ### Always Encrypted 
 ####Enable Always Encrypted
