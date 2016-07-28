@@ -1,79 +1,64 @@
-# Sample name
+# Token Authentication sample for Azure Active Directory
 
 ### Contents
 
 [About this sample](#about-this-sample)<br/>
-[Before you begin](#before-you-begin)<br/>
 [Run this sample](#run-this-sample)<br/>
 [Sample details](#sample-details)<br/>
-[Disclaimers](#disclaimers)<br/>
-[Related links](#related-links)<br/>
 
-<a name=about-this-sample></a>
-## About this sample
 
-<!-- Delete the ones that don't apply -->
-- **Applies to:** Azure SQL Database, Azure SQL Data Warehouse 
-- **Key features:** Azure Active Directory Authentication 
-- **Programming Language:** C#
-- **Authors:** Mirek Sztajno [mireks-msft]
+
 
 ## About this sample
 
-<a name=before-you-begin></a>
-
-## Before you begin
-
-To run this sample, you need the following prerequisites:
+The Token project contains a simple console application that connects to Azure SQL database using a self-signed certificate. 
 
 **Software prerequisites:**
 
-1. Visual Studio 2015 (or higher) with the latest SSDT installed (using .Net Framework 4.6 or higher)
-	+ .Net Framework 4.6 must be set as the target framework for the Visual Studio project. To do this, double-click on Properties in Solution Explorer, then click the Application tab and check that the Target framework is set to .Net Framework 4.6
-	+ To install .Net Framework 4.6, see https://msdn.microsoft.com/library/5a4x27ek.aspx
-2. Active Directory Authentication Library for SQL Server (ADALSQL.DLL)
-	+ ADALSQL.DLL enables applications to authenticate to Microsoft Azure SQL Database using Azure Active Directory. The ADALSQL.DLL is not installed with Visual Studio so download the DLL at http://www.microsoft.com/en-us/download/details.aspx?id=48742
-	+ ADALSQL.DLL is automatically downloaded with Visual Studio 2015 Update 2, SQL Server Management Studio, and the newest version of SQL Server Data tools 
 
-1. Create Azure Active Directory (AD),  or  federate your domain with existing Azure AD
-     This allows either to use managed or federated accounts associated with a specific Azure AD
-2. Create Azure AD administrator for Azure SQL DB using Azure portal, PowerShell command or Rest API 
-3. With help from T-SQL query interface (i.e. SSMS query editor), using  Azure AD admin credentials for SQL DB & SQL DW, create an Azure AD user in a designated database. The database user represents your Azure AD principal (or one of the groups you belong to) and must exist in the database having CONNECT permission prior to executing a connection attempt 
+1. The `makecert.exe` utility, which is included in the Windows SDK 
+	+ It is sometimes included in Visual Studio installations (depending on the selections made during installation). A search of your machine for `makecert.exe` would provide verification that the Windows SDK was installed. 
+	+ If the Windows SDK was not installed, you may [download it here](http://msdn.microsoft.com/en-US/windows/desktop/aa904949)
+	+ You can learn more about the `makecert.exe` [utility here](https://msdn.microsoft.com/library/windows/desktop/aa386968.aspx) 
 
- 
 **Other Prerequisites** 
 
-1. For Azure AD integrated authentication a computer joined to a domain that is federated with Azure Active Directory is required
-2. An existing database created before a connection attempt is required. The database can be created using credentials for SQL administrator, or Azure AD SQL administrator 
+TODO: Other Prerequisites
 
 <a name=run-this-sample></a>
-
 ## Run this sample
 
-<!-- Place sample links here --> 
+1.	Create an application account in Azure AD for your service.
+	- Sign in to the Azure management portal.
+	- Click on Azure Active Directory in the left hand navigation
+	- Click the directory tenant where you wish to register the sample application. This must be the same directory that is associated with your database (the server hosting your database).
+	- Click the Applications tab
+	- In the drawer, click Add.
+	- Click "Add an application my organization is developing".
+	- Enter mytokentest as a friendly name for the application, select "Web Application and/or Web API", and click next.
+	- Assuming this application is a daemon/service and not a web application, it doesn't have a sign-in URL or app ID URI. For these two fields, enter http://mytokentest
+	- While still in the Azure portal, click the Configure tab of your application.
+	- Find the Client ID value and copy it aside, you will need this later when configuring your application ( i.e.  a4bbfe26-dbaa-4fec-8ef5-223d229f647d  /see the snapshot below/)
 
-[Integrated Demo](integrated)
+![active directory portal Client ID image](img/azure-active-directory-application-portal.png)
 
-[Password Demo](password)
+2. Logon to your Azure SQL Server’s user database as an Azure AD admin and using a T-SQL command
+provision a contained database user for your application principal:
+```sql
+CREATE USER [mytokentest] FROM EXTERNAL PROVIDER
+```
+	- [See this link](https://azure.microsoft.com/en-us/documentation/articles/sql-database-aad-authentication/) for more details on how to create an Azure Ad admin and a contained database user.
 
-<a name=sample-details></a>
-
-## Sample details
-
-This demo provides a simple tool for exploring Azure Active Directory authentication to Azure SQL DB or Azure SQL DW.
-
-Azure Active Directory authentication with Azure SQL Database V12 supports the following authentication methods:
-- User/password authentication  
-- Integrated authentication 
-- Application token authentication [Demo coming soon!]
-
-<a name=disclaimers></a>
-
-## Disclaimers
-The code included in this sample is only intended to provide a method to demonstrate sucessful authentication to Azure SQL Database or Azure SQL Data Warehouse via Azure Active Directory authentication methods.  
-
-<a name=related-links></a>
-## Related Links
-<!-- Links to more articles. Remember to delete "en-us" from the link path. -->
-
-<!-- For more information, see these articles: --> 
+3. On the machine you are going to run the project on, generate and install a self-signed certificate. 
+	- To complete this step, you will need to use `Makecert.exe` 
+	- Open a command prompt window
+	- Navigate to a folder where you want to generate a certificate file ( such as the folder where the demo files are) and change the following command for your environment 
+	```
+	<Windows SDK Path>\makecert.exe -r -pe -n "CN=Cert_name" -ss My -len 2048 Cert_name.cer
+	```
+	for example, like so: 
+	```
+	c:/"Program Files (x86)/Windows Kits/8.1/bin/x64"/makecert -r -pe -n "CN=mytokentestCert" -ss My -len 2048 mytokentestCert.cer
+	```
+4. Add the certificate as a key for the application you created in Azure AD. 
+	TODO: Finish Instructions
