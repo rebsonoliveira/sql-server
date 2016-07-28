@@ -44,9 +44,10 @@ TODO: Show img
 2. Modify the connection string in the demo web. 
 + Using Solution Explorer, locate and open the web.config file under the ContosoClinic project. 
 + Look for the line that looks like this:
-+ 
-    <add name="DefaultConnection" connectionString="Data Source=aedemo2;Initial Catalog=Clinic;User ID=ContosoClinicApplication;Password={Some Strong Password}" providerName="System.Data.SqlClient" />
-
+```csharp 
+<add name="DefaultConnection" connectionString="Data Source=aedemo2;Initial Catalog=Clinic;User
+ID=ContosoClinicApplication;Password={Some Strong Password}" providerName="System.Data.SqlClient" />
+```
 + Update the value of the *Data Source* key word in the database connection string to denote your server (either your local SQL Server instance of your logical server in Azure SQL Database) 
 + 
 ## Azure SQL Security Features 
