@@ -97,4 +97,4 @@ TODO: Other Prerequisites
 		```
 6. Run the demo. (Click *Run* or press *F5*)
 	+ A successful authorization should result in a message that states "Connected to the database" similar to the following: 
-	![succesful auth](/samples/features/security/azure-active-directory-auth/token-press-any-key-to-stop.png)
+	![succesful auth](/samples/features/security/azure-active-directory-auth/img/token-press-any-key-to-stop.png)
