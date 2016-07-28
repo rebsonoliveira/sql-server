@@ -39,7 +39,7 @@ TODO: Other Prerequisites
 	- Assuming this application is a daemon/service and not a web application, it doesn't have a sign-in URL or app ID URI. For these two fields, enter http://mytokentest
 	- While still in the Azure portal, click the Configure tab of your application.
 	- Find the Client ID value and copy it into a text editor, you will need this later when configuring your application ( i.e.  a4bbfe26-dbaa-4fec-8ef5-223d229f647d  /see the snapshot below/)
-![active directory portal Client ID image](img/azure-active-directory-application-portal.png)
+![active directory portal Client ID image](/samples/features/security/azure-active-directory-auth/img/azure-active-directory-application-portal.png)
 
 2. Logon to your Azure SQL Server’s user database as an Azure AD admin and using a T-SQL command provision a contained database user for your application principal:
 	```sql
@@ -78,7 +78,7 @@ TODO: Other Prerequisites
 
 5. Configure the certificate and your application account in the *app.config* file in the project. 
 	+ In Visual Studio, open *app.config* in the Solution Explorer
-	![App.config file highlights](img/app-config-key-value-example.png)
+	![App.config file highlights](/samples/features/security/azure-active-directory-auth/img/app-config-key-value-example.png)
 		- Find the app key `ida:Tenant` and replace the value with your AAD tenant name (your AAD domain)
 		- Find the app key `ida:ClientID` and replace the value with the Client ID for the application registration from the Azure Portal (the value from step 1). 
 		- Find the app key `ida:Cert_Name` and replace the value with the subject name (CN) of the self-signed certificate you created
@@ -89,7 +89,7 @@ TODO: Other Prerequisites
     		<add key="ida:CertName" value="CN=mytokentestCert"/> //this is the Cert_name use by makecert.exe
 		```
 	+ In Visual Studio, open *Program.cs* in the Solution Explorer
-	![Program.cs field highlights](img/program-cs-builder-highlight.png)
+	![Program.cs field highlights](/samples/features/security/azure-active-directory-auth/img/program-cs-builder-highlight.png)
 		- Make the following changes: 
 		```csharp
 		    builder["Data Source"] = "aad-managed-demo.database.windows.net"; // replace with your server name
@@ -97,4 +97,4 @@ TODO: Other Prerequisites
 		```
 6. Run the demo. (Click *Run* or press *F5*)
 	+ A successful authorization should result in a message that states "Connected to the database" similar to the following: 
-	![succesful auth](token-press-any-key-to-stop.png)
+	![succesful auth](/samples/features/security/azure-active-directory-auth/token-press-any-key-to-stop.png)
