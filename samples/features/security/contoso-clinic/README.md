@@ -30,13 +30,13 @@ This project has adopted the [Microsoft Open Source Code of Conduct](http://micr
 ##Setup
 ### Set up the Demo Database
 1. Clone/Download the repository
-2. While connected to your database via SSMS, execute TODO: sqlscript/Create-Application-Login.sql link. 
+2. While connected to your database via SSMS, execute [Create-Application-Login.sql](tsql/Create-Application-Login.sql) link. 
 + You may want to change the default password. 
-3. Import the *Clinic* database contined within TODO: path 
+3. Import the *Clinic* database
 + Open SSMS and connect to your SQL Server 2016 instance (or Azure SQL Database instance) 
 + In SSMS, right-click on *Databases* in Object Explorer and select *Import Data-tier Application...*. 
 + Locate your copy of the bacpac file, located in the */setup* folder. 
-TODO: Show img
+![Import Data-tier Application Wizard](img/import-bacpac.png)
 + Complete the steps of the wizard. 
 + NOTE: the Clinic database contains the ContosoClinicApplication database user, based on the ContosoClinicApplication login, which you provisioned above. The user is assigned a few roles and is granted permissions which are required to complete the demos in this package. 
 
@@ -59,12 +59,12 @@ TODO: Show img
 
 	+ Right click on your project in Solution Explorer and select *Properties*
 	+  Verify the value of the Target framework property is correct (change it, if necessary) 
-	TODO: Insert image of this. 
+	![Contoso Clinic Application Properties .Net Framework Version Setting](img/dot-net-framework-4-6.png)
 
 4. Test the Demo Setup
 	+ Run the ContosoClinic application from Visual Studio (by hitting *F5* OR select *Debug* > *Start Debugging*). This will compile the solution and open the application in your default web browser. 
 	+ Click on the *Patients* tab. You should see a list of patients. 
-	+ TODO: Insert Image of patients. 
+	![List of Patients on web app patients tab](img/list-of-patients.png)
 	+ Click *Edit* for one of the patients, change patient's SSN and click *Save*. The updated SSN should show up in the list of patients. 
 	+ You are now ready to demo the security features described below. 
 	
