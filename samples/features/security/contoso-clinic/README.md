@@ -81,29 +81,31 @@ TODO: Show img
 		* Select **Deterministic Encryption** for **SSN** as the application needs to be able to search patients by SSN; Deterministic Encryption preserves that functionality for our app without leaving data exposed. 
 		* Select **Randomized Encryption** for *BirthDate** 
 	- Leave **CEK_Auto1 (New)** as the Key for both columns. Click **Next**.
-	- On the **Master Key Configuration** page, set the Master Key Source to **Azure Key Vault**, select the Subscription you used in the deployment of the application, and select your Key Vault  Click **Next**. 
-		* The naming convention of the Key Vault begins "Contosoakv" followed by a unique string, which satisfies the universally unique naming convention necessary for the key vault. 
-		* Should you see more than one Key Vault option, using `Get-AzureRmKeyVault -ResourceGroupName <yourResourceGroupName>` within powershell would be an option to ensure you choose the correct key vault. 
+	- On the **Master Key Configuration** page, the Master Key Source should default to to **Windows Certificate Store**, with the **Master Key Source** defaulted to **Current User**. ( This will store the key on your local machine. )
 	- Click the **Next** button on the Validation page.
 	- The Summary Page provides an overview of the settings we selected. Click **Finish**. 
 	- Monitor the progress of the wizard; once finished, click **Close**. 
 + View the data in SSMS (in SSMS use: `SELECT SSN, BirthDate FROM dbo.Patients` or `SELECT * FROM dbo.Patients` ) 
-	- Note that the data is now encrypted in both the **SSN** and **BirthDate** columns. 
+	- Note that the data is now encrypted on the server for both the **SSN** and **BirthDate** columns. 
 + Navigate to or refresh the /patients page
-	- Notice that the application still works and the encryption does not hinder the presentation of the data
-	
+	- Notice that the application now throws an exception. 
+	- This was expected as the application driver does not know how to handle the encrypted data.
+	- We designed this web app to have a type mismatch, but more flexible webpage design would expose the encrypted value. 
++ Configure the web app to use Always Encrypted 
+	- Stop the web app (close the window/ or click *Stop Debugging*) 
+	- Using the Solution Explorer of Visual Studio, locate and open the web.config file under the ContosoClinic project. 
+	- Look for the connection string, and add `Column Encryption Setting=Enabled` to the end of the connection string so that it reads like this:
+	```csharp 
+	<add name="DefaultConnection" connectionString="Data Source=.;Initial Catalog=Clinic;User
+	ID=ContosoClinicApplication;Password={Some Strong Password};Column Encryption Setting=Enabled"
+	providerName="System.Data.SqlClient" />
+	```
+	- Run the ContosoClinic application from Visual Studio (by hitting *F5* OR select *Debug* > *Start Debugging*)
+	- Click on the *Patients* tab. You should see a list of patients again. 
+
 ####How did that work? 
-
-##### Azure Key Vault Creation and Permissions  
-During the pre-deployment steps, you collected information which enabled the deployment to create an Azure Key Vault and the required permissions for both you (the user) and the Application Active Directory registration we created. During those steps, the Azure Active Directory registration for the application was necessary to enable key vault connectivity, because the application needs access to the key to enable the driver to transparently handle the decryption of the columns we encrypted. 
-
-During the creation, we gave the user `create, list, wrapKey, unwrapKey, sign, verify` permissions in order to facilitate your Key Vault management; the application needs `get, wrapKey, unwrapKey, sign, verify`. As a best practice, you should *always follow the principle of least privelege*. For documentation on Key Vault Permissions, see [About Keys and Secrets](https://msdn.microsoft.com/en-us/library/azure/dn903623.aspx#BKMK_KeyAccessControl). 
-
-This is the equivalent of creating a [key vault] (https://blogs.technet.microsoft.com/kv/2015/06/02/azure-key-vault-step-by-step) and permissions via Powershell- see the section/cmdlets under "Create and Configure a key vault". 
 ##### Connection String
-Our connection string for our application contains `Column Encryption Setting=Enabled` which allows the driver to handle the necessary overhead to decrypt the newly encrypted data without code changes. Ordinarily, you would need to change the connection string- but in this demo, we preemptively included this within the connection string with the intent that you enable this functionality. Don't forget this for your app if you intend to use Always Encrypted functonality. 
-##### Application Code Changes
-We had to prepare our application to authenticate against our Key Vault- this code is discussed in more detail in this [Blog Post] (https://blogs.msdn.microsoft.com/sqlsecurity/2015/11/10/using-the-azure-key-vault-key-store-provider-for-always-encrypted/). The code changes referenced there are in our file *Startup.cs*, which can be found [here](ContosoClinicProject/ContosoClinic/Startup.cs). 
+Our connection string for our application now contains `Column Encryption Setting=Enabled` which allows the driver to handle the necessary overhead to decrypt the newly encrypted data without code changes. Don't forget this for your app if you intend to use Always Encrypted functonality. 
 
 ### Row Level Security (RLS) 
 
