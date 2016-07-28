@@ -76,15 +76,22 @@ TODO: Show img
 	- For more information on using SSMS to connect to an Azure Database, [click here](https://azure.microsoft.com/en-us/documentation/articles/sql-database-connect-query-ssms/)
 + Encrypt Sensitive Data Columns using the Column Encryption Wizard 
 	- Right click on the **Patients** table in the **Clinic** database and select **Encrypt Columns...**
+	 ![Right Click patients table encrypt columns dropdown](img/right-click-patients-table-encrypt-columns.png) 
 	- The Column Encryption wizard will open. Click **Next**.
+	 ![Always Encrypted Wizard introduction page](img/always-encrypted-introduction-page.png)
 	- Select the **SSN** and **BirthDate** columns. 
 		* Select **Deterministic Encryption** for **SSN** as the application needs to be able to search patients by SSN; Deterministic Encryption preserves that functionality for our app without leaving data exposed. 
 		* Select **Randomized Encryption** for *BirthDate** 
+	![Always Encrypted Column Selection Page](img/column-selection-ssn-birthdate.png)
 	- Leave **CEK_Auto1 (New)** as the Key for both columns. Click **Next**.
-	- On the **Master Key Configuration** page, the Master Key Source should default to to **Windows Certificate Store**, with the **Master Key Source** defaulted to **Current User**. ( This will store the key on your local machine. )
+	- On the **Master Key Configuration** page, the Master Key Source should default to to **Windows Certificate Store**, with the **Master Key Source** defaulted to **Current User**. (This will store the key on your local machine.)
+	![Master Key configuration page, selected 'key source' and 'current user' options](img/always-encrypted-master-key-config.png)
 	- Click the **Next** button on the Validation page.
-	- The Summary Page provides an overview of the settings we selected. Click **Finish**. 
-	- Monitor the progress of the wizard; once finished, click **Close**. 
+	![Always Encrypted Wizard Validation page](img/always-encrypted-validation.png)
+	- The Summary Page provides an overview of the settings we selected. Click **Finish**.
+	![Always Encrypted Summary Page](img/always-encrypted-summary.png)
+	- Monitor the progress of the wizard; once finished, click **Close**.
+	![Always Encrypted Results Success](img/always-encrypted-results.png)
 + View the data in SSMS (in SSMS use: `SELECT SSN, BirthDate FROM dbo.Patients` or `SELECT * FROM dbo.Patients` ) 
 	- Note that the data is now encrypted on the server for both the **SSN** and **BirthDate** columns. 
 + Navigate to or refresh the /patients page
