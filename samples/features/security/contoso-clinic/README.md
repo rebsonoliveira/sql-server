@@ -12,12 +12,13 @@ This project has adopted the [Microsoft Open Source Code of Conduct](http://micr
 ##Contents
 1. [Prerequisites] (#prerequisites) 
 2. [Setup] (#setup) 
-	* TODO: TransferSetup
-4. [Azure SQL Security Features] (#azure-sql-security-features) 
+	* Set up the Demo Database
+	* Modify the Sample Application
+4. [SQL 2016 Security Features in this demo] (#sql-2016-security-features-in-this-demo) 
 	* Always Encrypted 
 	* Row Level Security 
 	* Dynamic Data Masking
-5.  [Application Notes/Disclaimer] (#application-notes)
+5.  [Application Notes] (#application-notes)
 
 
 
@@ -41,16 +42,33 @@ TODO: Show img
 
 ### Modify and Set up the Sample Application Project
 1. Start Visual Studio and open the Contoso Application solution file- located in /src. 
-2. Modify the connection string in the demo web. 
-+ Using Solution Explorer, locate and open the web.config file under the ContosoClinic project. 
-+ Look for the line that looks like this:
-```csharp 
-<add name="DefaultConnection" connectionString="Data Source=aedemo2;Initial Catalog=Clinic;User
-ID=ContosoClinicApplication;Password={Some Strong Password}" providerName="System.Data.SqlClient" />
-```
-+ Update the value of the *Data Source* key word in the database connection string to denote your server (either your local SQL Server instance of your logical server in Azure SQL Database) 
-+ 
-## Azure SQL Security Features 
+2. Modify the connection string in the demo web app. 
+ 
+	+ Using Solution Explorer, locate and open the web.config file under the ContosoClinic project. 
+	+ Look for the line that looks like this:
+	```csharp 
+	<add name="DefaultConnection" connectionString="Data Source=aedemo2;Initial Catalog=Clinic;User
+	ID=ContosoClinicApplication;Password={Some Strong Password}" providerName="System.Data.SqlClient" />
+	```
+	+ Update the value of the *Data Source* key word in the database connection string to denote your server (either your local SQL Server instance of your logical server in Azure SQL Database) 
+	+ Make sure the *password* for your application users is correct (matches the password that you configured earlier)
+	+ Make sure the *Initial Catalog* value is set to *Clinic*
+	+ Save the file
+
+3. Make sure the .NET Framework 4.6.1 or higher is configured as the target .NET Framework for your project. 
+
+	+ Right click on your project in Solution Explorer and select *Properties*
+	+  Verify the value of the Target framework property is correct (change it, if necessary) 
+	TODO: Insert image of this. 
+
+4. Test the Demo Setup
+	+ Run the ContosoClinic application from Visual Studio (by hitting *F5* OR select *Debug* > *Start Debugging*). This will compile the solution and open the application in your default web browser. 
+	+ Click on the *Patients* tab. You should see a list of patients. 
+	+ TODO: Insert Image of patients. 
+	+ Click *Edit* for one of the patients, change patient's SSN and click *Save*. The updated SSN should show up in the list of patients. 
+	+ You are now ready to demo the security features described below. 
+	
+## SQL 2016 Security Features in this Demo
 ### Always Encrypted 
 ####Enable Always Encrypted
 + Connect to your database using SSMS: 
@@ -122,4 +140,4 @@ Dynamic data masking limits sensitive data exposure by masking the data accordin
 have the ability to see the data without masks. In our case, the application's database login did not have the `UNMASK` permission and saw the data as masked. For your administrator login, the data was visible, as the user had the `UNMASK` permission. For more information on Dynamic Data Masking, [see the documentation](https://msdn.microsoft.com/en-us/library/mt130841.aspx). 
 
 ## Application Notes
-The code included in this sample is only intended to provide a simple demo platform for users to enable and gain experience with Azure SQL Database (V12) security features; the demo web app is not intended to hold sensitive data and should not be used as a reference for applications that use or store sensitive data.Please take adequate steps to securely develop your application and store your data.  
+The code included in this sample is only intended to provide a simple demo platform for users to enable and gain experience with SQL Server 2016 security features; the demo web app is not intended to hold sensitive data and should not be used as a reference for applications that use or store sensitive data. Please take adequate steps to securely develop your application and store your data.  
