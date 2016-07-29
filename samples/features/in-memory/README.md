@@ -6,7 +6,7 @@ In-Memory OLTP can significantly improve OLTP database application performance. 
   - Natively compiled modules execute Transact-SQL statements more efficiently.
 
 Read the following resources for more information.
-- [In-Memory OLTP (In-Memory Optimization)] (https://msdn.microsoft.com/en-us/library/dn133186.aspx)
-- [Quick Start 1: In-Memory OLTP Technologies for Faster Transact-SQL Performance] (https://msdn.microsoft.com/en-us/library/mt694156.aspx)
-- [Get started with Columnstore for real time operational analytics] (https://msdn.microsoft.com/en-us/library/dn817827.aspx)
-- [Columnstore Indexes Guide] (https://msdn.microsoft.com/en-us/library/gg492088.aspx)
+- [In-Memory OLTP (In-Memory Optimization)] (https://msdn.microsoft.com/library/dn133186.aspx)
+- [Quick Start 1: In-Memory OLTP Technologies for Faster Transact-SQL Performance] (https://msdn.microsoft.com/library/mt694156.aspx)
+- [Get started with Columnstore for real time operational analytics] (https://msdn.microsoft.com/library/dn817827.aspx)
+- [Columnstore Indexes Guide] (https://msdn.microsoft.com/library/gg492088.aspx)
