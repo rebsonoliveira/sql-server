@@ -1,6 +1,6 @@
 #Contoso Clinic Demo Application 
 
-Sample application with database that showcases security features of Azure SQL DB (V12). 
+Sample application with database that showcases security features of SQL Server 2016. 
 
 ## About this sample
 - **Applies to:**  Azure SQL Database, Azure Web App Service, Azure Key Vault
