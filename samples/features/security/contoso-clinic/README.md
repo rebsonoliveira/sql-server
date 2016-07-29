@@ -30,15 +30,15 @@ This project has adopted the [Microsoft Open Source Code of Conduct](http://micr
 ##Setup
 ### Set up the Demo Database
 1. Clone/Download the repository
-2. While connected to your database via SSMS, execute [Create-Application-Login.sql](tsql/Create-Application-Login.sql) link. 
-+ You may want to change the default password. 
+2. While connected to your database (master) via SSMS, execute [Create-Application-Login.sql](tsql/Create-Application-Login.sql) link.
+	+ You should change the default password in the script before running it. 
 3. Import the *Clinic* database
-+ Open SSMS and connect to your SQL Server 2016 instance (or Azure SQL Database instance) 
-+ In SSMS, right-click on *Databases* in Object Explorer and select *Import Data-tier Application...*. 
-+ Locate your copy of the bacpac file, located in the */setup* folder. 
-![Import Data-tier Application Wizard](img/import-bacpac.png)
-+ Complete the steps of the wizard. 
-+ NOTE: the Clinic database contains the ContosoClinicApplication database user, based on the ContosoClinicApplication login, which you provisioned above. The user is assigned a few roles and is granted permissions which are required to complete the demos in this package. 
+	+ Open SSMS and connect to your SQL Server 2016 instance (or Azure SQL Database instance) 
+	+ In SSMS, right-click on *Databases* in Object Explorer and select *Import Data-tier Application...*. 
+	+ Locate your copy of the bacpac file, located in the */setup* folder. 
+	![Import Data-tier Application Wizard](img/import-bacpac.png)
+	+ Complete the steps of the wizard. 
+	+ NOTE: the Clinic database contains the ContosoClinicApplication database user, based on the ContosoClinicApplication login, which you provisioned above. The user is assigned a few roles and is granted permissions which are required to complete the demos in this package. 
 
 ### Modify and Set up the Sample Application Project
 1. Start Visual Studio and open the Contoso Application solution file- located in /src. 
@@ -47,8 +47,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct](http://micr
 	+ Using Solution Explorer, locate and open the web.config file under the ContosoClinic project. 
 	+ Look for the line that looks like this:
 	```csharp 
-	<add name="DefaultConnection" connectionString="Data Source=aedemo2;Initial Catalog=Clinic;User
-	ID=ContosoClinicApplication;Password={Some Strong Password}" providerName="System.Data.SqlClient" />
+	<add name="DefaultConnection" connectionString="Data Source=<servername>;Initial Catalog=Clinic;User
+	ID=ContosoClinicApplication;Password=<password>" providerName="System.Data.SqlClient" />
 	```
 	+ Update the value of the *Data Source* key word in the database connection string to denote your server (either your local SQL Server instance of your logical server in Azure SQL Database) 
 	+ Make sure the *password* for your application users is correct (matches the password that you configured earlier)
@@ -81,7 +81,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](http://micr
 	 ![Always Encrypted Wizard introduction page](img/always-encrypted-introduction-page.png)
 	- Select the **SSN** and **BirthDate** columns. 
 		* Select **Deterministic Encryption** for **SSN** as the application needs to be able to search patients by SSN; Deterministic Encryption preserves that functionality for our app without leaving data exposed. 
-		* Select **Randomized Encryption** for *BirthDate** 
+		* Select **Randomized Encryption** for **BirthDate** 
 	![Always Encrypted Column Selection Page](img/column-selection-ssn-birthdate.png)
 	- Leave **CEK_Auto1 (New)** as the Key for both columns. Click **Next**.
 	- On the **Master Key Configuration** page, the Master Key Source should default to to **Windows Certificate Store**, with the **Master Key Source** defaulted to **Current User**. (This will store the key on your local machine.)
@@ -112,7 +112,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](http://micr
 
 ####How did that work? 
 ##### Connection String
-Our connection string for our application now contains `Column Encryption Setting=Enabled` which allows the driver to handle the necessary overhead to decrypt the newly encrypted data without code changes. Don't forget this for your app if you intend to use Always Encrypted functonality. 
+Our connection string for our application now contains `Column Encryption Setting=Enabled` which instructs the driver to automatically encrypt parameters targeting encrypted columns and decrypt any results retrieved from encrypted columns, without code changes. Don't forget this for your app if you intend to use Always Encrypted functonality. 
 
 ### Row Level Security (RLS) 
 
