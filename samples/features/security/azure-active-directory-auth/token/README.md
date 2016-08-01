@@ -61,6 +61,7 @@ TODO: Other Prerequisites
 4. Add the certificate as a key for the application you created in Azure AD. 
 	- Click the Microsoft Azure Active Directory Module for Windows PowerShell shortcut on desktop to open a Windows PowerShell workspace that has the Azure AD cmdlets. 
 	- Copy the following code snippet to a text editor. 
+	- `connect-msolservice` will ask for you Azure AD credentials. Please be sure to use credentials that are part of Azure AD global admin to connect and to proceed with the scripts below. 
 	``` 
 	connect-msolservice
 	
