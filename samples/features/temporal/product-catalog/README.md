@@ -29,7 +29,7 @@ To run this sample, you need the following prerequisites.
 **Software prerequisites:**
 
 1. SQL Server 2016 (or higher) or an Azure SQL Database
-2. Visual Studio 2015 (or higher) with the ASP.NET Core RC2 (or higher)
+2. Visual Studio 2015 Update 3 (or higher) with the ASP.NET Core 1.0 (or higher)
 
 **Azure prerequisites:**
 
