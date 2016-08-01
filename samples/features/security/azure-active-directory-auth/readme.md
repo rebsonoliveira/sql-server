@@ -56,6 +56,8 @@ To run this sample, you need the following prerequisites:
 
 [Password Demo](password)
 
+[Token Demo](token)
+
 <a name=sample-details></a>
 
 ## Sample details
