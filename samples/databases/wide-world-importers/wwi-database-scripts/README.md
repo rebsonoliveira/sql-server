@@ -66,6 +66,8 @@ You can configure the amount of data produced by modifying the number of orders 
 
 7. Execute the script **7-wwi-enable-full-features.sql**. This script enables features not available in standard edition. Skip this step when creating the sample database targeting standard edition.
 
+  - Note: Full-Text Indexing should be installed in order to configure the full-text options. If the feature is not installed, you will receive a warning message when running the script.
+
 8. Execute the script **8-wwi-backup.sql**. This creates a backup of the database. Make sure to adjust the file path of the backup to match your folder structure. (A sample restore script **9-wwi-restore.sql** is also provided).
 
 9. If required, remove the **WWI_Preparation** database.
