@@ -12,7 +12,6 @@ The Token project contains a simple console application that connects to Azure S
 
 **Software prerequisites:**
 
-
 1. The `makecert.exe` utility, which is included in the Windows SDK 
 	+ It is sometimes included in Visual Studio installations (depending on the selections made during installation). A search of your machine for `makecert.exe` would provide verification that the Windows SDK was installed. 
 	+ If the Windows SDK was not installed, you may [download it here](http://msdn.microsoft.com/en-US/windows/desktop/aa904949)
@@ -20,10 +19,6 @@ The Token project contains a simple console application that connects to Azure S
 2. PowerShell with Azure Active Directory Module
 	+ To download the latest PowerShell version [see this page](https://azure.microsoft.com/en-us/documentation/articles/powershell-install-configure/#Install) 
 	+ [Install the Azure AD PowerShell Module](https://msdn.microsoft.com/en-us/library/azure/jj151815.aspx), if it is not already installed in your client machine. 
-
-**Other Prerequisites** 
-
-TODO: Other Prerequisites
 
 <a name=run-this-sample></a>
 ## Run this sample
