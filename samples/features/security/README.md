@@ -1,6 +1,6 @@
 #SQL Security
 
-Placeholder for summary. 
+<!--laceholder for summary.--> 
 
 [Azure Active Directory Authentication Sample](azure-active-directory-auth)
 
