@@ -23,10 +23,10 @@ Sample order processing workload that can be used for benchmarking transactional
 
   - There are plans to make a scalable workload driver available as well. Timeline is TBD.
 
-|Stored Procedure	|Weight	|Dist %|
-|--|--|--|
-|GetOrdersByCustomerID	|8	|25.8%|
-|GetProductsByType	|6	|19.4%|
+|Stored Procedure|Weight|Distribution|
+|----------|--------|-------|
+|GetOrdersByCustomerID|8|25.8%|
+|GetProductsByType|6|19.4%|
 |GetProductsPriceByPK	|4	|12.9%|
 |ProductSelectionCriteria	|2	|6.5%|
 |InsertOrder	|10	|32.3%|
@@ -37,7 +37,7 @@ Sample order processing workload that can be used for benchmarking transactional
 ## Workload description
 
 |Transaction	|Type|	Description|
-|--|--|--|
+|-----|-----|------|
 |GetOrdersByCustomerID	|Read-only	|Select customer info, orders, and order lines for a given customer.|
 |GetProductsByType	|Read-only	|Select top 10 products of a given type, ordered by price.|
 |GetProductsPriceByPK	|Read-only	|Select all products in a given ID range, ordered by price.|
