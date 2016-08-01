@@ -1,6 +1,6 @@
 # ASP.NET Core Product Catalog application that uses SQL/Temporal and JSON functionalities 
 
-This project contains an example implementation of ASP.NET Core application that shows how to implement simple product catalog application that enables you to browse current list of products, and also to see state in any point in time in history.
+This project contains an example of a simple ASP.NET Core product catalog web application that enables you to browse the current list of products, and also to see the state of products in any point in time in the history.
 
 ## Contents
 
@@ -29,7 +29,7 @@ To run this sample, you need the following prerequisites.
 **Software prerequisites:**
 
 1. SQL Server 2016 (or higher) or an Azure SQL Database
-2. Visual Studio 2015 Update 3 (or higher) with the ASP.NET Core 1.0 (or higher)
+2. Visual Studio 2015 Update 3 (or higher) or Visual Studio Code Editor with the ASP.NET Core 1.0 (or higher)
 
 **Azure prerequisites:**
 
@@ -43,9 +43,9 @@ To run this sample, you need the following prerequisites.
 
 2. From SQL Server Management Studio or Visual Studio/Sql Server Data Tools connect to your SQL Server 2016 or Azure SQL database and execute setup.sql script that will create and populate Product table and create required stored procedures.
 
-3. From Visual Studio 2015, open the **ProductCatalog.xproj** file from the root directory,
+3. From Visual Studio 2015, open the **ProductCatalog.xproj** file from the root directory. Restore packages using right-click menu on the project in Visual Studio and by choosing Restore Packages item. As an alternative, you may run **dotnet restore** from the command line (from the root folder of application).
 
-4. Locate Startup.cs file in the project, change connection string in ConfigureServices() method to reference your database (default value ProductCatalog database on local instance with integrated security), and build solution using Ctrl+Shift+B, right-click on project + Build, or Build/Build Solution from menu.
+4. Locate Startup.cs file in the project, change connection string in ConfigureServices() method to reference your database (default value ProductCatalog database on local instance with integrated security), and build solution using Ctrl+Shift+B, right-click on project + Build, Build/Build Solution from menu, or **dotnet build** command from the command line (from the root folder of application).
 
 5. Run the sample app using F5 or Ctrl+F5 in Visual Studio 2015, or using **dotnet run** executed in the command prompt of the project root folder.  
 5.1. Open /index.html Url to get all products from database,
