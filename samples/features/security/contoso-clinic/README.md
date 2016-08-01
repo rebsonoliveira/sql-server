@@ -72,8 +72,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](http://micr
 ### Always Encrypted 
 ####Enable Always Encrypted
 + Connect to your database using SSMS: 
-	- Connect using the Administrator Login (Default was adminLogin) and the password you defined during setup 
-	- For more information on using SSMS to connect to an Azure Database, [click here](https://azure.microsoft.com/en-us/documentation/articles/sql-database-connect-query-ssms/)
+	- For more information on using SSMS to connect to a Database, [click here](https://azure.microsoft.com/en-us/documentation/articles/sql-database-connect-query-ssms/)
 + Encrypt Sensitive Data Columns using the Column Encryption Wizard 
 	- Right click on the **Patients** table in the **Clinic** database and select **Encrypt Columns...**
 	 ![Right Click patients table encrypt columns dropdown](img/right-click-patients-table-encrypt-columns.png) 
@@ -112,7 +111,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](http://micr
 
 ####How did that work? 
 ##### Connection String
-Our connection string for our application now contains `Column Encryption Setting=Enabled` which instructs the driver to automatically encrypt parameters targeting encrypted columns and decrypt any results retrieved from encrypted columns, without code changes. Don't forget this for your app if you intend to use Always Encrypted functonality. 
+Our connection string for our application now contains `Column Encryption Setting=Enabled` which instructs the driver to automatically encrypt parameters targeting encrypted columns and decrypt any results retrieved from encrypted columns, without code changes. Don't forget this for your app if you intend to use Always Encrypted functonality. For more information this feature, [see our blog](https://blogs.msdn.microsoft.com/sqlsecurity/2016/07/11/always-encrypted-in-azure-sql-database-is-generally-available/). 
 
 ### Row Level Security (RLS) 
 
@@ -120,7 +119,8 @@ Our connection string for our application now contains `Column Encryption Settin
 Sign in using (Rachel@contoso.com/Password1!) or (alice@contoso.com/Password1!)
 
 ####Enable Row Level Security (RLS) 
-+ Connect to your database using SSMS: [Instructions](https://azure.microsoft.com/en-us/documentation/articles/sql-database-connect-query-ssms/)
++ Connect to your database using SSMS: 
+[Instructions](https://azure.microsoft.com/en-us/documentation/articles/sql-database-connect-query-ssms/)
 + Open Enable-RLS.sql ( [Find it here](Security%20Demo%20Queries/Enable-RLS.sql))
 + Execute the commands 
 + Observe the changes to the results returned on the /visits or /patients page
