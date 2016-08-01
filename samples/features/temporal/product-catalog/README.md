@@ -1,6 +1,6 @@
-# ASP.NET Core Product Inventory application that uses SQL/Temporal and JSON functionalities 
+# ASP.NET Core Product Catalog application that uses SQL/Temporal and JSON functionalities 
 
-This project contains an example implementation of ASP.NET Core application that shows how to implement simple product catalog that enables you to browse current list products in catalog, and also to see state in any point in time in history.
+This project contains an example implementation of ASP.NET Core application that shows how to implement simple product catalog application that enables you to browse current list of products, and also to see state in any point in time in history.
 
 ## Contents
 
