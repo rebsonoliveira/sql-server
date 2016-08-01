@@ -48,10 +48,10 @@ To run this sample, you need the following prerequisites.
 4. Locate Startup.cs file in the project, change connection string in ConfigureServices() method to reference your database (default value ProductCatalog database on local instance with integrated security), and build solution using Ctrl+Shift+B, right-click on project + Build, Build/Build Solution from menu, or **dotnet build** command from the command line (from the root folder of application).
 
 5. Run the sample app using F5 or Ctrl+F5 in Visual Studio 2015, or using **dotnet run** executed in the command prompt of the project root folder.  
-5.1. Open /index.html Url to get all products from database,
-5.2. Use expand buttons to see history of products,
-5.3. Restore some of the previous version using restore link,
-5.4. Use Slider to go back in time.
+  1. Open /index.html Url to get all products from database,
+  2. Use expand buttons to see history of products,
+  3. Restore some of the previous version using restore link,
+  4. Use Slider to go back in time.
 
 <a name=sample-details></a>
 
