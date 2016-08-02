@@ -48,9 +48,10 @@ $(document).ready(function () {
         "columns": [
             { "data": "Name" },
             { "data": "Color", "defaultContent": "" },
-            { "data": "Size", "defaultContent": "" },
             { "data": "Price", sType: 'numeric', "defaultContent": "" },
             { "data": "Quantity", "visible": true, "defaultContent": "" },
+            { "data": "MadeIn", "visible": true, "defaultContent": "" },
+            { "data": "Tags", "visible": true, "defaultContent": "" },
             {
                 "data": "ProductID",
                 "sortable": false,

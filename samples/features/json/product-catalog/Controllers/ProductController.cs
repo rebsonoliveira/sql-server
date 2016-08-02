@@ -25,14 +25,22 @@ namespace ProductCatalog.Controllers
         [HttpGet]
         public async Task Get()
         {
-            await sqlQuery.Stream("select * from Product FOR JSON PATH, ROOT('data')", Response.Body, EMPTY_PRODUCTS_ARRAY);
+            await sqlQuery.Stream(
+@"select ProductID, Name, Color, Price, Quantity, JSON_VALUE(Data, '$.MadeIn') as MadeIn, JSON_QUERY(Tags) as Tags 
+from Product
+FOR JSON PATH, ROOT('data')", Response.Body, EMPTY_PRODUCTS_ARRAY);
         }
 
         // GET api/Product/5
         [HttpGet("{id}")]
         public async Task Get(int id)
         {
-            var cmd = new SqlCommand("select * from Product where ProductId = @id FOR JSON PATH, WITHOUT_ARRAY_WRAPPER");
+            var cmd = new SqlCommand(
+@"select ProductID, Name, Color, Price, Quantity
+from Product
+where ProductId = @id
+FOR JSON PATH, WITHOUT_ARRAY_WRAPPER");
+
             cmd.Parameters.AddWithValue("id", id);
             await sqlQuery.Stream(cmd, Response.Body, "{}");
         }
