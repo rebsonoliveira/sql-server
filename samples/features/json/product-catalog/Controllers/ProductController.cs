@@ -1,6 +1,5 @@
 ﻿using Belgrade.SqlClient;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Data.SqlClient;
 using System.IO;
 using System.Threading.Tasks;
@@ -21,7 +20,6 @@ namespace ProductCatalog.Controllers
             this.sqlQuery = sqlQueryService;
             this.sqlCmd = sqlCommandService;
         }
-
         
         // GET api/Product
         [HttpGet]
