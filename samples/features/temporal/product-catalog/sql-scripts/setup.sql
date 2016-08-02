@@ -1,4 +1,16 @@
-﻿CREATE SCHEMA History
+﻿USE master
+GO
+
+DROP DATABASE IF EXISTS ProductCatalog
+GO
+
+CREATE DATABASE ProductCatalog
+GO
+
+USE ProductCatalog
+GO
+
+CREATE SCHEMA History
 GO
 
 CREATE TABLE Product (
