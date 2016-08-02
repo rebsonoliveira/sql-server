@@ -56,6 +56,8 @@ To run this sample, you need the following prerequisites:
 
 [Password Demo](password)
 
+[Token Demo](token)
+
 <a name=sample-details></a>
 
 ## Sample details
@@ -65,7 +67,7 @@ This demo provides a simple tool for exploring Azure Active Directory authentica
 Azure Active Directory authentication with Azure SQL Database V12 supports the following authentication methods:
 - User/password authentication  
 - Integrated authentication 
-- Application token authentication [Demo coming soon!]
+- Application token authentication
 
 <a name=disclaimers></a>
 
