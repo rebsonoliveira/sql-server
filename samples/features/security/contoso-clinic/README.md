@@ -32,6 +32,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](http://micr
 1. Clone/Download the repository
 2. While connected to your database (master) via SSMS, execute [Create-Application-Login.sql](tsql/Create-Application-Login.sql) link.
 	+ You should change the default password in the script before running it. 
+	+ This script also modifies the permissions of the `ContosoClinicApplication` user 
 3. Import the *Clinic* database
 	+ Open SSMS and connect to your SQL Server 2016 instance (or Azure SQL Database instance) 
 	+ In SSMS, right-click on *Databases* in Object Explorer and select *Import Data-tier Application...*. 
