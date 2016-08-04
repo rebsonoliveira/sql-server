@@ -31,7 +31,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](http://micr
 ### Set up the Demo Database
 1. Clone/Download the repository
 2. Import the *Clinic* database
-	+ Open SSMS and connect to your SQL Server 2016 instance (or Azure SQL Database instance) 
+	+ Open SSMS and connect to your SQL Server 2016 instance
 	+ In SSMS, right-click on *Databases* in Object Explorer and select *Import Data-tier Application...*. 
 	+ Locate your copy of the bacpac file, located in the */setup* folder. 
 	![Import Data-tier Application Wizard](img/import-bacpac.png)
@@ -52,11 +52,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct](http://micr
 	  <add name="DefaultConnection" connectionString="Data Source=youserver;Initial Catalog=Clinic;
 	  User ID=ContosoClinicApplication;Password=yourpassword" providerName="System.Data.SqlClient" />
     	<!--
-    		To enable Always Encrypted, add the following to the connection string: Column Encryption Setting=Enabled
+    	To enable Always Encrypted, add the following to the connection string: Column Encryption Setting=Enabled
 	 -->
 	 </connectionStrings>
 	```
-	+ Update the value of the *Data Source* key word in the database connection string to denote your server (either your local SQL Server instance of your logical server in Azure SQL Database) 
+	+ Update the value of the *Data Source* key word in the database connection string to denote your server 
 	+ Make sure the *password* for your application users is correct (matches the password that you configured earlier)
 	+ Make sure the *Initial Catalog* value is set to *Clinic*
 	+ Save the file
