@@ -73,8 +73,8 @@ AS BEGIN
 		Size = json.Size,
 		Price = json.Price,
 		Quantity = json.Quantity,
-		Data = ISNULL(json.Data, Data),
-		Tags = ISNULL(json.Tags,Tags)
+		Data = ISNULL(json.Data, dbo.Product.Data),
+		Tags = ISNULL(json.Tags,dbo.Product.Tags)
 	FROM OPENJSON(@ProductJson)
 		WITH (	Name nvarchar(100) N'strict $."Name"',
 				Color nvarchar(30),

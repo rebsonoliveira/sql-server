@@ -11,6 +11,14 @@ select ProductID, Name, Color, Size, Price, Quantity, Data, Tags,
 from Product
 where JSON_VALUE(Data, '$.Type') = 'part'
 
+--Use JSON data in any part of query
+select JSON_VALUE(Data, '$.Type') as Type, Color,
+		AVG( cast(JSON_VALUE(Data, '$.ManufacturingCost') as float) ) as Cost
+from Product
+group by JSON_VALUE(Data, '$.Type'), Color
+having JSON_VALUE(Data, '$.Type') is not null
+order by JSON_VALUE(Data, '$.Type')
+
 --Update JSON Data
 --Current values in row:
 select Data,Tags
@@ -28,17 +36,9 @@ select Data,Tags
 from Product
 where ProductID = 16
 
---Use JSON data in any part of query
-select JSON_VALUE(Data, '$.Type') as Type, Color,
-		AVG( cast(JSON_VALUE(Data, '$.ManufacturingCost') as float) ) as Cost
-from Product
-group by JSON_VALUE(Data, '$.Type'), Color
-having JSON_VALUE(Data, '$.Type') is not null
-order by JSON_VALUE(Data, '$.Type')
-
 GO
 
---OPENJSON Examples.
+--OPENJSON Examples - requires compatibility level 130!
 alter database ProductCatalog set compatibility_level = 130
 GO
 
