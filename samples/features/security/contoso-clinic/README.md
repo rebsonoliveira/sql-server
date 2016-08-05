@@ -3,9 +3,9 @@
 Sample application with database that showcases security features of SQL Server 2016. 
 
 ## About this sample
-- **Applies to:**  Azure SQL Database, Azure Web App Service, Azure Key Vault
+- **Applies to:**  SQL Database 2016
 - **Programming Language:** .NET C#, T-SQL
-- **Authors:** Jakub Szymaszek [jaszymas-MSFT], Daniel Rediske [daredis-msft]
+- **Authors:** Jakub Szymaszek [jaszymas-MSFT]
 
 This project has adopted the [Microsoft Open Source Code of Conduct](http://microsoft.github.io/codeofconduct). For more information see the [Code of Conduct FAQ](http://microsoft.github.io/codeofconduct/faq.md) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments. 
 
@@ -24,21 +24,22 @@ This project has adopted the [Microsoft Open Source Code of Conduct](http://micr
 
 ##Prerequisites
 1. Visual Studio 2015 (or newer)
-2. [SQL Server 2016](https://www.microsoft.com/en-us/evalcenter/evaluate-sql-server-2016) OR an Azure SQL Database (V12) [portal link](https://portal.azure.com)  
-3. [SQL Server Management Studio](https://msdn.microsoft.com/en-us/library/mt238290.aspx.) 
+2. [SQL Server 2016](https://www.microsoft.com/en-us/evalcenter/evaluate-sql-server-2016) 
+3. [SQL Server Management Studio](https://msdn.microsoft.com/en-us/library/mt238290.aspx) 
 
 ##Setup
 ### Set up the Demo Database
 1. Clone/Download the repository
-2. While connected to your database (master) via SSMS, execute [Create-Application-Login.sql](tsql/Create-Application-Login.sql) link.
-	+ You should change the default password in the script before running it. 
-3. Import the *Clinic* database
+2. Import the *Clinic* database
 	+ Open SSMS and connect to your SQL Server 2016 instance (or Azure SQL Database instance) 
 	+ In SSMS, right-click on *Databases* in Object Explorer and select *Import Data-tier Application...*. 
 	+ Locate your copy of the bacpac file, located in the */setup* folder. 
 	![Import Data-tier Application Wizard](img/import-bacpac.png)
 	+ Complete the steps of the wizard. 
 	+ NOTE: the Clinic database contains the ContosoClinicApplication database user, based on the ContosoClinicApplication login, which you provisioned above. The user is assigned a few roles and is granted permissions which are required to complete the demos in this package. 
+3. While connected to your database (master) via SSMS, execute [setup/Create-Application-Login.sql](setup/Create-Application-Login.sql) link.
+	+ The script will prompt you for your desired password for the `ContosoClinicApplicaation` user.  
+	+ This script also modifies the permissions of the `ContosoClinicApplication` user 
 
 ### Modify and Set up the Sample Application Project
 1. Start Visual Studio and open the Contoso Application solution file- located in /src. 
@@ -47,8 +48,13 @@ This project has adopted the [Microsoft Open Source Code of Conduct](http://micr
 	+ Using Solution Explorer, locate and open the web.config file under the ContosoClinic project. 
 	+ Look for the line that looks like this:
 	```csharp 
-	<add name="DefaultConnection" connectionString="Data Source=<servername>;Initial Catalog=Clinic;User
-	ID=ContosoClinicApplication;Password=<password>" providerName="System.Data.SqlClient" />
+	<connectionStrings>
+	  <add name="DefaultConnection" connectionString="Data Source=youserver;Initial Catalog=Clinic;
+	  User ID=ContosoClinicApplication;Password=yourpassword" providerName="System.Data.SqlClient" />
+    	<!--
+    		To enable Always Encrypted, add the following to the connection string: Column Encryption Setting=Enabled
+	 -->
+	 </connectionStrings>
 	```
 	+ Update the value of the *Data Source* key word in the database connection string to denote your server (either your local SQL Server instance of your logical server in Azure SQL Database) 
 	+ Make sure the *password* for your application users is correct (matches the password that you configured earlier)
