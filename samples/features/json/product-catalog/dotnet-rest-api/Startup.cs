@@ -43,7 +43,6 @@ namespace ProductCatalog
             loggerFactory.AddDebug();
 
             app.UseMvc();
-            app.UseStaticFiles();
         }
     }
 }
