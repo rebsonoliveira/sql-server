@@ -31,15 +31,14 @@ This project has adopted the [Microsoft Open Source Code of Conduct](http://micr
 ### Set up the Demo Database
 1. Clone/Download the repository
 2. Import the *Clinic* database
-	+ Open SSMS and connect to your SQL Server 2016 instance (or Azure SQL Database instance) 
+	+ Open SSMS and connect to your SQL Server 2016 instance
 	+ In SSMS, right-click on *Databases* in Object Explorer and select *Import Data-tier Application...*. 
 	+ Locate your copy of the bacpac file, located in the */setup* folder. 
 	![Import Data-tier Application Wizard](img/import-bacpac.png)
 	+ Complete the steps of the wizard. 
-	+ NOTE: the Clinic database contains the ContosoClinicApplication database user, based on the ContosoClinicApplication login, which you provisioned above. The user is assigned a few roles and is granted permissions which are required to complete the demos in this package. 
 3. While connected to your database (master) via SSMS, execute [setup/Create-Application-Login.sql](setup/Create-Application-Login.sql) link.
-	+ The script will prompt you for your desired password for the `ContosoClinicApplicaation` user.  
-	+ This script also modifies the permissions of the `ContosoClinicApplication` user 
+	+ Before running the script, create a password for the `ContosoClinicApplicaation` user.  
+	+ This script creates a login and user, assigns `datareader` and `datawriter` permissions, and gives several Always Encrypted specific permissions to the `ContosoClinicApplication` user 
 
 ### Modify and Set up the Sample Application Project
 1. Start Visual Studio and open the Contoso Application solution file- located in /src. 
@@ -52,11 +51,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct](http://micr
 	  <add name="DefaultConnection" connectionString="Data Source=youserver;Initial Catalog=Clinic;
 	  User ID=ContosoClinicApplication;Password=yourpassword" providerName="System.Data.SqlClient" />
     	<!--
-    		To enable Always Encrypted, add the following to the connection string: Column Encryption Setting=Enabled
+    	To enable Always Encrypted, add the following to the connection string: Column Encryption Setting=Enabled
 	 -->
 	 </connectionStrings>
 	```
-	+ Update the value of the *Data Source* key word in the database connection string to denote your server (either your local SQL Server instance of your logical server in Azure SQL Database) 
+	+ Update the value of the *Data Source* key word in the database connection string to denote your server 
 	+ Make sure the *password* for your application users is correct (matches the password that you configured earlier)
 	+ Make sure the *Initial Catalog* value is set to *Clinic*
 	+ Save the file
@@ -83,7 +82,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](http://micr
 	- Right click on the **Patients** table in the **Clinic** database and select **Encrypt Columns...**
 	 ![Right Click patients table encrypt columns dropdown](img/right-click-patients-table-encrypt-columns.png) 
 	- The Column Encryption wizard will open. Click **Next**.
-	 ![Always Encrypted Wizard introduction page](img/always-encrypted-introduction-page.png)
+	 ![Always Encrypted Wizard introduction page](img/always-encrypted-wizard-introduction-page.png)
 	- Select the **SSN** and **BirthDate** columns. 
 		* Select **Deterministic Encryption** for **SSN** as the application needs to be able to search patients by SSN; Deterministic Encryption preserves that functionality for our app without leaving data exposed. 
 		* Select **Randomized Encryption** for **BirthDate** 
@@ -127,7 +126,7 @@ Sign in using (Rachel@contoso.com/Password1!) or (alice@contoso.com/Password1!)
 ####Enable Row Level Security (RLS) 
 + Connect to your database using SSMS: 
 [Instructions](https://azure.microsoft.com/en-us/documentation/articles/sql-database-connect-query-ssms/)
-+ Open Enable-RLS.sql ( [Find it here](Security%20Demo%20Queries/Enable-RLS.sql))
++ Open Enable-RLS.sql ( [Find it here](tsql-scripts/Enable-RLS.sql))
 + Execute the commands 
 + Observe the changes to the results returned on the /visits or /patients page
 
@@ -146,7 +145,7 @@ The predicate functions we created in Enable-RLS.sql identify users by the `User
 #### Enable Dynamic Data Masking
 + Navigate to the /patients page
 + Connect to your deployed database using SSMS: [Instructions](https://azure.microsoft.com/en-us/documentation/articles/sql-database-connect-query-ssms/)
-+ Open Enable-DDM.sql ([Find it here](Security%20Demo%20Queries/Enable-DDM.sql)) 
++ Open Enable-DDM.sql ([Find it here](tsql-scripts/Enable-DDM.sql)) 
 + Execute the commands
 + Observe the changes in results returned on the /visits page
 
