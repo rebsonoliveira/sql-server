@@ -6170,6 +6170,11 @@ BEGIN
 END;
 GO
 
+-- update statistics on system tables for performance of schema queries
+UPDATE STATISTICS sys.syscolpars
+UPDATE STATISTICS sys.sysschobjs
+GO
+
 /*
 
 -- initial data population to ship date
