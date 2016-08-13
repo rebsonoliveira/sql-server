@@ -1,8 +1,47 @@
 ﻿ROOT_API_URL = "/api/Product/";
 
+var ProductController = function($table, $form, $modal){
+
+    return {
+        editProduct: function () {
+            $form.loadJSON(ROOT_API_URL + this.attributes["data-id"].value);
+        },
+        saveProduct: function () {
+            var id = $("#ProductID", $form).val();
+            $.ajax({
+                contentType: 'application/json',
+                method: id == "" ? "POST" : "PUT",
+                url: ROOT_API_URL + id,
+                processData: false,
+                data: JSON.stringify($form.serializeJSON({ checkboxUncheckedValue: "false", parseAll: true })),
+            }).fail(function (msg) {
+                toastr.error('An error occured while trying to save the product.');
+            }).done(function () {
+                toastr.success("Product is successfully saved!");
+                $table.ajax.reload(null, false);
+                $modal.modal('hide');
+            });
+        },
+
+        deleteProduct: function () {
+            $.ajax({
+                method: "DELETE",
+                url: ROOT_API_URL + this.attributes["data-id"].value
+            }).fail(function (msg) {
+                toastr.error('An error occured while trying to delete the product.', 'Product cannot be deleted!');
+            }).done(function () {
+                toastr.success("Product is successfully deleted!");
+                $table.ajax.reload(null, false);
+            });
+        }
+    }
+};
+
+
 $(document).ready(function () {
 
-    var table = $('#example').DataTable({
+    // DataTable setup
+    var $table = $('#example').DataTable({
         "ajax": ROOT_API_URL,
         "columns": [
             { "data": "Name" },
@@ -28,49 +67,27 @@ $(document).ready(function () {
         ]
     });// end DataTable setup
     
-    $('#myModal').on('hide.bs.modal', function () {
+    // modal setup
+    $modal = $('#myModal');
+    
+    $modal.on('hide.bs.modal', function () {
         $(this).find("input[type!=checkbox],textarea,select").val('').end();
         $(this).find("input:checkbox").prop('checked', false);
     });
 
-    $("table#example").on("click", "button.edit", function () {
-        $("#ProductForm")
-            .loadJSON(ROOT_API_URL + this.attributes["data-id"].value);
+    $("#cancelButton", $modal).on("click", function () {
+        $modal.modal('hide');
     });
+    // end modal setup
 
-    $("table#example").on("click", "button.delete", function () {
+    var ctrl = ProductController($table, $("#ProductForm"), $modal);
 
-        $.ajax({
-            method: "DELETE",
-            url: ROOT_API_URL + this.attributes["data-id"].value
-        }).fail(function (msg) {
-            toastr.error('An error occured while trying to delete the product.', 'Product cannot be deleted!');
-        }).done(function () {
-            toastr.success("Product is successfully deleted!");
-            $('#example').DataTable().ajax.reload(null, false);
-        });
-    });
+    $table.on("click", "button.edit", ctrl.editProduct);
 
-    $("#submitButton").on("click", function (e) {
+    $table.on("click", "button.delete", ctrl.deleteProduct);
+
+    $("#submitButton", $modal).on("click", function (e) {
         e.preventDefault();
-        var id = $("#ProductID").val();
-        $.ajax({
-            contentType: 'application/json',
-            method: id == "" ? "POST" : "PUT",
-            url: ROOT_API_URL + id,
-            processData: false,
-            data: JSON.stringify($('#ProductForm').serializeJSON({ checkboxUncheckedValue: "false", parseAll: true })),
-           
-        }).fail(function (msg) {
-            toastr.error('An error occured while trying to save the product.');
-        }).done(function () {
-            toastr.success("Product is successfully saved!");
-            $('#example').DataTable().ajax.reload(null, false);
-            $('#myModal').modal('hide');
-        });
-    });
-
-    $("#cancelButton").on("click", function () {
-        $('#myModal').modal('hide');
+        ctrl.saveProduct();
     });
 });
