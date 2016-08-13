@@ -1,42 +1,48 @@
 ﻿ROOT_API_URL = "/api/Product/";
 
-var ProductController = function($table, $form, $modal){
+var ProductController =
+    function ($table, $modal) {
 
-    return {
-        editProduct: function () {
-            $form.loadJSON(ROOT_API_URL + this.attributes["data-id"].value);
-        },
-        saveProduct: function () {
-            var id = $("#ProductID", $form).val();
-            $.ajax({
-                contentType: 'application/json',
-                method: id == "" ? "POST" : "PUT",
-                url: ROOT_API_URL + id,
-                processData: false,
-                data: JSON.stringify($form.serializeJSON({ checkboxUncheckedValue: "false", parseAll: true })),
-            }).fail(function (msg) {
-                toastr.error('An error occured while trying to save the product.');
-            }).done(function () {
-                toastr.success("Product is successfully saved!");
-                $table.ajax.reload(null, false);
-                $modal.modal('hide');
-            });
-        },
+        return {
+            editProduct: function (productID) {
+                $.ajax(ROOT_API_URL + productID)
+                    .done( function (json) {
+                        $modal.loadJSON(json);
+                    })
+                    .fail(function () {
+                        toastr.error('An error occured while trying to get the product.');
+                    });
+                
+            },
+            saveProduct: function (productID, product) {
+                $.ajax({
+                    contentType: 'application/json',
+                    method: (productID == "") ? "POST" : "PUT",
+                    url: ROOT_API_URL + productID,
+                    processData: false,
+                    data: product,
+                }).fail(function (msg) {
+                    toastr.error('An error occured while trying to save the product.');
+                }).done(function () {
+                    toastr.success("Product is successfully saved!");
+                    $table.ajax.reload(null, false);
+                    $modal.modal('hide');
+                });
+            },
 
-        deleteProduct: function () {
-            $.ajax({
-                method: "DELETE",
-                url: ROOT_API_URL + this.attributes["data-id"].value
-            }).fail(function (msg) {
-                toastr.error('An error occured while trying to delete the product.', 'Product cannot be deleted!');
-            }).done(function () {
-                toastr.success("Product is successfully deleted!");
-                $table.ajax.reload(null, false);
-            });
+            deleteProduct: function (productID) {
+                $.ajax({
+                    method: "DELETE",
+                    url: ROOT_API_URL + productID
+                }).fail(function (msg) {
+                    toastr.error('An error occured while trying to delete the product.', 'Product cannot be deleted!');
+                }).done(function () {
+                    toastr.success("Product is successfully deleted!");
+                    $table.ajax.reload(null, false);
+                });
+            }
         }
-    }
-};
-
+    };
 
 $(document).ready(function () {
 
@@ -80,14 +86,24 @@ $(document).ready(function () {
     });
     // end modal setup
 
-    var ctrl = ProductController($table, $("#ProductForm"), $modal);
+    var $form = $("#ProductForm");
+    var ctrl = ProductController($table, $modal);
 
-    $table.on("click", "button.edit", ctrl.editProduct);
+    $table.on("click", "button.edit",
+        function () {
+            ctrl.editProduct(this.attributes["data-id"].value);
+        });
 
-    $table.on("click", "button.delete", ctrl.deleteProduct);
+    $table.on("click", "button.delete",
+        function () {
+            ctrl.deleteProduct(this.attributes["data-id"].value);
+        });
 
-    $("#submitButton", $modal).on("click", function (e) {
-        e.preventDefault();
-        ctrl.saveProduct();
-    });
+    $('body').on("click", "#submitButton",
+        function (e) {
+            e.preventDefault();
+            var productId = $("#ProductForm #ProductID").val();
+            var product = JSON.stringify($("#ProductForm").serializeJSON({ checkboxUncheckedValue: "false", parseAll: true }));
+            ctrl.saveProduct(productId, product);
+        });
 });

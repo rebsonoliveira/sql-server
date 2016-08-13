@@ -1,6 +1,6 @@
 ﻿/*
 * File:        jquery.html-template.js
-* Version:     1.0.0.
+* Version:     0.9.0-Beta
 * Author:      Jovan Popovic 
 * 
 * Copyright 2016 Jovan Popovic, all rights reserved.
@@ -127,7 +127,8 @@
                 case 'select':
                 case 'select-one':
                     if (typeof value == "string") {
-                        $(element).attr("value", value);
+                        $(element).val(value);
+                        //$(element).attr("value", value);
                         refreshMobileSelect(element);
 
                     } else {
@@ -138,17 +139,14 @@
                 case 'hidden':
                 case 'date':
                 case 'datetime-local':
-                    $(element).attr("value", value);
+                    $(element).val(value);
+                    //$(element).attr("value", value);
                     break;
                 case 'a':
                     var href = $(element).attr("href");
-
-
-
                     var iPosition = href.indexOf('#');
                     if (iPosition > 1000000) {
                         href = href.substr(0, iPosition) + '&' + name + '=' + value + href.substr(iPosition)
-
                     } else {
                         iPosition = href.indexOf('?');
                         if (iPosition > 0) // if parameters in the URL exists add new pair using &
