@@ -3,7 +3,7 @@
   "version": 2,
   "targets": {
     ".NETFramework,Version=v4.6": {
-      "Belgrade.Sql.Client/0.1.0": {
+      "Belgrade.Sql.Client/0.3.0": {
         "type": "package",
         "dependencies": {
           "System.Data.SqlClient": "(, )"
@@ -13,10 +13,10 @@
           "System.Data"
         ],
         "compile": {
-          "lib/Belgrade.SqlClient.dll": {}
+          "lib/net45/CLR-Belgrade-SqlClient.dll": {}
         },
         "runtime": {
-          "lib/Belgrade.SqlClient.dll": {}
+          "lib/net45/CLR-Belgrade-SqlClient.dll": {}
         }
       },
       "Libuv/1.9.0-rc2-20901": {
@@ -1771,13 +1771,16 @@
     }
   },
   "libraries": {
-    "Belgrade.Sql.Client/0.1.0": {
-      "sha512": "g+OdZ5XStR1Tf5nhdfzNPEY9xLyAwwsM+t7rXhi/WyGD3Nb4G8sufhjMwoAwpIzjqhNuUlGxZL0nlWCZNMRtow==",
+    "Belgrade.Sql.Client/0.3.0": {
+      "sha512": "xHdhJxQEjbjEijhyw8g3rnrx1K2ddRoK+ZB8L0IM8JM6cu0kdLwJN7SADmf6SYxaAAgeXeA0FQE29K/a3CUD/g==",
       "type": "package",
+      "path": "Belgrade.Sql.Client/0.3.0",
       "files": [
-        "Belgrade.Sql.Client.0.1.0.nupkg.sha512",
+        "Belgrade.Sql.Client.0.3.0.nupkg.sha512",
         "Belgrade.Sql.Client.nuspec",
-        "lib/Belgrade.SqlClient.dll"
+        "lib/net45/CLR-Belgrade-SqlClient.dll",
+        "lib/netcoreapp1.0/CLR-Belgrade-SqlClient.dll",
+        "lib/netstandard1.5/CLR-Belgrade-SqlClient.dll"
       ]
     },
     "Libuv/1.9.0-rc2-20901": {
@@ -5394,7 +5397,7 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "Belgrade.Sql.Client >= 0.1.0",
+      "Belgrade.Sql.Client >= 0.3.0",
       "Microsoft.AspNetCore.Mvc >= 1.0.0-rc2-final",
       "Microsoft.AspNetCore.Server.IISIntegration >= 1.0.0-rc2-final",
       "Microsoft.AspNetCore.Server.Kestrel >= 1.0.0-rc2-final",

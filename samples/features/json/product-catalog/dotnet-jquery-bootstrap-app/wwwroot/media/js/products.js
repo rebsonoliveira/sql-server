@@ -1,10 +1,13 @@
 ﻿ROOT_API_URL = "/api/Product/";
 
+// ProductController is an object that contains actions the will be executed on
+// get, save (create or update), delete
 var ProductController =
     function ($table, $modal) {
 
         return {
-            editProduct: function (productID) {
+
+            getProduct: function (productID) {
                 $.ajax(ROOT_API_URL + productID)
                     .done( function (json) {
                         $modal.loadJSON(json);
@@ -14,6 +17,7 @@ var ProductController =
                     });
                 
             },
+
             saveProduct: function (productID, product) {
                 $.ajax({
                     contentType: 'application/json',
@@ -73,7 +77,7 @@ $(document).ready(function () {
         ]
     });// end DataTable setup
     
-    // modal setup
+    // Bootstrap modal setup
     $modal = $('#myModal');
     
     $modal.on('hide.bs.modal', function () {
@@ -86,12 +90,11 @@ $(document).ready(function () {
     });
     // end modal setup
 
-    var $form = $("#ProductForm");
     var ctrl = ProductController($table, $modal);
 
     $table.on("click", "button.edit",
         function () {
-            ctrl.editProduct(this.attributes["data-id"].value);
+            ctrl.getProduct(this.attributes["data-id"].value);
         });
 
     $table.on("click", "button.delete",
@@ -102,8 +105,9 @@ $(document).ready(function () {
     $('body').on("click", "#submitButton",
         function (e) {
             e.preventDefault();
-            var productId = $("#ProductForm #ProductID").val();
-            var product = JSON.stringify($("#ProductForm").serializeJSON({ checkboxUncheckedValue: "false", parseAll: true }));
+            var $form = $("#ProductForm");
+            var productId = $("#ProductID", $form).val();
+            var product = JSON.stringify($form.serializeJSON({ checkboxUncheckedValue: "false", parseAll: true }));
             ctrl.saveProduct(productId, product);
         });
 });
