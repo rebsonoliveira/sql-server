@@ -17,7 +17,7 @@ authenticationFlag <- "SQL" #Valid values: "Windows" or "SQL"
 servername <- "."
 database <- "telcoedw"
 user <- "sa"
-password <- "Devzhouf@123" #Please set your own password
+password <- "" #Please set your own password
 
 ## Set working directory. Please change this to the main directory of the demo
 wd <- "C:\\Demo\\TelcoChurn4\\TelcoChurn4"
