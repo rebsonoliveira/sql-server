@@ -28,7 +28,7 @@ To run this sample, you need the following prerequisites.
 **Software prerequisites:**
 
 You can run the container with the following command. 
-(Note the you'll need Windows Server Core TP5 v10.0.14300.1000.)
+(Note the you'll need Windows Server Core TP5 v10.0.14300.1030.)
 
 ```` 
 docker run -p 1433:1433 -v C:/temp/:C:/temp/ --env sa_password=<YOUR SA PASSWORD> --env attach_dbs="<DB-JSON-CONFIG>" microsoft/mssql-server-2014-express-windows
