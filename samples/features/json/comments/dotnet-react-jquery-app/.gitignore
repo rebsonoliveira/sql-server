@@ -1,4 +1,4 @@
-TodoRestWebAPI.xproj.user
+*.xproj.user
 .vs/*
 .vscode/*
 bin/*
