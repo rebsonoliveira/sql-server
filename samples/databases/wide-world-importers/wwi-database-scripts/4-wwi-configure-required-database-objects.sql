@@ -6173,6 +6173,8 @@ GO
 -- update statistics on system tables for performance of schema queries
 UPDATE STATISTICS sys.syscolpars
 UPDATE STATISTICS sys.sysschobjs
+UPDATE STATISTICS sys.syssingleobjrefs
+UPDATE STATISTICS sys.sysiscols
 GO
 
 /*
