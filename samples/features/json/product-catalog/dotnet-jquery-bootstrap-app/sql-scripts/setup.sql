@@ -1,29 +1,14 @@
-﻿USE master
-GO
-
-DROP DATABASE IF EXISTS ProductCatalog
-GO
-
-CREATE DATABASE ProductCatalog
-GO
-
-USE ProductCatalog
-GO
-
-DROP TABLE IF EXISTS Product
-GO
-
-CREATE TABLE Product (
-	ProductID int IDENTITY PRIMARY KEY,
-	Name nvarchar(50) NOT NULL,
-	Color nvarchar(15) NULL,
-	Size nvarchar(5) NULL,
-	Price money NOT NULL,
-	Quantity int NULL,
-	Data nvarchar(4000),
-	Tags nvarchar(4000)
-)
-GO
+﻿DROP TABLE IF EXISTS Product
+    GO
+    CREATE TABLE Product (
+        ProductID int,
+        Name nvarchar(50) NOT NULL,
+        Color nvarchar(15),
+        Size nvarchar(5) NULL,
+        Price money NOT NULL,
+        Quantity int,
+        INDEX cci CLUSTERED COLUMNSTORE
+    ) GO
 
 SET IDENTITY_INSERT Product ON
 GO
