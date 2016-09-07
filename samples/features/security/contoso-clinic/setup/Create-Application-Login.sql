@@ -1,4 +1,7 @@
+use Clinic;
+go
 -- Create a non-sysadmin account for the application to use
+
 CREATE LOGIN [ContosoClinicApplication] WITH PASSWORD = <enter a strong password here>
 CREATE USER [ContosoClinicApplication] FOR LOGIN [ContosoClinicApplication]
 EXEC sp_addrolemember N'db_datareader', N'ContosoClinicApplication' 
