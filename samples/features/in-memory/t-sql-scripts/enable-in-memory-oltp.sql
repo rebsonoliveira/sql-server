@@ -10,7 +10,7 @@
 --    need to use the WITH (SNAPSHOT) hint for ad hoc queries accessing memory-optimized
 --    tables.
 --
--- Applies To: SQL Server 2014 (or higher); Azure SQL Database
+-- Applies To: SQL Server 2016 (or higher); Azure SQL Database
 -- Author: Jos de Bruijn (Microsoft)
 -- Last Updated: 2016-05-02
 
