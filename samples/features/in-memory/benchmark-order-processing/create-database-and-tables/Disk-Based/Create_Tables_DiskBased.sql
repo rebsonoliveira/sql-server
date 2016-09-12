@@ -1,8 +1,8 @@
 -------------------------------------------
--- version 0.0.0-1006
+-- version 0.0.0-1007
 -------------------------------------------
 
-USE InMemDB
+USE DiskBasedDB
 GO
 
 SET ANSI_NULLS ON
@@ -13,22 +13,22 @@ GO
 
 -- CUSTOMER Table
 CREATE TABLE dbo.Customer(
-    C_ID        bigint          NOT NULL PRIMARY KEY NONCLUSTERED HASH WITH (BUCKET_COUNT =  400000000),
+    C_ID        bigint          NOT NULL,
     C_L_NAME    varchar(25)     COLLATE Latin1_General_100_BIN2,
     C_F_NAME    varchar(20)     COLLATE Latin1_General_100_BIN2,
-    C_EMAIL     varchar(50)     NULL
+	C_EMAIL     varchar(50)     NULL
 
-) WITH ( MEMORY_OPTIMIZED = ON, DURABILITY = SCHEMA_AND_DATA )
+) ON DiskBased_fg
 GO
 
 -- FULFILLMENT Table
 CREATE TABLE    dbo.Fulfillment(
-    FM_ID       bigint          IDENTITY(1,1)  NOT NULL PRIMARY KEY NONCLUSTERED HASH WITH (BUCKET_COUNT =  1073741824),
+    FM_ID       bigint          IDENTITY(1,1)  NOT NULL,
     FM_O_ID     bigint          NOT NULL,
-    FM_C_ID     bigint          NOT NULL,
-    FM_DTS      datetime        NOT NULL
+	FM_C_ID     bigint          NOT NULL,
+	FM_DTS      datetime        NOT NULL
 
-) WITH ( MEMORY_OPTIMIZED = ON, DURABILITY = SCHEMA_AND_DATA )
+) ON DiskBased_fg
 GO
 
 -- ORDERLINES Table
@@ -36,61 +36,51 @@ CREATE TABLE    dbo.OrderLines(
     OL_O_ID     bigint          NOT NULL,
     OL_SEQ      int             NOT NULL,
     OL_PR_ID    bigint          NOT NULL,
-    OL_QTY      int             NOT NULL,
-    OL_PRICE    decimal(9,2)    NOT NULL,
-    OL_DTS      datetime        NOT NULL,
-
-    CONSTRAINT PK_OrderLInes PRIMARY KEY NONCLUSTERED HASH ( OL_O_ID, OL_SEQ )
-        WITH (BUCKET_COUNT =   1073741824),
-
-     INDEX IX_OrderLinesOL_O_ID HASH (OL_O_ID) WITH (BUCKET_COUNT =  1073741824)
-
-) WITH ( MEMORY_OPTIMIZED = ON, DURABILITY = SCHEMA_AND_DATA )
+	OL_QTY      int             NOT NULL,
+	OL_PRICE    decimal(9,2)    NOT NULL,
+	OL_DTS      datetime        NOT NULL,
+	
+) ON DiskBased_fg
 GO
 
 -- ORDERS Table
 CREATE TABLE dbo.Orders(
     O_ID        bigint          IDENTITY(1,1)   NOT NULL,
-    O_C_ID      bigint          NOT NULL INDEX IX_Orders_O_C_ID HASH WITH (BUCKET_COUNT =  1073741824),
-    O_TOTAL     decimal(9,2)    NOT NULL,
-    O_DTS       datetime        NOT NULL,
+	O_C_ID      bigint          NOT NULL,
+	O_TOTAL     decimal(9,2)    NOT NULL,
+	O_DTS       datetime        NOT NULL,
     O_FM_DTS    datetime		NOT NULL,
 
-    CONSTRAINT PK_Orders PRIMARY KEY NONCLUSTERED HASH ( O_ID )
-        WITH (BUCKET_COUNT =   1073741824),
-
-    INDEX IX_Orders_DTS (O_FM_DTS, O_DTS ASC) 
-    
-) WITH ( MEMORY_OPTIMIZED = ON, DURABILITY = SCHEMA_AND_DATA )
+) ON DiskBased_fg
 GO
 
 -- PRODUCTs Table
 CREATE TABLE dbo.Products(
-    PR_ID       bigint          NOT NULL,
-    PR_NAME     varchar(50)     COLLATE Latin1_General_100_BIN2 NOT NULL,
-    PR_TYPE     int				NOT NULL,
-    PR_DESC     varchar(1000)   COLLATE Latin1_General_100_BIN2 NOT NULL,
-    PR_PRICE    decimal(9,2)    NOT NULL,
-    PR_DEC1     float           NOT NULL,
-    PR_DEC2     float           NOT NULL,
-    PR_DEC3     float           NOT NULL,
-    PR_DEC4     float           NOT NULL,
-    PR_DEC5     float           NOT NULL,
-    PR_DEC6     float           NOT NULL,
-    PR_DEC7     float           NOT NULL,
-    PR_DEC8     float           NOT NULL,
-    PR_DEC9     float           NOT NULL,
-    PR_DEC10    float           NOT NULL,
-    PR_DEC11    float           NOT NULL,
-    PR_DEC12    float           NOT NULL,
-    PR_DEC13    float           NOT NULL,
-    PR_DEC14    float           NOT NULL,
-    PR_DEC15    float           NOT NULL,
-    PR_DEC16    float           NOT NULL,
-    PR_DEC17    float           NOT NULL,
-    PR_DEC18    float           NOT NULL,
-    PR_DEC19    float           NOT NULL,
-    PR_DEC20    float           NOT NULL,
+	PR_ID       bigint          NOT NULL,
+	PR_NAME     varchar(50)     COLLATE Latin1_General_100_BIN2 NOT NULL,
+	PR_TYPE     int				NOT NULL,
+	PR_DESC     varchar(1000)   COLLATE Latin1_General_100_BIN2 NOT NULL,
+	PR_PRICE    decimal(9,2)    NOT NULL,
+	PR_DEC1     float           NOT NULL,
+	PR_DEC2     float           NOT NULL,
+	PR_DEC3     float           NOT NULL,
+	PR_DEC4     float           NOT NULL,
+	PR_DEC5     float           NOT NULL,
+	PR_DEC6     float           NOT NULL,
+	PR_DEC7     float           NOT NULL,
+	PR_DEC8     float           NOT NULL,
+	PR_DEC9     float           NOT NULL,
+	PR_DEC10    float           NOT NULL,
+	PR_DEC11    float           NOT NULL,
+	PR_DEC12    float           NOT NULL,
+	PR_DEC13    float           NOT NULL,
+	PR_DEC14    float           NOT NULL,
+	PR_DEC15    float           NOT NULL,
+	PR_DEC16    float           NOT NULL,
+	PR_DEC17    float           NOT NULL,
+	PR_DEC18    float           NOT NULL,
+	PR_DEC19    float           NOT NULL,
+	PR_DEC20    float           NOT NULL,
     PR_DEC21    float           NOT NULL,
     PR_DEC22    float           NOT NULL,
     PR_DEC23    float           NOT NULL,
@@ -172,39 +162,32 @@ CREATE TABLE dbo.Products(
     PR_DEC99    float           NOT NULL,
     PR_DEC100   float           NOT NULL,
 
-    CONSTRAINT PK_Products PRIMARY KEY NONCLUSTERED HASH ( PR_ID )
-        WITH (BUCKET_COUNT =    1073741824),
-
-    INDEX IX_Products_PR_ID NONCLUSTERED (PR_ID),
-
-    INDEX  Products_TYPE (PR_TYPE ASC)
-
-) WITH ( MEMORY_OPTIMIZED = ON, DURABILITY = SCHEMA_AND_DATA )
+) ON DiskBased_fg
 GO
 
 -- PURCHASE_CRITERIA Table
 CREATE TABLE dbo.Purchase_Criteria(
-    PC_ID       bigint          NOT NULL,
-    PC_DEC1     float           NOT NULL,
-    PC_DEC2     float           NOT NULL,
-    PC_DEC3     float           NOT NULL,
-    PC_DEC4     float           NOT NULL,
-    PC_DEC5     float           NOT NULL,
-    PC_DEC6     float           NOT NULL,
-    PC_DEC7     float           NOT NULL,
-    PC_DEC8     float           NOT NULL,
-    PC_DEC9     float           NOT NULL,
-    PC_DEC10    float           NOT NULL,
-    PC_DEC11    float           NOT NULL,
-    PC_DEC12    float           NOT NULL,
-    PC_DEC13    float           NOT NULL,
-    PC_DEC14    float           NOT NULL,
-    PC_DEC15    float           NOT NULL,
-    PC_DEC16    float           NOT NULL,
-    PC_DEC17    float           NOT NULL,
-    PC_DEC18    float           NOT NULL,
-    PC_DEC19    float           NOT NULL,
-    PC_DEC20    float           NOT NULL,
+	PC_ID       bigint          NOT NULL,
+	PC_DEC1     float           NOT NULL,
+	PC_DEC2     float           NOT NULL,
+	PC_DEC3     float           NOT NULL,
+	PC_DEC4     float           NOT NULL,
+	PC_DEC5     float           NOT NULL,
+	PC_DEC6     float           NOT NULL,
+	PC_DEC7     float           NOT NULL,
+	PC_DEC8     float           NOT NULL,
+	PC_DEC9     float           NOT NULL,
+	PC_DEC10    float           NOT NULL,
+	PC_DEC11    float           NOT NULL,
+	PC_DEC12    float           NOT NULL,
+	PC_DEC13    float           NOT NULL,
+	PC_DEC14    float           NOT NULL,
+	PC_DEC15    float           NOT NULL,
+	PC_DEC16    float           NOT NULL,
+	PC_DEC17    float           NOT NULL,
+	PC_DEC18    float           NOT NULL,
+	PC_DEC19    float           NOT NULL,
+	PC_DEC20    float           NOT NULL,
     PC_DEC21    float           NOT NULL,
     PC_DEC22    float           NOT NULL,
     PC_DEC23    float           NOT NULL,
@@ -286,10 +269,7 @@ CREATE TABLE dbo.Purchase_Criteria(
     PC_DEC99    float           NOT NULL,
     PC_DEC100   float           NOT NULL,
 
-    CONSTRAINT PK_Purchase_Criteria PRIMARY KEY NONCLUSTERED HASH ( PC_ID )
-        WITH (BUCKET_COUNT =   400000000)
-
-) WITH ( MEMORY_OPTIMIZED = ON, DURABILITY = SCHEMA_AND_DATA )
+) ON DiskBased_fg
 GO
 
 SET ANSI_PADDING OFF

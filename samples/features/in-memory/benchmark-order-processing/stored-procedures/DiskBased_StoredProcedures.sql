@@ -1,7 +1,6 @@
 ------------------------------------------------------------------
 --                                                              --
---  File:   usp_ProductSelectionCriteria.sql                    --
---  Version: 0.0.0-1006                                         --
+--  File:                                           --
 --                                                              --
 ------------------------------------------------------------------
 SET QUOTED_IDENTIFIER OFF
@@ -10,8 +9,279 @@ GO
 SET ANSI_NULLS ON
 GO
 
-USE InMemDB
+USE DiskBasedDB
 GO
+
+IF EXISTS ( SELECT name FROM sysobjects WHERE name = 'usp_FulfillOrders' )
+    DROP PROCEDURE usp_FulfillOrders
+GO
+
+CREATE PROCEDURE dbo.usp_FulfillOrders
+AS
+BEGIN
+    DECLARE @OrderID			bigint,
+            @OrderCID			bigint,
+            @FulfillmentDate	datetime = GETDATE()
+
+    -- get the oldest order id that has not been fulfilled
+    SELECT  TOP 1
+            @OrderID    = O_ID,
+            @OrderCID   = O_C_ID
+    FROM    dbo.Orders
+    WHERE   O_FM_DTS = '1900-01-01 00:00:00.000'
+    ORDER   BY O_DTS ASC
+
+    IF @OrderID IS NOT NULL
+    BEGIN
+        -- update the order with the fulfilment date
+        UPDATE  dbo.Orders
+        SET     O_FM_DTS    = @FulfillmentDate
+        WHERE   O_ID        = @OrderID
+
+        -- insert the data into the FulFillment table
+        INSERT INTO dbo.Fulfillment (FM_O_ID, FM_C_ID, FM_DTS) VALUES (@OrderID, @OrderCID, @FulfillmentDate)
+
+        SELECT  @orderID AS 'OrderID Fulfilled'
+    END
+
+END
+GO
+
+
+IF EXISTS ( SELECT name FROM sysobjects WHERE name = 'usp_GetOrdersByCustomerID' )
+    DROP PROCEDURE usp_GetOrdersByCustomerID
+GO
+
+CREATE PROCEDURE dbo.usp_GetOrdersByCustomerID
+(	@C_ID           bigint)
+AS
+BEGIN
+    DECLARE @c_f_name       varchar(20),
+            @c_l_name       varchar(25),
+            @c_email        varchar(50),
+            @o_id           bigint,
+            @o_total        decimal(9,2),
+            @o_dts          datetime
+          
+
+    SELECT  @c_f_name   = C_F_NAME,
+            @c_l_name   = C_L_NAME,
+            @c_email    = C_EMAIL
+    FROM    dbo.Customer
+    WHERE   C_ID        = @C_ID
+
+    SELECT  @o_id       = O_ID,
+            @o_total    = O_TOTAL,
+            @o_dts      = O_DTS
+    FROM    dbo.Orders
+    WHERE   O_C_ID      = @c_id
+    ORDER   BY O_ID ASC
+
+    SELECT  OL_SEQ,
+            OL_PR_ID,
+            OL_QTY,
+            OL_PRICE
+    FROM    dbo.OrderLines
+    WHERE   OL_O_ID = @o_id
+        
+    SELECT  @c_f_name,
+            @c_l_name,
+            @c_email
+END
+
+GO
+
+IF EXISTS ( SELECT name FROM sysobjects WHERE name = 'usp_GetProductsByType' )
+    DROP PROCEDURE usp_GetProductsByType
+GO
+
+CREATE PROCEDURE dbo.usp_GetProductsByType
+(	@REQ_TYPE		int )
+AS
+BEGIN
+	SELECT  TOP 10
+            PR_ID,
+	        PR_NAME,
+	        PR_TYPE,
+	        PR_DESC,
+	        PR_PRICE
+    FROM    dbo.Products
+    WHERE   PR_TYPE = @REQ_TYPE
+    ORDER   BY PR_PRICE ASC
+   
+END
+
+GO
+
+
+IF EXISTS ( SELECT name FROM sysobjects WHERE name = 'usp_GetProductsPriceByPK' )
+    DROP PROCEDURE usp_GetProductsPriceByPK
+GO
+
+CREATE PROCEDURE dbo.usp_GetProductsPriceByPK
+(	@LOWER_PK		bigint,
+	@UPPER_PK       bigint)
+AS
+BEGIN
+	SELECT  PR_ID,
+	        PR_NAME,
+	        PR_TYPE,
+	        PR_DESC,
+	        PR_PRICE
+    FROM    dbo.Products
+    WHERE   PR_ID BETWEEN @LOWER_PK AND @UPPER_PK
+    ORDER   BY PR_PRICE ASC
+END
+
+GO
+
+
+IF EXISTS ( SELECT name FROM sysobjects WHERE name = 'usp_InsertOrder' )
+    DROP PROCEDURE usp_InsertOrder
+GO
+
+CREATE PROCEDURE [dbo].[usp_InsertOrder]
+(	@C_ID               bigint,
+	@OL_SEQ_1			tinyint,
+	@OL_PR_ID_1			bigint,
+	@OL_PR_QTY_1		int,
+	@OL_SEQ_2			tinyint,
+	@OL_PR_ID_2			bigint,
+	@OL_PR_QTY_2		int,
+	@OL_SEQ_3			tinyint,
+	@OL_PR_ID_3			bigint,
+	@OL_PR_QTY_3		int,
+	@OL_SEQ_4			tinyint,
+	@OL_PR_ID_4			bigint,
+	@OL_PR_QTY_4		int,
+	@OL_SEQ_5			tinyint,
+	@OL_PR_ID_5			bigint,
+	@OL_PR_QTY_5		int)
+AS
+BEGIN
+    DECLARE @Order_Id           bigint,
+            @TotalPrice         decimal(12,2) = 0,
+			@NullDate			datetime = '1900-01-01',
+			@SeqNumber			tinyint = 0,
+			@SeqCount			tinyint = 5,
+			@SeqID				tinyint,
+			@PR_ID				bigint,
+			@PR_Qty				int,
+            @PR_Price           numeric(9,2),
+            @InsertFlag         bit = 0
+
+    --insert an Order record to claim the O_ID
+    INSERT INTO dbo.Orders (O_C_ID, O_TOTAL, O_DTS, O_FM_DTS) VALUES (@C_ID, 0, GETDATE(), @NullDate)
+    
+    -- get the inserted order id
+    SELECT  @order_id   = SCOPE_IDENTITY()
+
+    -- now process the order lines
+	WHILE (@SeqNumber < @SeqCount)
+	BEGIN
+		SELECT	@SeqNumber	= @SeqNumber + 1
+
+		IF @SeqNumber = 1
+		BEGIN
+			SELECT	@SeqID	    = @OL_SEQ_1,
+					@PR_ID	    = @OL_PR_ID_1,
+					@PR_Qty	    = @OL_PR_QTY_1,
+                    @PR_Price   = PR_PRICE
+            FROM    dbo.Products
+            WHERE   PR_ID       = @OL_PR_ID_1                     
+
+            IF @@ROWCOUNT > 0
+            BEGIN
+                SET     @InsertFlag = 1
+                SET     @TotalPrice = @TotalPrice + (@PR_QTY * @PR_Price)
+            END
+        END
+
+		IF @SeqNumber = 2
+		BEGIN
+			SELECT	@SeqID	= @OL_SEQ_2,
+					@PR_ID	= @OL_PR_ID_2,
+					@PR_Qty	= @OL_PR_QTY_2,
+                    @PR_Price   = PR_PRICE
+            FROM    dbo.Products
+            WHERE   PR_ID       = @OL_PR_ID_2 
+
+            IF @@ROWCOUNT > 0
+            BEGIN
+                SET     @InsertFlag = 1
+                SET     @TotalPrice = @TotalPrice + (@PR_QTY * @PR_Price)
+            END
+        END
+
+		IF @SeqNumber = 3
+		BEGIN
+			SELECT	@SeqID	= @OL_SEQ_3,
+					@PR_ID	= @OL_PR_ID_3,
+					@PR_Qty	= @OL_PR_QTY_3,
+                    @PR_Price   = PR_PRICE
+            FROM    dbo.Products
+            WHERE   PR_ID       = @OL_PR_ID_3 
+
+            IF @@ROWCOUNT > 0
+            BEGIN
+                SET     @InsertFlag = 1
+                SET     @TotalPrice = @TotalPrice + (@PR_QTY * @PR_Price)
+            END
+        END
+
+		IF @SeqNumber = 4
+		BEGIN
+			SELECT	@SeqID	= @OL_SEQ_4,
+					@PR_ID	= @OL_PR_ID_4,
+					@PR_Qty	= @OL_PR_QTY_4,
+                    @PR_Price   = PR_PRICE
+            FROM    dbo.Products
+            WHERE   PR_ID       = @OL_PR_ID_4 
+
+            IF @@ROWCOUNT > 0
+            BEGIN
+                SET     @InsertFlag = 1
+                SET     @TotalPrice = @TotalPrice + (@PR_QTY * @PR_Price)
+            END
+        END
+
+		IF @SeqNumber = 5
+		BEGIN
+			SELECT	@SeqID	= @OL_SEQ_5,
+					@PR_ID	= @OL_PR_ID_5,
+					@PR_Qty	= @OL_PR_QTY_5,
+                    @PR_Price   = PR_PRICE
+            FROM    dbo.Products
+            WHERE   PR_ID       = @OL_PR_ID_5 
+
+            IF @@ROWCOUNT > 0
+            BEGIN
+                SET     @InsertFlag = 1
+                SET     @TotalPrice = @TotalPrice + (@PR_QTY * @PR_Price)
+            END
+        END
+	
+		IF (@InsertFlag = 1)
+        BEGIN
+			INSERT INTO dbo.OrderLines VALUES (@order_id, @SeqID, @PR_ID, @PR_QTY, @PR_Price, GETDATE())
+            SET     @InsertFlag = 0
+        END
+	END
+
+    -- now update the order with the total price
+    UPDATE  dbo.Orders
+    SET     O_TOTAL = @TotalPrice
+	WHERE   O_ID    = @Order_id AND
+			O_C_ID  = @C_ID
+
+   SELECT  @order_id,
+           @C_ID,
+           @TotalPrice
+
+END
+GO
+
+
 
 IF EXISTS ( SELECT name FROM sysobjects WHERE name = 'usp_ProductSelectionCriteria' )
     DROP PROCEDURE usp_ProductSelectionCriteria
@@ -21,12 +291,8 @@ CREATE PROCEDURE [dbo].usp_ProductSelectionCriteria
 (	@LOWER_PR_ID        bigint,
 	@UPPER_PR_ID		bigint,
 	@PC_ID              bigint)
-WITH NATIVE_COMPILATION, EXECUTE AS OWNER, SCHEMABINDING
-AS BEGIN ATOMIC WITH
-(
-    TRANSACTION ISOLATION LEVEL = SNAPSHOT,
-    LANGUAGE = N'us_english'
-)
+AS
+BEGIN
 	DECLARE	@pc_dec001	float,
 			@pc_dec002	float,
 			@pc_dec003	float,
