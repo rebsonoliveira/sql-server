@@ -17,7 +17,8 @@ Sample order processing workload that can be used for benchmarking transactional
 
 1. Create the database, tables, and stored procedures using the T-SQL scripts in the corresponding subfolders. 
 
-  - The hash indexes are sized for large databases, processing billions of orders. They are appropriate for 1TB and larger database size. For smaller database and memory size, adjust the bucket counts accordingly.
+  - The hash indexes are sized for a 24GB database, with bucket_count double the row count. For larger database and memory size, adjust the bucket counts accordingly.
+    - The max bucket_count in SQL Server 2016 is 1 billion. It is OK to have a higher row count. The benchmark performs well with bucket_count of 1 billion and row counts of 5 billion.
   - There are plans to publish scripts for initial populate of the tables. Timeline is TBD.
   - Scripts are also provided for corresponding disk-based tables and traditional stored procedures, to compare performance between disk-based and memory-optimized tables.
 
@@ -35,7 +36,7 @@ Sample order processing workload that can be used for benchmarking transactional
 |FulfillOrders	|1	|
 
 The recommendation is to use two different drivers:
-  a. Main order processing driver, that is multi-threaded (e.g., 100 or 200 clients), and runs the procedures, GetOrdersByCustomerID, GetProductsByType, GetProductsPriceByPK, ProductSelectionCriteria, and InsertOrder.
+  a. Main order processing driver(s), each multi-threaded (e.g., 100 or 200 clients), and running the procedures GetOrdersByCustomerID, GetProductsByType, GetProductsPriceByPK, ProductSelectionCriteria, and InsertOrder.
   a. Fulfullment driver, which runs the procedure FulfillOrders. This driver should have a single client to avoid conflicts.
 
 ## Workload description
