@@ -57,7 +57,7 @@ The recommendation is to use two different drivers:
 |GetOrdersByCustomerID	|Read-only	|Select customer info, orders, and order lines for a given customer.|
 |GetProductsByType	|Read-only	|Select top 10 products of a given type, ordered by price.|
 |GetProductsPriceByPK	|Read-only	|Select all products in a given ID range, ordered by price.|
-|ProductSelectionCriteria	|Read-only	|Select top 20 products in a given ID range with the highest computed “closeness” factor against the |PurchaseCriteria|
+|ProductSelectionCriteria	|Read-only	|Select top 20 products in a given ID range with the highest computed “closeness” factor against the PurchaseCriteria.|
 |InsertOrder	|Read-write	|Insert a new order for a given customer with up to five order lines.|
 |FulfillOrders	|Read-write	|Fulfill 10 oldest outstanding orders.|
 
