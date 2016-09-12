@@ -1,6 +1,6 @@
-# ASP.NET Core Product Catalog REST Service that uses SQL/JSON functionalities 
+# ASP.NET Core Product Catalog application that uses SQL/JSON functionalities 
 
-This project contains an example implementation of ASP.NET Core REST Service that enables you to get or modify list of products in catalog.
+This project contains an example implementation of ASP.NET Core application that shows how to display list of products, add, edit, or delete products in the list.
 
 ## Contents
 
@@ -17,7 +17,7 @@ This project contains an example implementation of ASP.NET Core REST Service tha
 
 - **Applies to:** SQL Server 2016 (or higher), Azure SQL Database
 - **Key features:** JSON functions in SQL Server 2016/Azure SQL Database
-- **Programming Language:** C#, Transact-SQL
+- **Programming Language:** C#, Html/JavaScript, Transact-SQL
 - **Authors:** Jovan Popovic
 
 <a name=before-you-begin></a>
@@ -48,17 +48,17 @@ To run this sample, you need the following prerequisites.
 4. Locate Startup.cs file in the project, change connection string in ConfigureServices() method to reference your database (default value ProductCatalog database on local instance with integrated security), and build solution using Ctrl+Shift+B, right-click on project + Build, Build/Build Solution from menu, or **dotnet build** command from the command line (from the root folder of application).
 
 5. Run the sample app using F5 or Ctrl+F5 in Visual Studio 2015, or using **dotnet run** executed in the command prompt of the project root folder.  
-  1. Open /api/Product Url to get all products from database,
-  2. Open /api/Product/18 Url to get the product with id,
-  3. Send POST Http request to /api/Product Url with JSON like {"Name":"Blade","Color":"Magenta","Price":18.0000,"Quantity":45} in the body of request to create new product,
-  4. Send PUT Http request with JSON like {"Name":"Blade","Color":"Magenta","Price":18.0000,"Quantity":45} in the body of request to update the product with specified id,
-  5. Send DELETE Http request /api/Product/18 Url to delete the product with specified id(18),
+  1. Open /index.html Url to get all products from database,
+  2. Use **Add** button to add a new product,
+  3. Edit a product using **Edit** button in table,
+  4. Delete a product using **Delete** button in table,
 
 <a name=sample-details></a>
 
 ## Sample details
 
-This sample application shows how to create REST API that returns list of products, single product, or update products in table.
+This sample application shows how to display list of products, add, edit or delete some product.
+Front-end code is implemented using JQuery/Bootstrap libraries, and JQuery DataTable component for displaying data in table.
 Server-side code is implemented using ASP.NET Core Web API.
 SQL Server JSON functions are used to format product data that will be sent to front-end page.
 
@@ -75,6 +75,11 @@ You can easily modify this code to fit the architecture of your application.
 You can find more information about the components that are used in this sample on these locations: 
 - [ASP.NET Core](http://www.asp.net/core).
 - [JSON Support in Sql Server](https://msdn.microsoft.com/en-us/library/dn921897.aspx).
+- [JQuery](https://jquery.com/).
+- [Bootstrap](http://getbootstrap.com/).
+- [JQuery DataTables](https://datatables.net/).
+- [JQuery SerializeJson](https://github.com/marioizquierdo/jquery.serializeJSON/).
+- [Toastr](http://codeseven.github.io/toastr/).
 
 ## Code of Conduct
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.

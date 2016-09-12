@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Data.SqlClient;
 
-namespace TodoApp
+namespace ProductCatalog
 {
     public class Startup
     {
@@ -26,10 +26,11 @@ namespace TodoApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //const string ConnString = "Server=SERVERNAME.database.windows.net;Database=DATABASENAME;User Id=USERNAME;Password=PASSWORD";
-            const string ConnString = "Server=.;Database=Todo;Integrated Security=true";
-            services.AddTransient<IQueryPipe>( _=> new QueryPipe(new SqlConnection(ConnString)));
-            services.AddTransient<ICommand>( _=> new Command(new SqlConnection(ConnString)));
+            //const string ConnString = "Server=<<SERVER>>.database.windows.net;Database=<<DATABASE>>;User Id=<<USER>>;Password=<<PASSWORD>>";
+            const string ConnString = "Server=.;Database=ProductCatalog;Integrated Security=true";
+
+            services.AddTransient<IQueryPipe>(_ => new QueryPipe(new SqlConnection(ConnString)));
+            services.AddTransient<ICommand>(_ => new Command(new SqlConnection(ConnString)));
 
             // Add framework services.
             services.AddMvc();
@@ -42,6 +43,7 @@ namespace TodoApp
             loggerFactory.AddDebug();
 
             app.UseMvc();
+            app.UseStaticFiles();
         }
     }
 }
