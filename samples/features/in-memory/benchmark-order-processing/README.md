@@ -37,14 +37,14 @@ Sample order processing workload that can be used for benchmarking transactional
 
   - There are plans to make a scalable workload driver available as well. Timeline is TBD.
 
-|Stored Procedure|Weight|
-|----------|--------|
-|GetOrdersByCustomerID|8|
-|GetProductsByType|6|
-|GetProductsPriceByPK	|4	|
-|ProductSelectionCriteria	|2	|
-|InsertOrder	|10	|
-|FulfillOrders	|1	|
+  |Stored Procedure|Weight|
+  |----------|--------|
+  |GetOrdersByCustomerID|8|
+  |GetProductsByType|6|
+  |GetProductsPriceByPK	|4	|
+  |ProductSelectionCriteria	|2	|
+  |InsertOrder	|10	|
+  |FulfillOrders	|1	|
 
 The recommendation is to use two different drivers:
   - a. Main order processing driver(s), each multi-threaded (e.g., 100 or 200 clients), and running the procedures GetOrdersByCustomerID, GetProductsByType, GetProductsPriceByPK, ProductSelectionCriteria, and InsertOrder.
