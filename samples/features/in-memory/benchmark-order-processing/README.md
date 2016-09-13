@@ -48,7 +48,7 @@ Sample order processing workload that can be used for benchmarking transactional
 
 The recommendation is to use two different drivers:
   - a. Main order processing driver(s), each multi-threaded (e.g., 100 or 200 clients), and running the procedures GetOrdersByCustomerID, GetProductsByType, GetProductsPriceByPK, ProductSelectionCriteria, and InsertOrder.
-  - b. Fulfullment driver, which runs the procedure FulfillOrders. This driver should have a single client to avoid conflicts.
+  - b. Fulfillment driver, which runs the procedure FulfillOrders. This driver should have a single client to avoid conflicts.
 
 ## Workload description
 
