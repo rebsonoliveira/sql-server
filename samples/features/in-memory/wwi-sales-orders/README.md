@@ -1,4 +1,4 @@
-# IoT Smart Grid
+# Wide World Importers - Sales Orders
 This Windows Forms sample application built on .NET Framework 4.6  demonstrates the performance benefits of using SQL Server memory optimized tables and native compiled stored procedures. You can compare the performance before and after enabling In-Memory OLTP by observing the transactions/sec as well as the current CPU Usage and latches/sec.
 
 
@@ -68,7 +68,6 @@ The perf gains from In-Memory OLTP as shown by the load generation app depend on
 -	Configuration settings in the load generator
   -	more rows per transaction => higher perf gain
   -	more reads per write => lower perf gain
-  -	default setting is 10 rows per transaction and 1 read per write
 
 ## Sample details
 
