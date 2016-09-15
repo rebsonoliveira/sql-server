@@ -11,6 +11,8 @@ Releases allow you to conveniently download sample databases or applications wit
   - [In-Memory OLTP Performance Demo v1.0](https://github.com/Microsoft/sql-server-samples/releases/tag/in-memory-oltp-demo-v1.0) illustrates the performance benefits of the In-Memory OLTP technology built into SQL Server and Azure SQL Database.
   - [IoT Smart Grid sample v1.0](https://github.com/Microsoft/sql-server-samples/releases/tag/iot-smart-grid-v1.0) illustrates how SQL Server can be leveraged to ingest data from IoT devices and sensors, and how you can run analytics on that data.
 
+To see the complete list of resources in this repository, navigate to [Releases](https://github.com/Microsoft/sql-server-samples/releases)
+
 ## Working in GitHub
 To work in GitHub, go to https://github.com/microsoft/sql-server-samples and fork the repository. Work in your own fork and when you are ready to submit to make a change or publish your sample for the first time, submit a pull request into the master branch of sql-server-samples. One of the approvers will review your request and accept or reject the pull request.
 
