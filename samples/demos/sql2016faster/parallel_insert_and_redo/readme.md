@@ -10,13 +10,14 @@ Steps to Prepare for the Demo
 
 Parallel INSERT...SELECT Demo
 
-3. Go through the steps as outlined with comments in parallel_inserts.sql to see how inserts can perform serially and using parallelism
+3. Load up the dmvs.sql script so observe execution of the inserts.
+4. Go through the steps as outlined with comments in parallel_inserts.sql to see how inserts can perform serially and using parallelism
 
 Parallel Redo
 
 We will use the database created for parallel INSERT..SELECT to show parallel redo.  You must complete steps 1 and 2 before going through these steps for parallel redo
 
-4. We will use Extended Evnent to see the details of recovery (aka recovery tracing) so run the script recovery_event_session.sql to create the Extended Event Session. The script is setup to write out the event data to the c:\temp directory so modify the script for the path of your choice
-5. Follow the steps in the parallel_redo.sql script to demonstrate parallel redo for recovery. The script has comments that require you to terminate the SQLSERVR.EXE process as part of the excercise.
-6. Run drop_event_session.sql to remove the extended events session. In addition, you can remove the .xel files created for the session in the path specified in recovery_event_session.sql
-7. Run drop_database.sql to remove the demonwtration database.
+5. We will use Extended Evnent to see the details of recovery (aka recovery tracing) so run the script recovery_event_session.sql to create the Extended Event Session. The script is setup to write out the event data to the c:\temp directory so modify the script for the path of your choice
+6. Follow the steps in the parallel_redo.sql script to demonstrate parallel redo for recovery. The script has comments that require you to terminate the SQLSERVR.EXE process as part of the excercise.
+7. Run drop_event_session.sql to remove the extended events session. In addition, you can remove the .xel files created for the session in the path specified in recovery_event_session.sql
+8. Run drop_database.sql to remove the demonwtration database.
