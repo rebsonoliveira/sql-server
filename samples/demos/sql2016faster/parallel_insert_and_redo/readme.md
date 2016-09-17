@@ -17,7 +17,8 @@ Parallel Redo
 
 We will use the database created for parallel INSERT..SELECT to show parallel redo.  You must complete steps 1 and 2 in the section "Steps to Prepare for the Demo" before going through these steps for parallel redo
 
-5. We will use Extended Evnent to see the details of recovery (aka recovery tracing) so run the script recovery_event_session.sql to create the Extended Event Session. The script is setup to write out the event data to the c:\temp directory so modify the script for the path of your choice
-6. Follow the steps in the parallel_redo.sql script to demonstrate parallel redo for recovery. The script has comments that require you to terminate the SQLSERVR.EXE process as part of the excercise.
-7. Run drop_event_session.sql to remove the extended events session. In addition, you can remove the .xel files created for the session in the path specified in recovery_event_session.sql
-8. Run drop_database.sql to remove the demonwtration database.
+5. Delete any .XEL files from the path as found in recovery_event_session.sql
+6. We will use Extended Evnent to see the details of recovery (aka recovery tracing) so run the script recovery_event_session.sql to create the Extended Event Session. The script is setup to write out the event data to the c:\temp directory so modify the script for the path of your choice.
+7. Follow the steps in the parallel_redo.sql script to demonstrate parallel redo for recovery. The script has comments that require you to terminate the SQLSERVR.EXE process as part of the excercise.
+8. Run drop_event_session.sql to remove the extended events session. In addition, you can remove the .xel files created for the session in the path specified in recovery_event_session.sql
+9. Run drop_database.sql to remove the demonwtration database.
