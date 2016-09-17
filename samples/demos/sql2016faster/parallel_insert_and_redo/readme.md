@@ -15,7 +15,7 @@ Parallel INSERT...SELECT Demo
 
 Parallel Redo
 
-We will use the database created for parallel INSERT..SELECT to show parallel redo.  You must complete steps 1 and 2 before going through these steps for parallel redo
+We will use the database created for parallel INSERT..SELECT to show parallel redo.  You must complete steps 1 and 2 in the section "Steps to Prepare for the Demo" before going through these steps for parallel redo
 
 5. We will use Extended Evnent to see the details of recovery (aka recovery tracing) so run the script recovery_event_session.sql to create the Extended Event Session. The script is setup to write out the event data to the c:\temp directory so modify the script for the path of your choice
 6. Follow the steps in the parallel_redo.sql script to demonstrate parallel redo for recovery. The script has comments that require you to terminate the SQLSERVR.EXE process as part of the excercise.
