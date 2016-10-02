@@ -1,4 +1,4 @@
-# mssql-server-2016-express-windows
+# mssql-server-2016-developer-windows
 This Dockerfile helps developers to get started using SQL Server 2016 Developer in Windows Server Core Containers. The file downloads and installs SQL Server 2016 Developer with the default setup parameters.
 
 ### Contents
