@@ -11,7 +11,7 @@ param(
 )
 
 # start the service
-Write-Verbose "Starting SQL Server"
+Write-Verbose "Starting SQL Server..."
 start-service MSSQL`$SQLEXPRESS
 
 if($sa_password -ne "_"){
@@ -21,8 +21,6 @@ if($sa_password -ne "_"){
 }
 
 $attach_dbs_cleaned = $attach_dbs.TrimStart('\\').TrimEnd('\\')
-
-Write-Verbose "Attach Database configuration passed: $($attach_dbs_cleaned)"
 
 $dbs = $attach_dbs_cleaned | ConvertFrom-Json
 
@@ -44,4 +42,5 @@ if ($null -ne $dbs -And $dbs.Length -gt 0){
 	}
 }
 
+Write-Verbose "Started SQL Server."
 while ($true) { Start-Sleep -Seconds 3600 }
