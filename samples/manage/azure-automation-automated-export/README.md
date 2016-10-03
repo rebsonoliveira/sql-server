@@ -42,9 +42,9 @@ Provides the scripts and lists the steps to set up automatically exporting your 
 	- $batchingLimit: This tells the script how many databases can be worked on at the same time (basically, the maximum number of database copies that there will be at once).
 	- $retryLimit: This tells the script how many times it can retry an operation.
 	- $waitTimeInMinutes: This tells the script how long it can wait for an operation to complete before it fails.
-	- -Name for Get-AzureAutomationVariable: This is the AutomationAccount you created the StorageKey variable under (probably the same one you are running the RunBook under) and -Name is the name of the variable.
-	- -StorageAccountName for New-AzureStorageContext: This is the name of the storage account you are exporting to.
-	- -Name for Get-AutomationCertificate: This is the name of the certificate you setup to authenticate with Azure.
+	- $storageKeyVariableName: This is the AutomationAccount you created the StorageKey variable under (probably the same one you are running the RunBook under) and -Name is the name of the variable.
+	- $storageAccountName: This is the name of the storage account you are exporting to.
+	- $automationCertificateName for Get-AutomationCertificate: This is the name of the certificate you setup to authenticate with Azure.
 	- $subId: The ID of the subscription you are using. This will be used to tell Azure Automation which subscription to use.
 	- $subName: The name of the subscription you are using. This will be used to tell Azure Automation which subscription to use.
 2. In AutoExportBlobRetention, here are the values that need to be modified:
