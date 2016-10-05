@@ -2,6 +2,9 @@
 
 Contains samples for managing Microsoft's SQL databases including SQL Server, Azure SQL Database, and Azure SQL Data Warehouse.
 
+## Automatically Export your databases with Azure Automation
+This includes samples for setting up Azure Automation and exporting your databases to azure blob storage.
+
 ## Collect and monitor resource usage data across multiple pools in a subscription  
 This Solution Quick Start provides a solution for collecting and monitoring Azure SQL Database resource usage across multiple pools in a subscription. When you have a large number of databases in a subscription, it is cumbersome to monitor each elastic pool separately. To solve this, you can combine SQL database PowerShell cmdlets and T-SQL queries to collect resource usage data from multiple pools and their databases for monitoring and analysis of resource usage.   
 

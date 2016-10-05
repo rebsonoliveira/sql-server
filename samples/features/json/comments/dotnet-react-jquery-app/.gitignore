@@ -1,0 +1,7 @@
+*.xproj.user
+.vs/*
+.vscode/*
+bin/*
+obj/*
+*.sln
+*.log

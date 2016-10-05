@@ -2,6 +2,7 @@
 
 This Windows Forms sample application built on .NET Framework 4.6  demonstrates the performance benefits of using SQL Server memory optimized tables and native compiled stored procedures. You can compare the performance before and after enabling In-Memory OLTP by observing the transactions/sec as well as the current CPU Usage and latches/sec.
 
+The demo is run in this [17-minute video explaining In-Memory OLTP](https://www.youtube.com/watch?v=l5l5eophmK4) (demo is at 8:25).
 
 <a name=about-this-sample></a>
 
@@ -41,8 +42,8 @@ This Windows Forms sample application built on .NET Framework 4.6  demonstrates 
 8. Start the workload with the **Start** button, and run for a while to show perf profile. Then press stop to stop the workload. You can tweak aspects of the workload (e.g., rows per transaction) through the configuration form accessed using the "Options" menue.
 
 9. In the database project,
-	- Change TicketReservations.sql to a memory-optimized table (instructions commented in the file itself)
-	- Change InsertTicketReservations.sql to natively compiled (instructions in the same file)
+	- Change TicketReservationDetail.sql to a memory-optimized table (instructions commented in the file itself)
+	- Change InsertReservationDetails.sql to natively compiled (instructions in the same file)
 
 10. Publish the database project to the same database – the tool will take care of making the necessary changes.
 		Note that, as part of publication, the data is copied from the old disk-based table to the new memory-optimized table, so the longer you run the initial workload, the longer this publication takes. To speed up the process you can run `TRUNCATE TABLE dbo.TicketReservationDetail` in the database.
