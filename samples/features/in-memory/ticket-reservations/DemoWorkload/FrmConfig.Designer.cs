@@ -174,7 +174,6 @@
             this.txtMaxTPS.Size = new System.Drawing.Size(99, 20);
             this.txtMaxTPS.TabIndex = 37;
             this.txtMaxTPS.TabStop = false;
-            this.txtMaxTPS.Text = Program.MAX_TPS.ToString();
             // 
             // lblRunningThread
             // 
@@ -271,8 +270,8 @@
             // 
             // FrmConfig
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(310, 332);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.LabelReadsPerWrite);
