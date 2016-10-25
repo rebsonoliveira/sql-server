@@ -60,7 +60,7 @@ If your database is hosted on Azure you can add something like:
 ```
 {
   "ConnectionStrings": {
-    "ProductCatalog": "Server=<<SERVER>>.database.windows.net;Database=CommentsDb;User Id=<<USER>>;Password=<<PASSWORD>>"
+    "CommentsDb": "Server=<<SERVER>>.database.windows.net;Database=CommentsDb;User Id=<<USER>>;Password=<<PASSWORD>>"
   }
 }
 ```
