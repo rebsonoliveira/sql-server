@@ -1,6 +1,6 @@
 -------------------------------------------
 -- version 0.0.0-1006
--- update hash index bucket counts based on scale factor. The script was created for scale factor 10.
+-- update hash index bucket counts based on scale factor. The script was created for scale factor 100, which corresponds to an in-memory footprint ~20GB.
 -------------------------------------------
 
 USE InMemDB
