@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace CommentApp.Controllers
+namespace ReactCommentsApp.Controllers
 {
     [Route("api/[controller]")]
     public class commentsController : Controller
