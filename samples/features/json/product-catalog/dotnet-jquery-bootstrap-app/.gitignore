@@ -6,3 +6,5 @@ obj/*
 *.sln
 *.log
 *.lock.json
+Properties/PublishProfiles/*
+appsettings.development.json
