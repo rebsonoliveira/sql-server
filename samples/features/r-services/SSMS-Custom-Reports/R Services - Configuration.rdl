@@ -30,7 +30,7 @@ select CAST(SERVERPROPERTY('IsAdvancedAnalyticsInstalled') as int) as IsRService
 	)))), 0) as ImpliedAuthenticationEnabled
      , coalesce((select cast(r.value_data as int)
                    from sys.dm_server_registry as r
-                  where r.registry_key like 'HKLM\Software\Microsoft\Microsoft SQL Server\%\SuperSocketNetLib\TCP'
+                  where r.registry_key like 'HKLM\Software\Microsoft\Microsoft SQL Server\%\SuperSocketNetLib\Tcp'
                     and r.value_name = 'Enabled'), -1) as IsTcpEnabled
   from sys.configurations
  where name = 'external scripts enabled';</CommandText>
