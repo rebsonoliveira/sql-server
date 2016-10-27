@@ -15,13 +15,13 @@ EXEC sp_addrolemember N'WebUserRole', N'WebUser'
 GO
 
 DROP TABLE IF EXISTS Product
-DROP SEQUENCE IF EXISTS ProductIdSeq
+DROP SEQUENCE IF EXISTS ProductId
 GO
 
-CREATE SEQUENCE ProductIdSeq AS int START WITH 29
+CREATE SEQUENCE ProductId AS int START WITH 29
 
 CREATE TABLE Product (
-	ProductID int DEFAULT (NEXT VALUE FOR ProductIdSeq) PRIMARY KEY,
+	ProductID int DEFAULT (NEXT VALUE FOR ProductId) PRIMARY KEY,
 	Name nvarchar(50) NOT NULL,
 	Color nvarchar(15) NULL,
 	Size nvarchar(5) NULL,
@@ -46,11 +46,11 @@ FROM OPENJSON (@products) WITH(
 GO
 
 DROP TABLE IF EXISTS Company
-DROP SEQUENCE IF EXISTS CompanyIdSeq
+DROP SEQUENCE IF EXISTS CompanyId
 GO
-CREATE SEQUENCE CompanyIdSeq AS int START WITH 4
+CREATE SEQUENCE CompanyId AS int START WITH 4
 CREATE TABLE Company (
-	CompanyID int PRIMARY KEY DEFAULT (NEXT VALUE FOR CompanyIdSeq),
+	CompanyID int PRIMARY KEY DEFAULT (NEXT VALUE FOR CompanyId),
 	Name nvarchar(50) NOT NULL,
 	Address nvarchar(100) NULL,
 	Email nvarchar(50) NULL,
