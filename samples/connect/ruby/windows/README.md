@@ -1,4 +1,4 @@
-# Sample name
+# Connect to SQL using Ruby on Windows
 
 Ruby sample code that runs on a Windows computer to connect to an Azure SQL Database. 
 
@@ -25,8 +25,6 @@ Ruby sample code that runs on a Windows computer to connect to an Azure SQL Data
 To run this sample, you need the following prerequisites.
 
 **Software prerequisites:**
-
-<!-- Examples -->
 
 1. Ruby 
 	- [Go the Ruby download page](http://rubyinstaller.org/downloads/) and download the appropriate 2.1.x installer. For example if you are on a 64 bit machine, download the **Ruby 2.1.6 (x64)** installer.

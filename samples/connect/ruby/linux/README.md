@@ -1,4 +1,4 @@
-# Sample name
+# Connect to SQL using Ruby on Ubuntu Linux
 
 Ruby sample code that runs on an Ubuntu Linux client computer to connect to an Azure SQL Database. 
 
@@ -26,7 +26,6 @@ To run this sample, you need the following prerequisites.
 
 **Software prerequisites:**
 
-<!-- Examples -->
 1. SQL Server 2016 (or higher) or an Azure SQL Database
 2. Ruby Version Manager
 
