@@ -1,31 +1,75 @@
-# Connect to SQL Database by using Ruby on Mac OS X (Yosemite)
+ Sample name
 
-[Ruby code sample] (sample_ruby_mac.rb) that runs on Mac computer running Yosemite to connect to an Azure SQL Database database.
+Ruby sample code that runs on a macOS computer to connect to an Azure SQL Database. 
 
-## Install the required modules
+### Contents
 
-Open your terminal and install the following:
+[About this sample](#about-this-sample)<br/>
+[Before you begin](#before-you-begin)<br/>
+[Run this sample](#run-this-sample)<br/>
+[Sample details](#sample-details)<br/>
+[Disclaimers](#disclaimers)<br/>
 
-**1) Homebrew**: Run the following command from your terminal. This will download the Homebrew package manager on your machine.
+<a name=about-this-sample></a>
 
-    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+## About this sample
+- **Applies to:** SQL Server 2016 (or higher), Azure SQL Database, Azure SQL Data Warehouse
+- **Workload:** CRUD
+- **Programming Language:** Ruby
+- **Authors:** Andrea Lam [ajlam]
 
-**2) FreeTDS:** Run the following command from your terminal. This will install FreeTDS on your machine and is required for TinyTDS to work.
+<a name=before-you-begin></a>
 
+## Before you begin
+
+To run this sample, you need the following prerequisites.
+
+**Software prerequisites:**
+1. Homebrew
+	
+	```
+	ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+	```
+
+2. FreeTDS
+
+	```
     brew install FreeTDS
+	```
 
-**3) TinyTDS:** Run the following command from your terminal. This will install TinyTDS on your machine.
+3. tiny_tds
 
+	```
     gem install tiny_tds
+	```
 
-## Create a database, retrieve your connection string
+**Azure prerequisites:**
 
-The Ruby sample relies on the AdventureWorks sample database. If you do not already have AdventureWorks, you can see how to create it at the following topic: [Create your first Azure SQL Database](http://azure.microsoft.com/documentation/articles/sql-database-get-started/)
+1. An AdventureWorks sample database: 
 
-##Using TinyTDS with Azure
+	- The Ruby sample relies on the AdventureWorks sample database. If you do not already have AdventureWorks, you can see how to create it at the following topic: [Create your first Azure SQL Database](http://azure.microsoft.com/documentation/articles/sql-database-get-started/)
+	
+## Run this sample
+
+1. From your terminal, update the connection string details in the Ruby file with your own username, password, and hostname. 
+
+2. Run the code sample by running the below in your terminal: 
+
+	```
+	ruby sample_ruby_mac.rb
+	```
+
+<a name=sample-details></a>
+
+## Sample details
+
+The above sample code just connected to your AdventureWorks database and performed a SELECT statement and an INSERT statement. 
+
+### Additional notes for using TinyTDS with Azure
 
 It is recommend the following settings when using TinyTDS with Azure.
-
+   
+   ```
 	SET ANSI_NULLS ON
 	SET CURSOR_CLOSE_ON_COMMIT OFF
 	SET ANSI_NULL_DFLT_ON ON
@@ -34,6 +78,7 @@ It is recommend the following settings when using TinyTDS with Azure.
 	SET QUOTED_IDENTIFIER ON
 	SET ANSI_WARNINGS ON
 	SET CONCAT_NULL_YIELDS_NULL ON
+   ```
 
 This can be done by running the following code prior to executing queries:
 
@@ -42,9 +87,9 @@ This can be done by running the following code prior to executing queries:
 	result = client.execute("SET ANSI_NULL_DFLT_ON ON")
 	result = client.execute("SET IMPLICIT_TRANSACTIONS OFF")
 	result = client.execute("SET ANSI_PADDING ON")
-	result = client.execute("SET QUOTED_IDENTIFIER ON")
+	result = client.execute("SET QUOTED_IDENTIFIER ON"")
 	result = client.execute("SET ANSI_WARNINGS ON")
 	result = client.execute("SET CONCAT_NULL_YIELDS_NULL ON")
-
-
-
+	
+## Disclaimers
+The scripts and this guide are copyright Microsoft Corporations and are provided as samples. They are not part of any Azure service and are not covered by any SLA or other Azure-related agreements. They are provided as-is with no warranties express or implied. Microsoft takes no responsibility for the use of the scripts or the accuracy of this document. Familiarize yourself with the scripts before using them.

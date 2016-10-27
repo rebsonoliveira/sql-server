@@ -94,16 +94,14 @@ It is recommend the following settings when using TinyTDS with Azure.
 
 This can be done by running the following code prior to executing queries:
 
-	```
 	result = client.execute("SET ANSI_NULLS ON")
 	result = client.execute("SET CURSOR_CLOSE_ON_COMMIT OFF")
 	result = client.execute("SET ANSI_NULL_DFLT_ON ON")
 	result = client.execute("SET IMPLICIT_TRANSACTIONS OFF")
 	result = client.execute("SET ANSI_PADDING ON")
-	result = client.execute("SET QUOTED_IDENTIFIER ON")
+	result = client.execute("SET QUOTED_IDENTIFIER ON"")
 	result = client.execute("SET ANSI_WARNINGS ON")
 	result = client.execute("SET CONCAT_NULL_YIELDS_NULL ON")
-	```
 	
 ## Disclaimers
 The scripts and this guide are copyright Microsoft Corporations and are provided as samples. They are not part of any Azure service and are not covered by any SLA or other Azure-related agreements. They are provided as-is with no warranties express or implied. Microsoft takes no responsibility for the use of the scripts or the accuracy of this document. Familiarize yourself with the scripts before using them.
