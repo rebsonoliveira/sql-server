@@ -68,7 +68,7 @@ To run this sample, you need the following prerequisites.
 2. Run the code sample by running the below in your terminal: 
 
 	```
-	ruby sample_linux_ruby.rb
+	ruby sample_ruby_linux.rb
 	```
 
 <a name=sample-details></a>
