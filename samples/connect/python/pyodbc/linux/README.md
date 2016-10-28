@@ -1,25 +1,75 @@
-# Connect to SQL Database by using Python on Ubuntu Linux using pyodbc
+# Connect to SQL using Python on Ubuntu Linux
 
-[Python code sample] (sample_python_linux.py) that runs on an Ubuntu Linux client computer. The sample and connects to Microsoft SQL Database by using the **pyodbc** driver.
+Python sample code that runs on an Ubuntu Linux client computer to connect to an Azure SQL Database using the **pyodbc** connector. 
 
+### Contents
 
-## Requirements
-
-
-- [Python 2.7.6](https://www.python.org/download/releases/2.7.6/).
-
-
-### Install the required modules
-
-
-Open your terminal and navigate to a directory where you plan on creating your python script. Enter the following commands to install **Microsoft ODBC Driver for SQL Server** and **pyodbc**. pyodbc uses the ODBC Driver to connect to SQL Databases.
-
-	  sudo su
-	  wget https://gallery.technet.microsoft.com/ODBC-Driver-13-for-Ubuntu-b87369f0/file/154097/2/installodbc.sh
-	  sh installodbc.sh
-	  sudo -H pip install pyodbc
+[About this sample](#about-this-sample)<br/>
+[Before you begin](#before-you-begin)<br/>
+[Run this sample](#run-this-sample)<br/>
+[Sample details](#sample-details)<br/>
+[Disclaimers](#disclaimers)<br/>
+[Related links](#related-links)<br/>
 
 
-## Create a database and retrieve your connection string
+<a name=about-this-sample></a>
 
-For simplicity we will create an Azure SQL Database for the sample. You can use the same sample for an on-premise SQL Server instance. See the [getting started page](http://azure.microsoft.com/documentation/articles/sql-database-get-started/) to learn how to create a sample database and get your connection string. It is important you follow the guide to create an AdventureWorks database template. The samples shown below only work with the AdventureWorks schema. 
+## About this sample
+
+- **Applies to:** SQL Server 2016 (or higher), Azure SQL Database, Azure SQL Data Warehouse, Parallel Data Warehouse
+- **Workload:** CRUD
+- **Programming Language:** Python
+- **Authors:** Meet Bhagdev [meet-bhagdev]
+
+<a name=before-you-begin></a>
+
+## Before you begin
+
+To run this sample, you need the following prerequisites.
+
+1. SQL Server 2016 (or higher) or an Azure SQL Database
+2. Python
+
+	```
+	sudo apt-get --assume-yes update
+	sudo apt-get --assume-yes install python-dev python-pip
+	```
+
+3. Microsoft ODBC Driver for SQL Server
+
+	```
+	sudo su
+	wget https://gallery.technet.microsoft.com/ODBC-Driver-13-for-Ubuntu-b87369f0/file/154097/2/installodbc.sh 
+	sh installodbc.sh
+	```
+
+4. pyodc
+
+	```
+	sudo -H pip install pyodbc
+	```
+
+**Azure prerequisites:**
+
+1. An AdventureWorks sample database: 
+
+	- The Python sample relies on the AdventureWorks sample database. If you do not already have AdventureWorks, you can see how to create it at the following topic: [Create your first Azure SQL Database](http://azure.microsoft.com/documentation/articles/sql-database-get-started/)
+	
+## Run this sample
+
+1. From your terminal, update the connection string details in the Python file with your own username, password, and hostname. 
+
+2. Run the code sample by running the below in your terminal: 
+
+	```
+	python sample_python_linux.py
+	```
+
+<a name=sample-details></a>
+
+## Sample details
+
+The above sample code just connected to your AdventureWorks database and performed a SELECT statement and an INSERT statement. 
+
+## Disclaimers
+The scripts and this guide are copyright Microsoft Corporations and are provided as samples. They are not part of any Azure service and are not covered by any SLA or other Azure-related agreements. They are provided as-is with no warranties express or implied. Microsoft takes no responsibility for the use of the scripts or the accuracy of this document. Familiarize yourself with the scripts before using them.
