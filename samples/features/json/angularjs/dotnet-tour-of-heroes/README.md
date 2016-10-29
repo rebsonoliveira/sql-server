@@ -17,8 +17,8 @@ In this example you will see how easily you can integrate Single-page apps imple
 ## About this sample
 
 - **Applies to:** SQL Server 2016 (or higher), Azure SQL Database
-- **Key features:** FOR JSON clause in SQL Server 2016/Azure SQL Database.
-- **Programming Language:** JavaScript/ReactJS, C#, Transact-SQL
+- **Key features:** JSON functionalities in SQL Server 2016/Azure SQL Database.
+- **Programming Language:** JavaScript/AngularJS, C#, Transact-SQL
 - **Authors:** Jovan Popovic
 
 <a name=before-you-begin></a>
