@@ -7,3 +7,4 @@ obj/*
 *.log
 Properties/PublishProfiles/*
 appsettings.development.json
+project.lock.json
