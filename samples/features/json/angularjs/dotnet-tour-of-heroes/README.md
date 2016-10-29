@@ -31,6 +31,8 @@ To run this sample, you need the following prerequisites.
 
 1. SQL Server 2016 (or higher) or an Azure SQL Database
 2. Visual Studio 2015 Update 3 (or higher) or Visual Studio Code Editor with the ASP.NET Core 1.0 (or higher)
+3. .NET Core SDK for [Windows](https://go.microsoft.com/fwlink/?LinkID=827524) or other [operating systems](https://www.microsoft.com/net/core)
+4. Node.js installation [Node.js](https://nodejs.org/en/download/)
 
 **Azure prerequisites:**
 
@@ -44,9 +46,7 @@ To run this sample, you need the following prerequisites.
 
 2. From SQL Server Management Studio or Sql Server Data Tools connect to your SQL Server 2016 or Azure SQL database and execute [sql-scripts/setup.sql](sql-scripts/setup.sql) script that will create and populate **Hero** table.
 
-3. From Visual Studio 2015, open the **HeroesApp.xproj** file from the root directory. Restore packages using right-click menu on the project in Visual Studio and by choosing Restore Packages item. As an alternative, you may run **dotnet restore** from the command line (from the root folder of application).
-
-4. Add a connection string in appsettings.json or appsettings.development.json file. An example of the content of appsettings.development.json is shown in the following configuration:
+3. Add a connection string in appsettings.json or appsettings.development.json file. An example of the content of appsettings.development.json is shown in the following configuration:
 
 ```
 {
@@ -60,16 +60,28 @@ If your database is hosted on Azure you can add something like:
 ```
 {
   "ConnectionStrings": {
-    "HeroDb": "Server=<<SERVER>>.database.windows.net;Database=CommentsDb;User Id=<<USER>>;Password=<<PASSWORD>>"
+    "HeroDb": "Server=<<SERVER>>.database.windows.net;Database=HeroDb;User Id=<<USER>>;Password=<<PASSWORD>>"
   }
 }
 ```
 
 ### Build and run sample
 
-1. Build project using **dotnet build** command executed from command line (from project root folder) or using Visual Studion 2015. 
-2. Run the sample app using F5 or Ctrl+F5 in Visual Studio 2015, or using **dotnet run** executed in the command prompt of the project root folder.  
-3. Open /index.html Url to see heroes from database. See more details about functionalities in [AngularJS Heroes sample app](https://angular.io/docs/ts/latest/tutorial/) 
+1. Restore NugetPackages using **dotnet restore** command. This command will create **project.lock.json** file.
+2. Restore npm packages using **npm install** command lines. This command will download packages in **node_modules** folder.
+3. Build project using **dotnet build** command executed from command line (from project root folder) or using Visual Studion 2015. 
+4. Run the sample app using **dotnet run** executed in the command prompt of the project root folder.  
+
+Sequence of commands is:
+```
+npm install
+dotnet restore
+dotnet build
+dotnet run
+```
+
+### Run the app
+. Open /index.html Url to see heroes from database. See more details about functionalities in [AngularJS Heroes sample app](https://angular.io/docs/ts/latest/tutorial/) 
 
 <a name=sample-details></a>
 

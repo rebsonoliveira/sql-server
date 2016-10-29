@@ -2,10 +2,13 @@
 using Belgrade.SqlClient.SqlDb;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using System.Data.SqlClient;
+using System.IO;
 
 namespace AngularHeroApp
 {
@@ -46,6 +49,16 @@ namespace AngularHeroApp
 
             app.UseMvc();
             app.UseStaticFiles();
+
+            // Expose node_modules as virtual folder
+            // becasue AngularJS uses some libraries from node_modules folder.
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider =
+                    new PhysicalFileProvider(
+                        Path.Combine(Directory.GetCurrentDirectory(), @"node_modules")),
+                        RequestPath = new PathString("/node_modules")
+            });
         }
     }
 }
