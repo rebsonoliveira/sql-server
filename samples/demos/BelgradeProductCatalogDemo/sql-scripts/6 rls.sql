@@ -17,7 +17,7 @@ GO
 
 /*
 TRY IT:
-EXEC sp_set_session_context 'CompanyID', -1
+EXEC sp_set_session_context 'CompanyID', '-1'
 select SESSION_CONTEXT(N'CompanyID')
 SELECT * FROM dbo.pUserCanAccessCompanyData(1)
 */
@@ -28,7 +28,7 @@ CREATE SECURITY POLICY dbo.ClientAccessPolicy
 GO
 
 /*
-EXEC sp_set_session_context 'CompanyID', -1
+EXEC sp_set_session_context 'CompanyID', '-1'
 SELECT * FROM Product
 
 EXEC sp_set_session_context 'CompanyID', 1
@@ -37,7 +37,7 @@ SELECT * FROM Product
 EXEC sp_set_session_context 'CompanyID', 2
 SELECT * FROM Product
 
-EXEC sp_set_session_context 'CompanyID', 
+EXEC sp_set_session_context 'CompanyID', 777
 SELECT * FROM Product
 */
 
@@ -47,7 +47,7 @@ ALTER SECURITY POLICY dbo.ClientAccessPolicy
 GO
 
 /*
-	Don't allow company to enter a product for different product.
+	Don't allow company to enter a product for different company.
 */
 ALTER SECURITY POLICY dbo.ClientAccessPolicy
 	ADD BLOCK PREDICATE dbo.pUserCanAccessCompanyData(CompanyID) ON dbo.Product
