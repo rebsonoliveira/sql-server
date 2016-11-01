@@ -1,40 +1,86 @@
-# Connect to SQL Database by using Ruby on Ubuntu Linux
+# Connect to SQL using Ruby on Ubuntu Linux
 
-[Ruby code sample] (sample_ruby_linux.rb) that runs on an Ubuntu Linux client computer to connect to an Azure SQL Database database.
+Ruby sample code that runs on an Ubuntu Linux client computer to connect to an Azure SQL Database. 
 
-## Install the required modules
+### Contents
 
-Open your terminal and install RVM. 
+[About this sample](#about-this-sample)<br/>
+[Before you begin](#before-you-begin)<br/>
+[Run this sample](#run-this-sample)<br/>
+[Sample details](#sample-details)<br/>
+[Disclaimers](#disclaimers)<br/>
 
-    sudo apt-get --assume-yes update
-    command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
-    curl -L https://get.rvm.io | bash -s stable
-    source ~/.rvm/scripts/rvm
+<a name=about-this-sample></a>
 
-Next, install Ruby on your machine.
+## About this sample
+- **Applies to:** SQL Server 2016 (or higher), Azure SQL Database, Azure SQL Data Warehouse
+- **Workload:** CRUD
+- **Programming Language:** Ruby
+- **Authors:** Andrea Lam [ajlam]
 
-     rvm install 2.3.0
-     rvm use 2.3.0 --default
-     ruby -v
+<a name=before-you-begin></a>
 
-Ensure you are running version 2.3.0. 
+## Before you begin
 
-Install FreeTDS
+To run this sample, you need the following prerequisites.
 
-    sudo apt-get --assume-yes install freetds-dev freetds-bin
+**Software prerequisites:**
 
-Install TinyTDS
+1. SQL Server 2016 (or higher) or an Azure SQL Database
+2. Ruby Version Manager
 
-    gem install tiny_tds
+	```
+	sudo apt-get --assume-yes update
+	command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+	curl -L https://get.rvm.io | bash -s stable
+	source ~/.rvm/scripts/rvm
+	```
+3. Ruby 
+     
+	```
+	rvm install 2.3.1
+	rvm use 2.3.1 --default
+	```
 
-## Create a database, retrieve your connection string
+4. FreeTDS 
 
-The Ruby sample relies on the AdventureWorks sample database. If you do not already have AdventureWorks, you can see how to create it at the following topic: [Create your first Azure SQL Database](http://azure.microsoft.com/documentation/articles/sql-database-get-started/)
+	```
+	sudo apt-get --assume-yes install freetds-dev freetds-bin
+	```
+    
+5. tiny_tds
 
-##Using TinyTDS with Azure
+	```
+	gem install tiny_tds
+	```
+
+**Azure prerequisites:**
+
+1. An AdventureWorks sample database: 
+
+	- The Ruby sample relies on the AdventureWorks sample database. If you do not already have AdventureWorks, you can see how to create it at the following topic: [Create your first Azure SQL Database](http://azure.microsoft.com/documentation/articles/sql-database-get-started/)
+	
+## Run this sample
+
+1. From your terminal, update the connection string details in the Ruby file with your own username, password, and hostname. 
+
+2. Run the code sample by running the below in your terminal: 
+
+	```
+	ruby sample_ruby_linux.rb
+	```
+
+<a name=sample-details></a>
+
+## Sample details
+
+The above sample code just connected to your AdventureWorks database and performed a SELECT statement and an INSERT statement. 
+
+### Additional notes for using TinyTDS with Azure
 
 It is recommend the following settings when using TinyTDS with Azure.
-
+   
+   ```
 	SET ANSI_NULLS ON
 	SET CURSOR_CLOSE_ON_COMMIT OFF
 	SET ANSI_NULL_DFLT_ON ON
@@ -43,6 +89,7 @@ It is recommend the following settings when using TinyTDS with Azure.
 	SET QUOTED_IDENTIFIER ON
 	SET ANSI_WARNINGS ON
 	SET CONCAT_NULL_YIELDS_NULL ON
+   ```
 
 This can be done by running the following code prior to executing queries:
 
@@ -51,7 +98,10 @@ This can be done by running the following code prior to executing queries:
 	result = client.execute("SET ANSI_NULL_DFLT_ON ON")
 	result = client.execute("SET IMPLICIT_TRANSACTIONS OFF")
 	result = client.execute("SET ANSI_PADDING ON")
-	result = client.execute("SET QUOTED_IDENTIFIER ON")
+	result = client.execute("SET QUOTED_IDENTIFIER ON"")
 	result = client.execute("SET ANSI_WARNINGS ON")
 	result = client.execute("SET CONCAT_NULL_YIELDS_NULL ON")
+	
+## Disclaimers
+The scripts and this guide are copyright Microsoft Corporations and are provided as samples. They are not part of any Azure service and are not covered by any SLA or other Azure-related agreements. They are provided as-is with no warranties express or implied. Microsoft takes no responsibility for the use of the scripts or the accuracy of this document. Familiarize yourself with the scripts before using them.
 

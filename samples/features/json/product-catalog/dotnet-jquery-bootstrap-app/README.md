@@ -39,15 +39,38 @@ To run this sample, you need the following prerequisites.
 
 ## Run this sample
 
+### Setup
+
 1. Create a database on SQL Server 2016 or Azure SQL Database and set compatibility level to 130.
 
 2. From SQL Server Management Studio or Sql Server Data Tools connect to your SQL Server 2016 or Azure SQL database and execute [sql-scripts/setup.sql](sql-scripts/setup.sql) script that will create and populate Product table and create required stored procedures.
 
 3. From Visual Studio 2015, open the **ProductCatalog.xproj** file from the root directory. Restore packages using right-click menu on the project in Visual Studio and by choosing Restore Packages item. As an alternative, you may run **dotnet restore** from the command line (from the root folder of application).
 
-4. Locate Startup.cs file in the project, change connection string in ConfigureServices() method to reference your database (default value ProductCatalog database on local instance with integrated security), and build solution using Ctrl+Shift+B, right-click on project + Build, Build/Build Solution from menu, or **dotnet build** command from the command line (from the root folder of application).
+4. Add a connection string in appsettings.json or appsettings.development.json file. An example of the content of appsettings.development.json is shown in the following configuration:
 
-5. Run the sample app using F5 or Ctrl+F5 in Visual Studio 2015, or using **dotnet run** executed in the command prompt of the project root folder.  
+```
+{
+  "ConnectionStrings": {
+    "ProductCatalog": "Server=.;Database=ProductCatalog;Integrated Security=true"
+  }
+}
+```
+
+If your database is hosted on Azure you can add something like:
+```
+{
+  "ConnectionStrings": {
+    "ProductCatalog": "Server=<<SERVER>>.database.windows.net;Database=ProductCatalog;User Id=<<USER>>;Password=<<PASSWORD>>"
+  }
+}
+```
+
+### Build and run sample
+
+1. Build solution using Ctrl+Shift+B, right-click on project + Build, Build/Build Solution from menu, or **dotnet build** command from the command line (from the root folder of application).
+
+2. Run the sample app using F5 or Ctrl+F5 in Visual Studio 2015, or using **dotnet run** executed in the command prompt of the project root folder.  
   1. Open /index.html Url to get all products from database,
   2. Use **Add** button to add a new product,
   3. Edit a product using **Edit** button in table,

@@ -45,3 +45,6 @@ samples/databases/wide-world-importers/workload-drivers/vehicle-location-insert/
 samples/features/in-memory/ticket-reservations/DemoWorkload/bin/Debug/DemoWorkload.vshost.exe.config
 samples/features/in-memory/ticket-reservations/DemoWorkload/obj/Release/DemoWorkload.Properties.Resources.resources
 samples/databases/wide-world-importers/wwi-integration-etl/Daily ETL/obj/Development/Project.params
+samples/features/in-memory/ticket-reservations/DemoWorkload/obj/Debug/DemoWorkload.csproj.FileListAbsolute.txt
+samples/features/in-memory/iot-smart-grid/Db/obj/Release/Model.xml
+samples/applications/iot-smart-grid/DataGenerator/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs

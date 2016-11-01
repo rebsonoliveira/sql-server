@@ -1,29 +1,71 @@
-# Connect to SQL Database by using Python on Windows using pyodbc
+# Connect to SQL using Python on Windows
+
+Python sample code that runs on an Windowsclient computer to connect to an Azure SQL Database using the **pyodbc** connector. 
+
+### Contents
+
+[About this sample](#about-this-sample)<br/>
+[Before you begin](#before-you-begin)<br/>
+[Run this sample](#run-this-sample)<br/>
+[Sample details](#sample-details)<br/>
+[Disclaimers](#disclaimers)<br/>
+[Related links](#related-links)<br/>
 
 
-[Python code sample] (sample_python_windows.py) that runs on a Windows computer. The sample and connects to Microsoft SQL Database by using the **pyodbc** driver.
+<a name=about-this-sample></a>
 
+## About this sample
 
-## Requirements
+- **Applies to:** SQL Server 2016 (or higher), Azure SQL Database, Azure SQL Data Warehouse, Parallel Data Warehouse
+- **Workload:** CRUD
+- **Programming Language:** Python
+- **Authors:** Meet Bhagdev [meet-bhagdev]
 
+<a name=before-you-begin></a>
 
-- [Python 2.7.6](https://www.python.org/download/releases/2.7.6/).
-- [ODBC Driver 11 or 13 for SQL Server Windows](https://www.microsoft.com/en-us/download/details.aspx?id=50420)
-- [Pyodbc](https://pypi.python.org/pypi/pyodbc/3.0.10)
+## Before you begin
 
-### Install the required modules
+To run this sample, you need the following prerequisites.
 
-Navigate to your Python directory where the pip installer is located. For example C:\Python27\Scripts>. 
+**Software prerequisites:**
+1. SQL Server 2016 (or higher) or an Azure SQL Database
 
-####Install pyodbc
+2. Python
+    - [Download from here](https://www.python.org/download/releases/2.7.6/)
 
+3. Microsoft ODBC Driver 11 or 13 for SQL Server Windows
+    - [Download from here](https://www.microsoft.com/en-us/download/details.aspx?id=50420)
+
+4. [Pyodbc](https://pypi.python.org/pypi/pyodbc/3.0.10)
+
+    ```
     pip install pyodbc
+    ```
 
-*Note: Instructions to enable the use pip can be found [here](http://stackoverflow.com/questions/4750806/how-to-install-pip-on-windows)*
+    *Note: Instructions to enable the use pip can be found [here](http://stackoverflow.com/questions/4750806/how-to-install-pip-on-windows)*
 
 
-## Create a database and retrieve your connection string
+**Azure prerequisites:**
 
-For simplicity we will create an Azure SQL Database for the sample. You can use the same sample for an on-premise SQL Server instance. See the [getting started page](http://azure.microsoft.com/documentation/articles/sql-database-get-started/) to learn how to create a sample database and get your connection string. It is important you follow the guide to create an AdventureWorks database template. The samples shown below only work with the AdventureWorks schema. 
+1. An AdventureWorks sample database: 
 
-See the [getting started page](http://azure.microsoft.com/documentation/articles/sql-database-get-started/) to learn how to create a sample database and get your connection string. It is important you follow the guide to create an **AdventureWorks database template**. The samples shown below only work with the **AdventureWorks schema**. 
+	- The Python sample relies on the AdventureWorks sample database. If you do not already have AdventureWorks, you can see how to create it at the following topic: [Create your first Azure SQL Database](http://azure.microsoft.com/documentation/articles/sql-database-get-started/)
+	
+## Run this sample
+
+1. From your terminal, update the connection string details in the Python file with your own username, password, and hostname. 
+
+2. Run the code sample by running the below in your terminal: 
+
+	```
+	python sample_python_windows.py
+	```
+
+<a name=sample-details></a>
+
+## Sample details
+
+The above sample code just connected to your AdventureWorks database and performed a SELECT statement and an INSERT statement. 
+
+## Disclaimers
+The scripts and this guide are copyright Microsoft Corporations and are provided as samples. They are not part of any Azure service and are not covered by any SLA or other Azure-related agreements. They are provided as-is with no warranties express or implied. Microsoft takes no responsibility for the use of the scripts or the accuracy of this document. Familiarize yourself with the scripts before using them.
