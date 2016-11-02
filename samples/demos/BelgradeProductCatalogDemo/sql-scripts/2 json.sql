@@ -1,7 +1,38 @@
-﻿
---Combine standard columns with JSON columns.
+﻿--Combine standard columns with JSON columns.
 select Name,Color,Size,Price,Quantity,Data,Tags
 from Product
+
+/* Basic Demo */
+
+
+-- Get List of products
+select ProductID, Name,Color,Size,Price,Quantity,
+		JSON_VALUE(Data, '$.MadeIn') as MadeIn,
+		JSON_QUERY(Tags) as Tags
+from Product
+FOR JSON PATH
+
+-- Get Product details
+select Name,Color,Size,Price,Quantity
+from Product
+where ProductID = 17
+FOR JSON PATH, WITHOUT_ARRAY_WRAPPER 
+
+-- Insert new product
+declare @p nvarchar(4000) = 
+N'{"Name":"NEW","Color":"Magenta","Size":"62",
+   "Price":28.9900,"Quantity":80}'
+EXEC dbo.InsertProductFromJson @p
+
+-- Update product
+declare @p nvarchar(4000) =
+N'{"Name":"HL Bottom Bracket","Price":121.4900,"Quantity":65}'
+
+EXEC dbo.UpdateProductFromJson 28, @p
+
+/* End Basic Demo */
+
+/* Detailed Demo */
 
 --Use JSON Data in queries
 select ProductID, Name, Color, Size, Price, Quantity, Data, Tags,
