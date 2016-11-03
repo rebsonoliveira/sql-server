@@ -15,7 +15,7 @@ ENV attach_dbs "[]"
 COPY . /
 WORKDIR /
 
-# download and install Microsoft SQL 2014 Express Edition in one step
+# download and install Microsoft SQL 2016 Express Edition in one step
 RUN powershell -Command (New-Object System.Net.WebClient).DownloadFile('%sql_express_download_url%', 'sqlexpress.exe') && /sqlexpress.exe /qs /x:setup && /setup/setup.exe /q /ACTION=Install /INSTANCENAME=SQLEXPRESS /FEATURES=SQLEngine /UPDATEENABLED=0 /SQLSVCACCOUNT="NT AUTHORITY\System" /SQLSYSADMINACCOUNTS="BUILTIN\ADMINISTRATORS" /TCPENABLED=1 /NPENABLED=0 /IACCEPTSQLSERVERLICENSETERMS && del /F /Q sqlexpress.exe && rd /q /s setup
 
 RUN powershell -Command \
