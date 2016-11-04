@@ -8,3 +8,4 @@ obj/*
 *.lock.json
 Properties/PublishProfiles/*
 appsettings.Development.json
+appsettings.Production.json
