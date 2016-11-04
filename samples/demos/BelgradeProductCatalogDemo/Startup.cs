@@ -54,7 +54,6 @@ namespace ProductCatalog
 
             // Add framework services.
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddDistributedMemoryCache();
             services.AddSession();
             services.AddMvc();
         }
