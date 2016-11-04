@@ -40,8 +40,8 @@ The scripts take advantage of memory optimized tables and natively compiled stor
 ## Install Scripts
 There are two versions of the SQL Server script (with retry logic and without):
 
--   [aspstate_sql2016 (no retry logic)](https://github.com/Microsoft/sql-server-samples/blob/master/samples/applications/ASP.NET%20Session%20State/aspstate_sql2016_no_retry.sql)
--   [aspstate_sql2016 (with retry logic)](https://github.com/Microsoft/sql-server-samples/blob/master/samples/applications/ASP.NET%20Session%20State/aspstate_sql2016_with_retry.sql)
+-   [aspstate_sql2016 (no retry logic)](https://github.com/Microsoft/sql-server-samples/blob/master/samples/applications/aspnet-session-state/aspstate_sql2016_no_retry.sql)
+-   [aspstate_sql2016 (with retry logic)](https://github.com/Microsoft/sql-server-samples/blob/master/samples/applications/aspnet-session-state/aspstate_sql2016_with_retry.sql)
 
 Based on your workload characteristics and the way your application handles session state you have to decide if retry logic is needed or not. [This](https://msdn.microsoft.com/en-us/library/mt668435.aspx) article explains the logic used to detect conflict and implement retry logic in the script. Currently, the two memory-optimized tables:  **dbo.ASPStateTempApplications** and **dbo.ASPStateTempSessions** in both of the scripts are created with **DURABILITY = SCHEMA_ONLY** meaning that in a case of a SQL Server restart or a reconfiguration occurs in an Azure SQL Database, the table schema persists, but data in the table is lost. If durability of both schema and data is required tthe script needs to be altered and the two tables above need to be created with: **DURABILITY=SCHEMA\_AND\_DATA**.[This](https://msdn.microsoft.com/en-us/library/dn553122.aspx) article explains the two durability options for memory-optimized tables
 
