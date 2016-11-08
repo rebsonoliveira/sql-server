@@ -15,7 +15,18 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 TEMPLATE_DEBUG = DEBUG
 
 DATABASES = {
-    'default': dj_database_url.config(default=config('DATABASE_URL'))
+    'default': {
+         'ENGINE': 'sql_server.pyodbc',
+         'NAME': 'django',
+         'USER': 'yourusername',
+         'PASSWORD': 'yourpassword',
+         'HOST': 'yourserver',
+         'PORT': '1433',
+
+         'OPTIONS': {
+              'driver': 'ODBC Driver 13 for SQL Server',
+         },
+     },
 }
 
 ALLOWED_HOSTS = ['*']
