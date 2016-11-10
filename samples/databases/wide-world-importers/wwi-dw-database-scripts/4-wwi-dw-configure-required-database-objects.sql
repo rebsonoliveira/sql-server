@@ -2072,7 +2072,7 @@ BEGIN
 	PRINT 'Targeting ' + CAST(@NumberOfSalesPerDay AS varchar(20)) + ' sales per day.';
 	IF @NumberOfSalesPerDay > 50000
 	BEGIN
-		PRINT 'WARNING: Limiting sales to 40000 per day';
+		PRINT 'WARNING: Limiting sales to 50000 per day';
 		SET @NumberOfSalesPerDay = 50000;
 	END;
 

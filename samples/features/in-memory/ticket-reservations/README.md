@@ -2,6 +2,7 @@
 
 This Windows Forms sample application built on .NET Framework 4.6  demonstrates the performance benefits of using SQL Server memory optimized tables and native compiled stored procedures. You can compare the performance before and after enabling In-Memory OLTP by observing the transactions/sec as well as the current CPU Usage and latches/sec.
 
+The demo is run in this [17-minute video explaining In-Memory OLTP](https://www.youtube.com/watch?v=l5l5eophmK4) (demo is at 8:25).
 
 <a name=about-this-sample></a>
 
