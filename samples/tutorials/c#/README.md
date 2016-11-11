@@ -4,7 +4,7 @@
 
 ### .NET Framework
 
-.NET Framework is pre-installed with Windows. For Linux and Mac OS X you can download .NET Framework from the [Mono Project](http://www.mono-project.com/).
+.NET Framework is pre-installed with Windows. For Linux and Mac OS X you can download [.NET Core](https://www.microsoft.com/net/core#windows).
 
 ### A SQL Database
 
