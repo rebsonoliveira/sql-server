@@ -56,7 +56,10 @@ The below steps reconstruct the WideWorldImportersDW database. To construct the 
 
 5. Execute the script **5-wwi-dw-load-seed-data.sql**. This script populates the seed data required for the database. It will typically take a few minutes to execute.
 
-6. Execute the script **6-wwi-dw-enable-full-features.sql**. This script enables features not available in standard edition. Skip this step when creating the sample database targeting standard edition.
+6. Execute the script **6-wwi-dw-enable-full-features.sql**. This script enables features for the full version of the sample database. 
+
+  - When using SQL Server 2016 SP1 (or a later servicing release), the full features are supported across all editions of SQL Server, including Standard and Express edition.
+  - With Azure SQL Database, at the time of writing, some of the full features are supported only in Premium-tier databases, so you should skip this step when targeting a Standard-tier database.
 
 7. Execute the **WWI_Integration** SSIS package to perform the ETL to populate the database. For details see [wwi-integration-etl] (../wwi-integration-etl/).
 
