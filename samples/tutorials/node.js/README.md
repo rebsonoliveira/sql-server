@@ -1,3 +1,9 @@
-# Node.js samples
+# Developing applications with Node.js and SQL Server 
 
-Simple Node.js applications to connect to Microsoft SQL databases, including SQL Server, Azure SQL Database, and Azure SQL Data Warehouse. Samples for operating systems including Linux, Windows, and macOS. 
+Pick a platform below to get started:
+* [macOS](https://github.com/Microsoft/sql-server-samples/blob/master/samples/tutorials/node.js/macos)
+* [RHEL](https://github.com/Microsoft/sql-server-samples/blob/master/samples/tutorials/node.js/rhel)
+* [Ubuntu](https://github.com/Microsoft/sql-server-samples/blob/master/samples/tutorials/node.js/java/ubuntu)
+* [Windows](https://github.com/Microsoft/sql-server-samples/blob/master/samples/tutorials/node.js/windows)
+
+Please visit our [getting started tutorials](https://www.microsoft.com/en-us/sql-server/developer-get-started/)
