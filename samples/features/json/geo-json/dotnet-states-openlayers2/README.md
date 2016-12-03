@@ -1,11 +1,11 @@
 # ASP.NET Core Spatial application that uses SQL/JSON functionalities 
 
-This project contains an example implementation of ASP.NET Core application that shows how to display spatial data from Sql Database on the web page. Web page is shown in the following picture:
+This project contains an example implementation of ASP.NET Core application that shows how to display spatial data from SQL Database on the web page. Web page is shown in the following picture:
 
 ![Web App that displays US states and towns](../../../../../media/features/json-geojson-states-app.png)
 
 Initially will be shown all US states on the larger map. [OpenLayers2](http://openlayers.org/two/) component is used to display data on the map. States are provided in [GeoJSON](http://geojson.org/) format generated in SQL Server.
-When you click on any state on the map, details will be shown in popup window, and lrger towns in that state will be shown in the detals map.
+When you click on any state on the map, details will be shown in popup window, and larger towns in that state will be shown in the details map.
 
 ## Contents
 
@@ -47,9 +47,9 @@ To run this sample, you need the following prerequisites.
 
 ### Setup
 
-1. Download source code from Sql Server GitHub account.
+1. Download source code from SQL Server GitHub account.
 
-2. Get [WideWorldImporters](https://github.com/Microsoft/sql-server-samples/releases/tag/wide-world-importers-v1.0) database and restore it on your SQl Server instance. 
+2. Get [WideWorldImporters](https://github.com/Microsoft/sql-server-samples/releases/tag/wide-world-importers-v1.0) database and restore it on your SQL Server instance. 
 
 3. From SQL Server Management Studio or Sql Server Data Tools connect to your SQL Server 2016 or Azure SQL database and execute [sql-scripts/setup.sql](sql-scripts/setup.sql) script that will create [db.AsGeoJSON() TSQL function](https://blogs.msdn.microsoft.com/sqlserverstorageengine/2016/01/13/returning-spatial-data-in-geojson-format-part-2/#comments). This function will convert spatial values to GeoJSON format.
 
@@ -73,7 +73,7 @@ If your database is hosted on Azure you can add something like:
 ```
 
 >**Note**
-> This sample is build using dotnet core version 1.0.0. If your build fails because you have some tother version, you should change the version in project.json file.
+> This sample is build using dotnet core version 1.0.0. If your build fails because you have some other version, you should change the version in project.json file.
 ```
 "Microsoft.NETCore.App": {
       "version": "1.0.0",
@@ -93,10 +93,9 @@ If your database is hosted on Azure you can add something like:
 
 ## Sample details
 
-This sample application shows how to display US states on a map using OpenLayers2 component., add, edit or delete some product.
-Front-end code is implemented using JavaScript, JQuery, and OpenLayers.
-Server-side code is implemented using ASP.NET Core Web API. Server-side code server AJAX requests sent from client page get spatial data from WWI database in GeoJSON format and return GeoJSOn response to the client. 
-SQL Server FOR JSON clause and custom AsGeoJSON function are used to format states and towns from database in GeoJSON format.
+This sample application shows how to display US states on a map using OpenLayers2 component. Front-end code is implemented using JavaScript, JQuery, and OpenLayers.
+Server-side code is implemented using ASP.NET Core Web API. Server-side code server AJAX requests sent from client page get spatial data from WWI database in GeoJSON format and return GeoJSON response to the client. 
+SQL Server FOR JSON clause and custom AsGeoJSON() function are used to format states and towns from database in GeoJSON format.
 
 <a name=disclaimers></a>
 

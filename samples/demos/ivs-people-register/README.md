@@ -1,0 +1,146 @@
+# Japanese IVS text processing
+
+This project contains an example implementation of ASP.NET Core application that shows how SQL Database handles complex text processing rules such as sorting and filtering Japanese IVS ideographs. In the application you can see a table with a people information written with Japanese symbols:
+
+![Japanese people register app](../../../media/demos/ivs-people-register-app.png)
+
+If you open this page and try to sort columns by town, you might see that results might not be always what someone would expect. The reason for this behavior is that some client-side components do not understand some text comparison rules specific to some languages. In this example, problem is in the IVS characters used in town names:
+
+In Japanese language there are different shapes of the same symbol written with small differences:
+
+![Japanese IVS symbols](../../../media/demos/ivs-symbols.png)
+
+The difference might in a few strokes, but still these are the same symbols. Additional problem is the fact that these symbols are not identically binary encoded. Each symbol has a first character that defines the actual value of the symbol, followed by the additional character that describes what is the variation of the symbol (aka. variation selector character). Unfortunately, some client-side components do not use these rules, so sort/filter results might be incorrect.
+
+Sql Database has powerful text processing rules where you can exactly specify what linguistic rues should be applied. as an example, you can specify that town column contains Japanese characters and that Japanese linguistic rules should be applied when string are compared or ordered:
+
+```sql
+alter table people
+	alter column town nvarchar(50) collate Japanese_Bushu_Kakusu_140;
+```
+
+**collate Japanese_Bushu_Kakusu_140** would tell SQL database that the text stored in the town column would contain some Japanese characters, and that SQL queries should use sorting and comparison rules specific for Japanese linguistic rules.
+If you switch to the server.html page and sort results by town, you would see that towns are correctly sorted. The difference is in the fact that sort and filter operations are sent to the server-side via AJAX calls, and processed in T-SQL using **where** and **order by** clauses that apply Japanese linguistic rules specified in the column definition. Results that are processed using build in T-SQL linguistic rules are shown in the table.
+
+In addition, SQL Database enables you to customize rules that would be applied on each column such as do you want to use case sensitive or case insensitive search, should t-sql query see difference between Japanese Hiragana and Katakana symbols (i.e. Kana sensitivity), would T-SQL queries use variation selector when compared two IVS symbols (new VSS flag):
+
+```sql
+alter table people
+	alter column town nvarchar(50) collate Japanese_Bushu_Kakusu_140_CI_AI_KS_WS_VSS;
+```
+
+## Contents
+
+[About this sample](#about-this-sample)<br/>
+[Before you begin](#before-you-begin)<br/>
+[Run this sample](#run-this-sample)<br/>
+[Sample details](#sample-details)<br/>
+[Disclaimers](#disclaimers)<br/>
+[Related links](#related-links)<br/>
+
+<a name=about-this-sample></a>
+
+## About this sample
+
+- **Applies to:** SQL Server 2017 (or higher), Azure SQL Database
+- **Key features:** Collation rules in SQL Server 2016/Azure SQL Database
+- **Programming Language:** C#, Html/JavaScript, Transact-SQL
+- **Authors:** Jovan Popovic
+
+<a name=before-you-begin></a>
+
+## Before you begin
+
+To run this sample, you need the following prerequisites.
+
+**Software prerequisites:**
+
+1. SQL Server 2017 CTP1 (or higher) or an Azure SQL Database
+2. [ASP.NET Core](https://www.microsoft.com/net/core#windowscmd)
+
+**Azure prerequisites:**
+
+1. Permission to create an Azure SQL Database.
+1. Permission to create an Azure Web App.
+
+<a name=run-this-sample></a>
+
+## Run this sample
+
+### Setup
+
+1. Download source code from SQL Server GitHub account.
+
+2. From SQL Server Management Studio or Sql Server Data Tools connect to your SQL Server 2016 or Azure SQL database and execute [sql-scripts/setup.sql](sql-scripts/setup.sql) script that will create People table populated with demo data.
+
+3. Add a connection string in appsettings.json or appsettings.development.json file. An example of the content of appsettings.development.json is shown in the following configuration:
+
+```
+{
+  "ConnectionStrings": {
+    "IVSDemo": "Server=.;Database=PeopleRegister;Integrated Security=true"
+  }
+}
+```
+
+If your database is hosted on Azure you can add something like:
+```
+{
+  "ConnectionStrings": {
+    "IVSDemo": "Server=<<SERVER>>.database.windows.net;Database=PeopleRegister;User Id=<<USER>>;Password=<<PASSWORD>>"
+  }
+}
+```
+
+>**Note**
+> This sample is build using dotnet core version 1.0.0. If your build fails because you have some other version, you should change the version in project.json file.
+```
+"Microsoft.NETCore.App": {
+      "version": "1.0.0",
+      "type": "platform"
+    }
+```
+As an alternative you can deploy app directly to Azure Web App.
+[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
+
+### Build and run sample
+
+1. Open command prompt in project root folder and run **dotnet restore** and **dotnet build** commands from the root folder of application. If you are using Visual Studio, you can build solution using Ctrl+Shift+B, right-click on project + Build, Build/Build Solution from menu. 
+
+2. Run the sample app using **dotnet run** executed in the command prompt of the project root folder. As an alternative you can use F5 or Ctrl+F5 in Visual Studio 2015.  
+  1. Open /client.html Url to get all people from database,
+  2. Sort by town to see that some towns are not correctly sorted,
+  3. Open /server.html Url to get all people from database using server-side processing code,
+  2. Sort by town to see that towns are correctly sorted.
+
+<a name=sample-details></a>
+
+## Sample details
+
+This sample application is implemented as ASP.NET Core application where most of the processing is done on the front-end (JavaScript) or backend (T-SQL).
+Front-end code is implemented using JQuery, and JQuery Datatables component.
+Server-side code is implemented using ASP.NET Core Web API. Server-side code serves AJAX requests sent from client page and returns JSON responses formatted in via T-SQL queries in database.
+
+<a name=disclaimers></a>
+
+## Disclaimers
+The code included in this sample is not intended demonstrate some general guidance and architectural patterns for web development.
+You can easily modify this code to fit the architecture of your application.
+
+<a name=related-links></a>
+
+## Related Links
+
+You can find more information about the components that are used in this sample on these locations: 
+- [ASP.NET Core](http://www.asp.net/core).
+- [JSON Support in Sql Server](https://msdn.microsoft.com/en-us/library/dn921897.aspx).
+- [JQuery DataTables]( https://datatables.net/).
+
+## Code of Conduct
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
+## License
+These samples and templates are all licensed under the MIT license. See the license.txt file in the root.
+
+## Questions
+Email questions to: [sqlserversamples@microsoft.com](mailto: sqlserversamples@microsoft.com).
