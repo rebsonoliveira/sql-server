@@ -1,6 +1,6 @@
 # ASP.NET Core Spatial application that uses SQL/JSON functionalities 
 
-This project contains an example implementation of ASP.NET Core application that shows how to display list spatial data from Sql Database on the web page.
+This project contains an example implementation of ASP.NET Core application that shows how to display spatial data from Sql Database on the web page. Web page is shown in the following picture:
 
 ![Web App that displays US states and towns](../../../../../media/features/json-geojson-states-app.png)
 
@@ -51,7 +51,7 @@ To run this sample, you need the following prerequisites.
 
 2. Get [WideWorldImporters](https://github.com/Microsoft/sql-server-samples/releases/tag/wide-world-importers-v1.0) database and restore it on your SQl Server instance. 
 
-3. From SQL Server Management Studio or Sql Server Data Tools connect to your SQL Server 2016 or Azure SQL database and execute [sql-scripts/setup.sql](sql-scripts/setup.sql) script that will create db.AsGeoJSON() TSQL function. This function will convert spatial values to GeoJSON format.
+3. From SQL Server Management Studio or Sql Server Data Tools connect to your SQL Server 2016 or Azure SQL database and execute [sql-scripts/setup.sql](sql-scripts/setup.sql) script that will create [db.AsGeoJSON() TSQL function](https://blogs.msdn.microsoft.com/sqlserverstorageengine/2016/01/13/returning-spatial-data-in-geojson-format-part-2/#comments). This function will convert spatial values to GeoJSON format.
 
 4. Add a connection string in appsettings.json or appsettings.development.json file. An example of the content of appsettings.development.json is shown in the following configuration:
 
