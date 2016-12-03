@@ -2,15 +2,16 @@
 
 This project contains an example implementation of ASP.NET Core application that shows how SQL Database handles complex text processing rules such as sorting and filtering Japanese IVS ideographs. In the application you can see a table with a people information written with Japanese symbols:
 
-![Japanese people register app](../../../media/demos/ivs-people-register-app.png)
+![Japanese people register app](../../../media/demos/ivs-people-register-app.PNG)
 
 If you open this page and try to sort columns by town, you might see that results might not be always what someone would expect. The reason for this behavior is that some client-side components do not understand some text comparison rules specific to some languages. In this example, problem is in the IVS characters used in town names:
 
-In Japanese language there are different shapes of the same symbol written with small differences:
+In Japanese language there are different shapes of the same symbol written with small differences. In the following figure, you can see 3 variations of symbol U+8FBA, 16 variations of symbol U+9089, and 10 variations of symbol U+908A: 
 
 ![Japanese IVS symbols](../../../media/demos/ivs-symbols.png)
 
-The difference might in a few strokes, but still these are the same symbols. Additional problem is the fact that these symbols are not identically binary encoded. Each symbol has a first character that defines the actual value of the symbol, followed by the additional character that describes what is the variation of the symbol (aka. variation selector character). Unfortunately, some client-side components do not use these rules, so sort/filter results might be incorrect.
+The difference might in a few strokes, but still these are the same symbols. Additional problem is the fact that these symbols are not identically binary encoded. Each symbol has a first character that defines the actual value of the symbol (e.g. U+8FBA), followed by the additional character that describes what is the variation of the symbol (e.g. U+E0101, U+E0102). This additional symbol is called variation selector character.
+Unfortunately, some client-side components do not use these rules, so sort/filter results might be incorrect.
 
 Sql Database has powerful text processing rules where you can exactly specify what linguistic rues should be applied. as an example, you can specify that town column contains Japanese characters and that Japanese linguistic rules should be applied when string are compared or ordered:
 
