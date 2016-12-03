@@ -1,5 +1,5 @@
 # mssql-server-2016-sp1-express-windows
-This Dockerfile helps developers to get started using SQL Server 2016 SP1 Express in Windows Containers. The file downloads and installs SQL Server 2016 SP1 Express with the default setup parameters.
+This Dockerfile helps developers to get started using SQL Server vNext in Windows Containers. The file downloads and installs SQL Server vNext with the default setup parameters.
 
 ### Contents
 
@@ -14,7 +14,7 @@ This Dockerfile helps developers to get started using SQL Server 2016 SP1 Expres
 
 ## About this sample
 
-1. **Applies to:** SQL Server 2016 SP1 Express, Windows Server 2016
+1. **Applies to:** SQL Server vNext, Windows Server 2016, Windows 10
 5. **Authors:** Perry Skountrianos [perrysk-msft]
 
 <a name=before-you-begin></a>
@@ -29,7 +29,7 @@ You can run the container with the following command.
 (Note the you'll need Windows Server 2016 or Windows 10)
 
 ````
-docker run -d -p 1433:1433 -v C:/temp/:C:/temp/ -e sa_password=<YOUR SA PASSWORD> -e ACCEPT_EULA=Y -e attach_dbs="<DB-JSON-CONFIG>" microsoft/mssql-server-windows-express
+docker run -d -p 1433:1433 -v C:/temp/:C:/temp/ -e sa_password=<YOUR SA PASSWORD> -e ACCEPT_EULA=Y -e attach_dbs="<DB-JSON-CONFIG>" microsoft/mssql-server-windows
 ````
 
 - **-p HostPort:containerPort** is for port-mapping a container network port to a host port.
@@ -80,7 +80,7 @@ The image provides two environment variables to optionally set: </br>
 This example shows all parameters in action:
 ```
 docker run -d -p 1433:1433 -v C:/temp/:C:/temp/ -e sa_password=<YOUR SA PASSWORD> -e ACCEPT_EULA=Y -e attach_dbs="[{'dbName':'SampleDB','dbFiles':['C:\\temp\\sampledb.mdf','C:\\temp\\sampledb_log.
-ldf']}]" microsoft/mssql-server-windows-express
+ldf']}]" microsoft/mssql-server-windows
 ```
 
 <a name=sample-details></a>
