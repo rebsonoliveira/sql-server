@@ -2,7 +2,7 @@
 
 This project contains an example implementation of ASP.NET Core application that shows how to display list spatial data from Sql Database on the web page.
 
-![Web App that displays US states and towns][../../../../../media/features/json-geojson-states-app.png]
+![Web App that displays US states and towns](../../../../../media/features/json-geojson-states-app.png)
 
 Initially will be shown all US states on the larger map. [OpenLayers2](http://openlayers.org/two/) component is used to display data on the map. States are provided in [GeoJSON](http://geojson.org/) format generated in SQL Server.
 When you click on any state on the map, details will be shown in popup window, and lrger towns in that state will be shown in the detals map.
@@ -34,7 +34,7 @@ To run this sample, you need the following prerequisites.
 **Software prerequisites:**
 
 1. SQL Server 2016 (or higher) or an Azure SQL Database
-2. (ASP.NET Core)[https://www.microsoft.com/net/core#windowscmd]
+2. [ASP.NET Core](https://www.microsoft.com/net/core#windowscmd)
 3. [WideWorldImporters](https://github.com/Microsoft/sql-server-samples/releases/tag/wide-world-importers-v1.0) database.
 
 **Azure prerequisites:**
@@ -73,17 +73,17 @@ If your database is hosted on Azure you can add something like:
 ```
 
 >**Note**
-> This sample is build suing dotnet core version 1.0.0. If your build fails because you have some tother version, you should change the version in project.json file.
->"Microsoft.NETCore.App": {
->      "version": "1.0.0",
->      "type": "platform"
->    }
+> This sample is build using dotnet core version 1.0.0. If your build fails because you have some tother version, you should change the version in project.json file.
+```
+"Microsoft.NETCore.App": {
+      "version": "1.0.0",
+      "type": "platform"
+    }
+```
 
 ### Build and run sample
 
-1. Open command prompt in project root folder and run **dotnet restore** and **dotnet build** commands from the root folder of application. If you are using Visual Studio, you can build solution using Ctrl+Shift+B, right-click on project + Build, Build/Build Solution from menu. If build reports an error
-
-"Microsoft.NETCore.App": {"version": "1.0.0","type": "platform"}
+1. Open command prompt in project root folder and run **dotnet restore** and **dotnet build** commands from the root folder of application. If you are using Visual Studio, you can build solution using Ctrl+Shift+B, right-click on project + Build, Build/Build Solution from menu. 
 
 2. Run the sample app using **dotnet run** executed in the command prompt of the project root folder. As an alternative you can use F5 or Ctrl+F5 in Visual Studio 2015.  
   1. Open /index.html Url to get all US states from WWI database,
