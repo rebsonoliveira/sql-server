@@ -1,10 +1,12 @@
-# Japanese IVS text processing
+﻿# Japanese IVS text processing
 
 This project contains an example implementation of ASP.NET Core application that shows how SQL Database handles complex text processing rules such as sorting and filtering Japanese IVS ideographs. In the application you can see a table with a people information written with Japanese symbols:
 
 ![Japanese people register app](../../../media/demos/ivs-people-register-app.PNG)
 
-If you open this page and try to sort columns by town, you might see that results might not be always what someone would expect. The reason for this behavior is that some client-side components do not understand some text comparison rules specific to some languages. In this example, problem is in the IVS characters used in town names:
+If you open this page and try to sort columns by town, you might see that results might not be always what someone would expect. You might notice that rows are sorted by town column; however, people from town 芦󠄂屋 are in the 5th and 7th rows, and people from town 芦󠄆別市 are in the 4th, 6th, and 8th rows. Obviously, although the table is sorted by town column sort order is not correct. 
+
+The reason for this behavior is that some client-side components do not understand some text comparison rules specific to some languages. In this example, problem is in the IVS characters used in town names. If you take a better look at the towns, you will see slight differences in the shapes of the symbols used to write towns starting with symbol 芦󠄆.
 
 In Japanese language there are different shapes of the same symbol written with small differences. In the following figure, you can see 3 variations of symbol U+8FBA, 16 variations of symbol U+9089, and 10 variations of symbol U+908A: 
 
