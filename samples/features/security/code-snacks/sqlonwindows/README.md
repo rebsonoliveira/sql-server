@@ -1,4 +1,4 @@
-#  Dynamic Data Masking & Row Level Security Code Snack
+﻿#  Dynamic Data Masking & Row Level Security Code Snack (SQL Server 2016)
 In this code snack, developers will create a database having human resources data, including a table containing simulated employee pay data. They will be guided thru the sample data to highlight the sensitive information it contains (e.g., social security numbers and salaries) and then configuring the masking of the sensitive data. In addition, they will enable Row Level Security to handle three different roles: contractors (who have no visibility to any rows except their own in the table), HR (who can view all employee rows except those of executives) and Executives (who can view all employee rows). They will complete a .NET application that queries the database to see the differing outcomes that result based on Row Level Security policy.
 
 ## Requirements

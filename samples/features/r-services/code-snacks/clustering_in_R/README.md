@@ -1,4 +1,4 @@
-# Clustering in R
+﻿# Clustering in R (SQL Server 2016)
 In this code snack, developers will experience authoring R code to help them run a clustering exercise that “magically” groups data into distinct populations by using an unsupervised clustering algorithm, k-means. The k-means script will be packaged within a SQL stored procedure for convenient execution from a .NET application.
 
 ## About Clustering

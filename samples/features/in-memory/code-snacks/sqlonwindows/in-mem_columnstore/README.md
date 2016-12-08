@@ -1,4 +1,4 @@
-# In-Memory & Columnar Store Code Snack
+# In-Memory & Columnar Store Code Snack (SQL Server 2016)
 In this code snack, developers will experience the benefit of performing real-time operation analytics enabled by leveraging a memory optimized table in combination with a columnstore index. The Visual Studio project contains a load generator that will be used to simulate a write heavy workload. They will initially run the simulator against a disk based table with a clustered index (btree) and take note of the rows inserted per second, and will measure the performance of a provided analytics query while the system is under the heavy write load. They will then author the T-SQL to create the memory optimized table with a columnstore index, update the load generator to target the memory optimized table and observe the improved performance characteristics.
 
 ## Requirements
