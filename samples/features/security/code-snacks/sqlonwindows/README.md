@@ -17,7 +17,7 @@ The recommended path is C:\SQL Server Security
 
 ![alt text][SQLCMD]
 
-[SQLCMD]: images/sqlcmd.png "SQLCMD Mode Toggle"
+[SQLCMD]: Images/sqlcmd.png "SQLCMD Mode Toggle"
 5. Select the Execute button.
 6. In the Connect dialog, provide your server name, authentication mode, username and password (as appropriate).
 7. Wait for the script to complete successfully.
@@ -28,7 +28,7 @@ The recommended path is C:\SQL Server Security
 3. Notice the employee table has the NationalIDNumber which is sensitive field and the EmployePayHistory table has the Rate field which is sensitive because it captures the employees rate of pay.
 ![alt text][Explore Data]
 
-[Explore Data]: images/exploredatacleartext.png "Explore Data"
+[Explore Data]: Images/exploredatacleartext.png "Explore Data"
 
 ## Configure Masking
 1. Within Visual Studio, open “Configure Masking.sql"
@@ -53,7 +53,7 @@ ALTER COLUMN Rate ADD MASKED WITH (FUNCTION = 'random(20,150)')
 10. Observe that now the NationalIDNumber only displays the last two digits, and the Rate values are different from before.
 ![alt text][Masked Data]
 
-[Masked Data]: images/maskedata.png "Masked Data"
+[Masked Data]: Images/maskedata.png "Masked Data"
 
 ## Configure Row Level Security
 1. Next, consider the scenario where you want to enforce a policy where only Executive users in the organization can see all employee rows in the Employee table. Users in the Human resources department can see all rows except those of the executives. Finally, all other users can only see their row.
@@ -98,7 +98,7 @@ SELECT * FROM HumanResources.Employee;
 7. Execute the query. Observe the different result sets that appear for the exact same query— they are made different only because of the LoginID session context provided.
 ![alt text][RLS Data]
 
-[RLS Data]: images/rlsresults.png "RLS Data"
+[RLS Data]: Images/rlsresults.png "RLS Data"
 
 
 ## Leverage Row Level Security from an Application
@@ -112,7 +112,7 @@ SELECT * FROM HumanResources.Employee;
 
 ![alt text][RLS in App]
 
-[RLS in App]: images/rlsinapp.png "RLS in App"
+[RLS in App]: Images/rlsinapp.png "RLS in App"
 
 8. Run the console again, this time select option 2 (Human Resources).
 9. Observe that the same query is run as before, but 283 rows are returned. This represents all of the non-executive rows in the employee table.

@@ -59,13 +59,13 @@ ALTER DATABASE CURRENT SET MEMORY_OPTIMIZED_ELEVATE_TO_SNAPSHOT=ON ;
 3. When the script completes, observe that 334 rows were returned.Take note of how long the query took to execute. Query time is shown in the bottom right of the document window in Visual Studio.
 ![alt text][Disk Based Results]
 
-[Disk Based Results]: images/DiskBasedResults.png "Disk Based Results"
+[Disk Based Results]: Images/DiskBasedResults.png "Disk Based Results"
 4. Now, execute the script to summarize the time series data stored in the memory-optimized table, in "SampleQueries - InMemory.sql".
 When the script completes, observe that 334 rows were returned.Take note of how long the query took to execute.
 You should notice that the performance of the query against the memory-optimized table runs between 2x-10x faster than the same query, running against the same data stored in a disk based table. Query time is shown in the bottom right of the document window in Visual Studio.
 ![alt text][In-Memory Results]
 
-[In-Memory Results]: images/InMemoryResults.png "In-Memory Results"
+[In-Memory Results]: Images/InMemoryResults.png "In-Memory Results"
 
 ## Execute the queries under load
 

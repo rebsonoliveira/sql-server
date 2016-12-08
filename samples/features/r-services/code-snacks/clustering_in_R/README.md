@@ -13,7 +13,7 @@ The goal of a clustering algorithm is to look at an input set of data and attemp
 -	Using SQL Server Configuration Manager (which is launched from the Start menu), make sure that TCP/IP connections are enabled to your instance of SQL Server (under SQL Server Network Configuration). 
 ![alt text][SQL Config]
 
-[SQL Config]: images/SqlConfig.png "SQL Server Network Configuration"
+[SQL Config]: Images/SqlConfig.png "SQL Server Network Configuration"
 - Be sure that the SQL Server, SQL Server Launchpad and SQL Server Browser  services are all running.
 
 ## Clone the provided project
@@ -68,7 +68,7 @@ GO
 
 ![alt text][Clustering Results]
 
-[Clustering Results]: images/ClusteringResults.png "Clustering Results"
+[Clustering Results]: Images/ClusteringResults.png "Clustering Results"
 
 ## Leverage Clustering from an Application
 1. Within Visual Studio, open app.config located underneath the SqlSecurity project in Solution Explorer.
@@ -80,4 +80,4 @@ Observe the clusters for the taxi rides as retrieved by the application, you hav
 
 ![alt text][Application Results]
 
-[Application Results]: images/ApplicationResults.png "Application Results"
+[Application Results]: Images/ApplicationResults.png "Application Results"
