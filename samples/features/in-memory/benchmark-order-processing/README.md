@@ -31,7 +31,8 @@ Sample order processing workload that can be used for benchmarking transactional
   |Products	|10	|
   |PurchaseCriteria	|1	|
   |Fulfillment|0|
- 
+
+  - The *scale factor* is a number that governs the actual database size for a given run of the workload. The actual row count for a given table is `[scale factor * weight * 10,000]`. For example, with scale factor 5, the Products table has 5 * 10 * 10,000 = 500,000 rows.
 
 2. Run the stored procedures using the following mix.
 

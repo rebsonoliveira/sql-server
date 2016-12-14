@@ -1,6 +1,0 @@
-{
-    "main": "sample-node.js-mac.js",
-    "dependencies": {
-        "tedious": "*"
-    }
-}

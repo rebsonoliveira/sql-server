@@ -1,4 +1,5 @@
-﻿/*
+﻿
+-- traditional T-SQL version of the stored procedure
 CREATE PROCEDURE InsertReservationDetails(@TicketReservationID int, @LineCount int, @Comment NVARCHAR(1000), @FlightID int)
 AS
 BEGIN
@@ -10,9 +11,9 @@ BEGIN
 		SET @loop += 1;
 	END
 END
-*/
 
 
+/*
 -- natively compiled version of the stored procedure:
 CREATE PROCEDURE InsertReservationDetails(@TicketReservationID int, @LineCount int, @Comment NVARCHAR(1000), @FlightID int)
 WITH NATIVE_COMPILATION, SCHEMABINDING
@@ -28,3 +29,4 @@ BEGIN ATOMIC WITH (TRANSACTION ISOLATION LEVEL=SNAPSHOT, LANGUAGE=N'English')
 		SET @loop += 1;
 	END
 END
+*/
