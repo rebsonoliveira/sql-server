@@ -1,4 +1,4 @@
-#  Dynamic Data Masking & Row Level Security Code Snack
+﻿#  Dynamic Data Masking & Row Level Security Code Snack
 In this code snack, developers will create a database having human resources data, including a table containing simulated employee pay data. They will be guided thru the sample data to highlight the sensitive information it contains (e.g., social security numbers and salaries) and then configuring the masking of the sensitive data. In addition, they will enable Row Level Security to handle three different roles: contractors (who have no visibility to any rows except their own in the table), HR (who can view all employee rows except those of executives) and Executives (who can view all employee rows). They will complete a node.js application that queries the database to see the differing outcomes that result based on Row Level Security policy.
 
 ## Requirements
@@ -50,14 +50,14 @@ Clone this repo on to your local machine.
 
 ![alt text][mssqlcmd]
 
-[mssqlcmd]: images/mssqlcommand.png "mssql command"
+[mssqlcmd]: Images/mssqlcommand.png "mssql command"
 
 5. Choose Connect to database
 6. Choose the localhost using your SA user
 
 ![alt text][mssqlcmd3]
 
-[mssqlcmd3]: images/mssqlchoose.png "mssql choose connection"
+[mssqlcmd3]: Images/mssqlchoose.png "mssql choose connection"
 
 7. Back in the document editor for Create Sample Database.sql, make sure you have nothing highlighted and execute it with cmd+shift+e
 8. Wait for the script to complete successfully.
@@ -70,7 +70,7 @@ Clone this repo on to your local machine.
 
 ![alt text][Explore Data]
 
-[Explore Data]: images/mssqlunmaskedresults.png "Explore Data"
+[Explore Data]: Images/mssqlunmaskedresults.png "Explore Data"
 
 4. Click the X to close the MSSQL Output tab. In the steps that follow, remember to close this anytime you will execute a new query or you may not see the results of your latest query.
 
@@ -101,7 +101,7 @@ ALTER COLUMN Rate ADD MASKED WITH (FUNCTION = 'random(20,150)')
 13. Observe that now the NationalIDNumber only displays the last two digits, and the Rate values are different from before.
 ![alt text][Masked Data]
 
-[Masked Data]: images/mssqlmaskedresults.png "Masked Data"
+[Masked Data]: Images/mssqlmaskedresults.png "Masked Data"
 
 ## Configure Row Level Security
 1. Next, consider the scenario where you want to enforce a policy where only Executive users in the organization can see all employee rows in the Employee table. Users in the Human resources department can see all rows except those of the executives. Finally, all other users can only see their row.
@@ -148,7 +148,7 @@ SELECT * FROM HumanResources.Employee;
 
 ![alt text][RLS Data]
 
-[RLS Data]: images/rlsresults.png "RLS Data"
+[RLS Data]: Images/rlsresults.png "RLS Data"
 
 
 ## Leverage Row Level Security from an Application
