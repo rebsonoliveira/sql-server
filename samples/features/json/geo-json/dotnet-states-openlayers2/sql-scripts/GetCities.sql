@@ -3,7 +3,7 @@ select
                 (
                     select
                         'Feature' as [type],
-                        [Location].AsGeoJSON() as [geometry],
+                        dbo.AsGeoJSON([Location]) as [geometry],
                         [CityName] as [properties.name],
                         ac.LatestRecordedPopulation as [properties.population]
                     from Application.Cities ac, Application.StateProvinces asp

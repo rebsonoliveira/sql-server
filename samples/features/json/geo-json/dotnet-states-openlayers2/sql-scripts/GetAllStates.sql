@@ -3,7 +3,7 @@ select
 	(
 		select
 			'Feature' as [type],
-			[Border].AsGeoJSON() as [geometry],
+			dbo.AsGeoJSON([Border]) as [geometry],
 			[StateProvinceName] as [properties.name],
 			[StateProvinceCode] as [properties.code],
 			[Border].STArea() as [properties.area],
