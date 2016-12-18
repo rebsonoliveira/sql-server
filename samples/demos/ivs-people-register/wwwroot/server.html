@@ -17,6 +17,7 @@
     <script src="media/js/lib/Bootstrap.js"></script>
     <script src="media/js/lib/jquery.dataTables.js"></script>
     <script src="media/js/lib/jquery.dataTables.Bootstrap.js"></script>
+    <script src="media/js/lib/jquery.dataTables.incremental_pagination.js"></script>
 
 	
 	<script type="text/javascript" class="init">	
@@ -32,15 +33,21 @@ $(document).ready(function() {
  	var table = $('#example').DataTable({
         "serverSide": true,
         "processing": true,
-        "sDom": "lrtp",
-        "pagingType": "simple",
+        "pagingType": "incremental",
         "ajax": "/api/People",
         "columns": [
             { "data": "name", "width": "10%" },
             { "data": "surname", "width": "10%" },
             { "data": "address", "width": "50%" },
             { "data": "town", "width": "10%" }
-        ]
+        ],
+        "language": {
+            "lengthMenu": "Display _MENU_ per page",
+            "zeroRecords": "Nothing found - sorry",
+            "info": "Page _PAGE_",
+            "infoEmpty": "No records available",
+            "infoFiltered": ""
+        }
     });
 
     // Apply the search

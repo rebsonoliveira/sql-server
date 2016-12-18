@@ -1,11 +1,9 @@
-﻿using Belgrade.SqlClient;
-using Belgrade.SqlClient.SqlDb;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System.Data.SqlClient;
+using SqlServerRestApi;
 
 namespace Catalog
 {
@@ -26,15 +24,7 @@ namespace Catalog
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            string ConnString = Configuration["ConnectionStrings:IVSDemo"];
-
-            // Adding data access services/components.
-            services.AddTransient<IQueryPipe>(
-                sp => new QueryPipe(new SqlConnection(ConnString)));
-
-            services.AddTransient<ICommand>(
-                sp => new Command(new SqlConnection(ConnString)));
-
+            services.AddSqlClient(Configuration["ConnectionStrings:IVSDemo"]);
             // Add framework services.
             services.AddMvc();
         }
