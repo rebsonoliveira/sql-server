@@ -20,7 +20,7 @@ The demo is run in this [17-minute video explaining In-Memory OLTP](https://www.
 
 ## Running this sample
 1. Before you can run this sample, you must have the following perquisites:
-	- SQL Server 2016 CTP3 (or higher)
+	- SQL Server 2014 (or higher)
 	- Visual Studio 2015 (or higher) with the latest SSDT installed.
 
 2. Clone this repository using Git for Windows (http://www.git-scm.com/), or download the zip file.
