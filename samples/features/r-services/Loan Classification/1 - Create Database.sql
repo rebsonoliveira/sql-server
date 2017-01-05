@@ -696,9 +696,6 @@ INDEX [RunTimeStats_index] NONCLUSTERED HASH
 
 GO
 
-USE [JHAIgnite]
-GO
-
 
 SET ANSI_NULLS ON
 GO
