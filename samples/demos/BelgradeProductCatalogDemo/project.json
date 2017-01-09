@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "Belgrade.Sql.Client": "0.6.0",
+    "Belgrade.Sql.Client": "0.6.2",
     "Microsoft.AspNetCore.Mvc": "1.0.0",
     "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
     "Microsoft.AspNetCore.Server.Kestrel": "1.0.0",
@@ -12,6 +12,10 @@
     "Microsoft.Extensions.Logging": "1.0.0",
     "Microsoft.Extensions.Logging.Console": "1.0.0",
     "Microsoft.Extensions.Logging.Debug": "1.0.0",
+    "Serilog": "2.3.0",
+    "Serilog.Extensions.Logging": "1.3.1",
+    "Serilog.Sinks.PeriodicBatching": "2.1.0",
+    "Serilog.Sinks.RollingFile": "3.3.0",
     "System.Data.SqlClient": "4.1.0"
   },
 
@@ -33,6 +37,7 @@
     },
     "net46": {
       "dependencies": {
+        "Serilog.Sinks.MSSqlServer": "4.2.0"
       }
     }
   },
