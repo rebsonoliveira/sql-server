@@ -14,22 +14,22 @@ Provides the scripts and lists the steps to set up automatically exporting your 
 	- Run powershell as admin.
 	- Run the New-SelfSignedCertificate command: 
 
-```powershell
+	```powershell
 $cert = New-SelfSignedCertificate -CertStoreLocation cert:\localmachine\my -DnsName <certificateName>
-```
+	```
 
 	- Export the certificate as a .cer file
 
-```powershell
+	```powershell
 Export-Certificate -Cert "cert:\localmachine\my\$($cert.Thumbprint)" -FilePath <PathAndFileName>.cer
-```
+	```
 
 	- Create a corresponding pfx certificate by taking the thumbprint of the newly created certificate and running these commands:
 
-```powershell
+	```powershell
 $CertPassword = ConvertTo-SecureString -String <YourPassword> -Force -AsPlainText
 Export-PfxCertificate -Cert "cert:\localmachine\my\$($cert.Thumbprint)" -FilePath <PathAndFileName>.pfx -Password $CertPassword
-```
+	```
 
 	- Upload the .cer file to your subscription [in the old portal](https://manage.windowsazure.com/)
 	- Upload the .pfx file to the certificates under Assets in the automation account that you want to use on Azure. You will use the password you gave in the previous step to authenticate it.
