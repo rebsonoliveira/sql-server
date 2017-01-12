@@ -12,11 +12,13 @@ Provides the scripts and lists the steps to set up automatically exporting your 
 
 1. Create and uploade the certificates that you will use to authenticate your connection to azure.
 	- Run powershell as admin.
-	- Run the New-SelfSignedCertificate command: New-SelfSignedCertificate -CertStoreLocation cert:\localmachine\my -DnsName <certificateName>
+	- Run the New-SelfSignedCertificate command: $cert = New-SelfSignedCertificate -CertStoreLocation cert:\localmachine\my -DnsName &lt;certificateName&gt;
+	- Export the certificate as a .cer file
+		- Export-Certificate -Cert "cert:\localmachine\my\$($cert.Thumbprint)" -FilePath &lt;PathAndFileName&gt;.cer
 	- Create a corresponding pfx certificate by taking the thumbprint of the newly created certificate and running these commands:
-		- $CertPassword = ConvertTo-SecureString -String <YourPassword> -Force -AsPlainText
-		- Export-PfxCertificate -Cert cert:\localmachine\my\<thumbprint> -FilePath <PathAndFileName>.pfx -Password $CertPassword
-	- Upload the .cer file to your subscription [here][https://manage.windowsazure.com/]
+		- $CertPassword = ConvertTo-SecureString -String &lt;YourPassword&gt; -Force -AsPlainText
+		- Export-PfxCertificate -Cert "cert:\localmachine\my\$($cert.Thumbprint)" -FilePath &lt;PathAndFileName&gt;.pfx -Password $CertPassword
+	- Upload the .cer file to your subscription [in the old portal](https://manage.windowsazure.com/)
 	- Upload the .pfx file to the certificates under Assets in the automation account that you want to use on Azure. You will use the password you gave in the previous step to authenticate it.
 2. Create new a new credentials asset to authenticate your server with.
 	- Under assets, click on Credentials, and then click on Add a credential.
@@ -25,7 +27,7 @@ Provides the scripts and lists the steps to set up automatically exporting your 
 	- Under assets, click on variables and then Add a variable.
 	- Give the value of the storage key and you can make it encrypted so that only Azure Automation can read the variable and it won't show the key in plaintext if someone looks at the variable.
 4. Set Up Log Analytics (OMS) and Alerts
-	- If you don't have Log Analytics set up on your Azure account, follow [these][https://azure.microsoft.com/en-us/documentation/articles/automation-manage-send-joblogs-log-analytics/] instructions for setting it up.
+	- If you don't have Log Analytics set up on your Azure account, follow [these](https://azure.microsoft.com/en-us/documentation/articles/automation-manage-send-joblogs-log-analytics/) instructions for setting it up.
 5. Set Up Log Analytics Alerts
 	- To send yourself an email if an error occurs or one of the jobs fails, you need to set up alerts.
 	- Select your log analytics account that you want to use in the azure portal and click on the OMS Portal box under Management.
