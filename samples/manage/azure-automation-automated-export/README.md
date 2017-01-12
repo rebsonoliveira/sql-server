@@ -12,7 +12,10 @@ Provides the scripts and lists the steps to set up automatically exporting your 
 
 1. Create and uploade the certificates that you will use to authenticate your connection to azure.
 	- Run powershell as admin.
-	- Run the New-SelfSignedCertificate command: `$cert = New-SelfSignedCertificate -CertStoreLocation cert:\localmachine\my -DnsName <certificateName>`
+	- Run the New-SelfSignedCertificate command: 
+	```powershell
+$cert = New-SelfSignedCertificate -CertStoreLocation cert:\localmachine\my -DnsName <certificateName>
+```
 	- Export the certificate as a .cer file
 		- `Export-Certificate -Cert "cert:\localmachine\my\$($cert.Thumbprint)" -FilePath <PathAndFileName>.cer`
 	- Create a corresponding pfx certificate by taking the thumbprint of the newly created certificate and running these commands:
