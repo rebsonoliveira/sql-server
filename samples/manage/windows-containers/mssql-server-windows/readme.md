@@ -1,4 +1,4 @@
-# mssql-server-2016-sp1-express-windows
+# mssql-server-windows
 This Dockerfile helps developers to get started using SQL Server vNext in Windows Containers. The file downloads and installs SQL Server vNext with the default setup parameters.
 
 ### Contents

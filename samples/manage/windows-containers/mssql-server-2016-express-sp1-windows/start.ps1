@@ -46,7 +46,7 @@ if ($null -ne $dbs -And $dbs.Length -gt 0){
 		}
 		
 		$files = $files -join ","
-		$sqlcmd = "sp_detach_db $($db.dbName);CREATE DATABASE $($db.dbName) ON $($files) FOR ATTACH ;"
+		$sqlcmd = "sp_detach_db ""$($db.dbName)"";CREATE DATABASE ""$($db.dbName)"" ON $($files) FOR ATTACH ;"
 
 		Write-Verbose "Invoke-Sqlcmd -Query $($sqlcmd) -ServerInstance '.\SQLEXPRESS'"
 		Invoke-Sqlcmd -Query $sqlcmd -ServerInstance ".\SQLEXPRESS"
