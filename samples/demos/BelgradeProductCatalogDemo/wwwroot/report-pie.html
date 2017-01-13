@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link href="media/css/Bootstrap.css" rel="stylesheet" />
+    <link href="media/js/lib/nvd3/nv.d3.min.css" rel="stylesheet" />
+    <script src="media/js/lib/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js" charset="utf-8"></script>
+    <script src="media/js/lib/nvd3/nv.d3.min.js"></script>
+    <script src="media/js/lib/Bootstrap.js"></script>
+    <style>
+        text {
+            font: 12px sans-serif;
+        }
+
+        .testBlock {
+            display: block;
+            float: left;
+            height: 300px;
+            width: 300px;
+        }
+
+        html, body {
+            margin: 0px;
+            padding: 0px;
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Static navbar -->
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Product Catalog Demo</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="index.html">Products</a></li>
+                    <li class="active"><a href="#">Pie chart</a></li>
+                    <li><a href="report-multibar.html">Bar chart</a></li>
+                </ul>
+                <ul class="nav navbar-nav pull-right">
+                    <li class="dropdown pull-right">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Current user: <span class="UserGreeting">Admin</span><span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/api/Company/login?id=0" class="user-role">Admin</a></li>
+                            <li><a href="/api/Company/login?id=1" class="user-role">A Datum Corporation</a></li>
+                            <li><a href="/api/Company/login?id=2" class="user-role">Contoso, Ltd.</a></li>
+                            <li><a href="/api/Company/login?id=3" class="user-role">Consolidated Messenger</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+    </nav>
+    <!-- End Static navbar -->
+
+    <div class="testBlock"><svg id="test1"></svg></div>
+    <div class="testBlock"><svg id="test2"></svg></div>
+
+    <script>
+
+        //$.ajax('data/nvd3-pie.js', { "dataType": "json" })
+        $.ajax('api/Product/report1', { "dataType": "json" })
+            .done(function (testdata) {
+
+
+            var width = 300;
+            var height = 300;
+
+            nv.addGraph(function () {
+                var chart = nv.models.pie()
+                        .width(width)
+                        .height(height)
+                        .labelType(function (d, i, values) {
+                            return values.key + ':' + values.value;
+                        })
+                ;
+
+                d3.select("#test1")
+                        .datum([testdata])
+                        .transition().duration(1200)
+                        .attr('width', width)
+                        .attr('height', height)
+                        .call(chart);
+
+                // LISTEN TO CLICK EVENTS ON THE PIE CONTAINER
+                // chart.dispatch.on('chartClick', function() {
+                //   code...
+                // });
+
+                // LISTEN TO CLICK EVENTS ON THE SLICES OF THE PIE
+                // chart.dispatch.on('elementClick', function() {
+                //   code...
+                // });
+
+                // OTHER EVENTS DISPATCHED BY THE PIE INCLUDE: elementDblClick, elementMouseover, elementMouseout, elementMousemove, renderEnd
+                // @see nv.models.pie
+                return chart;
+            });
+
+            nv.addGraph(function () {
+                var chart = nv.models.pie()
+                        .x(function (d) { return d.key; })
+                        .y(function (d) { return d.y; })
+                        .width(width)
+                        .height(height)
+                        .labelType('percent')
+                        .valueFormat(d3.format('%'))
+                        .donut(true);
+
+                d3.select("#test2")
+                        .datum([testdata])
+                        .transition().duration(1200)
+                        .attr('width', width)
+                        .attr('height', height)
+                        .call(chart);
+
+                return chart;
+            });
+
+        });
+
+    </script>
+</body>
+</html>
