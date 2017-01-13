@@ -65,7 +65,10 @@ To run this sample, you need the following prerequisites.
 **Software prerequisites:**
 
 1. SQL Server 2016 (or higher) or an Azure SQL Database
-2. [ASP.NET Core 1.0 SDK](https://www.microsoft.com/net/core#windows) (or higher) and [Entity Framework Core 1.0](https://docs.microsoft.com/en-us/ef/core/) 3. Optional: Visual Studio 2015 Update 3 (or higher) or Visual Studio Code Editor.
+
+2. [ASP.NET Core 1.0 SDK](https://www.microsoft.com/net/core#windows) (or higher) and [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/)
+
+3. Optional: Visual Studio 2015 Update 3 (or higher) or Visual Studio Code Editor.
 
 **Azure prerequisites:**
 
