@@ -30,3 +30,11 @@ INSERT INTO Blogs (Url, Tags, Owner) VALUES
 ('http://blogs.msdn.com/visualstudio', '[".Net", "VS"]','{"Name":"Jack","Surname":"Doe","Email":"jack.doe@contoso.com"}'),
 ('https://blogs.msdn.microsoft.com/sqlserverstorageengine/', '["SQL Server"]','{"Name":"Mike","Surname":"Doe","Email":"mike.doe@contoso.com"}')
 
+-- Add indexing on Name property in JSON column:
+ALTER TABLE Blogs
+	ADD OwnerName AS JSON_VALUE(Owner, '$.Name');
+
+CREATE INDEX ix_OwnerName
+	ON Blogs(OwnerName);
+
+

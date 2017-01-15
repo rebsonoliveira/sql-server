@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -40,7 +39,7 @@ namespace EFGetStarted.AspNetCore.NewDb.Models
         [NotMapped]
         public string[] Tags
         {
-            get { return (this._Tags == null) ? null : JsonConvert.DeserializeObject<string[]>(this._Tags); }
+            get { return _Tags == null ? null : JsonConvert.DeserializeObject<string[]>(_Tags); }
             set { _Tags = JsonConvert.SerializeObject(value); }
         }
 
