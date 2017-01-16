@@ -4,7 +4,7 @@
 # https://github.com/brogersyh/Dockerfiles-for-windows/tree/master/sqlexpress
 #
 # .NET 3.5 required for SQL Server
-FROM microsoft/dotnet35
+FROM microsoft/dotnet-framework:3.5
 
 # maintainer for image metadata
 MAINTAINER Perry Skountrianos
