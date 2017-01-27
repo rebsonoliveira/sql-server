@@ -1,6 +1,6 @@
 # Build a predictive model with SQL Server R Services
 
-This sample provides custom reports for SQL Server R Services that can be viewed from SQL Server Management Studio. The reports can be used to view configuration information, resource usage, execution statistics, active sessions and other information about R Services.
+This sample shows how to create a predictive model in R and operationalize it with SQL Server 2016.
 
 ### Contents
 
@@ -35,7 +35,8 @@ Follow the step by step tutorial [here](http://aka.ms/sqldev/R) to walk through 
 ## Before you begin
 
 To run this sample, you need the following prerequisites.
-Section 1 in the [tutorial](http://aka.ms/sqldev/R) covers all prerequisites.
+Section 1 in the [tutorial](http://aka.ms/sqldev/R) covers the prerequisites.
+After that, you can download a DB backup file and restore it using Setup.sql. [Download DB](https://deve2e.azureedge.net/sqlchoice/static/TutorialDB.bak)
 
 **Software prerequisites:**
 

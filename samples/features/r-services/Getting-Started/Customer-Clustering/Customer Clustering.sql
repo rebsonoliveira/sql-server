@@ -1,4 +1,4 @@
-USE [tpcx1b]
+USE [tpcxbb_1gb]
 
 DROP PROC IF EXISTS generate_customer_return_clusters;
 GO
