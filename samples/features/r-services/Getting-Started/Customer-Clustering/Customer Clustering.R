@@ -1,4 +1,9 @@
 
+
+
+# Define the connection string
+connStr <- paste("Driver=SQL Server;Server=", "MyServer", ";Database=", "tpcx1b", ";Trusted_Connection=true;", sep = "");
+
 # Input Query
 input_query <- "
 	SELECT
@@ -35,10 +40,6 @@ FROM
     GROUP BY sr_customer_sk
   ) returned ON ss_customer_sk=sr_customer_sk 
 "
-
-# Define the connection string
-connStr <- paste("Driver=SQL Server;Server=", "NELLIELAPTOP", ";Database=", "tpcx1b", ";Trusted_Connection=true;", sep = "");
-
 # Input customer data that needs to be classified
 customer_returns <- RxSqlServerData(sqlQuery = input_query,
                                         colClasses = c(customer = "numeric", orderRatio = "numeric", itemsRatio = "numeric", monetaryRatio = "numeric", frequency = "numeric"),
@@ -56,7 +57,6 @@ head(customer_data, n = 5);
 wss <- (nrow(customer_data) - 1) * sum(apply(customer_data, 2, var))
 for (i in 2:20) { 
 xt = kmeans(customer_data, centers = i)
-    print(xt$ifault)
 wss[i] <- sum(kms = kmeans(customer_data, centers = i)$withinss)
     }
 plot(1:20, wss, type = "b", xlab = "Number of Clusters", ylab = "Within groups sum of squares")
