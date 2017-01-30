@@ -1,7 +1,7 @@
 # Samples for SQL Server R Services
 
 Go to the getting started tutorials to learn more about:
-[Predictive Modeling with R Services](http://aka.ms/sqldev/r) 
+[Predictive Modeling with R Services](https://www.microsoft.com/en-us/sql-server/developer-get-started/rprediction) 
 [Customer Clustering with R Services](https://www.microsoft.com/en-us/sql-server/developer-get-started/rclustering) 
 
 
