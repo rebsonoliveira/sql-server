@@ -36,7 +36,7 @@ Follow the step by step tutorial [here](https://www.microsoft.com/en-us/sql-serv
 
 To run this sample, you need the following prerequisites.
 Section 1 in the [tutorial](https://www.microsoft.com/en-us/sql-server/developer-get-started/rclustering) covers the prerequisites.
-After that, you can download a DB backup file and restore it using Setup.sql. [Download DB](https://deve2e.azureedge.net/sqlchoice/static/tpcxbb_1gb.bak)
+After that, you can download a DB backup file and restore it using Setup.sql. [Download DB](https://sqlchoice.blob.core.windows.net/sqlchoice/static/tpcxbb_1gb.bak)
 
 **Software prerequisites:**
 
