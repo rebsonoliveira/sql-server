@@ -65,7 +65,7 @@ customer_returns <- RxSqlServerData(sqlQuery = input_query,
 # Output table to hold the customer cluster mappings
 return_cluster = RxSqlServerData(table = "customer_return_clusters", connectionString = connStr);
 
-# set.seed for random number generator for predicatability
+# set.seed for random number generator for predictability
 set.seed(10);
 
 # generate clusters using rxKmeans and output clusters to a table called "customer_return_clusters". 

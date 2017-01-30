@@ -64,7 +64,7 @@ plot(1:20, wss, type = "b", xlab = "Number of Clusters", ylab = "Within groups s
 # Output table to hold the customer group mappings
 return_cluster = RxSqlServerData(table = "return_cluster", connectionString = connStr);
 
-# Set.seed for random number generator for predicatability
+# Set.seed for random number generator for predictability
 set.seed(10);
 
 # Generate clusters using rxKmeans and output key / cluster to a table in SQL Server called return_cluster
