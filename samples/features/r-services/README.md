@@ -4,7 +4,6 @@ Go to the getting started tutorials to learn more about:
 [Predictive Modeling with R Services](https://www.microsoft.com/en-us/sql-server/developer-get-started/rprediction) 
 [Customer Clustering with R Services](https://www.microsoft.com/en-us/sql-server/developer-get-started/rclustering) 
 
-
 [Telco Customer Churn](Telco Customer Churn)
 
 Telco Customer Churn sample using SQL Server R Services.
@@ -13,3 +12,6 @@ Telco Customer Churn sample using SQL Server R Services.
 
 Custom reports for SQL Server R Services built using SQL Server Report Builder. The reports can be added to SQL Server Management Studio to view various configuration and runtime information about R scripts execution in SQL Server.
 
+[Loan Classification](Loan Classification)
+
+This sample contains all the scripts required to emulate a similar setup used for Loan Classification which Jack Henry and Associates had demonstrated on-stage at Ignite with Data Group CVP, Joseph Sirosh, using Lending Club data with SQL Server 2016 R Services and an Azure Data Science VM.

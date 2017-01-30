@@ -40,7 +40,11 @@ To run this sample, you need the following prerequisites.
 ## Run this sample
 Installation instructions for R Services can be found [here](https://msdn.microsoft.com/en-us/library/mt696069.aspx).
 
-To use custom reports from SQL Server Management Studio, follow the instructions from "[Add a custom report to Management Studio](https://msdn.microsoft.com/en-us/library/bb153687.aspx)" topic in SQL Server Books Online.
+Steps:
+- Download a zip file  containing the reports to a folder using one of the links below:
+    - [DownGit Link](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/Microsoft/sql-server-samples/tree/master/samples/features/r-services/SSMS-Custom-Reports) to get Zip file with contents
+    - Use [GitZip](http://kinolien.github.io/gitzip/) & specify the [Url](https://github.com/Microsoft/sql-server-samples/tree/master/samples/features/r-services/SSMS-Custom-Reports)
+- Open the custom reports from SQL Server Management Studio using the instructions from "[Add a custom report to Management Studio](https://msdn.microsoft.com/en-us/library/bb153687.aspx)" topic in SQL Server Books Online
 
 <a name=sample-details></a>
 

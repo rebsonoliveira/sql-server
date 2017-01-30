@@ -40,3 +40,4 @@ case VDC_Complete:
               completionCode = ERROR_SUCCESS;
               break;
 ```
+The *SQL Server Backup Simulator* can be downloaded [here](https://github.com/Microsoft/tigertoolbox/releases)

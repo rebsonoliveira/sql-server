@@ -39,16 +39,39 @@ To run this sample, you need the following prerequisites.
 
 ## Run this sample
 
+### Setup
+
 1. From SQL Server Management Studio or Sql Server Data Tools connect to your SQL Server 2016 or Azure SQL database and execute setup.sql script that will create and populate Todo table in the database.
 
-2. From Visual Studio, open the **TodoApp.xproj** file from the root directory,
+2. From Visual Studio 2015, open the **TodoRestWebApi.xproj** file from the root directory. Restore packages using right-click menu on the project in Visual Studio and by choosing Restore Packages item. As an alternative, you may run **dotnet restore** from the command line (from the root folder of application).
 
-3. Locate Startup.cs file in the project, change connection string in ConfigureServices method to reference your database, and build solution using Ctrl+Shift+B, right-click on project + Build, or Build/Build Solution from menu.
+3. Add a connection string in appsettings.json or appsettings.development.json file. An example of the content of appsettings.development.json is shown in the following configuration:
 
-4. Run sample app using F5 or Ctrl+F5,
-4.1. Open /api/Todo Url to get all Todo items as a JSON array,
-4.2. Open /api/Todo/1 Url to get details about a single Todo item with id 1,
-4.3. Send POST, PUT, PATCH, or DELETE Http requests to update content of Todo table.
+```
+{
+  "ConnectionStrings": {
+    "TodoDb": "Server=.;Database=Todo;Integrated Security=true"
+  }
+}
+```
+
+If your database is hosted on Azure you can add something like:
+```
+{
+  "ConnectionStrings": {
+    "TodoDb": "Server=<<SERVER>>.database.windows.net;Database=Todo;User Id=<<USER>>;Password=<<PASSWORD>>"
+  }
+}
+```
+
+### Build and run the REST services
+
+1. Build solution using Ctrl+Shift+B, right-click on project + Build, Build/Build Solution from menu, or **dotnet build** command from the command line (from the root folder of application).
+
+2. Run sample app using F5 or Ctrl+F5,
+  1. Open /api/Todo Url to get all Todo items as a JSON array,
+  2. Open /api/Todo/1 Url to get details about a single Todo item with id 1,
+  3. Send POST, PUT, PATCH, or DELETE Http requests to update content of Todo table.
 
 <a name=sample-details></a>
 

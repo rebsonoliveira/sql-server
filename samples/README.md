@@ -4,10 +4,6 @@ __[applications] (applications/)__
 
 End-to-end sample applications that illustrate the use of SQL Server for specific application scenarios.
 
-__[connect] (connect/)__
-
-Samples showing how to connect to SQL databases using various programming languages, including Python, C#, Java, Ruby, and Node.js.
-
 __[databases] (databases/)__
 
 Sample databases for SQL Server, Azure SQL Database, and Azure SQL Data Warehouse.
@@ -23,3 +19,7 @@ Samples illustrating specific SQL Server and Azure SQL Database features, includ
 __[management] (manage/)__
 
 Samples that help with the management of SQL Server and Azure SQL Database.
+
+__[tutorials] (tutorials/)__
+
+Samples showing how to connect to SQL databases using various programming languages, including Python, C#, Java, Ruby, Node.js, and PHP.
