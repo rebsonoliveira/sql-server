@@ -10,7 +10,6 @@ AS
 */
 BEGIN
 	DECLARE @duration FLOAT
-	, @predict_duration FLOAT
 	, @instance_name NVARCHAR(100) = @@SERVERNAME
 	, @database_name NVARCHAR(128) = db_name()
 
@@ -99,4 +98,4 @@ SELECT customer.[c_email_address], customer.c_customer_sk
   JOIN 
   [dbo].[customer_return_clusters] as r
   ON r.customer = customer.c_customer_sk
-  WHERE r.cluster = 1
+  WHERE r.cluster = 3
