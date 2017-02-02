@@ -1,8 +1,11 @@
 # Samples for SQL Server R Services
 
-[Implementing Predictive Analytics](Implementing Predictive Analytics)
+Go to the getting started tutorials to learn more about:
 
-Step-by-step sample that explains the basics about predictive analytics for developers. The lab will take you about 15 min and will show you how to create an application that uses node.js and SQL Server 2016 to predict if a cab driver will be tipped or not. 
+[Predictive Modeling with R Services](https://www.microsoft.com/en-us/sql-server/developer-get-started/rprediction)
+
+[Customer Clustering with R Services](https://www.microsoft.com/en-us/sql-server/developer-get-started/rclustering)
+
 
 [Telco Customer Churn](Telco Customer Churn)
 
