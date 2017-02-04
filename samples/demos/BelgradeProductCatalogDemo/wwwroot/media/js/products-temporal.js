@@ -1,4 +1,49 @@
-﻿$(function () {
+﻿ROOT_API_URL = "/api/Product/";
+
+$(document).ready(function () {
+
+    // DataTable setup
+    $('#example').DataTable({
+        "ajax": ROOT_API_URL + "temporal",
+        "columns": [
+            { "className": 'details-control', "visible": true, "sortable": false, "searchable": false, "defaultContent": "" },
+            { "data": "Name" },
+            { "data": "Color", "defaultContent": "" },
+            { "data": "Price", sType: 'numeric', "defaultContent": "" },
+            { "data": "Quantity", "visible": true, "defaultContent": "" },
+            { "data": "MadeIn", "visible": true, "defaultContent": "" },
+            { "data": "Tags", "visible": true, "defaultContent": "" },
+            {
+                "data": "ProductID",
+                "sortable": false,
+                "searchable": false,
+                "render": function (data) {
+                    return '<button data-id="' + data + '" class="btn btn-primary btn-sm edit" data-toggle="modal" data-target="#modalEditProduct"><span class="glyphicon glyphicon-edit"></span> Edit</button>';
+                }
+            },
+            {
+                "data": "ProductID",
+                "sortable": false,
+                "searchable": false,
+                "render": function (data) {
+                    return '<button data-id="' + data + '" class="btn btn-danger btn-sm delete"><span class="glyphicon glyphicon-remove"></span> Delete</button>';
+                }
+            },
+            {
+                "data": "ProductID",
+                "visible": false,
+                "sortable": false,
+                "searchable": false,
+                "render": function (data, type, full) {
+                    return '<a href="' + ROOT_API_URL + 'restore?ProductID=' + data + '&DateModified=' + full.DateModified + '" class="restore btn btn-success btn-sm delete"><span class="glyphicon glyphicon-floppy-open"></span> Restore</button>';
+                }
+            }
+        ]
+    });// end DataTable setup
+
+});
+
+$(function () {
 
     var $table = $('#example').DataTable();
     // Add event listener for opening and closing details

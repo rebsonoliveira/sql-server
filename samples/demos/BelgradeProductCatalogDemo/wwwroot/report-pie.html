@@ -5,9 +5,10 @@
     <link href="media/css/Bootstrap.css" rel="stylesheet" />
     <link href="media/js/lib/nvd3/nv.d3.min.css" rel="stylesheet" />
     <script src="media/js/lib/jquery.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js" charset="utf-8"></script>
+    <script src="media/js/lib/nvd3/d3.min.js"></script>
     <script src="media/js/lib/nvd3/nv.d3.min.js"></script>
     <script src="media/js/lib/Bootstrap.js"></script>
+    <script src="media/js/rls.js"></script>
     <style>
         text {
             font: 12px sans-serif;
@@ -39,22 +40,23 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Product Catalog Demo</a>
+                <a class="navbar-brand" href="/ProductCatalog/Index">Product Catalog Demo</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="index.html">Products</a></li>
-                    <li class="active"><a href="#">Pie chart</a></li>
-                    <li><a href="report-multibar.html">Bar chart</a></li>
+                    <li><a href="index.html">Product List</a></li>
+                    <li class="active"><a href="#">Products by color</a></li>
+                    <li><a href="report-multibar.html">Quantity by company/color</a></li>
+                    <li><a href="temporal.html">Product History</a></li>
                 </ul>
                 <ul class="nav navbar-nav pull-right">
                     <li class="dropdown pull-right">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Current user: <span class="UserGreeting">Admin</span><span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="/api/Company/login?id=0" class="user-role">Admin</a></li>
-                            <li><a href="/api/Company/login?id=1" class="user-role">A Datum Corporation</a></li>
-                            <li><a href="/api/Company/login?id=2" class="user-role">Contoso, Ltd.</a></li>
-                            <li><a href="/api/Company/login?id=3" class="user-role">Consolidated Messenger</a></li>
+                            <li><a href="/api/Company/login?id=0&page=report1" class="user-role">Admin</a></li>
+                            <li><a href="/api/Company/login?id=1&page=report1" class="user-role">A Datum Corporation</a></li>
+                            <li><a href="/api/Company/login?id=2&page=report1" class="user-role">Contoso, Ltd.</a></li>
+                            <li><a href="/api/Company/login?id=3&page=report1" class="user-role">Consolidated Messenger</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -92,18 +94,6 @@
                         .attr('height', height)
                         .call(chart);
 
-                // LISTEN TO CLICK EVENTS ON THE PIE CONTAINER
-                // chart.dispatch.on('chartClick', function() {
-                //   code...
-                // });
-
-                // LISTEN TO CLICK EVENTS ON THE SLICES OF THE PIE
-                // chart.dispatch.on('elementClick', function() {
-                //   code...
-                // });
-
-                // OTHER EVENTS DISPATCHED BY THE PIE INCLUDE: elementDblClick, elementMouseover, elementMouseout, elementMousemove, renderEnd
-                // @see nv.models.pie
                 return chart;
             });
 

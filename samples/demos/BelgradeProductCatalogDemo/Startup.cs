@@ -3,9 +3,11 @@ using Belgrade.SqlClient.SqlDb.Rls;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using ProductCatalog.Models;
 using Serilog;
 #if NET46 
 using Serilog.Sinks.MSSqlServer;
@@ -51,9 +53,10 @@ namespace ProductCatalog
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //string ConnString = Configuration.GetConnectionString("BelgradeDemo");
             string ConnString = Configuration["ConnectionStrings:BelgradeDemo"];
-            
+
+            services.AddDbContext<ProductCatalogContext>(options => options.UseSqlServer(new SqlConnection(ConnString)));
+
             // Adding data access services/components.
             services.AddTransient(
                 sp => new QueryPipe(new SqlConnection(ConnString))
@@ -65,7 +68,7 @@ namespace ProductCatalog
                             .AddRls("CompanyID", () => GetCompanyIdFromSession(sp))
                 );
 
-            // Add framework services.
+            //// Add framework services.
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddLogging();
             services.AddSession();
@@ -85,7 +88,7 @@ namespace ProductCatalog
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}");
+                    template: "{controller=ProductCatalog}/{action=Index}");
             });
             
         }

@@ -1,9 +1,9 @@
 [
-        { "key": "One", "y": 5 },
-        { "key": "Two", "y": 2 },
-        { "key": "Three", "y": 9 },
-        { "key": "Four", "y": 7 },
-        { "key": "Five", "y": 4 },
-        { "key": "Six", "y": 3 },
-        { "key": "Seven", "y": 0.5 }
+        { "x": "Red", "y": 5 },
+        { "x": "Silver", "y": 2 },
+        { "x": "Black", "y": 9 },
+        { "x": "Red", "y": 7 },
+        { "x": "Magenta", "y": 4 },
+        { "x": "White", "y": 3 },
+        { "x": "Blue", "y": 0.5 }
 ]

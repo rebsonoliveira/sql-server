@@ -22,14 +22,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Product Catalog Demo</a>
+                <a class="navbar-brand" href="/index.html">Product Catalog Demo</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li class="index"><a href="~/Home/Index">Products</a></li>
-                    <li class="report1"><a href="~/Home/Report1">Pie chart</a></li>
-                    <li class="report2"><a href="~/Home/Report2">Bar chart</a></li>
-
+                    <li class="index"><a href="~/ProductCatalog/Index">Product list</a></li>
+                    <li class="report1"><a href="~/ProductCatalog/Report1">Products by color</a></li>
+                    <li class="report2"><a href="~/ProductCatalog/Report2">Quantity by company/color</a></li>
                 </ul>
                 <ul class="nav navbar-nav pull-right">
                     <li class="dropdown pull-right">
@@ -52,6 +51,7 @@
     <script src="~/media/js/lib/jquery.js"></script>
     <script>$("li." + $("body")[0].id).addClass("active");</script>
     <script src="~/media/js/lib/Bootstrap.js"></script>
+    <script src="~/media/js/rls.js"></script>
    
     @RenderSection("scripts", required: false)
 

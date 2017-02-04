@@ -28,8 +28,8 @@
 <script src="~/media/js/lib/nvd3/d3.min.js" charset="utf-8"></script>
 <script src="~/media/js/lib/nvd3/nv.d3.min.js"></script>
 <script>
-            //$.ajax('data/nvd3-multibar.js', { "dataType": "json" })
-            $.ajax('/api/Product/Report2', { "dataType": "json" })
+            $.ajax('/data/nvd3-multibar.js', { "dataType": "json" })
+            //$.ajax('/api/Product/Report2', { "dataType": "json" })
              .done(function (exampleData) {
 
                  nv.addGraph(function () {

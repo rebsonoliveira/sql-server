@@ -35,10 +35,11 @@ namespace ProductCatalog.Controllers
             string referer;
             switch (Request.Query["page"])
             {
-                case "index": referer = "/Home/Index"; break;
-                case "report1": referer = "/Home/Report1"; break;
-                case "report2": referer = "/Home/Report2"; break;
-                default: referer = "/index.html";break;
+                case "index": referer = "/index.html"; break;
+                case "report1": referer = "/report-pie.html"; break;
+                case "report2": referer = "/report-multibar.html"; break;
+                case "temporal": referer = "/temporal.html"; break;
+                default: referer = "/index.html"; break;
             }
             Response.Redirect(referer);
         }
