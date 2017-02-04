@@ -28,15 +28,31 @@ BEGIN
 END
 GO
 
--- Get Actual Execution Plan
+
+-- Create xEvent session
+DROP EVENT SESSION [HashSpills] ON SERVER 
+GO
+CREATE EVENT SESSION [HashSpills] ON SERVER 
+ADD EVENT sqlserver.hash_spill_details(
+    ACTION(sqlserver.database_name,sqlserver.is_system,sqlserver.plan_handle,sqlserver.query_hash,sqlserver.query_plan_hash,sqlserver.session_nt_username,sqlserver.sql_text)),
+ADD EVENT sqlserver.hash_warning(
+    ACTION(sqlserver.database_name,sqlserver.is_system,sqlserver.plan_handle,sqlserver.query_hash,sqlserver.query_plan_hash,sqlserver.session_nt_username,sqlserver.sql_text))
+--ADD TARGET package0.ring_buffer(SET max_memory=(25600))
+ADD TARGET package0.event_file(SET filename=N'C:\IP\Tiger\TR23\Demos\Demo 1.1 - Spills\HashSpills.xel',max_file_size=(50),max_rollover_files=(2))
+WITH (MAX_MEMORY=4096 KB,EVENT_RETENTION_MODE=ALLOW_SINGLE_EVENT_LOSS,MAX_DISPATCH_LATENCY=30 SECONDS,MAX_EVENT_SIZE=0 KB,MEMORY_PARTITION_MODE=NONE,TRACK_CAUSALITY=OFF,STARTUP_STATE=OFF)
+GO
  
--- Execute the stored procedure first with parameter value ‘WA’ – which will select 1% of data. 
+--Execute the stored procedure first with parameter value â€˜WAâ€™ â€“ which will select 1% of data. 
 DBCC FREEPROCCACHE
+GO
+ALTER EVENT SESSION [HashSpills] ON SERVER STATE = START
 GO
 EXEC CustomersByState 'WA'
 GO
 
 EXEC CustomersByState 'NY'
+GO
+ALTER EVENT SESSION [HashSpills] ON SERVER STATE = STOP
 GO
 
 /*
