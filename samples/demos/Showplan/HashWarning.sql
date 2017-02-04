@@ -30,7 +30,7 @@ GO
 
 -- Get Actual Execution Plan
  
--- Execute the stored procedure first with parameter value ‘WA’ – which will select 1% of data. 
+-- Execute the stored procedure first with parameter value â€˜WAâ€™ â€“ which will select 1% of data. 
 DBCC FREEPROCCACHE
 GO
 EXEC CustomersByState 'WA'
