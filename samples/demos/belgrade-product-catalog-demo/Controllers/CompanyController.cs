@@ -38,6 +38,7 @@ namespace ProductCatalog.Controllers
                 case "index": referer = "/index.html"; break;
                 case "report1": referer = "/report-pie.html"; break;
                 case "report2": referer = "/report-multibar.html"; break;
+                case "dashboard": referer = "/dashboard.html"; break;
                 case "temporal": referer = "/temporal.html"; break;
                 default: referer = "/index.html"; break;
             }

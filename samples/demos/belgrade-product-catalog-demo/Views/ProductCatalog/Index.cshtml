@@ -90,8 +90,8 @@
                     <td>@product.Color</td>
                     <td>@product.Price</td>
                     <td>@product.Quantity</td>
-                    <td>@product.Data.MadeIn</td>
-                    <td>@(product.Tags==null?string.Empty:string.Join(", ", product.Tags))</td>
+                    <td>@(product.Data == null ? string.Empty : product.Data.MadeIn)</td>
+                    <td>@(product.Tags==null ? string.Empty : string.Join(", ", product.Tags))</td>
                 </tr>
             }
         </tbody>
