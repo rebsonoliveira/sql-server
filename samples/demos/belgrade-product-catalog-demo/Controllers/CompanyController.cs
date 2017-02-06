@@ -28,17 +28,21 @@ namespace ProductCatalog.Controllers
         [HttpGet("login")]
         public void Login(string id)
         {
-            try
+            if(id=="0")
+                ControllerContext.HttpContext.Session.Remove("CompanyID");
+            else
+                ControllerContext.HttpContext.Session.SetString("CompanyID", id);
+            string referer;
+            switch (Request.Query["page"])
             {
-                if(id=="0")
-                    ControllerContext.HttpContext.Session.Remove("CompanyID");
-                else
-                    ControllerContext.HttpContext.Session.SetString("CompanyID", id);
-                Response.Redirect("/index.html");
-            } catch (Exception ex)
-            {
-                Response.WriteAsync(ex.Message);
+                case "index": referer = "/index.html"; break;
+                case "report1": referer = "/report-pie.html"; break;
+                case "report2": referer = "/report-multibar.html"; break;
+                case "dashboard": referer = "/dashboard.html"; break;
+                case "temporal": referer = "/temporal.html"; break;
+                default: referer = "/index.html"; break;
             }
+            Response.Redirect(referer);
         }
     }
 }
