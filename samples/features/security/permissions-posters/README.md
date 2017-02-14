@@ -7,4 +7,3 @@ Useful link: http://social.technet.microsoft.com/wiki/contents/articles/11842.sq
  - [Microsoft SQL Server 2014 Permissions Poster](Permissions_Poster_SQL_Server_2014.pdf)
  - [Microsoft SQL Server 2016 and SQLDB Permissions Poster](Permissions_Poster_SQL_Server_2016_and_SQLDB.pdf)
  - [Microsoft SQL Server VNext and SQLDB Permissions Poster](Permissions_Poster_SQL_Server_vNext_and_SQLDB.pdf)
- 
