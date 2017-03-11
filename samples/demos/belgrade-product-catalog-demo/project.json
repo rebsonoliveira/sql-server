@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "Belgrade.Sql.Client": "0.6.2",
+    "Belgrade.Sql.Client": "0.6.5",
     "Microsoft.AspNetCore.Mvc": "1.0.0",
     "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
     "Microsoft.AspNetCore.Server.Kestrel": "1.0.0",

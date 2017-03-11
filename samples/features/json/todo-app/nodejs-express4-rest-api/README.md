@@ -29,7 +29,8 @@ To run this sample, you need the following prerequisites.
 **Software prerequisites:**
 
 1. SQL Server 2016 (or higher) or an Azure SQL Database
-2. Visual Studio 2015 (or higher) with the NodeJS
+2. Node.js runtime.
+
 
 **Azure prerequisites:**
 
@@ -39,13 +40,12 @@ To run this sample, you need the following prerequisites.
 
 ## Run this sample
 
-1. Navigate to the folder where you have downloaded sample and run **npm install** in command window, or run setup.bat if you are on Windows operating system. This command will install necessary npm packages defined in project.json.
+1. Navigate to the folder where you have downloaded sample and run **npm install** in command window.
 
-2. From SQL Server Management Studio or SQL Server Data Tools connect to your SQL Server 2016 or Azure SQL database and execute setup.sql script that will create and populate Todo table in the database.
+2. From SQL Server Management Studio or SQL Server Data Tools connect to your SQL Server 2016 or Azure SQL database and
+execute setup.sql script that will create and populate Todo table in the database.
 
-3. From Visual Studio, open the **TodoApp.xproj** file from the root directory,
-
-4. Locate db.js file in the project, change database connection info in createConnection() method to reference your database. the following tokens should be replaced:
+3. Locate db.js file in the project, change database connection info in createConnection() method to reference your database. the following tokens should be replaced:
  1. SERVERNAME - name of the database server.
  2. DATABASE - Name of database where Todo table is stored.
  3. USERNAME - SQL Server login that can access table data and execute stored procedures.
@@ -61,10 +61,9 @@ To run this sample, you need the following prerequisites.
     };
 ```
 
-5. Build project using Ctrl+Shift+B, right-click on project + Build, or Build/Build Solution from menu.
-
-6. Run sample app using F5 or Ctrl+F5. /todo Url will be opened with a list of all Todo items as a JSON array,
- 1. Open /api/Todo/1 Url to get details about a single Todo item with id 1,
+4. Run sample app from the command line using **node app.js**
+ 1. Open http://localhost:3000/todo Url to get list of all Todo items from a table,
+ 2. Open http://localhost:3000/todo/1 Url to get details about a single Todo item with id 1,
  2. Send POST, PUT, or DELETE Http requests to update content of Todo table.
 
 <a name=sample-details></a>

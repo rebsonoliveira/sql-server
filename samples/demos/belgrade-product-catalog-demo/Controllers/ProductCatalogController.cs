@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProductCatalog.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ProductCatalog.Controllers
@@ -45,6 +46,23 @@ namespace ProductCatalog.Controllers
         {
             ViewData["page"] = "report2";
             return View();
+        }
+
+        [HttpGet(Name = "GetAll")]
+        public IEnumerable<Product> GetAll()
+        {
+            return _context.Products.AsEnumerable<Product>();
+        }
+
+        [HttpGet("GetById")]
+        public IActionResult GetById(int id)
+        {
+            var product = _context.Products.FirstOrDefault(p=>p.ProductId == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            return new ObjectResult(product);
         }
     }
 }
