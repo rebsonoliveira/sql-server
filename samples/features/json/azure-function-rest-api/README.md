@@ -35,8 +35,6 @@ To run this sample, you need to download source code from SQL Server GitHub acco
 
 1. Create Azure SQL Database using Azure Portal, SQL Server Management Studio, or other tools.
 
-2. Open [setup.sql script](sql-script/setup.sql) file and execute this code against your database. The script will create and populate Product table.
-
 ### Setup Azure Function
 
 1. Create Azure Function using Azure Portal. In the list of templates choose C#/Http Webhook as a type.
@@ -73,8 +71,8 @@ return new HttpResponseMessage() { Content = new StringContent(body), StatusCode
 ## Related Links
 
 You can find more information about the technologies that are used in this sample on these locations: 
-- [Azure SQL Database]().
-- [Azure Functions]().
+- [JSON support in Azure SQL Database](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-json-features).
+- [Webhooks in Azure Functions](https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-a-web-hook-or-api-function).
 
 ## Code of Conduct
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
