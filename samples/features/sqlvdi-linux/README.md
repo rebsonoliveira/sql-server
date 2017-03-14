@@ -18,9 +18,9 @@ There is a problem with VDF_LikeDisk and VDF_RandomAccess where the backup/resto
    [Install SQL Server on Linux](http://docs.microsoft.com/sql/linux/sql-server-linux-setup) 
    [Install SQL Server tools on Linux](http://docs.microsoft.com/sql/linux/sql-server-linux-setup-tools) 
  
-1. Install the clang and uuid-dev packages in order to build the sample. 
-   
-   Example (for Ubuntu): 
+1. Install the clang and uuid-dev packages in order to build the sample.
+
+   Example (for Ubuntu): 
     
    ```bash
    sudo apt-get install clang 
