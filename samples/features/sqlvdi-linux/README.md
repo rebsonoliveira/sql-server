@@ -9,33 +9,33 @@ This folder contains the latest files and samples required to build a SQL Server
 
 ## Known Bugs
 
-    There is a problem with VDF_LikeDisk and VDF_RandomAccess where the backup/restore is aborted unexpectedly.
+There is a problem with VDF_LikeDisk and VDF_RandomAccess where the backup/restore is aborted unexpectedly.
 
 ## Steps
+
 1. Install the mssql-server and mssql-tools packages 
 
    [Install SQL Server on Linux](http://docs.microsoft.com/sql/linux/sql-server-linux-setup) 
    [Install SQL Server tools on Linux](http://docs.microsoft.com/sql/linux/sql-server-linux-setup-tools) 
  
 1. Install the clang and uuid-dev packages in order to build the sample. 
-
+   
    Example (for Ubuntu): 
     
-    ```bash
-    sudo apt-get install clang 
-    sudo apt-get install uuid-dev 
-    ```
-
-1. Create a symbolic link to sqlcmd in /usr/bin
-
+   ```bash
+   sudo apt-get install clang 
+   sudo apt-get install uuid-dev 
    ```
+   
+1. Create a symbolic link to sqlcmd in /usr/bin
+   
+   ```bash
    sudo ln -s /opt/mssql-tools/bin/sqlcmd /usr/bin/sqlcmd
    ```
 
 1. Copy the vdi sample files to a directory on your Linux machine.
 
 1. Run make to build the sample code
-
 
 1. Run the vdi client as the mssql user or follow these instructions:
 	
