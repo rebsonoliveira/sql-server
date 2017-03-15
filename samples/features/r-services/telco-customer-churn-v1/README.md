@@ -38,7 +38,7 @@ You have to do the following set-up before playing with this demo.
 
 This sample consists of the following directory structure.
 
-- **Data** - This folder contains the raw call detail record data and the USA state longitute/latitute data.
+- **Data** - Download the data files [edw_cdr.csv](https://sqlchoice.blob.core.windows.net/sqlchoice/samples/telco-customer-churn-v1/edw_cdr.csv) and [state_latlon.csv](https://sqlchoice.blob.core.windows.net/sqlchoice/samples/telco-customer-churn-v1/state_latlon.csv).
 - **R** - This folder contains the R code that you can run in any R IDE.
 - **SQL Server** - This folder contains the sql files that you can run to create T-SQL stored procedures (with R code embeded) and try out this telco churn example. 
 - **ReportBuilder** - This folder contains a sample SQL report created by ReportBuilder. 

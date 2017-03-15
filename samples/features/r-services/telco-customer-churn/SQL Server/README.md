@@ -1,7 +1,7 @@
 **Instructions**
 
 
-- Restore the database provided (telcoedw2.bak)
+- Restore the database provided (telcoedw2.bak). The database can be downloaded from [here](https://sqlchoice.blob.core.windows.net/sqlchoice/samples/telco-customer-churn/teloedw2.bak)
 - Run the code in TelcoChurn-Main.sql
 
 
