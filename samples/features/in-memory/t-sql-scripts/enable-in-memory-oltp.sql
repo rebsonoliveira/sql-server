@@ -10,7 +10,7 @@
 --    need to use the WITH (SNAPSHOT) hint for ad hoc queries accessing memory-optimized
 --    tables.
 --
--- Applies To: SQL Server 2014 (or higher); Azure SQL Database
+-- Applies To: SQL Server 2016 (or higher); Azure SQL Database
 -- Author: Jos de Bruijn (Microsoft)
 -- Last Updated: 2016-05-02
 
@@ -46,17 +46,18 @@ ALTER DATABASE CURRENT
 ADD FILEGROUP ' + QUOTENAME(@MODName) + N' CONTAINS MEMORY_OPTIMIZED_DATA;';
 			EXECUTE (@SQL);
 
-			-- add container in the filegroup
-			IF NOT EXISTS (SELECT * FROM sys.database_files WHERE data_space_id IN (SELECT data_space_id FROM sys.filegroups WHERE type = N'FX'))
-			BEGIN
-				SET @SQL = N'
+		END;
+
+		-- add container in the filegroup
+		IF NOT EXISTS (SELECT * FROM sys.database_files WHERE data_space_id IN (SELECT data_space_id FROM sys.filegroups WHERE type = N'FX'))
+		BEGIN
+			SET @SQL = N'
 ALTER DATABASE CURRENT
 ADD FILE (name = N''' + @MODName + ''', filename = '''
 						+ @MemoryOptimizedFilegroupFolder + N''') 
 TO FILEGROUP ' + QUOTENAME(@MODName);
-				EXECUTE (@SQL);
-			END
-		END;
+			EXECUTE (@SQL);
+		END
 	END
 
 	-- 3. set compat level to 130 if it is lower

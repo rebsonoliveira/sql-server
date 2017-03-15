@@ -1,12 +1,26 @@
-# In-Memory OLTP Performance Improvement Sample
+﻿# In-Memory OLTP Performance Improvement Sample
 
 This Windows Forms sample application built on .NET Framework 4.6  demonstrates the performance benefits of using SQL Server memory optimized tables and native compiled stored procedures. You can compare the performance before and after enabling In-Memory OLTP by observing the transactions/sec as well as the current CPU Usage and latches/sec.
 
-![Alt text](Screenshots/1.png "Ticket Reservations")
+The demo is run in this [17-minute video explaining In-Memory OLTP](https://www.youtube.com/watch?v=l5l5eophmK4) (demo is at 8:25).
+
+<a name=about-this-sample></a>
+
+## About this sample
+
+<!-- Delete the ones that don't apply -->
+* **Latest release:** [in-memory-oltp-perf-demo-v1.0](https://github.com/Microsoft/sql-server-samples/releases/tag/in-memory-oltp-demo-v1.0)
+* **Applies to:** SQL Server 2014 (or higher), Azure SQL Database
+* **Key features:** In-Memory OLTP
+* **Workload:** OLTP
+* **Programming Language:** T-SQL, C#
+* **Authors:** Jos de Bruijn
+
+![Alt text](/media/in-memory-oltp-performance.png "Ticket Reservations")
 
 ## Running this sample
 1. Before you can run this sample, you must have the following perquisites:
-	- SQL Server 2016 CTP3 (or higher)
+	- SQL Server 2014 (or higher)
 	- Visual Studio 2015 (or higher) with the latest SSDT installed.
 
 2. Clone this repository using Git for Windows (http://www.git-scm.com/), or download the zip file.
@@ -28,8 +42,8 @@ This Windows Forms sample application built on .NET Framework 4.6  demonstrates 
 8. Start the workload with the **Start** button, and run for a while to show perf profile. Then press stop to stop the workload. You can tweak aspects of the workload (e.g., rows per transaction) through the configuration form accessed using the "Options" menue.
 
 9. In the database project,
-	- Change TicketReservations.sql to a memory-optimized table (instructions commented in the file itself)
-	- Change InsertTicketReservations.sql to natively compiled (instructions in the same file)
+	- Change TicketReservationDetail.sql to a memory-optimized table (instructions commented in the file itself)
+	- Change InsertReservationDetails.sql to natively compiled (instructions in the same file)
 
 10. Publish the database project to the same database – the tool will take care of making the necessary changes.
 		Note that, as part of publication, the data is copied from the old disk-based table to the new memory-optimized table, so the longer you run the initial workload, the longer this publication takes. To speed up the process you can run `TRUNCATE TABLE dbo.TicketReservationDetail` in the database.
@@ -43,13 +57,18 @@ The perf gains from In-Memory OLTP as shown by the load generation app depend on
 -	Configuration settings in the load generator
   -	more rows per transaction => higher perf gain
   -	more reads per write => lower perf gain
-  -	default setting is 10 rows per transaction and 1 read per write
+  -	default setting is 100 rows per transaction and 1 read per write
 
 If the performance profile after migration to In-Memory OLTP looks choppy, it is likely that log IO is the bottleneck. This can be mitigated by using [delayed durability] (https://msdn.microsoft.com/en-us/library/dn449490.aspx). This is enabled by running the following statement in the database:
 	`ALTER DATABASE CURRENT SET DELAYED_DURABILITY = FORCED`
 
-With default settings on one machine with 24 logical cores and relatively slow SSD for the log the app shows around performance 40X gain, and in this case the bottleneck was log IO.
+With default settings on one machine with 24 logical cores and relatively slow SSD for the log the app shows around performance 40X gain, and in this case the bottleneck was log IO. Note that the factor gain can vary with the hardware being used.
+
 When deploying to Azure SQL Database, make sure to run the app in an Azure VM in the same region as the database.
+
+If you have a beefy machine and are seeing a drop-off in transaction throughput after running the demo for a while, increase the BUCKET_COUNT in 'apply-in-memory-oltp.sql' by a factor of 10 or 100.
+
+For any feedback on the sample, contact: sqlserversamples@microsoft.com
 
 ## About the code
 The code included in this sample is not intended to be a set of best practices on how to build scalable enterprise grade applications. This is beyond the scope of this quick start sample.

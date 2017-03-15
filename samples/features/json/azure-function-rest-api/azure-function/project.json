@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "Belgrade.Sql.Client": "0.6.5"
+  }
+}

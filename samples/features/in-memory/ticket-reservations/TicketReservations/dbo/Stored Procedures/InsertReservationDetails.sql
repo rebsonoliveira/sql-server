@@ -1,4 +1,5 @@
 ﻿
+-- traditional T-SQL version of the stored procedure
 CREATE PROCEDURE InsertReservationDetails(@TicketReservationID int, @LineCount int, @Comment NVARCHAR(1000), @FlightID int)
 AS
 BEGIN

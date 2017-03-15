@@ -1,4 +1,4 @@
-# Contoso Retail Data Warehose
+# Contoso Retail Data Warehouse
 
 Loads data from a public Azure Storage Blob into the Contoso Retail Data Warehouse schema in Azure SQL Data Warehouse. 
 
