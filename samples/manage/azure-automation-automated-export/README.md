@@ -14,15 +14,12 @@ Provides the scripts and lists the steps to set up automatically exporting your 
 	- Run powershell as admin.
 	- Run the New-SelfSignedCertificate command: 
 
-```powershell
-$cert = New-SelfSignedCertificate -CertStoreLocation cert:\localmachine\my -DnsName <certificateName>
-```
+
+	`$cert = New-SelfSignedCertificate -CertStoreLocation cert:\localmachine\my -DnsName <certificateName>`
 
 	- Export the certificate as a .cer file
 
-```powershell
-Export-Certificate -Cert "cert:\localmachine\my\$($cert.Thumbprint)" -FilePath <PathAndFileName>.cer
-```
+	`Export-Certificate -Cert "cert:\localmachine\my\$($cert.Thumbprint)" -FilePath <PathAndFileName>.cer`
 
 	- Create a corresponding pfx certificate by taking the thumbprint of the newly created certificate and running these commands:
 
