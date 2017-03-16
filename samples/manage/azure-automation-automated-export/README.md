@@ -24,6 +24,7 @@ Provides the scripts and lists the steps to set up automatically exporting your 
 	- Create a corresponding pfx certificate by taking the thumbprint of the newly created certificate and running these commands:
 
 	`$CertPassword = ConvertTo-SecureString -String <YourPassword> -Force -AsPlainText`
+	
 	`Export-PfxCertificate -Cert "cert:\localmachine\my\$($cert.Thumbprint)" -FilePath <PathAndFileName>.pfx -Password $CertPassword`
 
 	- Upload the .cer file to your subscription [in the old portal](https://manage.windowsazure.com/)
