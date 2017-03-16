@@ -18,11 +18,16 @@ Add-Type -TypeDefinition @"
 $databaseServerPairs =
 	@([pscustomobject]@{serverName="SAMPLESERVER1";databaseName="SAMPLEDATABASE1"},
 	[pscustomobject]@{serverName="SAMPLESERVER1";databaseName="SAMPLEDATABASE2"},
-	[pscustomobject]@{serverName="SAMPLESERVER2";databaseName="SAMPLEDATABASE3"});
+	[pscustomobject]@{serverName="SAMPLESERVER2";databaseName="SAMPLEDATABASE3"}
+	);
 
-$serverCred = Get-AutomationPSCredential -Name 'NAMEOFSERVERCREDENTIAL1';
+# The Credentials for the database servers
+$serverCred1 = Get-AutomationPSCredential -Name 'NAMEOFSERVERCREDENTIAL1';
 $serverCred2 = Get-AutomationPSCredential -Name 'NAMEOFSERVERCREDENTIAL2';
-$serverCredentialsDictionary = @{'SAMPLESERVER1'=$serverCred;'SAMPLESERVER2'=$serverCred2}
+$serverCredentialsDictionary = @{
+	'SAMPLESERVER1'=$serverCred1;
+	'SAMPLESERVER2'=$serverCred2;
+	}
 
 # The number of databases you want to have running at the same time.
 $batchingLimit = 10;
@@ -33,6 +38,7 @@ $waitInMinutes = 30;
 
 # Connection Asset Name for Authenticating (Keep as AzureClassicRunAsConnection if you created the default RunAs accounts)
 $connectionAssetName = "AzureClassicRunAsConnection";
+
 
 $storageKeyVariableName = "STORAGEKEYVARIABLENAME";
 $storageAccountName = "STORAGEACCOUNTNAME";
@@ -134,8 +140,6 @@ function CheckCopy($dbObj)
 # This function starts the export. If there is an error, we set the state to ToDrop. Otherwise, we set the state to Exporting.
 function StartExport($dbObj)
 {
-	# Setup the server connection that the storage account is on.
-	$serverManageUrl = "https://autoexportserver.database.windows.net";
 	# Get the current time to use as a unique identifier for the blob name.
 	$currentTime = Get-Date -format "_yyyy-MM-dd_HH:mm.ss";
 	$blobName = $dbObj.DatabaseName + "_ExportBlob" + $currentTime;
