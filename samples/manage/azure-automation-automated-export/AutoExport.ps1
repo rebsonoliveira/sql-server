@@ -31,11 +31,12 @@ $retryLimit = 5;
 # The number of minutes you want to wait for an operation to finish before you fail.
 $waitInMinutes = 30;
 
+# Connection Asset Name for Authenticating (Keep as AzureClassicRunAsConnection if you created the default RunAs accounts)
+$connectionAssetName = "AzureClassicRunAsConnection";
+
 $storageKeyVariableName = "STORAGEKEYVARIABLENAME";
 $storageAccountName = "STORAGEACCOUNTNAME";
-$automationCertificateName = "CERTIFICATENAME";
-$subId = "00000000-0000-0000-0000-000000000000";
-$subName = "SUBSCRIPTIONNAME";
+$storageContainerName = "STORAGECONTAINERNAME";
 
 function LogMessage($message)
 {
@@ -147,7 +148,7 @@ function StartExport($dbObj)
 	# Get the storage context.
 	$stgctx = New-AzureStorageContext -StorageAccountName $global:storageAccountName -StorageAccountKey $storageKey;
 	# Start the export. If there is an error, stop the export and set the state to ToDrop.
-	$dbObj.Export = Start-AzureSqlDatabaseExport -SqlConnectionContext $ctx -StorageContext $stgctx -StorageContainerName autoexportcontainer -DatabaseName $dbObj.DatabaseCopyName -BlobName $blobName;
+	$dbObj.Export = Start-AzureSqlDatabaseExport -SqlConnectionContext $ctx -StorageContext $stgctx -StorageContainerName $global:storageContainerName -DatabaseName $dbObj.DatabaseCopyName -BlobName $blobName;
 	# $? is true if the last command succeeded and false if the last command failed. If it is false, go to the ToDrop state.
 	if (-not $? -and $global:retryLimit -ile $dbObj.RetryCount)
 	{
@@ -266,11 +267,25 @@ function ExportProcess
 	}
 }
 
-# Get the certificate to authenticate the subscription
-$cert = Get-AutomationCertificate -Name $global:automationCertificateName;
-# Set the subscription to use
-Set-AzureSubscription -SubscriptionName $global:subName -Certificate $cert -SubscriptionId $global:subID;
-Select-AzureSubscription -Current $global:subName;
+# Authenticate to Azure with certificate
+Write-Verbose "Get connection asset: $connectionAssetName" -Verbose;
+$Conn = Get-AutomationConnection -Name $connectionAssetName;
+if ($Conn -eq $null)
+{
+   throw "Could not retrieve connection asset: $connectionAssetName. Assure that this asset exists in the Automation account.";
+}
+
+$CertificateAssetName = $Conn.CertificateAssetName;
+Write-Verbose "Getting the certificate: $CertificateAssetName" -Verbose;
+$AzureCert = Get-AutomationCertificate -Name $CertificateAssetName;
+if ($AzureCert -eq $null)
+{
+   throw "Could not retrieve certificate asset: $CertificateAssetName. Assure that this asset exists in the Automation account.";
+}
+
+Write-Verbose "Authenticating to Azure with certificate." -Verbose;
+Set-AzureSubscription -SubscriptionName $Conn.SubscriptionName -SubscriptionId $Conn.SubscriptionID -Certificate $AzureCert;
+Select-AzureSubscription -SubscriptionId $Conn.SubscriptionID;
 
 $currentIndex = 0;
 for($currentRun = 0; $currentRun -lt ([math]::Ceiling($databaseServerPairs.Length/$batchingLimit)); $currentRun++)
