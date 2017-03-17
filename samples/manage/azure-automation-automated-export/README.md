@@ -16,6 +16,11 @@ Provides the scripts and lists the steps to set up automatically exporting your 
 	- Create your Automation Credential for each of your SQL Azure servers you intend to export by [following the instructions here](https://docs.microsoft.com/en-us/azure/automation/automation-credentials#creating-a-new-credential-asset).
 3. Create the Azure Storage Account to hold your bacpac files
 	- Create the Storage Account by [following the instructions here](https://docs.microsoft.com/en-us/azure/storage/storage-create-storage-account#create-a-storage-account).
+	- Create the Blob Storage Container
+		- Go to your Storage Account
+		- Click the Blobs tile
+		- Click the Add Container button
+		- Name the container, keep the access type as Private, and click the Create button
 	- Copy your Storage Account access keys by [following the instructions here](https://docs.microsoft.com/en-us/azure/storage/storage-create-storage-account#view-and-copy-storage-access-keys).
 	- Create an Azure Automation string Variable asset for your Storage Account access key by [following the instructions here](https://docs.microsoft.com/en-us/azure/automation/automation-variables#creating-an-automation-variable).
 4. Set Up Log Analytics (OMS) and Alerts (optional for alerting)
