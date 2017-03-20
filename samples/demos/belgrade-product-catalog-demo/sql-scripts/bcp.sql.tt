@@ -1,0 +1,8 @@
+﻿<#@ output extension=".sql" #> 
+<#@ template language="C#" hostspecific="True" #>
+ 
+
+SELECT *
+FROM OPENROWSET(BULK '<#=this.Host.ResolvePath("..\\logs") #>\log-20170203.ndjson', 
+				FORMATFILE = '<#=this.Host.ResolvePath("..\\logs") #>\linedelimited.fmt' ); 
+
