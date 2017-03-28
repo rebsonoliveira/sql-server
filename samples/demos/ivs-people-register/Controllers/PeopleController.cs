@@ -10,7 +10,7 @@ namespace Register.Controllers
     public class PeopleController : Controller
     {
         IQueryPipe pipe = null;
-        TableSpec tableSpec = new TableSpec("dbo.People", "name,surname,address,town");
+        TableSpec tableSpec = new TableSpec("dbo", "People", "name,surname,address,town");
 
         public PeopleController(IQueryPipe sqlQueryService)
         {
@@ -36,6 +36,7 @@ namespace Register.Controllers
         [HttpGet("odata")]
         public async Task OData()
         {
+            Response.ContentType = "application/json";
             await this
                     .ODataHandler(tableSpec, pipe)
                     .Process();
