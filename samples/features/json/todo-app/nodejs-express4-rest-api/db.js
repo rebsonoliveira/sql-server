@@ -19,12 +19,13 @@ function createRequest(query, connection) {
     var req =
         new Request(query, 
                 function (err, rowCount) {
-                    if (err) {
-                        throw err;
-                    }
-                    connection && connection.close();
+                        if (err) {
+                            console.trace(err);
+                            throw err;
+                        }
+                        connection && connection.close();
+                        console.log('Connection closed');
                 });
-
     return req;
 }
 
@@ -32,15 +33,15 @@ function stream (query, connection, output, defaultContent) {
     
     var request = query;
     if (typeof query == "string") {
-        request = this.createRequest(query, connection);
+        request = createRequest(query, connection);
     }
-    pipe(request, output, defaultContent);
-}
 
-function pipe (request, output, defaultContent) {
     var empty = true;
     request.on('row', function (columns) {
-        empty = false;
+        if(empty) {
+            console.log('Response fetched from SQL Database!');
+            empty = false;
+        }
         output.write(columns[0].value);
     });
 
@@ -50,19 +51,28 @@ function pipe (request, output, defaultContent) {
 
     request.on('doneProc', function (rowCount, more, rows) {
         _OnDone(empty, defaultContent, output);
-    }); 
+    });
+
+    executeRequest (request, connection);
 }
 
 function _OnDone(empty, defaultContent, output) { 
         if(empty) { 
             output.write(defaultContent);
+            console.log('No results from database - default content is returned.');
         } 
-        try { output.end(); } catch (err) { /* Ignore stream close error. */ }
+        try {
+            console.log('Closing Http Response output.');
+            output.end();
+        } catch (err) {  
+            console.error(err);
+        }
     }
 
 function executeRequest (request, connection) { 
         connection.on('connect', function (err) {
             if (err) {
+                console.trace(err);
                 throw err;
             }
             connection.execSql(request);
@@ -73,4 +83,3 @@ module.exports.createConnection = createConnection;
 module.exports.createRequest = createRequest; 
 module.exports.executeRequest = executeRequest;
 module.exports.stream = stream;
-module.exports.pipe = pipe;
