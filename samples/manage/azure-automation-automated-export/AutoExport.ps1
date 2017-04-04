@@ -18,11 +18,16 @@ Add-Type -TypeDefinition @"
 $databaseServerPairs =
 	@([pscustomobject]@{serverName="SAMPLESERVER1";databaseName="SAMPLEDATABASE1"},
 	[pscustomobject]@{serverName="SAMPLESERVER1";databaseName="SAMPLEDATABASE2"},
-	[pscustomobject]@{serverName="SAMPLESERVER2";databaseName="SAMPLEDATABASE3"});
+	[pscustomobject]@{serverName="SAMPLESERVER2";databaseName="SAMPLEDATABASE3"}
+	);
 
-$serverCred = Get-AutomationPSCredential -Name 'NAMEOFSERVERCREDENTIAL1';
+# The Credentials for the database servers
+$serverCred1 = Get-AutomationPSCredential -Name 'NAMEOFSERVERCREDENTIAL1';
 $serverCred2 = Get-AutomationPSCredential -Name 'NAMEOFSERVERCREDENTIAL2';
-$serverCredentialsDictionary = @{'SAMPLESERVER1'=$serverCred;'SAMPLESERVER2'=$serverCred2}
+$serverCredentialsDictionary = @{
+	'SAMPLESERVER1'=$serverCred1;
+	'SAMPLESERVER2'=$serverCred2;
+	}
 
 # The number of databases you want to have running at the same time.
 $batchingLimit = 10;
@@ -31,11 +36,12 @@ $retryLimit = 5;
 # The number of minutes you want to wait for an operation to finish before you fail.
 $waitInMinutes = 30;
 
+# Connection Asset Name for Authenticating (Keep as AzureClassicRunAsConnection if you created the default RunAs accounts)
+$connectionAssetName = "AzureClassicRunAsConnection";
+
 $storageKeyVariableName = "STORAGEKEYVARIABLENAME";
 $storageAccountName = "STORAGEACCOUNTNAME";
-$automationCertificateName = "CERTIFICATENAME";
-$subId = "00000000-0000-0000-0000-000000000000";
-$subName = "SUBSCRIPTIONNAME";
+$storageContainerName = "STORAGECONTAINERNAME";
 
 function LogMessage($message)
 {
@@ -133,21 +139,19 @@ function CheckCopy($dbObj)
 # This function starts the export. If there is an error, we set the state to ToDrop. Otherwise, we set the state to Exporting.
 function StartExport($dbObj)
 {
-	# Setup the server connection that the storage account is on.
-	$serverManageUrl = "https://autoexportserver.database.windows.net";
 	# Get the current time to use as a unique identifier for the blob name.
 	$currentTime = Get-Date -format "_yyyy-MM-dd_HH:mm.ss";
 	$blobName = $dbObj.DatabaseName + "_ExportBlob" + $currentTime;
 	# Use the stored credential to create a server credential to use to login to the server.
-	$servercredential = $global:serverCredentialsDictionary[$dbObj.ServerName];
+	$serverCredential = $global:serverCredentialsDictionary[$dbObj.ServerName];
 	# Set up a SQL connection context to use when exporting.
-	$ctx = New-AzureSqlDatabaseServerContext -ServerName $dbObj.ServerName -Credential $servercredential;
+	$ctx = New-AzureSqlDatabaseServerContext -ServerName $dbObj.ServerName -Credential $serverCredential;
 	# Get the storage key to setup the storage context.
 	$storageKey = Get-AutomationVariable -Name $global:storageKeyVariableName;
 	# Get the storage context.
 	$stgctx = New-AzureStorageContext -StorageAccountName $global:storageAccountName -StorageAccountKey $storageKey;
 	# Start the export. If there is an error, stop the export and set the state to ToDrop.
-	$dbObj.Export = Start-AzureSqlDatabaseExport -SqlConnectionContext $ctx -StorageContext $stgctx -StorageContainerName autoexportcontainer -DatabaseName $dbObj.DatabaseCopyName -BlobName $blobName;
+	$dbObj.Export = Start-AzureSqlDatabaseExport -SqlConnectionContext $ctx -StorageContext $stgctx -StorageContainerName $global:storageContainerName -DatabaseName $dbObj.DatabaseCopyName -BlobName $blobName;
 	# $? is true if the last command succeeded and false if the last command failed. If it is false, go to the ToDrop state.
 	if (-not $? -and $global:retryLimit -ile $dbObj.RetryCount)
 	{
@@ -166,7 +170,7 @@ function StartExport($dbObj)
 	}
 	# Set the state to Exporting.
 	$dbObj.DatabaseState = ([DatabaseState]::Exporting);
-	LogMessage ("Exporting " + $dbObj.DatabaseCopyName);
+	LogMessage ("Exporting " + $dbObj.DatabaseCopyName + " with RequestID: " + $dbObj.Export.RequestGuid);
 	$dbObj.OperationStartTime = Get-Date;
 }
 
@@ -187,7 +191,7 @@ function CheckExport($dbObj)
 	{
 		# If the status is "Failed" and we have more retries left, try to export the database copy again.
 		LogMessage ("The last export failed on database " + $dbObj.DatabaseName + ", going back to ToExport state to try again");
-		LogMessage $check
+		LogMessage $check.ErrorMessage
 		$dbObj.DatabaseState = ([DatabaseState]::ToExport);
 		$dbObj.RetryCount++;
 		return;
@@ -224,7 +228,7 @@ function ExportProcess
 	$dbsToCopy = $global:dbs | Where-Object DatabaseState -eq ([DatabaseState]::ToCopy);
 	for($i = 0; $i -lt $dbsToCopy.Count; $i++)
 	{
-		LogMessage $dbsToCopy[$i];
+		LogMessage "Database Name: $($dbsToCopy[$i].DatabaseName) State: $($dbsToCopy[$i].DatabaseState) Retry Count: $($dbsToCopy[$i].RetryCount)";
 		StartCopy($dbsToCopy[$i]);
 	}
 	
@@ -239,7 +243,7 @@ function ExportProcess
 	$dbsToExport = $global:dbs | Where-Object DatabaseState -eq ([DatabaseState]::ToExport);
 	for($i = 0; $i -lt $dbsToExport.Count; $i++)
 	{
-		LogMessage $dbsToExport[$i];
+		LogMessage "Database Name: $($dbsToExport[$i].DatabaseName) State: $($dbsToExport[$i].DatabaseState) Retry Count: $($dbsToExport[$i].RetryCount)";
 		StartExport($dbsToExport[$i]);
 	}
 	
@@ -254,7 +258,7 @@ function ExportProcess
 	$dbsToDrop = $global:dbs | Where-Object DatabaseState -eq ([DatabaseState]::ToDrop);
 	for($i = 0; $i -lt $dbsToDrop.Count; $i++)
 	{
-		LogMessage $dbsToDrop[$i];
+		LogMessage "Database Name: $($dbsToDrop[$i].DatabaseName) State: $($dbsToDrop[$i].DatabaseState) Retry Count: $($dbsToDrop[$i].RetryCount)";
 		StartDrop($dbsToDrop[$i]);
 	}
 	
@@ -266,11 +270,25 @@ function ExportProcess
 	}
 }
 
-# Get the certificate to authenticate the subscription
-$cert = Get-AutomationCertificate -Name $global:automationCertificateName;
-# Set the subscription to use
-Set-AzureSubscription -SubscriptionName $global:subName -Certificate $cert -SubscriptionId $global:subID;
-Select-AzureSubscription -Current $global:subName;
+# Authenticate to Azure with certificate
+Write-Verbose "Get connection asset: $connectionAssetName" -Verbose;
+$automationConnection = Get-AutomationConnection -Name $connectionAssetName;
+if ($automationConnection -eq $null)
+{
+   throw "Could not retrieve connection asset: $connectionAssetName. Assure that this asset exists in the Automation account.";
+}
+
+$certificateAssetName = $automationConnection.CertificateAssetName;
+Write-Verbose "Getting the certificate: $certificateAssetName" -Verbose;
+$automationCertificate = Get-AutomationCertificate -Name $certificateAssetName;
+if ($automationCertificate -eq $null)
+{
+   throw "Could not retrieve certificate asset: $certificateAssetName. Assure that this asset exists in the Automation account.";
+}
+
+Write-Verbose "Authenticating to Azure with certificate." -Verbose;
+Set-AzureSubscription -SubscriptionName $automationConnection.SubscriptionName -SubscriptionId $automationConnection.SubscriptionID -Certificate $automationCertificate;
+Select-AzureSubscription -SubscriptionId $automationConnection.SubscriptionID;
 
 $currentIndex = 0;
 for($currentRun = 0; $currentRun -lt ([math]::Ceiling($databaseServerPairs.Length/$batchingLimit)); $currentRun++)

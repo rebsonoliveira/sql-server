@@ -1,7 +1,6 @@
 ﻿using Belgrade.SqlClient;
 using Microsoft.AspNetCore.Mvc;
-using SqlServerRestApi.Controller;
-using SqlServerRestApi.SQL;
+using SqlServerRestApi;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
@@ -10,12 +9,12 @@ namespace Register.Controllers
     [Route("api/[controller]")]
     public class PeopleController : Controller
     {
-        IQueryPipe sqlQuery = null;
-        TableSpec tableSpec = new TableSpec("dbo.People", "name,surname,address,town");
+        IQueryPipe pipe = null;
+        TableSpec tableSpec = new TableSpec("dbo", "People", "name,surname,address,town");
 
         public PeopleController(IQueryPipe sqlQueryService)
         {
-            this.sqlQuery = sqlQueryService;
+            this.pipe = sqlQueryService;
         }
 
         /// <summary>
@@ -26,7 +25,21 @@ namespace Register.Controllers
         [HttpGet("All")]
         public async Task GetAll()
         {
-            await sqlQuery.Stream("select name, surname, address, town from people for json path, root('data')", Response.Body, @"{""data"":[]");
+            await pipe.Stream("select name, surname, address, town from people for json path, root('data')", Response.Body, @"{""data"":[]");
+        }
+
+        /// <summary>
+        /// Endpoint that exposes People information using OData protocol.
+        /// </summary>
+        /// <returns>OData response.</returns>
+        // GET api/People/odata
+        [HttpGet("odata")]
+        public async Task OData()
+        {
+            Response.ContentType = "application/json";
+            await this
+                    .ODataHandler(tableSpec, pipe)
+                    .Process();
         }
 
         /// <summary>
@@ -38,7 +51,9 @@ namespace Register.Controllers
         [HttpGet]
         public async Task Get()
         {
-            await this.ProcessJQueryDataTablesRequest(tableSpec, sqlQuery);
+            await this
+                    .JQueryDataTablesHandler(tableSpec, pipe)
+                    .Process();
         }
     }
 }
