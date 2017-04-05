@@ -10,7 +10,6 @@ RUN curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list > /etc/apt
 RUN apt-get update
 RUN ACCEPT_EULA=Y apt-get install -y \
     msodbcsql \
-#    mssql-tools \
     unixodbc-dev
 
 #python part of the game
