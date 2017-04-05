@@ -4,11 +4,11 @@ Prof of concept project with Microsoft SQL Server and Django Framework setup on 
 ## To start development:
 1. install [docker](https://docs.docker.com/#/components) and [docker-compose](https://docs.docker.com/compose/install/)
 2. clone this repository
-2. run `docker-compose build db` to build web container
+2. run `docker-compose build db` to build db container
 2. sudo docker-compose run db sqlcmd -S db1.internal.prod.example.com -U SA -P 'Alaska2017' -Q 'create database docker2;'
 3. run `docker-compose up web` to test web and db containers
-5. run `docker-compose run web python manage.py migrate` to apply migrations. **Important! all migrations will go to master database unless you create new database and update settings.py files**
-6. run `docker-compose run web python manage.py createsuperuser` to create admin account
+5. run `docker-compose run web python3 manage.py migrate` to apply migrations. **Important! all migrations will go to master database unless you create new database and update settings.py files**
+6. run `docker-compose run web python3 manage.py createsuperuser` to create admin account
 
 ## To run project:
 1. 

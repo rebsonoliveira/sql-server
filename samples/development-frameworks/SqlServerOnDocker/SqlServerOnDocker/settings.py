@@ -25,7 +25,7 @@ SECRET_KEY = 'd-uguc(o8$i@^ea_+m^tv^_tt7loyf6zf^o3%*ws#zs42_u#(&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*',]
 
 
 # Application definition
@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'SqlServerOnDocker.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'sql_server.pyodbc',
-        'NAME': 'master',
+        'NAME': 'docker2',
         'USER': 'sa',
         'PASSWORD': 'Alaska2017',
         'HOST': 'db1.internal.prod.example.com',
