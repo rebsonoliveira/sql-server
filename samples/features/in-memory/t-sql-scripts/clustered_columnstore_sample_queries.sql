@@ -9,7 +9,8 @@
  They are identical except one table is based on clustered columnstore index
  and other table is regular rowstore table with PAGE compression
 
- Note: A Pre-requisite is following the instructions in the document: AzureSQLDB_ColumnstoreSetup.docx
+ Note: A Pre-requisite is following the instructions in the document: 
+ https://docs.microsoft.com/en-us/azure/sql-database/sql-database-in-memory#2-install-the-in-memory-analytics-sample
 *************************************************************************
 */
 
