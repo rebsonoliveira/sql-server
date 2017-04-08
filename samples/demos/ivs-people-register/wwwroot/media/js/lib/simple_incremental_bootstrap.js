@@ -1,12 +1,58 @@
-﻿$.fn.dataTableExt.oPagination.incremental = {
-    /*
-     * Function: oPagination.incremental.fnInit
-     * Purpose:  Initalise dom elements required for pagination with a list of the pages
-     * Returns:  -
-     * Inputs:   object:oSettings - dataTables settings object
-     *           node:nPaging - the DIV which contains this pagination control
-     *           function:fnCallbackDraw - draw function which must be called on update
-     */
+﻿/**
+ * This pagination style shows Previous/Next buttons, and page numbers only
+ * for "known" pages that are visited at least once time using [Next>] button.
+ * Initially only Prev/Next buttons are shown (Prev is initially disabled).
+ * 
+ * [<Previous] [Next>]
+ * 
+ * When user navigates through the pages using [Next>] button, navigation shows
+ * the numbers for the previous pages. As an example, when user reaches page 2,
+ * page numbers 1 and 2 are shown:
+ * 
+ * [<Previous] 1 2 [Next>]
+ * 
+ * When user reaches page 4, page numbers 1, 2, 3, and 4 are shown:
+ * 
+ * [<Previous] 1 2 3 4 [Next>]
+ * 
+ * When user navigates back, pagination will remember the last page number
+ * he reached and the numbesr up to the last known page are shown. As an example,
+ * when user returns to the page 2, page numbers 1, 2, 3, and 4 are still shown:
+ * 
+ * [<Previous] 1 2 3 4 [Next>]
+ * 
+ * This pagination style is designed for users who will not directly jump to
+ * the random page that they have not opened before. Assumption is that users
+ * will discover new pages using [Next>] button. This pagination enables users
+ * to easily go back and forth to any page that they discovered.
+ * 
+ * Key benefit: This pagination supports usual pagination pattern and does not
+ * require server to return total count of items just to calculate last page and
+ * all numbers. This migh be huge performance benefit because server does not
+ * need to execute two queries in server-side processing mode:
+ * - One to get the records that will be shown on the current page,
+ * - Second to get the total count just to calculate full pagination.
+ * 
+ * Without second query, page load time might be 2x faster, especially in cases
+ * when server can quickly get top 100 records, but it would need to scan entire
+ * database table just to calculate the total count and position of the last
+ * page. This pagination style is reasonable trade-off between simple and fullnumbers 
+ * pagination.
+ * 
+ *  @name Simple Incremental navigation (Bootstrap)
+ *  @summary Shows forward/back buttons and all known page numbers.
+ *  @author [Jovan Popovic](http://github.com/JocaPC)
+ *
+ *  @example
+ *    $(document).ready(function() {
+ *        $('#example').dataTable( {
+ *            "pagingType": "simple_incremental_bootstrap"
+ *        } );
+ *    } );
+ */
+
+$.fn.dataTableExt.oPagination.simple_incremental_bootstrap = {
+
     "fnInit": function (oSettings, nPaging, fnCallbackDraw) {
         $(nPaging).prepend($("<ul class=\"pagination\"></ul>"));
         var ul = $("ul", $(nPaging));
@@ -21,7 +67,6 @@
         nFirst.className = "paginate_button first active";
         nPrevious.className = "paginate_button previous";
         nNext.className = "paginate_button next";
-
         
         ul.append(nPrevious);
         ul.append(nFirst);
@@ -64,9 +109,8 @@
     },
 
     /*
-     * Function: oPagination.incremental.fnUpdate
+     * Function: oPagination.simple_incremental_bootstrap.fnUpdate
      * Purpose:  Update the list of page buttons shows
-     * Returns:  -
      * Inputs:   object:oSettings - dataTables settings object
      *           function:fnCallbackDraw - draw function which must be called on update
      */
