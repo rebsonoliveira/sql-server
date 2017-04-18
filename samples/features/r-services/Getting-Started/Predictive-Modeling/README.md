@@ -108,6 +108,6 @@ You can easily modify this code to fit the architecture of your application.
 
 For additional content, see these articles:
 
-[SQL Server R Services - Upgrade and Installation FAQ](https://msdn.microsoft.com/en-us/library/mt653951.aspx)
-[Other SQL Server R Services Tutorials](https://msdn.microsoft.com/en-us/library/mt591993.aspx)
-[Watch a presentation about predictive modeling in SQL Server, that also goes through this sample](https://www.youtube.com/watch?v=YCyj9cdi4Nk&feature=youtu.be)
+[SQL Server R Services - Upgrade and Installation FAQ](https://msdn.microsoft.com/en-us/library/mt653951.aspx) <br/>
+[Other SQL Server R Services Tutorials](https://msdn.microsoft.com/en-us/library/mt591993.aspx) <br/>
+[Watch a presentation about predictive modeling in SQL Server, that also goes through this sample](https://www.youtube.com/watch?v=YCyj9cdi4Nk&feature=youtu.be) <br/>
