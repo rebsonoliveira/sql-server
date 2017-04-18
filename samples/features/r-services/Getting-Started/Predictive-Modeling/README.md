@@ -24,7 +24,7 @@ Follow the step by step tutorial [here](http://aka.ms/sqldev/R) to walk through 
 
 <!-- Delete the ones that don't apply -->
 - **Applies to:** SQL Server 2016 (or higher)
-- **Key features:**SQL Server R Services 
+- **Key features:** SQL Server R Services 
 - **Workload:** SQL Server R Services
 - **Programming Language:** T-SQL, R, JavaScript (NodeJS)
 - **Authors:** Nellie Gustafsson
