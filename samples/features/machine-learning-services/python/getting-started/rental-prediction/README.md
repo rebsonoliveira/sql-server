@@ -41,7 +41,7 @@ Download a DB backup file and restore it using Setup.sql. [Download DB](https://
 <!-- Examples -->
 1. SQL Server 2017 CTP2.0 (or higher) with Machine Learning Services (Python) installed
 2. SQL Server Management Studio
-3. Python Tools for Visual Studio
+3. Python Tools for Visual Studio or another Python IDE
 
 ## Run this sample
 1. From SQL Server Management Studio or SQL Server Data Tools connect to your SQL Server vNext database and execute setup.sql to restore the sample DB you have downloaded </br>
