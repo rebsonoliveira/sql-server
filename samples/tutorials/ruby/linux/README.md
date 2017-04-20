@@ -98,7 +98,7 @@ This can be done by running the following code prior to executing queries:
 	result = client.execute("SET ANSI_NULL_DFLT_ON ON")
 	result = client.execute("SET IMPLICIT_TRANSACTIONS OFF")
 	result = client.execute("SET ANSI_PADDING ON")
-	result = client.execute("SET QUOTED_IDENTIFIER ON"")
+	result = client.execute("SET QUOTED_IDENTIFIER ON")
 	result = client.execute("SET ANSI_WARNINGS ON")
 	result = client.execute("SET CONCAT_NULL_YIELDS_NULL ON")
 	

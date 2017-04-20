@@ -1,6 +1,9 @@
 # Samples for SQL Server Machine Learning Services
 
 
+Go to the getting started tutorials to learn more about:
+
+[Customer Clustering with R Services](https://www.microsoft.com/en-us/sql-server/developer-get-started/rclustering)
 
 [Telco Customer Churn](Telco Customer Churn)
 

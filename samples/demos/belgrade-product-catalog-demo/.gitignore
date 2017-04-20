@@ -1,0 +1,13 @@
+*.xproj.user
+.vs/*
+.vscode/*
+bin/*
+obj/*
+*.sln
+*.log
+*.lock.json
+Properties/PublishProfiles/*
+appsettings.Development.json
+appsettings.Production.json
+*.ndjson
+sql-scripts/bcp.sql.sql
