@@ -8,7 +8,7 @@ from revoscalepy.etl.RxImport import rx_import_datasource
 
 
 def get_rental_predictions():
-    conn_str = 'Driver=SQL Server;Server=NELLIELAPTOP\\SQLSERVER20;Database=TutorialDB;Trusted_Connection=True;'
+    conn_str = 'Driver=SQL Server;Server=MYSQLSERVER;Database=TutorialDB;Trusted_Connection=True;'
     column_info = { 
             "Year" : { "type" : "integer" },
             "Month" : { "type" : "integer" }, 

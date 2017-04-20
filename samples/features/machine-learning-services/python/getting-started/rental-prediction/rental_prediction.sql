@@ -26,9 +26,8 @@ BEGIN
     EXECUTE sp_execute_external_script
       @language = N'Python'
     , @script = N'
-import pandas as pd   
-df = pd.DataFrame(rental_train_data)
-print(df)
+
+df = rental_train_data
 
 # Get all the columns from the dataframe.
 columns = df.columns.tolist()
@@ -84,8 +83,8 @@ BEGIN
 import pickle
 rental_model = pickle.loads(py_model)
 
-import pandas as pd   
-df = pd.DataFrame(rental_score_data)
+  
+df = rental_score_data
 #print(df)
 
 # Get all the columns from the dataframe.

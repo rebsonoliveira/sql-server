@@ -2,7 +2,7 @@
 ##################### STEP1 - Connect to DB and read data ####################
 
 #Connection string to connect to SQL Server named instance
-connStr <- paste("Driver=SQL Server; Server=", "NELLIELAPTOP\\VNEXTCTP14", 
+connStr <- paste("Driver=SQL Server; Server=", "MYSQLSERVER", 
                 ";Database=", "Tutorialdb", ";Trusted_Connection=true;", sep = "");
 
 #Get the data from SQL Server Table

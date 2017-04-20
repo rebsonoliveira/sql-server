@@ -60,10 +60,10 @@ Saves the predicted results to a DB table </br>
 
 This sample shows how to create a predictive model with Python and generate predictions using the model and deploy that in SQL Server with SQL Server Machine Learning Services. 
 
-### predictive_model.py
+### rental_prediction.py
 The Python script that generates a predictive model and uses it to predict rental counts
 
-### predictive_model_python.sql
+###  rental_prediction.sql
 Takes the Python code in Predictive Model.py and deploys it inside SQL Server. Creating stored procedures and tables for training, storing models and creating stored procedures for prediction.
 
 
