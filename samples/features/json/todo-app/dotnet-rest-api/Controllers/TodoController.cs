@@ -43,7 +43,7 @@ namespace TodoApp.Controllers
         @"insert into Todo
         select *
         from OPENJSON(@todo)
-        WITH( Title nvarchar(30), Description nvarchar(4000), Completed bit, TargetDate datetime2)");
+        WITH( title nvarchar(30), description nvarchar(4000), completed bit, dueDate datetime2)");
             cmd.Parameters.AddWithValue("todo", todo);
             await SqlCommand.ExecuteNonQuery(cmd);
         }
@@ -55,11 +55,11 @@ namespace TodoApp.Controllers
             string todo = new StreamReader(Request.Body).ReadToEnd();
             var cmd = new SqlCommand(
         @"update Todo
-        set Title = ISNULL(json.Title, Title), Description = ISNULL(json.Description, Description),
-        Completed = ISNULL(json.Completed, Completed), TargetDate = ISNULL(json.TargetDate, TargetDate)
+        set title = ISNULL(json.title, title), description = ISNULL(json.description, description),
+        completed = ISNULL(json.completed, completed), dueDate = ISNULL(json.dueDate, dueDate)
         from OPENJSON(@todo)
-        WITH(   Title nvarchar(30), Description nvarchar(4000),
-                Completed bit, TargetDate datetime2) AS json
+        WITH(   title nvarchar(30), description nvarchar(4000),
+                completed bit, dueDate datetime2) AS json
         where Id = @id");
             cmd.Parameters.AddWithValue("id", id);
             cmd.Parameters.AddWithValue("todo", todo);
@@ -73,11 +73,11 @@ namespace TodoApp.Controllers
             string todo = new StreamReader(Request.Body).ReadToEnd();
             var cmd = new SqlCommand(
         @"update Todo
-        set Title = json.Title, Description = json.Description,
-        Completed = json.completed, TargetDate = json.TargetDate
+        set title = json.title, description = json.description,
+        completed = json.completed, dueDate = json.dueDate
         from OPENJSON( @todo )
-        WITH(   Title nvarchar(30), Description nvarchar(4000),
-                Completed bit, TargetDate datetime2) AS json
+        WITH(   title nvarchar(30), description nvarchar(4000),
+                completed bit, dueDate datetime2) AS json
         where Id = @id");
             cmd.Parameters.AddWithValue("id", id);
             cmd.Parameters.AddWithValue("todo", todo);

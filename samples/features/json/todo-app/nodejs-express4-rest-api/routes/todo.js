@@ -27,12 +27,7 @@ router.post('/', function (req, res) {
     
     request.addParameter('todo', TYPES.NVarChar, req.body);
     
-    connection.on('connect', function (err) {
-        if (err) {
-            throw err;
-        }
-        connection.execSql(request);
-    });
+    db.executeRequest(request, connection);
 });
 
 /* PUT update task. */
@@ -44,12 +39,7 @@ router.put('/:id', function (req, res) {
     request.addParameter('id', TYPES.Int, req.params.id);
     request.addParameter('todo', TYPES.NVarChar, req.body);
     
-    connection.on('connect', function (err) {
-        if (err) {
-            throw err;
-        }
-        connection.execSql(request);
-    });
+    db.executeRequest(request, connection);
 });
 
 /* DELETE single task. */
@@ -60,12 +50,7 @@ router.delete('/:id', function (req, res) {
 
     request.addParameter('id', TYPES.Int, req.params.id);
     
-    connection.on('connect', function (err) {
-        if (err) {
-            throw err;
-        }
-        connection.execSql(request);
-    });
+    db.executeRequest(request, connection);
 });
 
 module.exports = router;
