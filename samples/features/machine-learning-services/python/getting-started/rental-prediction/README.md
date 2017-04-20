@@ -1,4 +1,4 @@
-# Build a predictive model with SQL Server Python
+# Build a predictive model with Python using SQL Server 2017 Machine Learning Services 
 
 This sample shows how to create a predictive model in Python and operationalize it with SQL Server vNext.
 
@@ -22,7 +22,7 @@ In this sample, you will learn how to create a predictive model in python and op
 
 
 <!-- Delete the ones that don't apply -->
-- **Applies to:** SQL Server vNext 
+- **Applies to:** SQL Server 2017 CTP2.0 or higher
 - **Key features:**SQL Server Machine Learning Services 
 - **Workload:** SQL Server Machine Learning Services
 - **Programming Language:** T-SQL, Python
@@ -39,7 +39,7 @@ Download a DB backup file and restore it using Setup.sql. [Download DB](https://
 **Software prerequisites:**
 
 <!-- Examples -->
-1. SQL Server vNext CTP2.0 (or higher) with Machine Learning Services (Python) installed
+1. SQL Server 2017 CTP2.0 (or higher) with Machine Learning Services (Python) installed
 2. SQL Server Management Studio
 3. Python Tools for Visual Studio
 
@@ -68,23 +68,8 @@ Takes the Python code in Predictive Model.py and deploys it inside SQL Server. C
 
 
 
-Service uses Tedious library for data access and built-in JSON functionalities that are available in SQL Server 2016 and Azure SQL Database.
-
-<a name=disclaimers></a>
-
-## Disclaimers
-The code included in this sample is not intended demonstrate some general guidance and architectural patterns for web development.
-It contains minimal code required to create a REST API.
-You can easily modify this code to fit the architecture of your application.
 
 
-<a name=related-links></a>
 
-## Related Links
-<!-- Links to more articles. Remember to delete "en-us" from the link path. -->
 
-For additional content, see these articles:
 
-[SQL Server R Services - Upgrade and Installation FAQ](https://msdn.microsoft.com/en-us/library/mt653951.aspx)
-[Other SQL Server R Services Tutorials](https://msdn.microsoft.com/en-us/library/mt591993.aspx)
-[Watch a presentation about predictive modeling in SQL Server, that also goes through this sample](https://www.youtube.com/watch?v=YCyj9cdi4Nk&feature=youtu.be)
