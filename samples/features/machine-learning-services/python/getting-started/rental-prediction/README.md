@@ -23,7 +23,7 @@ In this sample, you will learn how to create a predictive model in python and op
 
 <!-- Delete the ones that don't apply -->
 - **Applies to:** SQL Server 2017 CTP2.0 or higher
-- **Key features:**SQL Server Machine Learning Services 
+- **Key features:** SQL Server Machine Learning Services 
 - **Workload:** SQL Server Machine Learning Services
 - **Programming Language:** T-SQL, Python
 - **Authors:** Nellie Gustafsson
@@ -34,17 +34,17 @@ In this sample, you will learn how to create a predictive model in python and op
 ## Before you begin
 
 To run this sample, you need the following prerequisites: </br>
-Download a DB backup file and restore it using Setup.sql. [Download DB](https://deve2e.azureedge.net/sqlchoice/static/TutorialDB.bak)
+[Download this DB backup file](https://deve2e.azureedge.net/sqlchoice/static/TutorialDB.bak) and restore it using Setup.sql. 
 
 **Software prerequisites:**
 
 <!-- Examples -->
-1. SQL Server 2017 CTP2.0 (or higher) with Machine Learning Services (Python) installed
-2. SQL Server Management Studio
-3. Python Tools for Visual Studio or another Python IDE
+1. [SQL Server 2017 CTP2.0](https://www.microsoft.com/en-us/sql-server/sql-server-2017) (or higher) with Machine Learning Services (Python) installed
+2. [SQL Server Management Studio](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms)
+3. [Python Tools for Visual Studio](https://www.visualstudio.com/vs/python/) or another Python IDE
 
 ## Run this sample
-1. From SQL Server Management Studio or SQL Server Data Tools connect to your SQL Server vNext database and execute setup.sql to restore the sample DB you have downloaded </br>
+1. From SQL Server Management Studio, or SQL Server Data Tools, connect to your SQL Server 2017 database and execute setup.sql to restore the sample DB you have downloaded </br>
 2. From SQL Server Management Studio or SQL Server Data Tools, open the rental_prediction.sql script </br>
 This script sets up: </br>
 Necessary tables </br>
