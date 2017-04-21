@@ -102,7 +102,7 @@ print(lin_predictions)
 # Import the scikit-learn function to compute error.
 from sklearn.metrics import mean_squared_error
 # Compute error between our test predictions and the actual values.
-lin_mse = mean_squared_error(linpredictions, df[target])
+lin_mse = mean_squared_error(lin_predictions, df[target])
 #print(lin_mse)
 
 import pandas as pd
