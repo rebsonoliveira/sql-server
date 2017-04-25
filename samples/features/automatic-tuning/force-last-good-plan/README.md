@@ -1,5 +1,5 @@
 # Forcing last good plan
-This code sample demonstrates how [Automatic tuning in SQL Server 2017 CTP2.0+] (https://docs.microsoft.com/sql/relational-databases/automatic-tuning/automatic-tuning) can identify and automatically fix performance problems in your workload.
+This code sample demonstrates how [Automatic tuning in SQL Server 2017 CTP2.0+](https://docs.microsoft.com/sql/relational-databases/automatic-tuning/automatic-tuning) can identify and automatically fix performance problems in your workload.
 
 ### Contents
 
@@ -22,7 +22,7 @@ This code sample demonstrates how [Automatic tuning in SQL Server 2017 CTP2.0+] 
 5. **Author:** Jovan Popovic [jovanpop-msft]
 
 There are two ways to demonstrate the feature using this sample:
- - Level 300 demo: T-SQL code that simulates workload using T-SQL commands and shows results using dynamic management views.
+ - Level 300 demo: T-SQL code that simulates workload using T-SQL commands and shows results using dynamic management views and Query Store UI in SQL Server Management Studio.
  - Level 100-200 demo: ASP.NET application that simulates workload using AJAX requests sent to web server and shows results in the web page. Optionally use Query Store UI in SQL Server Management Studio to show performance regressions.
 
 <a name=before-you-begin></a>
@@ -41,19 +41,20 @@ To run this sample, you need the following prerequisites.
 ## Run this sample
 
 ### Setup code
-1. Clone this repository using Git for Windows (http://www.git-scm.com/), or download the zip file.
+1. Download [T-SQL script files in sql-scripts](sql-scripts) folder. Optionally you can clone this repository using [Git for Windows](http://www.git-scm.com/), or download the zip file.
 2. Download the [WideWorldImporters](../../../databases/wide-world-importers) database and restore it on your server.
 3. Execute setup.sql script on your [WideWorldImporters](../../../databases/wide-world-importers) database that will add necessary stored procedures and indexes.
 
 ### Configure ASP.NET sample (Only for ASP.NET Sample)
-1. Open appsettings.json file in the root of the folder and change server, database, username, and password in the connection string.
-2. From the project root folder open command prompt and run `dotnet update`, `dotnet build`, and `dotnet run`. These commands will update NuGet packages, build project, and run web app. As an alternative,
+1. Clone this repository using [Git for Windows](http://www.git-scm.com/), or download the zip file, if you have not done it.
+2. Open appsettings.json file in the root of the folder and change server, database, username, and password in the connection string.
+3. From the project root folder open command prompt and run `dotnet update`, `dotnet build`, and `dotnet run`. These commands will update NuGet packages, build project, and run web app. As an alternative,
 open project using Visual Studio 2015 U3, or Visual Studio Code, compile and run sample.
 
 <a name=sample-details></a>
 
 This sample demonstrates how SQL Server 2017 analyzes workload, keep track about the last good
-plan that successfully executed the query, and reverts regressed plan if it is worse that the last known good plan.
+plan that successfully executed the query in the past, and reverts regressed plan if it is worse that the last known good plan.
 The following query is used to demonstrate plan regression and correction:
 
 ```
@@ -72,7 +73,7 @@ Open **demo-full.sql** and follow the comments in the code. Here is the short ex
  - Execute query `EXEC dbo.regression` to cause the regression.
  - Execute query `EXEC dbo.report 7` 20 times and verify that the execution is slower.
  - Query `sys.dm_db_tuning_recommendations` and verify that regression is detected and that
- the correction script is in the view. You can use the following query:
+ the correction script is in the view. Since some information are formatted as JSON docuemnts, you can use the following query to extract relevant information:
 
 ```
 SELECT planForceDetails.query_id, reason, score,
@@ -94,7 +95,7 @@ Fig. 1. Optimal plan with "Hash Aggregate".
 ![Regressed plan](../../../../media/features/automatic-tuning/flgp-query-store-ui-regressed-plan.png "Regressed plan")
 Fig. 2. Regressed plan with "Stream Aggregate".
 
- - Take the script from the `sys.dm_db_tuning_recommendations` view and force the recommended plan.
+ - Take the correction script from the `sys.dm_db_tuning_recommendations` view and force the recommended plan.
  - Execute query `EXEC dbo.report 7` 20 times and verify that the execution is faster. Open Query Store UI in SSMS (e.g. "Top Resource Consuming Queries"), find the query, verify that the plan is forced and that the regression is fixed.
 
 #### Part II - Automatic tuning
@@ -134,13 +135,14 @@ After some time, you will notice that the regression will be automatically corre
 <a name=disclaimers></a>
 
 ## Disclaimers
-The code included in this sample is not intended to be a set of best practices on how to build scalable enterprise grade applications. This is beyond the scope of this quick start sample.
+The code included in this sample is not intended to be a set of best practices on how to build scalable enterprise grade applications. This is beyond the scope of this sample.
 
 <a name=related-links></a>
 
 ## Related Links
 
-- [Automatic tuning in SQL Server 2017 CTP2.0+] (https://docs.microsoft.com/sql/relational-databases/automatic-tuning/automatic-tuning)
-- [Monitoring Performance By Using the Query Store] (https://docs.microsoft.com/en-us/sql/relational-databases/performance/monitoring-performance-by-using-the-query-store)
+- [Automatic tuning in SQL Server 2017 CTP2.0+](https://docs.microsoft.com/sql/relational-databases/automatic-tuning/automatic-tuning)
+- [sys.dm_db_tuning_recommendations view (Transact-SQL)](https://docs.microsoft.com/sql/relational-databases/system-dynamic-management-views/sys-dm-db-tuning-recommendations-transact-sql)
+- [Monitoring Performance By Using the Query Store](https://docs.microsoft.com/en-us/sql/relational-databases/performance/monitoring-performance-by-using-the-query-store)
 
 
