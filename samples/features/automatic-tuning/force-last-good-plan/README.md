@@ -41,7 +41,7 @@ To run this sample, you need the following prerequisites.
 ## Run this sample
 
 ### Setup code
-1. Download [two T-SQL script files in sql-scripts](sql-scripts) folder if you want to use just T-SLQ sample. Optionally you can clone this repository using [Git for Windows](http://www.git-scm.com/), or download the zip file.
+1. Download [two T-SQL script files in sql-scripts](sql-scripts) folder if you want to use just T-SQL sample. Optionally you can clone this repository using [Git for Windows](http://www.git-scm.com/), or download the zip file.
 2. Download the [WideWorldImporters](../../../databases/wide-world-importers) database and restore it on your server.
 3. Execute setup.sql script on your [WideWorldImporters](../../../databases/wide-world-importers) database that will add necessary stored procedures and indexes.
 
