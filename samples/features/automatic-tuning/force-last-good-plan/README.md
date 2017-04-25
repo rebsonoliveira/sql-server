@@ -66,7 +66,11 @@ Open demo-full.sql and follow the comments in the code.
  correction script is in the view
  - Open Query Store UI in SSMS (e.g. "Top Resource Consuming Queries") and find the query. Verify that there are two plans - one faster with **Hash Aggregate** and another slower with **Stream Aggregate**
 
-![Last good plan](../../../../media/features/automatic-tuning/flgp-query-store-ui-last-good-plan.png "Last good plan") ![Regressed plan](../../../../media/features/automatic-tuning/flgp-query-store-ui-regressed-plan.png "Regressed plan")
+![Last good plan](../../../../media/features/automatic-tuning/flgp-query-store-ui-last-good-plan.png "Last good plan")
+Fig. 1. Optimal plan with "Hash Aggregate".
+
+![Regressed plan](../../../../media/features/automatic-tuning/flgp-query-store-ui-regressed-plan.png "Regressed plan")
+Fig. 2. Regressed plan with "Stream Aggregate".
 
  - Take the script from the `sys.dm_db_tuning_recommendations` view and force the recommended plan.
  - Execute query `EXEC dbo.report 7` 20 times and verify that the execution is faster. Open Query Store UI in SSMS (e.g. "Top Resource Consuming Queries"), find the query, verify that the plan is forced and that the regression is fixed.
@@ -87,11 +91,13 @@ Web page collects response from the web server, calculates expected throughput b
 last 10 T-SQL request durations, and displays how many requests per second can be executed.
 
 ![Web app](../../../../media/features/automatic-tuning/flgp-web-ui.png "Demo web app")
+Fig. 3. Number of requests per seconds.
 
 In default state, automatic tuning is turned OFF on the database. You can press **Regression**
 button to cause SQL plan choice regression in database layer. On the user interface will be shown decreased number of requests per seconds that can be served.
 
 ![Web app](../../../../media/features/automatic-tuning/flgp-web-ui-regression.png "Demo web app")
+Fig. 4. Number of requests per seconds after regression.
 
 If you refresh the page, the database state will be cleaned (i.e. query store and plan cache will be cleaned). You can turn on automatic tuning, wait some time to SQL Database analyze the workload and cause the regression again. You will notice that there is a regression that will be automatically corrected after some time. Pressing the **Regression** button again will not cause any regression.
 
