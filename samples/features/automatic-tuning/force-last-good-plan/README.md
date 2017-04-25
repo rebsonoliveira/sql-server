@@ -1,6 +1,5 @@
 # Forcing last good plan
-This code sample demonstrates how automatic tuning
-feature in SQL Server 2017 (or higher) can identify and automatically fix performance problems in your workload.
+This code sample demonstrates how [Automatic tuning in SQL Server 2017 CTP2.0+] (https://docs.microsoft.com/sql/relational-databases/automatic-tuning/automatic-tuning) can identify and automatically fix performance problems in your workload.
 
 ### Contents
 
@@ -18,13 +17,13 @@ feature in SQL Server 2017 (or higher) can identify and automatically fix perfor
 2. **Key features:**
     - Automatic tuning / forcing last good plan
     - Query Store
-3. **Workload:** Single analytic query executed on WideWorldImporters database
-4. **Programming Language:** .NET C#, T-SQL, JavaScript
+3. **Workload:** Single analytic query executed on [WideWorldImporters](../../../databases/wide-world-importers) database
+4. **Programming Language:** T-SQL, .NET C#, JavaScript
 5. **Author:** Jovan Popovic [jovanpop-msft]
 
-There are two scenarios that can be used in demo:
- - Level 300: T-SQL Sample that simulates workload using T-SQL commands and shows results using dynamic management views.
- - Level 200: ASP.NET Sample that simulates workload using AJAX requests sent to web server and shows results in the web page. 
+There are two ways to demonstrate the feature using this sample:
+ - Level 300 demo: T-SQL code that simulates workload using T-SQL commands and shows results using dynamic management views.
+ - Level 100-200 demo: ASP.NET application that simulates workload using AJAX requests sent to web server and shows results in the web page. Optionally use Query Store UI in SQL Server Management Studio to show performance regressions.
 
 <a name=before-you-begin></a>
 
@@ -43,8 +42,8 @@ To run this sample, you need the following prerequisites.
 
 ### Setup code
 1. Clone this repository using Git for Windows (http://www.git-scm.com/), or download the zip file.
-2. Download the WideWorldImporters database and restore it on your server.
-3. Execute setup.sql script on your WideWorldImporters database that will add necessary stored procedures and indexes.
+2. Download the [WideWorldImporters](../../../databases/wide-world-importers) database and restore it on your server.
+3. Execute setup.sql script on your [WideWorldImporters](../../../databases/wide-world-importers) database that will add necessary stored procedures and indexes.
 
 ### Configure ASP.NET sample (Only for ASP.NET Sample)
 1. Open appsettings.json file in the root of the folder and change server, database, username, and password in the connection string.
@@ -54,17 +53,40 @@ open project using Visual Studio 2015 U3, or Visual Studio Code, compile and run
 <a name=sample-details></a>
 
 This sample demonstrates how SQL Server 2017 analyzes workload, keep track about the last good
-plan that successfully executed the query, and reverts new plan if it is worse that the previous.
+plan that successfully executed the query, and reverts regressed plan if it is worse that the last known good plan.
+The following query is used to demonstrate plan regression and correction:
+
+```
+select avg([UnitPrice]*[Quantity])
+from Sales.OrderLines
+where PackageTypeID = @packagetypeid
+```
+
+This query is executed against [WideWorldImporters](../../../databases/wide-world-importers) database. The query can be executed using SQL plan that has **"Hash aggregate"** operator, which provides results quickly. However, sometime Query Optimizer might choose a plan with **"Stream aggregate"** operator that will cause the performance regression. This sample shows how Automatic tuning feature detects this kind of regression and automatically fix the problem.
 
 ### T-SQL Sample
-Open demo-full.sql and follow the comments in the code.
+Open **demo-full.sql** and follow the comments in the code. Here is the short explanation of the scenario:
+
 #### Part I - regression detection
- - Execute query `EXEC dbo.report 7` 30-300 times. SQL Database will collect statistics about the query. Number of queries that should be executed to might vary depending on performance of your server.
+ - Execute query `EXEC dbo.report 7` 30-300 times. SQL Database will collect statistics about the query. Number of queries that should be executed might vary depending on performance of your server (30 would be enough, but you might need to increase this number).
  - Execute query `EXEC dbo.regression` to cause the regression.
  - Execute query `EXEC dbo.report 7` 20 times and verify that the execution is slower.
  - Query `sys.dm_db_tuning_recommendations` and verify that regression is detected and that
- correction script is in the view
- - Open Query Store UI in SSMS (e.g. "Top Resource Consuming Queries") and find the query. Verify that there are two plans - one faster with **Hash Aggregate** and another slower with **Stream Aggregate**
+ the correction script is in the view. You can use the following query:
+
+```
+SELECT planForceDetails.query_id, reason, score,
+      JSON_VALUE(details, '$.implementationDetails.script') script,
+      planForceDetails.[new plan_id], planForceDetails.[recommended plan_id]
+FROM sys.dm_db_tuning_recommendations
+  CROSS APPLY OPENJSON (Details, '$.planForceDetails')
+    WITH (  [query_id] int '$.queryId',
+            [new plan_id] int '$.regressedPlanId',
+            [recommended plan_id] int '$.forcedPlanId'
+          ) as planForceDetails;
+```
+
+ - Open Query Store UI in SSMS (e.g. "Top Resource Consuming Queries") and find the query. Verify that there are two plans - one faster with **Hash Aggregate** and another slower with **Stream Aggregate**, similar to the following figures:
 
 ![Last good plan](../../../../media/features/automatic-tuning/flgp-query-store-ui-last-good-plan.png "Last good plan")
 Fig. 1. Optimal plan with "Hash Aggregate".
@@ -76,30 +98,38 @@ Fig. 2. Regressed plan with "Stream Aggregate".
  - Execute query `EXEC dbo.report 7` 20 times and verify that the execution is faster. Open Query Store UI in SSMS (e.g. "Top Resource Consuming Queries"), find the query, verify that the plan is forced and that the regression is fixed.
 
 #### Part II - Automatic tuning
- - Reset the database state by executing `EXEC dbo.initialize`, and enable automatic tuning on database.
+ - Reset the database state by executing `EXEC dbo.initialize` procedure, and enable automatic tuning on database.
  - Execute query `EXEC dbo.report 7` 30-300 times.
  - Execute query `EXEC dbo.regression` to cause the regression.
  - Execute query `EXEC dbo.report 7` 20 times and verify that the execution is slower.
  - Query `sys.dm_db_tuning_recommendations` and verify that regression is detected and that
  recommendation is in **Verifying** state.
- - Open Query Store views (e.g. "Top Resource Consuming Queries") and find the query. Verify that there are two plans - one with **Hash Aggregate** and another with **Stream Aggregate**. Better plan should be forced, and you should see that the forced plan has better performance than regressed plan.
+ - Execute query `EXEC dbo.report 7` 30-50 times and verify that the execution is faster.
+ - Open Query Store UI in SSMS (e.g. "Top Resource Consuming Queries") and find the query. Verify that there are two plans - one with **Hash Aggregate** and another with **Stream Aggregate**. Better plan should be forced, and you should see that the forced plan has better performance than regressed plan.
 
 ### ASP.NET Core Sample
 
-This code sample contains a simple web page that periodically sends HTTP request to the Web server. Web server executes T-SQL query against the database, returns query result and calculates elapsed time.
+This code sample contains a simple web page that periodically sends HTTP requests to the Web server. Web server executes T-SQL query against the database, returns query result, and calculates query elapsed time in each iteration.
 Web page collects response from the web server, calculates expected throughput based on the
 last 10 T-SQL request durations, and displays how many requests per second can be executed.
+
+Open index.html page that will show number of requests per second that can be executed. Turn-on
+**Automatic tuning** using the **ON** button. You should see something like to following page:
 
 ![Web app](../../../../media/features/automatic-tuning/flgp-web-ui.png "Demo web app")
 Fig. 3. Number of requests per seconds.
 
-In default state, automatic tuning is turned OFF on the database. You can press **Regression**
-button to cause SQL plan choice regression in database layer. On the user interface will be shown decreased number of requests per seconds that can be served.
+> Number of requests per second might be different in your environment so, gauge needle might
+> be on left or right side. You can change the scale of the gauge if you manually edit index.html
+> file and change value 150 in the line 96: `var gauge = new GraphVizGauge("svg", { to: 150 });`
+> You can refresh the page after this change and the gauge will be re-scaled.
+
+You can press **Regression** button to cause SQL plan choice regression in database layer. On the web page will be shown decreased number of requests per seconds that can be served.
 
 ![Web app](../../../../media/features/automatic-tuning/flgp-web-ui-regression.png "Demo web app")
 Fig. 4. Number of requests per seconds after regression.
 
-If you refresh the page, the database state will be cleaned (i.e. query store and plan cache will be cleaned). You can turn on automatic tuning, wait some time to SQL Database analyze the workload and cause the regression again. You will notice that there is a regression that will be automatically corrected after some time. Pressing the **Regression** button again will not cause any regression.
+After some time, you will notice that the regression will be automatically corrected. Pressing the **Regression** button again will not cause any regression.
 
 <a name=disclaimers></a>
 
@@ -112,4 +142,5 @@ The code included in this sample is not intended to be a set of best practices o
 
 - [Automatic tuning in SQL Server 2017 CTP2.0+] (https://docs.microsoft.com/sql/relational-databases/automatic-tuning/automatic-tuning)
 - [Monitoring Performance By Using the Query Store] (https://docs.microsoft.com/en-us/sql/relational-databases/performance/monitoring-performance-by-using-the-query-store)
+
 
