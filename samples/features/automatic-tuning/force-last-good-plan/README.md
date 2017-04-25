@@ -41,7 +41,7 @@ To run this sample, you need the following prerequisites.
 ## Run this sample
 
 ### Setup code
-1. Download [T-SQL script files in sql-scripts](sql-scripts) folder. Optionally you can clone this repository using [Git for Windows](http://www.git-scm.com/), or download the zip file.
+1. Download [two T-SQL script files in sql-scripts](sql-scripts) folder if you want to use just T-SLQ sample. Optionally you can clone this repository using [Git for Windows](http://www.git-scm.com/), or download the zip file.
 2. Download the [WideWorldImporters](../../../databases/wide-world-importers) database and restore it on your server.
 3. Execute setup.sql script on your [WideWorldImporters](../../../databases/wide-world-importers) database that will add necessary stored procedures and indexes.
 
@@ -52,6 +52,7 @@ To run this sample, you need the following prerequisites.
 open project using Visual Studio 2015 U3, or Visual Studio Code, compile and run sample.
 
 <a name=sample-details></a>
+## Sample Details
 
 This sample demonstrates how SQL Server 2017 analyzes workload, keep track about the last good
 plan that successfully executed the query in the past, and reverts regressed plan if it is worse that the last known good plan.
