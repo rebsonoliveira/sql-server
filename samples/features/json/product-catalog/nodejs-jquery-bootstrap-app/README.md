@@ -1,6 +1,6 @@
-# ASP.NET Core Product Catalog application that uses SQL/JSON functionalities 
+# Node.js Product Catalog application that uses SQL/JSON functionalities 
 
-This project contains an example implementation of ASP.NET Core application that shows how to display list of products, add, edit, or delete products in the list.
+This project contains an example implementation of Node.js application that shows how to display list of products, add, edit, or delete products in the list.
 
 ## Contents
 
@@ -17,7 +17,7 @@ This project contains an example implementation of ASP.NET Core application that
 
 - **Applies to:** SQL Server 2016 (or higher), Azure SQL Database
 - **Key features:** JSON functions in SQL Server 2016/Azure SQL Database
-- **Programming Language:** C#, Html/JavaScript, Transact-SQL
+- **Programming Language:** Html/JavaScript/Node.js, Transact-SQL
 - **Authors:** Jovan Popovic
 
 <a name=before-you-begin></a>
@@ -29,7 +29,7 @@ To run this sample, you need the following prerequisites.
 **Software prerequisites:**
 
 1. SQL Server 2016 (or higher) or an Azure SQL Database
-2. Visual Studio 2015 Update 3 (or higher) or Visual Studio Code Editor with the ASP.NET Core 1.0 (or higher)
+2. Node.js installation
 
 **Azure prerequisites:**
 
@@ -39,39 +39,18 @@ To run this sample, you need the following prerequisites.
 
 ## Run this sample
 
-### Setup
-
 1. Create a database on SQL Server 2016 or Azure SQL Database and set compatibility level to 130.
 
 2. From SQL Server Management Studio or Sql Server Data Tools connect to your SQL Server 2016 or Azure SQL database and execute [sql-scripts/setup.sql](sql-scripts/setup.sql) script that will create and populate Product table and create required stored procedures.
 
-3. From Visual Studio 2015, open the **ProductCatalog.xproj** file from the root directory. Restore packages using right-click menu on the project in Visual Studio and by choosing Restore Packages item. As an alternative, you may run **dotnet restore** from the command line (from the root folder of application).
+3. From command line run **npm update** to update node.js packages.
 
-4. Add a connection string in appsettings.json or appsettings.development.json file. An example of the content of appsettings.development.json is shown in the following configuration:
+4. Setup connection information db.js
 
-```
-{
-  "ConnectionStrings": {
-    "ProductCatalog": "Server=.;Database=ProductCatalog;Integrated Security=true"
-  }
-}
-```
+5. Build and run sample using **npm build** and **npm run**.
 
-If your database is hosted on Azure you can add something like:
-```
-{
-  "ConnectionStrings": {
-    "ProductCatalog": "Server=<<SERVER>>.database.windows.net;Database=ProductCatalog;User Id=<<USER>>;Password=<<PASSWORD>>"
-  }
-}
-```
-
-### Build and run sample
-
-1. Build solution using Ctrl+Shift+B, right-click on project + Build, Build/Build Solution from menu, or **dotnet build** command from the command line (from the root folder of application).
-
-2. Run the sample app using F5 or Ctrl+F5 in Visual Studio 2015, or using **dotnet run** executed in the command prompt of the project root folder.  
-  1. Open /index.html Url to get all products from database,
+6. Run the sample app using F5 or Ctrl+F5 in Visual Studio 2015, or using **dotnet run** executed in the command prompt of the project root folder.  
+  1. Open http://localhost:3000/index.html to get all products from database,
   2. Use **Add** button to add a new product,
   3. Edit a product using **Edit** button in table,
   4. Delete a product using **Delete** button in table,
@@ -82,13 +61,13 @@ If your database is hosted on Azure you can add something like:
 
 This sample application shows how to display list of products, add, edit or delete some product.
 Front-end code is implemented using JQuery/Bootstrap libraries, and JQuery DataTable component for displaying data in table.
-Server-side code is implemented using ASP.NET Core Web API.
+Server-side code is implemented using Node.js Express4 REST API.
 SQL Server JSON functions are used to format product data that will be sent to front-end page.
 
 <a name=disclaimers></a>
 
 ## Disclaimers
-The code included in this sample is not intended demonstrate some general guidance and architectural patterns for web development. It contains minimal code required to create REST API, and it does not use some patterns such as Repository. Sample uses built-in ASP.NET Core Dependency Injection mechanism; however, this is not prerequisite.
+The code included in this sample is not intended demonstrate some general guidance and architectural patterns for web development. It contains minimal code required to create REST API.
 You can easily modify this code to fit the architecture of your application.
 
 <a name=related-links></a>
@@ -96,7 +75,6 @@ You can easily modify this code to fit the architecture of your application.
 ## Related Links
 
 You can find more information about the components that are used in this sample on these locations: 
-- [ASP.NET Core](http://www.asp.net/core).
 - [JSON Support in Sql Server](https://msdn.microsoft.com/en-us/library/dn921897.aspx).
 - [JQuery](https://jquery.com/).
 - [Bootstrap](http://getbootstrap.com/).
