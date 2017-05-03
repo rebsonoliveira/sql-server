@@ -1,0 +1,6 @@
+.vs/*
+node_modules/*
+bin/*.dll
+obj/*
+*.sln
+*.log
