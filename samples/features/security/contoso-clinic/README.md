@@ -1,33 +1,33 @@
-#Contoso Clinic Demo Application 
+# Contoso Clinic Demo Application 
 
 Sample application with database that showcases security features of SQL Server 2016. 
 
 ## About this sample
-- **Applies to:**  SQL Database 2016
+- **Applies to:**  SQL Server 2016
 - **Programming Language:** .NET C#, T-SQL
 - **Authors:** Jakub Szymaszek [jaszymas-MSFT]
 
 This project has adopted the [Microsoft Open Source Code of Conduct](http://microsoft.github.io/codeofconduct). For more information see the [Code of Conduct FAQ](http://microsoft.github.io/codeofconduct/faq.md) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments. 
 
-##Contents
-1. [Prerequisites] (#prerequisites) 
-2. [Setup] (#setup) 
+## Contents
+1. [Prerequisites](#prerequisites) 
+2. [Setup](#setup) 
 	* Set up the Demo Database
 	* Modify the Sample Application
-4. [SQL 2016 Security Features in this demo] (#sql-2016-security-features-in-this-demo) 
+4. [SQL 2016 Security Features in this demo](#sql-2016-security-features-in-this-demo) 
 	* Always Encrypted 
 	* Row Level Security 
 	* Dynamic Data Masking
-5.  [Application Notes] (#application-notes)
+5.  [Application Notes](#application-notes)
 
 
 
-##Prerequisites
+## Prerequisites
 1. Visual Studio 2015 (or newer)
 2. [SQL Server 2016](https://www.microsoft.com/en-us/evalcenter/evaluate-sql-server-2016) 
 3. [SQL Server Management Studio](https://msdn.microsoft.com/en-us/library/mt238290.aspx) 
 
-##Setup
+## Setup
 ### Set up the Demo Database
 1. Clone/Download the repository
 2. Import the *Clinic* database
@@ -75,7 +75,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](http://micr
 	
 ## SQL 2016 Security Features in this Demo
 ### Always Encrypted 
-####Enable Always Encrypted
+#### Enable Always Encrypted
 + Connect to your database using SSMS: 
 	- For more information on using SSMS to connect to a Database, [click here](https://azure.microsoft.com/en-us/documentation/articles/sql-database-connect-query-ssms/)
 + Encrypt Sensitive Data Columns using the Column Encryption Wizard 
@@ -114,16 +114,16 @@ This project has adopted the [Microsoft Open Source Code of Conduct](http://micr
 	- Run the ContosoClinic application from Visual Studio (by hitting *F5* OR select *Debug* > *Start Debugging*)
 	- Click on the *Patients* tab. You should see a list of patients again. 
 
-####How did that work? 
+#### How did that work? 
 ##### Connection String
 Our connection string for our application now contains `Column Encryption Setting=Enabled` which instructs the driver to automatically encrypt parameters targeting encrypted columns and decrypt any results retrieved from encrypted columns, without code changes. Don't forget this for your app if you intend to use Always Encrypted functonality. For more information this feature, [see our blog](https://blogs.msdn.microsoft.com/sqlsecurity/2016/07/11/always-encrypted-in-azure-sql-database-is-generally-available/). 
 
 ### Row Level Security (RLS) 
 
-####Login to the application 
+#### Login to the application 
 Sign in using (Rachel@contoso.com/Password1!) or (alice@contoso.com/Password1!)
 
-####Enable Row Level Security (RLS) 
+#### Enable Row Level Security (RLS) 
 + Connect to your database using SSMS: 
 [Instructions](https://azure.microsoft.com/en-us/documentation/articles/sql-database-connect-query-ssms/)
 + Open Enable-RLS.sql ( [Find it here](tsql-scripts/Enable-RLS.sql))
@@ -132,7 +132,7 @@ Sign in using (Rachel@contoso.com/Password1!) or (alice@contoso.com/Password1!)
 
 #### How did that work? 
 
-#####The application leverages an Entity Framework feature called **interceptors** 
+##### The application leverages an Entity Framework feature called **interceptors** 
 Specifically, we used a `DbConnectionInterceptor`. The `Opened()` function is called whenever Entity Framework opens a connection and we set SESSION_CONTEXT with the current application `UserId` there. 
 
 ##### Predicate functions
