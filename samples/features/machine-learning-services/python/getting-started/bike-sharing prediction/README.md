@@ -49,11 +49,15 @@ To run this sample, you need the following prerequisites:
 
 ## Run this sample
 1. From SQL Server Management Studio, or SQL Server Data Tools, connect to your SQL Server 2017 database and execute setup.sql to restore the sample DB you have downloaded 
-2. From Python Tools for Visual Studio, open the solution  
-3. In Python tools for  Visual Studio, remember to add the Machine Learning Services Python environment to the corresponding paths https://docs.microsoft.com/en-us/visualstudio/python/python-environments
 
-   * "C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\PYTHON_SERVICES" if you run in-db Python Server
-   * "C:\Program Files\Microsoft SQL Server\140\PYTHON_SERVER" if you have the standalone Machine Learning Server installed .
+2. From Python Tools for Visual Studio, open the python tools command under tools menu, add the Machine Learning Services Python environment to the corresponding paths https://docs.microsoft.com/en-us/visualstudio/python/python-environments
+
+  *  "C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\PYTHON_SERVICES" if you run in-db Python Server
+  *  "C:\Program Files\Microsoft SQL Server\140\PYTHON_SERVER" if you have the standalone Machine Learning Server installed .
+
+3. Create new Python project from existing code and point to the downloaded python source files, and the Machine Learning Services Python environment created in step 2.
+
+
 
 
 
