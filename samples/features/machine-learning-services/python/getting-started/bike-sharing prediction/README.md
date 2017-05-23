@@ -1,6 +1,6 @@
 # Build a predictive model with RevoScalePy using SQL Server 2017 Machine Learning Services
 
-This sample shows how to create a predictive model using RevoScalePy in conjunction with Python machine learning stack.
+This sample shows how to create a predictive model using RevoScalePy in conjunction with python machine learning stack.
 
 The dataset  used in this tutorial is based on Vélib which is a large scale public service of rent bike in Paris, the service offers today about around 14500 bicycles and 1230 stations http://en.velib.paris.fr/.
 
