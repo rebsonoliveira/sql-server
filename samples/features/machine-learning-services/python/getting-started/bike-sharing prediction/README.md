@@ -31,7 +31,6 @@ This sample consist of a  binary classifier that predict if a bike station is em
 - **Workload:** SQL Server Machine Learning Services
 - **Programming Language:** Python, TSQL
 - **Author:** Yassine Khelifi
-- **Update history:** Build a predictive model with RevoScalePy library using SQL Server 2017 Machine Learning Services - Python 
 
 
 
