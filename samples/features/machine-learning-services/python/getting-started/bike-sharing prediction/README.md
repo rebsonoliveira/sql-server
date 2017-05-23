@@ -80,7 +80,7 @@ Restores the sample DB (Make sure to update the path to the .bak file)
 
 
 ## Disclaimers
-The dataset used in this sample is obtained from JCdecaux data set https://developer.jcdecaux.com/#/opendata/license
+The dataset used in this sample is obtained from JCdecaux https://developer.jcdecaux.com/#/opendata/license
 
 
 
