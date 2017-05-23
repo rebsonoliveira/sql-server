@@ -4,7 +4,7 @@ This sample shows how to create a predictive model using RevoScalePy in conjunct
 
 The dataset  used in this tutorial is based on Vélib which is a large scale public service of rent bike in Paris, the service offers today about around 14500 bicycles and 1230 stations http://en.velib.paris.fr/.
 
-The dataset is a one month long  sample, on a 15 minutes frequency of the 8th district of Paris.
+The dataset is a one month long  sampled on a 15 minutes frequency of the 8th district of Paris.
 
 
 ### Contents
