@@ -55,7 +55,7 @@ To run this sample, you need the following prerequisites:
    *  "C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\PYTHON_SERVICES" if you run in-db Python Server
    *  "C:\Program Files\Microsoft SQL Server\140\PYTHON_SERVER" if you have the standalone Machine Learning Server installed .
 
-3. Create new Python project from existing code and point to the downloaded python source files, and the Machine Learning Services Python environment created in step 2.
+3. Create new Python project from existing code and point to the downloaded python source files, and the Machine Learning Services Python environment defined in step 2.
 
 
 
