@@ -80,12 +80,8 @@ Restores the sample DB (Make sure to update the path to the .bak file)
 
 
 ## Disclaimers
+The dataset used in this sample is obtained from JCdecaux data set https://developer.jcdecaux.com/#/opendata/license
 
-The sample is only intenteded to show how  RevoScalePy library can be used in conjunction with python machine leanring stack.
-
-The dataset used in this sample is obtained from JCdecaux data set https://developer.jcdecaux.com/#/opendata/vls?page=dynamic 
-
-[![Etalab open license](https://sq14samples.blob.core.windows.net/images/open_licence.png)](https://developer.jcdecaux.com/#/opendata/license)
 
 
 
