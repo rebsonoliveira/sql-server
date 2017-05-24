@@ -21,7 +21,7 @@ The dataset is a one month long  sampled on a 15 minutes frequency of the 8th di
 ## About this sample
 
 
-This sample consist of a  binary classifier that predict if a bike station is empty or not.
+This sample consist of a  binary classifier that predict whether a particular bike station is empty or not.
 
 
 
