@@ -1,6 +1,6 @@
-# Samples for High Availability solutions for SQL Server 
+# Samples for High Availability solutions for SQL Server
 
-Go to the documentation tutorials to learn about: 
+Go to the documentation tutorials to learn more about:
 
 [HADR Solutions on Linux](https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-business-continuity-dr) 
 
