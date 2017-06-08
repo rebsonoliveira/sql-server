@@ -9,11 +9,13 @@ import (
 	_ "github.com/denisenkom/go-mssqldb"
 )
 
-var server = "localhost"
-var port = 1433
-var user = "sa"
-var password = "your_password"
-var database = "SampleDB"
+var (
+	server   = "localhost"
+	port     = 1433
+	user     = "sa"
+	password = "your_password"
+	database = "SampleDB"
+)
 
 // Delete an employee from database
 func ExecuteAggregateStatement(db *sql.DB) {

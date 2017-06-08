@@ -7,11 +7,13 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mssql"
 )
 
-var server = "localhost"
-var port = 1433
-var user = "sa"
-var password = "your_password"
-var database = "SampleDB"
+var (
+	server   = "localhost"
+	port     = 1433
+	user     = "sa"
+	password = "your_password"
+	database = "SampleDB"
+)
 
 type User struct {
 	gorm.Model
