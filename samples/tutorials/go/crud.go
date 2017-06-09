@@ -16,7 +16,7 @@ var (
 	database = "SampleDB"
 )
 
-// Create an employee
+// CreateEmployee create an employee
 func CreateEmployee(db *sql.DB, name string, location string) (int64, error) {
 	tsql := fmt.Sprintf("INSERT INTO TestSchema.Employees (Name, Location) VALUES ('%s','%s');",
 		name, location)
@@ -28,7 +28,7 @@ func CreateEmployee(db *sql.DB, name string, location string) (int64, error) {
 	return result.LastInsertId()
 }
 
-// Read all employees
+// ReadEmployees read all employees
 func ReadEmployees(db *sql.DB) (int, error) {
 	tsql := fmt.Sprintf("SELECT Id, Name, Location FROM TestSchema.Employees;")
 	rows, err := db.Query(tsql)
@@ -52,7 +52,7 @@ func ReadEmployees(db *sql.DB) (int, error) {
 	return count, nil
 }
 
-// Update an employee's information
+// UpdateEmployee update an employee's information
 func UpdateEmployee(db *sql.DB, name string, location string) (int64, error) {
 	tsql := fmt.Sprintf("UPDATE TestSchema.Employees SET Location = '%s' WHERE Name= '%s'",
 		location, name)
@@ -64,7 +64,7 @@ func UpdateEmployee(db *sql.DB, name string, location string) (int64, error) {
 	return result.LastInsertId()
 }
 
-// Delete an employee from database
+// DeleteEmployee delete an employee from database
 func DeleteEmployee(db *sql.DB, name string) (int64, error) {
 	tsql := fmt.Sprintf("DELETE FROM TestSchema.Employees WHERE Name='%s';", name)
 	result, err := db.Exec(tsql)

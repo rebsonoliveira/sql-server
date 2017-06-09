@@ -17,7 +17,7 @@ var (
 	database = "SampleDB"
 )
 
-// Delete an employee from database
+// ExecuteAggregateStatement output summary of prices
 func ExecuteAggregateStatement(db *sql.DB) {
 	result, err := db.Prepare("SELECT SUM(Price) as sum FROM Table_with_5M_rows")
 	if err != nil {
