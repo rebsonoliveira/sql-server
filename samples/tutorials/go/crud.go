@@ -88,17 +88,29 @@ func main() {
 
 	// Create employee
 	createId, err := CreateEmployee(conn, "Jake", "United States")
+	if err != nil {
+		log.Fatal("CreateEmployee failed:", err.Error())
+	}
 	fmt.Printf("Inserted ID: %d successfully.\n", createId)
 
 	// Read employees
 	count, err := ReadEmployees(conn)
+	if err != nil {
+		log.Fatal("ReadEmployees failed:", err.Error())
+	}
 	fmt.Printf("Read %d rows successfully.\n", count)
 
 	// Update from database
 	updateId, err := UpdateEmployee(conn, "Jake", "Poland")
+	if err != nil {
+		log.Fatal("UpdateEmployee failed:", err.Error())
+	}
 	fmt.Printf("Updated row with ID: %d successfully.\n", updateId)
 
 	// Delete from database
 	rows, err := DeleteEmployee(conn, "Jake")
+	if err != nil {
+		log.Fatal("DeleteEmployee failed:", err.Error())
+	}
 	fmt.Printf("Deleted %d rows successfully.\n", rows)
 }
