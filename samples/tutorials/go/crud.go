@@ -37,7 +37,7 @@ func ReadEmployees(db *sql.DB) (int, error) {
 		return -1, err
 	}
 	defer rows.Close()
-	var count int = 0
+	count := 0
 	for rows.Next() {
 		var name, location string
 		var id int
@@ -87,11 +87,11 @@ func main() {
 	defer conn.Close()
 
 	// Create employee
-	createId, err := CreateEmployee(conn, "Jake", "United States")
+	createID, err := CreateEmployee(conn, "Jake", "United States")
 	if err != nil {
 		log.Fatal("CreateEmployee failed:", err.Error())
 	}
-	fmt.Printf("Inserted ID: %d successfully.\n", createId)
+	fmt.Printf("Inserted ID: %d successfully.\n", createID)
 
 	// Read employees
 	count, err := ReadEmployees(conn)
@@ -101,11 +101,11 @@ func main() {
 	fmt.Printf("Read %d rows successfully.\n", count)
 
 	// Update from database
-	updateId, err := UpdateEmployee(conn, "Jake", "Poland")
+	updateID, err := UpdateEmployee(conn, "Jake", "Poland")
 	if err != nil {
 		log.Fatal("UpdateEmployee failed:", err.Error())
 	}
-	fmt.Printf("Updated row with ID: %d successfully.\n", updateId)
+	fmt.Printf("Updated row with ID: %d successfully.\n", updateID)
 
 	// Delete from database
 	rows, err := DeleteEmployee(conn, "Jake")

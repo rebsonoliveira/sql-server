@@ -15,12 +15,14 @@ var (
 	database = "SampleDB"
 )
 
+// User represents a user account
 type User struct {
 	gorm.Model
 	FirstName string
 	LastName  string
 }
 
+// Task represents a task for the user
 type Task struct {
 	gorm.Model
 	Title      string
@@ -29,6 +31,7 @@ type Task struct {
 	UserID     uint
 }
 
+// ReadAllTasks read all tasks
 func ReadAllTasks(db *gorm.DB) {
 	var users []User
 	var tasks []Task
@@ -44,16 +47,18 @@ func ReadAllTasks(db *gorm.DB) {
 	}
 }
 
-func UpdateSomeonesTask(db *gorm.DB, userId int) {
+// UpdateSomeonesTask update someone's task
+func UpdateSomeonesTask(db *gorm.DB, userID int) {
 	var task Task
-	db.Where("user_id = ?", userId).First(&task).Update("Title", "Buy donuts for Luis")
+	db.Where("user_id = ?", userID).First(&task).Update("Title", "Buy donuts for Luis")
 	fmt.Printf("Title: %s\nDueDate: %s\nIsComplete:%t\n\n",
 		task.Title, task.DueDate, task.IsComplete)
 }
 
-func DeleteSomeonesTasks(db *gorm.DB, userId int) {
-	db.Where("user_id = ?", userId).Delete(&Task{})
-	fmt.Printf("Deleted all tasks for user %d", userId)
+// DeleteSomeonesTasks delete someone's task
+func DeleteSomeonesTasks(db *gorm.DB, userID int) {
+	db.Where("user_id = ?", userID).Delete(&Task{})
+	fmt.Printf("Deleted all tasks for user %d", userID)
 }
 
 func main() {
