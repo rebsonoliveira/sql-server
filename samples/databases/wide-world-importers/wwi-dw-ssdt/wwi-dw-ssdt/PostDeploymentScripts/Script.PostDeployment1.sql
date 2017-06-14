@@ -109,12 +109,5 @@ BEGIN
         (0, 0, N'Unknown', @StartOfTime, @EndOfTime, 0);
 END;
 
-
--- Enable Enterprise Features - Note without these the SSIS won't work
-EXEC [Application].Configuration_ApplyPartitionedColumnstoreIndexing;
-
-EXEC [Application].Configuration_EnableInMemory;
-
--- To enable polybase you'll have to edit this function to 
--- hook to your polybase instance
--- EXEC [Application].Configuration_ApplyPolybase;
+-- Enable PolyBase, in case it is installed
+EXEC [Application].Configuration_ApplyPolybase;
