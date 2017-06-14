@@ -48,3 +48,7 @@ samples/databases/wide-world-importers/wwi-integration-etl/Daily ETL/obj/Develop
 samples/features/in-memory/ticket-reservations/DemoWorkload/obj/Debug/DemoWorkload.csproj.FileListAbsolute.txt
 samples/features/in-memory/iot-smart-grid/Db/obj/Release/Model.xml
 samples/applications/iot-smart-grid/DataGenerator/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+samples/databases/wide-world-importers/workload-drivers/order-insert/MultithreadedOrderInsert/bin/Debug/MultithreadedOrderInsert.exe.config
+samples/features/in-memory/iot-smart-grid/ConsoleClient/bin/Release/ConsoleClient.exe.config
+*.jfm
+samples/features/in-memory/ticket-reservations/TicketReservations/bin/Release/TicketReservations.publish.sql
