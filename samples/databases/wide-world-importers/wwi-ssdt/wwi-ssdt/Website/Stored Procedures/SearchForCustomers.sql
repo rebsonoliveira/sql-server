@@ -5,7 +5,8 @@ CREATE PROCEDURE Website.SearchForCustomers
 WITH EXECUTE AS OWNER
 AS
 BEGIN
-    SELECT c.CustomerID,
+    SELECT TOP(@MaximumRowsToReturn)
+           c.CustomerID,
            c.CustomerName,
            ct.CityName,
            c.PhoneNumber,
@@ -13,12 +14,11 @@ BEGIN
            p.FullName AS PrimaryContactFullName,
            p.PreferredName AS PrimaryContactPreferredName
     FROM Sales.Customers AS c
-    INNER JOIN FREETEXTTABLE(Sales.Customers, CustomerName, @SearchText, @MaximumRowsToReturn) AS ft
-    ON c.CustomerID = ft.[KEY]
     INNER JOIN [Application].Cities AS ct
     ON c.DeliveryCityID = ct.CityID
     LEFT OUTER JOIN [Application].People AS p
     ON c.PrimaryContactPersonID = p.PersonID
-    ORDER BY ft.[RANK]
+    WHERE CONCAT(c.CustomerName, N' ', p.FullName, N' ', p.PreferredName) LIKE N'%' + @SearchText + N'%'
+    ORDER BY c.CustomerName
     FOR JSON AUTO, ROOT(N'Customers');
 END;

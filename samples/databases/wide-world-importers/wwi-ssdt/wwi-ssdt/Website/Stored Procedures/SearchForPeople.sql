@@ -4,7 +4,8 @@ CREATE PROCEDURE Website.SearchForPeople
 @MaximumRowsToReturn int
 AS
 BEGIN
-    SELECT p.PersonID,
+    SELECT TOP(@MaximumRowsToReturn)
+           p.PersonID,
            p.FullName,
            p.PreferredName,
            CASE WHEN p.IsSalesperson <> 0 THEN N'Salesperson'
@@ -15,14 +16,13 @@ BEGIN
            END AS Relationship,
            COALESCE(c.CustomerName, sp.SupplierName, sa.SupplierName, N'WWI') AS Company
     FROM [Application].People AS p
-    INNER JOIN FREETEXTTABLE([Application].People, SearchName, @SearchText, @MaximumRowsToReturn) AS ft
-    ON p.PersonID = ft.[KEY]
     LEFT OUTER JOIN Sales.Customers AS c
     ON c.PrimaryContactPersonID = p.PersonID
     LEFT OUTER JOIN Purchasing.Suppliers AS sp
     ON sp.PrimaryContactPersonID = p.PersonID
     LEFT OUTER JOIN Purchasing.Suppliers AS sa
     ON sa.AlternateContactPersonID = p.PersonID
-    ORDER BY ft.[RANK]
+    WHERE p.SearchName LIKE N'%' + @SearchText + N'%'
+    ORDER BY p.FullName
     FOR JSON AUTO, ROOT(N'People');
 END;

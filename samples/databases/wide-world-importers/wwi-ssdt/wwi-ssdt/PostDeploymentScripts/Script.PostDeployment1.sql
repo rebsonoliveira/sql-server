@@ -18,6 +18,10 @@ GO
 GRANT VIEW ANY COLUMN MASTER KEY DEFINITION TO PUBLIC;
 */
 
+-- add full-text indexes and use them in the Website.Search* procs, in case full-text indexing is installed
+EXEC [Application].Configuration_ApplyFullTextIndexing;
+GO
+
 EXEC DataLoadSimulation.DeactivateTemporalTablesBeforeDataLoad;
 GO
 

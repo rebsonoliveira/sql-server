@@ -51,3 +51,5 @@ samples/databases/wide-world-importers/workload-drivers/order-insert/Multithread
 samples/features/in-memory/iot-smart-grid/ConsoleClient/bin/Release/ConsoleClient.exe.config
 *.jfm
 samples/features/in-memory/ticket-reservations/TicketReservations/bin/Release/TicketReservations.publish.sql
+samples/applications/iot-smart-grid/ConsoleClient/bin/Release/ConsoleClient.exe.config
+samples/applications/iot-smart-grid/Db/Db.dbmdl

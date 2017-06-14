@@ -587,7 +587,6 @@
     <Build Include="Security\FilterCustomersBySalesTerritoryRole.sql" />
     <Build Include="Security\Permissions.sql" />
     <Build Include="Storage\FTCatalog.sql" />
-    <Build Include="FullTextIndexes.sql" />
     <Build Include="DataLoadSimulation\Functions\GetAreaCode.sql">
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
@@ -700,6 +699,7 @@
     <Build Include="Application\Stored Procedures\Configuration_RemoveColumnstoreIndexing.sql" />
     <Build Include="Application\Stored Procedures\Configuration_DisableInMemory.sql" />
     <Build Include="Application\Stored Procedures\Configuration_PrepareForAzure.sql" />
+    <Build Include="SampleVersion.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="PostDeploymentScripts\Script.PostDeployment1.sql" />

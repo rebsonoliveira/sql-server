@@ -128,10 +128,7 @@
     <Build Include="Integration\Stored Procedures\MigrateStagedStockHoldingData.sql" />
     <Build Include="Integration\Stored Procedures\MigrateStagedTransactionData.sql" />
     <Build Include="Application\Stored Procedures\Configuration_ReseedETL.sql" />
-    <Build Include="Application\Stored Procedures\Configuration_EnableInMemory.sql" />
-    <Build Include="Application\Stored Procedures\Configuration_ApplyPartitionedColumnstoreIndexing.sql" />
     <Build Include="Application\Stored Procedures\Configuration_ApplyPolybase.sql" />
-    <Build Include="Application\Stored Procedures\Configuration_ConfigureForEnterpriseEdition.sql" />
     <Build Include="Application\Stored Procedures\Configuration_PopulateLargeSaleTable.sql" />
     <Build Include="Storage\PF_Date.sql" />
     <Build Include="Storage\PS_Date.sql" />
@@ -151,12 +148,12 @@
     <Build Include="Sequences\Sequences\StockItemKey.sql" />
     <Build Include="Sequences\Sequences\SupplierKey.sql" />
     <Build Include="Sequences\Sequences\TransactionTypeKey.sql" />
+    <Build Include="SampleVersion.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="PostDeploymentScripts\Script.PostDeployment1.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="wwi-dw-ssdt.publish.xml" />
     <None Include="WideWorldImportersDW.publish.xml" />
   </ItemGroup>
 </Project>
