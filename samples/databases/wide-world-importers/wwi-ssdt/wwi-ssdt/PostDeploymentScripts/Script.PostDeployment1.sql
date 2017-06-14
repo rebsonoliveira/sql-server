@@ -196,3 +196,16 @@ EXEC DataLoadSimulation.DailyProcessToCreateHistory
   with demonstration data. The parameters for it work the same
   as they do for DailyProcessToCreateHistory 
 */
+
+
+-- Configure the sample version
+IF NOT EXISTS (SELECT 1 FROM dbo.SampleVersion)
+BEGIN
+	INSERT dbo.SampleVersion (MajorSampleVersion, MinorSampleVersion, MinSQLServerBuild)
+	VALUES (2, 0, N'13.0.4000.0')
+END
+ELSE
+BEGIN
+	UPDATE dbo.SampleVersion (MajorSampleVersion, MinorSampleVersion, MinSQLServerBuild)
+	SET MajorSampleVersion=2, MinorSampleVersion=0, MinSQLServerBuild=N'13.0.4000.0'
+END
