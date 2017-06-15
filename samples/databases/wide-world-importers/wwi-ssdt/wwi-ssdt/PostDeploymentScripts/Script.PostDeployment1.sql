@@ -118,11 +118,9 @@ GO
 EXEC Sequences.ReseedAllSequences;
 GO
 
--- This final set of code populates the database with sample data.
--- It can take a while to run, depending on your computer it could be
--- a few hours. If all you want is to create the database without data
--- then just comment this last section out
-PRINT 'Populating Data - this may take quite a while so be patient! two to three hours or more is common'
+-- This final set of code populates the database with a limited set of sample data.
+-- To obtain the full set of sample data, follow the instructions in the documentation. 
+PRINT 'Populating limited data set.'
 GO
 
 SET NOCOUNT ON;
@@ -163,25 +161,15 @@ SET NOCOUNT ON;
                      depricated in future releases. 
 */ 
 EXEC DataLoadSimulation.DailyProcessToCreateHistory 
-    @StartDate = '20170101',
-    @EndDate = '20170430',
-    @AverageNumberOfCustomerOrdersPerDay = 20,
-    @SaturdayPercentageOfNormalWorkDay = 25,
-    @SundayPercentageOfNormalWorkDay = 0,
-    @UpdateCustomFields = 1,
-    @IsSilentMode = 0,
-    @AreDatesPrinted = 1;
-/*
-EXEC DataLoadSimulation.DailyProcessToCreateHistory 
-    @StartDate = '20161101',
-    @EndDate = '20170131',
+    @StartDate = '20130101',
+    @EndDate = '20130201',
     @AverageNumberOfCustomerOrdersPerDay = 60,
     @SaturdayPercentageOfNormalWorkDay = 25,
     @SundayPercentageOfNormalWorkDay = 0,
     @UpdateCustomFields = 1,
     @IsSilentMode = 0,
     @AreDatesPrinted = 1;
-*/
+
 
 
 /*
