@@ -9,8 +9,6 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-	EXEC DataLoadSimulation.Configuration_ApplyDataLoadSimulationProcedures;
-
     DECLARE @CurrentMaximumDate date = COALESCE((SELECT MAX(OrderDate) FROM Sales.Orders), '20121231');
     DECLARE @StartingDate date = DATEADD(day, 1, @CurrentMaximumDate);
     DECLARE @EndingDate date = CAST(DATEADD(day, -1, SYSDATETIME()) AS date);
@@ -25,5 +23,4 @@ BEGIN
         @IsSilentMode = @IsSilentMode,
         @AreDatesPrinted = @AreDatesPrinted;
 
-	EXEC DataLoadSimulation.Configuration_RemoveDataLoadSimulationProcedures;
 END;
