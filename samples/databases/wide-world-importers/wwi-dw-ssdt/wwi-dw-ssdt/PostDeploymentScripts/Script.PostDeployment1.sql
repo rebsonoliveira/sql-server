@@ -108,9 +108,11 @@ BEGIN
     VALUES
         (0, 0, N'Unknown', @StartOfTime, @EndOfTime, 0);
 END;
+GO
 
 -- Enable PolyBase, in case it is installed
 EXEC [Application].Configuration_ApplyPolybase;
+GO
 
 -- Configure the sample version
 IF NOT EXISTS (SELECT 1 FROM dbo.SampleVersion)
@@ -120,6 +122,7 @@ BEGIN
 END
 ELSE
 BEGIN
-	UPDATE dbo.SampleVersion (MajorSampleVersion, MinorSampleVersion, MinSQLServerBuild)
+	UPDATE dbo.SampleVersion 
 	SET MajorSampleVersion=2, MinorSampleVersion=0, MinSQLServerBuild=N'13.0.4000.0'
 END
+GO
