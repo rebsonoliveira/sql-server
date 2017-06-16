@@ -24,7 +24,7 @@
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseSet>True</TargetDatabaseSet>
     <DefaultCollation>Latin1_General_100_CI_AS</DefaultCollation>
-    <AnsiNulls>False</AnsiNulls>
+    <AnsiNulls>True</AnsiNulls>
     <QuotedIdentifier>False</QuotedIdentifier>
     <QueryStoreCaptureMode>Auto</QueryStoreCaptureMode>
     <QueryStoreDesiredState>ReadWrite</QueryStoreDesiredState>
@@ -65,10 +65,10 @@
     <SupplementalLoggingOn>False</SupplementalLoggingOn>
     <CompatibilityMode>130</CompatibilityMode>
     <AnsiNullDefault>False</AnsiNullDefault>
-    <AnsiPadding>False</AnsiPadding>
-    <AnsiWarnings>False</AnsiWarnings>
+    <AnsiPadding>True</AnsiPadding>
+    <AnsiWarnings>True</AnsiWarnings>
     <ArithAbort>False</ArithAbort>
-    <ConcatNullYieldsNull>False</ConcatNullYieldsNull>
+    <ConcatNullYieldsNull>True</ConcatNullYieldsNull>
     <NumericRoundAbort>False</NumericRoundAbort>
     <RecursiveTriggersEnabled>False</RecursiveTriggersEnabled>
     <DatabaseChaining>False</DatabaseChaining>
@@ -705,7 +705,7 @@
     <PostDeploy Include="PostDeploymentScripts\Script.PostDeployment1.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="wwi-ssdt.publish.xml" />
+    <None Include="WideWorldImporters.xml" />
     <None Include="PostDeploymentScripts\pds100-ins-app-people.sql" />
     <None Include="PostDeploymentScripts\pds110-ins-app-countries.sql" />
     <None Include="PostDeploymentScripts\pds120-ins-app-deliverymethods.sql" />

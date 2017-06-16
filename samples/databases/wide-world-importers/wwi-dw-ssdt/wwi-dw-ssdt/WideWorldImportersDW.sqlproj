@@ -25,6 +25,11 @@
     <TargetDatabaseSet>True</TargetDatabaseSet>
     <DefaultCollation>Latin1_General_100_CI_AS</DefaultCollation>
     <DefaultFilegroup>USERDATA</DefaultFilegroup>
+    <MemoryOptimizedElevateToSnapshot>True</MemoryOptimizedElevateToSnapshot>
+    <AutoUpdateStatisticsAsynchronously>True</AutoUpdateStatisticsAsynchronously>
+    <ArithAbort>False</ArithAbort>
+    <DelayedDurability>FORCED</DelayedDurability>
+    <QueryStoreDesiredState>ReadWrite</QueryStoreDesiredState>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
