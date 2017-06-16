@@ -15,7 +15,7 @@
       <SSIS:Project SSIS:ProtectionLevel="DontSaveSensitive" xmlns:SSIS="www.microsoft.com/SqlServer/SSIS">
         <SSIS:Properties>
           <SSIS:Property SSIS:Name="ID">{3fc1329b-44bf-46c8-9192-85765f91f6f0}</SSIS:Property>
-          <SSIS:Property SSIS:Name="Name">wwi-ssis</SSIS:Property>
+          <SSIS:Property SSIS:Name="Name">Daily ETL</SSIS:Property>
           <SSIS:Property SSIS:Name="VersionMajor">0</SSIS:Property>
           <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
           <SSIS:Property SSIS:Name="VersionBuild">0</SSIS:Property>

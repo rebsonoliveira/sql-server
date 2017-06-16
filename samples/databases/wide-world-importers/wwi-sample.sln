@@ -9,7 +9,7 @@ Project("{D2ABAB84-BF74-430A-B69E-9DC6D40DDA17}") = "WWI-SSASMD", "wwi-ssasmd\WW
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "WideWorldImporters", "wwi-ssdt\wwi-ssdt\WideWorldImporters.sqlproj", "{9E972C93-0716-4442-97FC-72C52C2C5AAA}"
 EndProject
-Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "WWI-SSIS", "wwi-ssis\WWI-SSIS\WWI-SSIS.dtproj", "{925A4107-F621-4697-955C-1EB222C4AB3C}"
+Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "Daily ETL", "wwi-ssis\WWI-SSIS\Daily ETL.dtproj", "{925A4107-F621-4697-955C-1EB222C4AB3C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
