@@ -169,7 +169,7 @@ EXEC DataLoadSimulation.DailyProcessToCreateHistory
     @UpdateCustomFields = 1,
     @IsSilentMode = 0,
     @AreDatesPrinted = 1;
-
+GO
 
 
 /*
@@ -194,6 +194,7 @@ BEGIN
 END
 ELSE
 BEGIN
-	UPDATE dbo.SampleVersion (MajorSampleVersion, MinorSampleVersion, MinSQLServerBuild)
+	UPDATE dbo.SampleVersion
 	SET MajorSampleVersion=2, MinorSampleVersion=0, MinSQLServerBuild=N'13.0.4000.0'
 END
+GO
