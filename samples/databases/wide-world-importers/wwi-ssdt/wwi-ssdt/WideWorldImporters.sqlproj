@@ -578,7 +578,6 @@
     <Build Include="Sequences\Sequences\TransactionTypeID.sql" />
     <Build Include="Security\FilterCustomersBySalesTerritoryRole.sql" />
     <Build Include="Security\Permissions.sql" />
-    <Build Include="Storage\FTCatalog.sql" />
     <Build Include="DataLoadSimulation\Functions\GetAreaCode.sql">
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>

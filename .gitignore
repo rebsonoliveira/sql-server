@@ -62,3 +62,4 @@ samples/databases/wide-world-importers/workload-drivers/order-insert/Multithread
 samples/databases/wide-world-importers/wwi-ssasmd/wwi-ssasmd/bin/WWI-SSASMD.asdatabase
 samples/applications/iot-smart-grid/Db/obj/Release/Db.sqlproj.FileListAbsolute.txt
 *.manifest
+samples/applications/iot-smart-grid/WinFormsClient/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
