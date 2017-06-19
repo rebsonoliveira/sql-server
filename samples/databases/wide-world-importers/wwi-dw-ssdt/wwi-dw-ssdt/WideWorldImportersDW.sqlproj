@@ -28,7 +28,7 @@
     <MemoryOptimizedElevateToSnapshot>True</MemoryOptimizedElevateToSnapshot>
     <AutoUpdateStatisticsAsynchronously>True</AutoUpdateStatisticsAsynchronously>
     <ArithAbort>False</ArithAbort>
-    <DelayedDurability>FORCED</DelayedDurability>
+    <DelayedDurability>DISABLED</DelayedDurability>
     <QueryStoreDesiredState>ReadWrite</QueryStoreDesiredState>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">

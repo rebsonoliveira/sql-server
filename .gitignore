@@ -59,3 +59,6 @@ samples/databases/wide-world-importers/wwi-dw-ssdt/wwi-dw-ssdt/WideWorldImporter
 samples/features/in-memory/iot-smart-grid/WinFormsClient/bin/Release/Reports/PowerDashboard.pbix
 samples/databases/wide-world-importers/wwi-ssdt/wwi-ssdt/WideWorldImporters.dbmdl
 samples/databases/wide-world-importers/workload-drivers/order-insert/MultithreadedOrderInsert/obj/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+samples/databases/wide-world-importers/wwi-ssasmd/wwi-ssasmd/bin/WWI-SSASMD.asdatabase
+samples/applications/iot-smart-grid/Db/obj/Release/Db.sqlproj.FileListAbsolute.txt
+*.manifest
