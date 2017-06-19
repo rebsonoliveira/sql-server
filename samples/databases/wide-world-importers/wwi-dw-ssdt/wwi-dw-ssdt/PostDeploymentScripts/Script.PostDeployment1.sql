@@ -110,10 +110,6 @@ BEGIN
 END;
 GO
 
--- Enable PolyBase, in case it is installed
-EXEC [Application].Configuration_ApplyPolybase;
-GO
-
 -- Configure the sample version
 IF NOT EXISTS (SELECT 1 FROM dbo.SampleVersion)
 BEGIN
@@ -126,3 +122,9 @@ BEGIN
 	SET MajorSampleVersion=2, MinorSampleVersion=0, MinSQLServerBuild=N'13.0.4000.0'
 END
 GO
+
+-- By default, do not enable PolyBase in the sample. The following can be run afterwards to create PolyBase artifacts in the database.
+-- EXEC [Application].Configuration_ApplyPolybase;
+-- GO
+
+
