@@ -354,7 +354,7 @@
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
     <Build Include="Storage\USERDATA.sql" />
-    <Build Include="Storage\WWI_InMemory_Data.sql" />
+    <Build Include="Storage\WWI_MemoryOptimized_Data.sql" />
     <Build Include="Security\External Sales.sql" />
     <Build Include="Security\Far West Sales.sql" />
     <Build Include="Security\Great Lakes Sales.sql" />

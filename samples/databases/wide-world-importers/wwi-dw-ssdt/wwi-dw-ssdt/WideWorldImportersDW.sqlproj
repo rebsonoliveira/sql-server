@@ -112,7 +112,7 @@
     <Build Include="Fact\Tables\Transaction.sql" />
     <Build Include="Integration\Tables\City_Staging.sql" />
     <Build Include="Storage\USERDATA.sql" />
-    <Build Include="Storage\WWIDW_InMemory_Data.sql" />
+    <Build Include="Storage\WWIDW_MemoryOptimized_Data.sql" />
     <Build Include="Integration\Functions\GenerateDateDimensionColumns.sql" />
     <Build Include="Sequences\Stored Procedures\ReseedSequenceBeyondTableValues.sql" />
     <Build Include="Sequences\Stored Procedures\ReseedAllSequences.sql" />
