@@ -45,21 +45,21 @@ To run this sample, you need the following prerequisites.
 2. Build the solution.
 
 3. Make sure you have permission on the SSAS server. From SQL Server Management Studio:
-  a. Connect to the Analysis Services server.
-  b. In Object Explorer, right-click on the server and select **Properties** to open the properties dialog.
-  c. Click on **Security** to navigate to the security page.
-  d. Verify that you are listed among server administrators. If not, click **Add** to add your account to the server administrators.
+    1. Connect to the Analysis Services server.
+    1. In Object Explorer, right-click on the server and select **Properties** to open the properties dialog.
+    1. Click on **Security** to navigate to the security page.
+    1. Verify that you are listed among server administrators. If not, click **Add** to add your account to the server administrators.
 
 4. Publish the SSASMD database:
-  a. In Solution Explorer, open the project **WWI-SSASMD**, and open the **Data Source** node.
-  b. Double-click the data source **WideWorldImportersDW.ds** to open the **Data Source Designer**.
-  c. Click **Edit** to update the connection string to point to the server that has the existing WideWorldImportersDW database, and verify that the database name is **WideWorldImportersDW**.
-  d. Click **Impersonation Information** -> **Use a specific Windows user name and password**, and fill in you user name and password.
-  e. Click **Ok** to close the dialog.
-  f. Right-click the **WWI-SSASMD** project and select **Properties** to open the properties dialog.
-  g. Click on **Deployment** to open the deployment properties.
-  h. Update the target server to point to the Analysis Services server, and click **Ok**.
-  i. Right-click the **WWI-SSASMD** project and select **Deploy** to deploy the Analysis Services database.
+    1. In Solution Explorer, open the project **WWI-SSASMD**, and open the **Data Source** node.
+    1. Double-click the data source **WideWorldImportersDW.ds** to open the **Data Source Designer**.
+    1. Click **Edit** to update the connection string to point to the server that has the existing WideWorldImportersDW database, and verify that the database name is **WideWorldImportersDW**.
+    1. Click **Impersonation Information** -> **Use a specific Windows user name and password**, and fill in you user name and password.
+    1. Click **Ok** to close the dialog.
+    1. Right-click the **WWI-SSASMD** project and select **Properties** to open the properties dialog.
+    1. Click on **Deployment** to open the deployment properties.
+    1. Update the target server to point to the Analysis Services server, and click **Ok**.
+    1. Right-click the **WWI-SSASMD** project and select **Deploy** to deploy the Analysis Services database.
 
 
 ## Sample details
