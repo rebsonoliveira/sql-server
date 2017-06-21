@@ -64,27 +64,27 @@ The sample scripts are available as Transact-SQL. The workload drivers are sampl
 
 The source code for the sample is further structured as follows:
 
-__[sample-scripts] (sample-scripts/)__
+__[sample-scripts](sample-scripts/)__
 
 Sample scripts that illustrate the use of various SQL Server features with the WideWorldImporters sample database.
 
-__[workload-drivers] (workload-drivers/)__
+__[workload-drivers](workload-drivers/)__
 
 Simple apps that simulate workloads for the WideWorldImporters sample database.
 
-__[wwi-dw-ssdt] (wwi-dw-ssdt/)__
+__[wwi-dw-ssdt](wwi-dw-ssdt/)__
 
 SQL Server Data Tools project for the OLAP database WideWorldImporters.
 
-__[wwi-ssasmd] (wwi-ssasmd/)__
+__[wwi-ssasmd](wwi-ssasmd/)__
 
 SQL Server Analysis Services Multidimensional project to create the Analysis Services database WWI-SSASMD.
 
-__[wwi-ssdt] (wwi-ssdt/)__
+__[wwi-ssdt](wwi-ssdt/)__
 
 SQL Server Data Tools project for the main OLTP database WideWorldImporters.
 
-__[wwi-ssis] (wwi-ssis/)__
+__[wwi-ssis](wwi-ssis/)__
 
 SQL Server Integration Services (SSIS) project for the Extract, Transform, and Load (ETL) process that takes data from the transactional database WideWorldImporters and loads it into the WideWorldImportersDW database.
 
