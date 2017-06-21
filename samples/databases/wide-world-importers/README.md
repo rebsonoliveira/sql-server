@@ -30,8 +30,11 @@ The sample includes the databases that can be explored, as well as sample applic
 1. **Key features:** Core database features
 1. **Workload:** OLTP, OLAP, IoT
 1. **Programming Language:** T-SQL, C#
-1. **Authors:** Greg Low, Denzil Ribeiro, Jos de Bruijn
-1. **Update history:** 25 May 2016 - initial revision
+1. **Authors:** Greg Low, Denzil Ribeiro, Jos de Bruijn, Robert Cain
+1. **Update history:**
+	21 June 2017 - restructure using SSDT
+	25 May 2016 - initial revision
+
 
 <a name=before-you-begin></a>
 
@@ -51,9 +54,15 @@ To run this sample, you need the following prerequisites.
 
 ## Sample structure
 
-The latest release of this sample is available here: TBD
+The latest release of this sample is available here: [wide-world-importers-release](http://go.microsoft.com/fwlink/?LinkID=800630)
 
-The source code for the sample is structured as follows:
+This sample contains databases as well as a number of sample scripts and workload drivers.
+
+The sample databases are created through SQL Server Data Tools projects in Visual Studio. Each database has its own project; the solution [wwi-sample.sln](wwi-sample.sln) in the root folder of the sample has references to all the projects.
+
+The sample scripts are available as Transact-SQL. The workload drivers are sample applications created in Visual Studio.
+
+The source code for the sample is further structured as follows:
 
 __[sample-scripts] (sample-scripts/)__
 
@@ -63,17 +72,22 @@ __[workload-drivers] (workload-drivers/)__
 
 Simple apps that simulate workloads for the WideWorldImporters sample database.
 
-__[wwi-database-scripts] (wwi-database-scripts/)__
+__[wwi-dw-ssdt] (wwi-dw-ssdt/)__
 
-T-SQL scripts to create the main WideWorldImporters database.
+SQL Server Data Tools project for the OLAP database WideWorldImporters.
 
-__[wwi-dw-database-scripts] (wwi-dw-database-scripts/)__
+__[wwi-ssasmd] (wwi-ssasmd/)__
 
-T-SQL scripts to create the analytics database WideWorldImportersDW.
+SQL Server Analysis Services Multidimensional project to create the Analysis Services database WWI-SSASMD.
 
-__[wwi-integration-etl] (wwi-integration-etl/)__
+__[wwi-ssdt] (wwi-ssdt/)__
+
+SQL Server Data Tools project for the main OLTP database WideWorldImporters.
+
+__[wwi-ssis] (wwi-ssis/)__
 
 SQL Server Integration Services (SSIS) project for the Extract, Transform, and Load (ETL) process that takes data from the transactional database WideWorldImporters and loads it into the WideWorldImportersDW database.
+
 
 
 <a name=disclaimers></a>
