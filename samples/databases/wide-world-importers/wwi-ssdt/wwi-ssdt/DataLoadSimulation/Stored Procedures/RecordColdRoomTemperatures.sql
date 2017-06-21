@@ -29,12 +29,12 @@ BEGIN
     DECLARE @Temperature decimal(10,2);
 
 	-- clean up any artifacts from earlier runs
-	DELETE FROM DataLoadSimulation.[ColdRoomTemperatures_temp]
+	DELETE FROM DataLoadSimulation.[ColdRoomTemperatures_temp] WITH (SNAPSHOT)
 
 	IF @TimeCounter < @TimeToFinishForTheDay
 	BEGIN
 		-- seed temporary table with current status of sensors
-		DELETE Warehouse.ColdRoomTemperatures
+		DELETE Warehouse.ColdRoomTemperatures WITH (SNAPSHOT)
 		OUTPUT deleted.ColdRoomTemperatureID,
 				deleted.ColdRoomSensorNumber,
 				deleted.RecordedWhen,
@@ -54,7 +54,7 @@ BEGIN
 		EXEC DataLoadSimulation.PopulateColdRoomTemperatures_temp @AverageSecondsBetweenReadings, @NumberOfSensors, @TimeCounter, @ArchiveEndTime
 
 		-- move daily data into archive table
-		DELETE DataLoadSimulation.ColdRoomTemperatures_temp
+		DELETE DataLoadSimulation.ColdRoomTemperatures_temp WITH (SNAPSHOT)
 		OUTPUT deleted.ColdRoomTemperatureID,
 				deleted.ColdRoomSensorNumber,
 				deleted.RecordedWhen,
