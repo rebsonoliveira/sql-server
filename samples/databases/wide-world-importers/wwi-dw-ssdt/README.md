@@ -54,11 +54,11 @@ The below steps reconstruct the WideWorldImportersDW database. To populate the d
 2. Build the solution.
 
 3. Publish the WideWorldImportersDW database:
-    a. In the Solution Explorer, right-click the **WideWorldImportersDW** project, and select **Publish** to bring up the **Publish Database** dialog.
-    b. Click **Edit** to modify the **Target Database Connection** to point to your SQL Server 2016 (or later) instance.
-    c. Edit the **Database Name** to say "WideWorldImportersDW".
-    d. Click **Publish**.
-    e. Wait for publication to finish. You can monitor progress in the **Data Tools Operations** page in Visual Studio. In testing this took around 3 minutes.
+    1. In the Solution Explorer, right-click the **WideWorldImportersDW** project, and select **Publish** to bring up the **Publish Database** dialog.
+    1. Click **Edit** to modify the **Target Database Connection** to point to your SQL Server 2016 (or later) instance.
+    1. Edit the **Database Name** to say "WideWorldImportersDW".
+    1. Click **Publish**.
+    1. Wait for publication to finish. You can monitor progress in the **Data Tools Operations** page in Visual Studio. In testing this took around 3 minutes.
 
 4. Execute the SQL Server Integration Services package **Daily ETL** once, to seed the WideWorldImportersDW database based on the contents of the WideWorldImporters database. For instructions on how to install and run this package see [wwi-ssis] (../wwi-ssis/).
 
