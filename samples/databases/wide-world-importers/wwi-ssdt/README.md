@@ -1,4 +1,4 @@
-# Construct WideWorldImporters OLTP Database
+# WideWorldImporters OLTP Database
 
 The Visual Studio SQL Server Data Tools project in this folder is used to construct the WideWorldImporters database from scratch on SQL Server or Azure SQL Database. It is possible to vary the data size.
 
@@ -10,7 +10,6 @@ A pre-created version of the database is available for download as part of the l
 [Before you begin](#before-you-begin)<br/>
 [Run this sample](#run-this-sample)<br/>
 [Disclaimers](#disclaimers)<br/>
-[Related links](#related-links)<br/>
 
 
 <a name=about-this-sample></a>
@@ -37,7 +36,7 @@ To run this sample, you need the following prerequisites.
 **Software prerequisites:**
 
 1. SQL Server 2016 SP1 (or higher) or an Azure SQL Database. Also works with SQL Server 2016 RTM, for Evaluation, Developer, and Enterprise edition.
-2. Visual Studio 2015 (or higher) with SQL Server Data Tools.
+2. Visual Studio 2015 Update (or higher) with SQL Server Data Tools (SSDT). We recommend you update to the latest available of SSDT from the Visual Studio Extensions and Updates feed.
 
 
 <a name=run-this-sample></a>
@@ -90,10 +89,3 @@ TBD
 
 ## Disclaimers
 The code included in this sample is not intended to be used for production purposes.
-
-<a name=related-links></a>
-
-## Related Links
-<!-- Links to more articles. Remember to delete "en-us" from the link path. -->
-TBD
-For more information, see these articles:
