@@ -56,15 +56,15 @@ Note that each time the database is created from scratch, the data in many table
 2. Build the solution.
 
 3. Publish the WideWorldImporters database:
-    a. In the Solution Explorer, right-click the **WideWorldImporters** project, and select **Publish** to bring up the **Publish Database** dialog.
-    b. Click **Edit** to modify the **Target Database Connection** to point to your SQL Server 2016 (or later) instance.
-    c. Edit the **Database Name** to say "WideWorldImporters".
-    d. Click **Publish**.
-    e. Wait for publication to finish. You can monitor progress in the **Data Tools Operations** page in Visual Studio. In testing this took around 3 minutes.
+    1. In the Solution Explorer, right-click the **WideWorldImporters** project, and select **Publish** to bring up the **Publish Database** dialog.
+    1. Click **Edit** to modify the **Target Database Connection** to point to your SQL Server 2016 (or later) instance.
+    1. Edit the **Database Name** to say "WideWorldImporters".
+    1. Click **Publish**.
+    1. Wait for publication to finish. You can monitor progress in the **Data Tools Operations** page in Visual Studio. In testing this took around 3 minutes.
 
 4. (Optional) Data population: After step 3, the database contains data for January 2013. This step populates data from February 2013 up to the current data.
-    a. Open SQL Server Management Studio, and connect to the WideWorldImporters database that was published in the previous step.
-    b. Execute the following script. This may take a while to complete - populating data from Feb 2013 to Jun 2016 took about 40 minutes in one test.
+    1. Open SQL Server Management Studio, and connect to the WideWorldImporters database that was published in the previous step.
+    1. Execute the following script. This may take a while to complete - populating data from Feb 2013 to Jun 2016 took about 40 minutes in one test.
 
 ```
     EXEC DataLoadSimulation.PopulateDataToCurrentDate
@@ -75,7 +75,7 @@ Note that each time the database is created from scratch, the data in many table
     @AreDatesPrinted = 1;
 ```
 
-        To customize the period for data generation, leverage the stored procedure `DataLoadSimulation.DailyProcessToCreateHistory`.
+To customize the period for data generation, leverage the stored procedure `DataLoadSimulation.DailyProcessToCreateHistory`.
 <br/><br/>The referenced stored procedure removes the temporal nature of the tables, and implements a series of triggers. It then emulates typical activities that would occur during each day. Finally, it removes the triggers and re-establishes the temporal tables. You can see the progress of the simulation in the Messages tab in SSMS as the query executes. (AreDatesPrinted controls whether dates are printed to the messages window as data is generated. IsSilentMode controls whether detailed output is printed. IsSilentMode = 1 produces just date output if AreDatesPrinted = 1.).
 Note that a different outcome is produced each time it is run as it uses many random values.
 StartDate and EndDate cover the period for generation. Other code populates the 2012 period when expanding the columnstore tables so do not populate back into 2012 or earlier with this procedure. The EndDate must also be at or before the current date as temporal tables do not allow future dates.
