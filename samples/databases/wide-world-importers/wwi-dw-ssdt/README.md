@@ -17,7 +17,7 @@ A pre-created version of the database is available for download as part of the l
 ## About this sample
 
 <!-- Delete the ones that don't apply -->
-1. **Applies to:** SQL Server 2016 (or higher), Azure SQL Database [testing and modified instructions are TBD]
+1. **Applies to:** SQL Server 2016 (or higher), Azure SQL Database
 1. **Key features:** Core database features
 1. **Workload:** OLTP
 1. **Programming Language:** Transact-SQL
@@ -67,9 +67,9 @@ The below steps reconstruct the WideWorldImportersDW database. To populate the d
 
 To publish the database to Azure SQL Database, complete the following steps after Step 1 in the previous section:
 
-A. Update the partition scheme `Storage\PS_Date.sql` as follows: replace every occurrence of `USERDATA` with `PRIMARY`.
-B. Delete the filegroups `Storage\USERDATA.sql` and `Storage\WWI_MemoryOptimized_Date.sql`.
-C. Right-click the project **WideWorldImportersDW** and select **Properties** to open the properties pane.
+A. Update the partition scheme `Storage\PS_Date.sql` as follows: replace every occurrence of `USERDATA` with `PRIMARY`.<br/>
+B. Delete the filegroups `Storage\USERDATA.sql` and `Storage\WWI_MemoryOptimized_Date.sql`.<br/>
+C. Right-click the project **WideWorldImportersDW** and select **Properties** to open the properties pane.<br/>
 D. Change the **Target Platform** to **Microsoft Azure SQL Database v12**, and press **Ctrl-S** to save.
 
 Continue with Step 2 above.
