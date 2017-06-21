@@ -83,7 +83,14 @@ You can configure the amount of data produced by modifying the number of orders 
 
 ### Publishing to Azure SQL Database
 
-TBD
+To publish the database to Azure SQL Database, complete the following steps after Step 1 in the previous section:
+
+A. Update the partition schemes `Storage\PS_TransactionDate.sql` and `Storage\PS_TransactionDateTime.sql` as follows: replace every occurrence of `USERDATA` with `PRIMARY`.
+B. Delete the filegroups `Storage\USERDATA.sql` and `Storage\WWI_MemoryOptimized_Date.sql`.
+C. Right-click the project **WideWorldImporters** and select **Properties** to open the properties pane.
+D. Change the **Target Platform** to **Microsoft Azure SQL Database v12**, and press **Ctrl-S** to save.
+
+Continue with Step 2 above.
 
 <a name=disclaimers></a>
 

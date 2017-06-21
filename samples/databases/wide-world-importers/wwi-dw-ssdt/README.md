@@ -62,9 +62,17 @@ The below steps reconstruct the WideWorldImportersDW database. To populate the d
 
 4. Execute the SQL Server Integration Services package **Daily ETL** once, to seed the WideWorldImportersDW database based on the contents of the WideWorldImporters database. For instructions on how to install and run this package see [wwi-ssis] (../wwi-ssis/).
 
+
 ### Publishing to Azure SQL Database
 
-TBD
+To publish the database to Azure SQL Database, complete the following steps after Step 1 in the previous section:
+
+A. Update the partition scheme `Storage\PS_Date.sql` as follows: replace every occurrence of `USERDATA` with `PRIMARY`.
+B. Delete the filegroups `Storage\USERDATA.sql` and `Storage\WWI_MemoryOptimized_Date.sql`.
+C. Right-click the project **WideWorldImportersDW** and select **Properties** to open the properties pane.
+D. Change the **Target Platform** to **Microsoft Azure SQL Database v12**, and press **Ctrl-S** to save.
+
+Continue with Step 2 above.
 
 <a name=disclaimers></a>
 
