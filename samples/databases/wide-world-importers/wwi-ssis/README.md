@@ -35,8 +35,8 @@ To run this sample, you need the following prerequisites.
 1. The databases WideWorldImporters and WideWorldImportersDW running on SQL Server 2016 (or higher) or Azure SQL Database. These can be on different servers.
 2. Visual Studio 2015.
 3. SQL Server 2016 Integration Services.
-  - This needs to be installed on the same machine as Visual Studio to be able to build the project.
-  - Make sure you have already created an SSIS Catalog. If not, to do that, right click Integration Services in Object Explorer, and choose to add catalog. Follow the defaults. It will ask you to enable sqlclr and provide a password.
+    1. This needs to be installed on the same machine as Visual Studio to be able to build the project.
+    1. Make sure you have already created an SSIS Catalog. If not, to do that, right click Integration Services in Object Explorer, and choose to add catalog. Follow the defaults. It will ask you to enable sqlclr and provide a password.
 
 <a name=run-this-sample></a>
 
@@ -47,19 +47,19 @@ To run this sample, you need the following prerequisites.
 2. Build the solution. This will create an SSIS package **Daily ETL.ispac** under Daily ETL\\bin\\Development.
 
 3. Deploy the SSIS package.
-  - Open the "Daily ETL.ispac" package from Windows Explorer. This will launch the Integration Services Deployment Wizard.
-  - Under "Select Source" follow the default Project Deployment, with the path pointing to the "Daily ETL.ispac" package.
-  - Under "Select Destination" enter the name of the server that hosts the SSIS catalog.
-  - Select a path under the SSIS catalog, for example under a new folder "WideWorldImporters".
-  - Finalize the wizard by clicking Deploy.
+    1. Open the "Daily ETL.ispac" package from Windows Explorer. This will launch the Integration Services Deployment Wizard.
+    1. Under "Select Source" follow the default Project Deployment, with the path pointing to the "Daily ETL.ispac" package.
+    1. Under "Select Destination" enter the name of the server that hosts the SSIS catalog.
+    1. Select a path under the SSIS catalog, for example under a new folder "WideWorldImporters".
+    1. Finalize the wizard by clicking Deploy.
 
 4. Create a SQL Server Agent job for the ETL process.
-  - In SSMS, right-click "SQL Server Agent" and select New->Job.
-  - Pick a name, for example "WideWorldImporters ETL".
-  - Add a Job Step of type "SQL Server Integration Services Package".
-    - Select the server with the SSIS catalog, and select the "Daily ETL" package.
-    - Under Configuration->Connection Managers ensure the connections to the source and target are configured correctly. The default is to connect to the local instance.
-  - Click OK to create the Job.
+    1. In SSMS, right-click "SQL Server Agent" and select New->Job.
+    1. Pick a name, for example "WideWorldImporters ETL".
+    1. Add a Job Step of type "SQL Server Integration Services Package".
+       - Select the server with the SSIS catalog, and select the "Daily ETL" package.
+       - Under Configuration->Connection Managers ensure the connections to the source and target are configured correctly. The default is to connect to the local instance.
+    1. Click OK to create the Job.
 
 5. Execute or schedule the Job.
 
