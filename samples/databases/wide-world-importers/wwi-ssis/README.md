@@ -32,7 +32,7 @@ To run this sample, you need the following prerequisites.
 
 **Software prerequisites:**
 
-1. SQL Server 2016 (or higher) with the databases WideWorldImporters and WideWorldImportersDW. These can be on different instances.
+1. The databases WideWorldImporters and WideWorldImportersDW running on SQL Server 2016 (or higher) or Azure SQL Database. These can be on different servers.
 2. Visual Studio 2015.
 3. SQL Server 2016 Integration Services.
   - This needs to be installed on the same machine as Visual Studio to be able to build the project.
