@@ -35,7 +35,8 @@ To run this sample, you need the following prerequisites.
 1. SQL Server 2016 (or higher) with the database WideWorldImportersDW.
 2. Visual Studio 2015.
 3. SQL Server 2016 (or higher) Analysis Services.
-
+    1. This needs to be installed on the same machine as Visual Studio to be able to build the project.
+    
 <a name=run-this-sample></a>
 
 ## Running the sample

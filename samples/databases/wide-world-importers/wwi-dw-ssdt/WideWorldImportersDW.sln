@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "wwi-dw-ssdt", "wwi-dw-ssdt\wwi-dw-ssdt.sqlproj", "{79C14C29-3A96-4B59-BC92-0290AF92F05B}"
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "WideWorldImportersDW", "wwi-dw-ssdt\WideWorldImportersDW.sqlproj", "{79C14C29-3A96-4B59-BC92-0290AF92F05B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

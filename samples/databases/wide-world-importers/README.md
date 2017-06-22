@@ -47,8 +47,9 @@ To run this sample, you need the following prerequisites.
 <!-- Examples -->
 1. SQL Server 2016 (or higher) or an Azure SQL Database.
 2. SQL Server Management Studio, preferably June 2016 release or later (version >= 13.0.15000.23).
-3. (to build sample apps) Visual Studio 2015.
-4. (to run ETL jobs) SQL Server 2016 Integration Services
+3. Visual Studio 2015 Update 3 (or higher) with SQL Server Data Tools.
+4. (to run ETL jobs) SQL Server 2016 (or higher) Integration Services
+5. (to install the SSASMD sample) SQL Server 2016 (or higher) Analysis Services
 
 <a name=run-this-sample></a>
 
@@ -58,7 +59,7 @@ The latest release of this sample is available here: [wide-world-importers-relea
 
 This sample contains databases as well as a number of sample scripts and workload drivers.
 
-The sample databases are created through SQL Server Data Tools projects in Visual Studio. Each database has its own project; the solution [wwi-sample.sln](wwi-sample.sln) in the root folder of the sample has references to all the projects.
+The sample databases are created through SQL Server Data Tools projects in Visual Studio. Each database has its own project; the solution [wwi-sample.sln](wwi-sample.sln) in the root folder of the sample has references to all the projects. To load all project in the solution, SQL Server Integration Services and SQL Server Analysis Services need to be installed on the machine.
 
 The sample scripts are available as Transact-SQL. The workload drivers are sample applications created in Visual Studio.
 
