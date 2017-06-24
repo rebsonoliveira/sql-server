@@ -1,4 +1,3 @@
-#EPM Framework
 The Enterprise Policy Management Framework is a reporting solution on the state of the enterprise against a desired state defined in a policy. Extend Policy-Based Management to all SQL Server instances in the enterprise. Centralize and report on the policy evaluation results. 
 
 The Enterprise Policy Management Framework (EPM) is a solution to extend SQL Server Policy-Based Management to all versions of SQL Server in an enterprise, including SQL Server 2000 and SQL Server 2005. The EPM Framework will report the state of specified SQL Server instances against policies that define the defined intent, desired configuration, and deployment standards.
