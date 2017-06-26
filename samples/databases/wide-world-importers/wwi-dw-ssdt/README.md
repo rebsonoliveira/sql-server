@@ -53,7 +53,7 @@ The below steps reconstruct the WideWorldImportersDW database. To populate the d
 3. Publish the WideWorldImportersDW database:
     1. In the Solution Explorer, right-click the **WideWorldImportersDW** project, and select **Publish** to bring up the **Publish Database** dialog.
     1. Click **Edit** to modify the **Target Database Connection** to point to your SQL Server.
-    1. Edit the **Database Name** to say "WideWorldImportersDW".
+    1. Edit the **Database Name** to "WideWorldImportersDW".
     1. Click **Publish**.
     1. Wait for publication to finish. You can monitor progress in the **Data Tools Operations** page in Visual Studio. In testing this took around 3 minutes.
 
