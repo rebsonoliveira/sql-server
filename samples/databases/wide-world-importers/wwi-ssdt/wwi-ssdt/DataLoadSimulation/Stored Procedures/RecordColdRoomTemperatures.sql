@@ -36,11 +36,11 @@ BEGIN
 		-- seed temporary table with current status of sensors
 		DELETE Warehouse.ColdRoomTemperatures WITH (SNAPSHOT)
 		OUTPUT deleted.ColdRoomTemperatureID,
-				deleted.ColdRoomSensorNumber,
-				deleted.RecordedWhen,
-				deleted.Temperature,
-				deleted.ValidFrom,
-				@TimeCounter
+			 deleted.ColdRoomSensorNumber,
+			 deleted.RecordedWhen,
+			 deleted.Temperature,
+			 deleted.ValidFrom,
+			 @TimeCounter
 		INTO DataLoadSimulation.[ColdRoomTemperatures_temp] 
 			(ColdRoomTemperatureID, 
 			 ColdRoomSensorNumber, 
@@ -56,11 +56,11 @@ BEGIN
 		-- move daily data into archive table
 		DELETE DataLoadSimulation.ColdRoomTemperatures_temp WITH (SNAPSHOT)
 		OUTPUT deleted.ColdRoomTemperatureID,
-				deleted.ColdRoomSensorNumber,
-				deleted.RecordedWhen,
-				deleted.Temperature,
-				deleted.ValidFrom,
-				deleted.ValidTo
+			 deleted.ColdRoomSensorNumber,
+			 deleted.RecordedWhen,
+			 deleted.Temperature,
+			 deleted.ValidFrom,
+			 deleted.ValidTo
 		INTO Warehouse.ColdRoomTemperatures_Archive
 
 		-- add last daily reading to current table

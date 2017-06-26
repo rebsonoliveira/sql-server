@@ -11,7 +11,7 @@ BEGIN ATOMIC WITH
 	DECLARE @ValidTo datetime2(7)
 	DECLARE @DelayInSeconds int
 	DECLARE @SensorCounter int
-    DECLARE @Temperature decimal(10,2);
+	DECLARE @Temperature decimal(10,2);
 	DECLARE @ColdRoomTemperatureID bigint 
 
 	SELECT @ColdRoomTemperatureID = ISNULL(MAX(ColdRoomTemperatureID), 0) + 1
