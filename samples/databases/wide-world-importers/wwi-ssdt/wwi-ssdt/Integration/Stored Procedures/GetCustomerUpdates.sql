@@ -61,14 +61,14 @@ BEGIN
                bg.BuyingGroupName, p.FullName, c.DeliveryPostalCode,
                c.ValidFrom, c.ValidTo
         FROM Sales.Customers FOR SYSTEM_TIME AS OF @ValidFrom AS c
-        INNER JOIN Sales.BuyingGroups FOR SYSTEM_TIME AS OF @ValidFrom AS bg
-        ON c.BuyingGroupID = bg.BuyingGroupID
         INNER JOIN Sales.CustomerCategories FOR SYSTEM_TIME AS OF @ValidFrom AS cc
         ON c.CustomerCategoryID = cc.CustomerCategoryID
         INNER JOIN Sales.Customers FOR SYSTEM_TIME AS OF @ValidFrom AS bt
         ON c.BillToCustomerID = bt.CustomerID
         INNER JOIN [Application].People FOR SYSTEM_TIME AS OF @ValidFrom AS p
         ON c.PrimaryContactPersonID = p.PersonID
+        LEFT JOIN Sales.BuyingGroups FOR SYSTEM_TIME AS OF @ValidFrom AS bg
+        ON c.BuyingGroupID = bg.BuyingGroupID
         WHERE c.BuyingGroupID = @BuyingGroupID;
 
         FETCH NEXT FROM BuyingGroupChangeList INTO @BuyingGroupID, @ValidFrom;
@@ -109,14 +109,14 @@ BEGIN
                bg.BuyingGroupName, p.FullName, c.DeliveryPostalCode,
                c.ValidFrom, c.ValidTo
         FROM Sales.Customers FOR SYSTEM_TIME AS OF @ValidFrom AS c
-        INNER JOIN Sales.BuyingGroups FOR SYSTEM_TIME AS OF @ValidFrom AS bg
-        ON c.BuyingGroupID = bg.BuyingGroupID
         INNER JOIN Sales.CustomerCategories FOR SYSTEM_TIME AS OF @ValidFrom AS cc
         ON c.CustomerCategoryID = cc.CustomerCategoryID
         INNER JOIN Sales.Customers FOR SYSTEM_TIME AS OF @ValidFrom AS bt
         ON c.BillToCustomerID = bt.CustomerID
         INNER JOIN [Application].People FOR SYSTEM_TIME AS OF @ValidFrom AS p
         ON c.PrimaryContactPersonID = p.PersonID
+        LEFT JOIN Sales.BuyingGroups FOR SYSTEM_TIME AS OF @ValidFrom AS bg
+        ON c.BuyingGroupID = bg.BuyingGroupID
         WHERE cc.CustomerCategoryID = @CustomerCategoryID;
 
         FETCH NEXT FROM CustomerCategoryChangeList INTO @CustomerCategoryID, @ValidFrom;
@@ -155,14 +155,14 @@ BEGIN
                bg.BuyingGroupName, p.FullName, c.DeliveryPostalCode,
                c.ValidFrom, c.ValidTo
         FROM Sales.Customers FOR SYSTEM_TIME AS OF @ValidFrom AS c
-        INNER JOIN Sales.BuyingGroups FOR SYSTEM_TIME AS OF @ValidFrom AS bg
-        ON c.BuyingGroupID = bg.BuyingGroupID
         INNER JOIN Sales.CustomerCategories FOR SYSTEM_TIME AS OF @ValidFrom AS cc
         ON c.CustomerCategoryID = cc.CustomerCategoryID
         INNER JOIN Sales.Customers FOR SYSTEM_TIME AS OF @ValidFrom AS bt
         ON c.BillToCustomerID = bt.CustomerID
         INNER JOIN [Application].People FOR SYSTEM_TIME AS OF @ValidFrom AS p
         ON c.PrimaryContactPersonID = p.PersonID
+        LEFT JOIN Sales.BuyingGroups FOR SYSTEM_TIME AS OF @ValidFrom AS bg
+        ON c.BuyingGroupID = bg.BuyingGroupID
         WHERE c.CustomerID = @CustomerID;
 
         FETCH NEXT FROM CustomerChangeList INTO @CustomerID, @ValidFrom;

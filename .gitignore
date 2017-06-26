@@ -64,3 +64,6 @@ samples/applications/iot-smart-grid/Db/obj/Release/Db.sqlproj.FileListAbsolute.t
 *.manifest
 samples/applications/iot-smart-grid/WinFormsClient/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
 samples/databases/wide-world-importers/wwi-ssasmd/wwi-ssasmd/obj/Development/IncrementalShapshot.xml
+samples/applications/iot-smart-grid/ConsoleClient/bin/Release/Reports/PowerDashboard.pbix
+samples/applications/iot-smart-grid/Db/obj/Release/Model.xml
+samples/databases/wide-world-importers/workload-drivers/order-insert/MultithreadedOrderInsert/obj/Release/MultithreadedOrderInsert.csproj.FileListAbsolute.txt
