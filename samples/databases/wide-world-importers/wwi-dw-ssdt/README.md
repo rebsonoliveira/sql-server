@@ -32,7 +32,7 @@ To run this sample, you need the following prerequisites.
 
 **Software prerequisites:**
 
-1. SQL Server 2016 SP1 (or higher) or an Azure SQL Database. Also works with SQL Server 2016 RTM, for Evaluation, Developer, and Enterprise edition.
+1. SQL Server 2016 SP1 (or higher) or an Azure SQL Database (Premium). Also works with SQL Server 2016 RTM, for Evaluation, Developer, and Enterprise edition.
 2. Visual Studio 2015 Update (or higher) with SQL Server Data Tools (SSDT). We recommend you update to the latest available of SSDT from the Visual Studio Extensions and Updates feed.
 
 
@@ -52,7 +52,7 @@ The below steps reconstruct the WideWorldImportersDW database. To populate the d
 
 3. Publish the WideWorldImportersDW database:
     1. In the Solution Explorer, right-click the **WideWorldImportersDW** project, and select **Publish** to bring up the **Publish Database** dialog.
-    1. Click **Edit** to modify the **Target Database Connection** to point to your SQL Server 2016 (or later) instance.
+    1. Click **Edit** to modify the **Target Database Connection** to point to your SQL Server.
     1. Edit the **Database Name** to say "WideWorldImportersDW".
     1. Click **Publish**.
     1. Wait for publication to finish. You can monitor progress in the **Data Tools Operations** page in Visual Studio. In testing this took around 3 minutes.
@@ -67,7 +67,8 @@ To publish the database to Azure SQL Database, complete the following steps afte
 A. Update the partition scheme `Storage\PS_Date.sql` as follows: replace every occurrence of `USERDATA` with `PRIMARY`.<br/>
 B. Delete the filegroups `Storage\USERDATA.sql` and `Storage\WWI_MemoryOptimized_Date.sql`.<br/>
 C. Right-click the project **WideWorldImportersDW** and select **Properties** to open the properties pane.<br/>
-D. Change the **Target Platform** to **Microsoft Azure SQL Database v12**, and press **Ctrl-S** to save.
+D. Change the **Target Platform** to **Microsoft Azure SQL Database v12**, and press **Ctrl-S** to save.<br/>
+E. Create a new Azure SQL Database with the name WideWorldImportersDW. As pricing tier, select **Premium**. For instructions see: [Create an Azure SQL database in the Azure portal](https://docs.microsoft.com/azure/sql-database/sql-database-get-started-portal).
 
 Continue with Step 2 above.
 
