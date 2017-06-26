@@ -2,7 +2,7 @@
 
 The Visual Studio SQL Server Data Tools project in this folder is used to construct the WideWorldImporters database from scratch on SQL Server or Azure SQL Database. It is possible to vary the data size.
 
-A pre-created version of the database is available for download as part of the latest release of the sample: [wide-world-importers-release](http://go.microsoft.com/fwlink/?LinkID=800630).
+A pre-created version of the database is available for download as part of the latest release of the sample: [wide-world-importers-release](https://aka.ms/wwi).
 
 ### Contents
 
@@ -25,7 +25,6 @@ A pre-created version of the database is available for download as part of the l
 
 The instructions below are for creating the sample database from scratch.
 
-A pre-created version of the database is available for download as part of the latest release of the sample: [wide-world-importers-release](http://go.microsoft.com/fwlink/?LinkID=800630).
 
 <a name=before-you-begin></a>
 
@@ -60,11 +59,11 @@ Note that each time the database is created from scratch, the data in many table
     1. Click **Edit** to modify the **Target Database Connection** to point to your SQL Server 2016 (or later) instance.
     1. Edit the **Database Name** to say "WideWorldImporters".
     1. Click **Publish**.
-    1. Wait for publication to finish. You can monitor progress in the **Data Tools Operations** page in Visual Studio. In testing this took around 3 minutes.
+    1. Wait for the publication process to finish. You can monitor progress in the **Data Tools Operations** page in Visual Studio. During testing this took around 3 minutes.
 
 4. (Optional) Data population: After step 3, the database contains data for January 2013. This step populates data from February 2013 up to the current data.
     1. Open SQL Server Management Studio, and connect to the WideWorldImporters database that was published in the previous step.
-    1. Execute the following script. This may take a while to complete - populating data from Feb 2013 to Jun 2016 took about 40 minutes in one test.
+    1. Execute the following script. This may take a while to complete - populating data from Feb 2013 to Jun 2016 took about 40 minutes in one test on a machine with 3.4GHz CPU and the transaction log on SSD.
 
 ```
     EXEC DataLoadSimulation.PopulateDataToCurrentDate
