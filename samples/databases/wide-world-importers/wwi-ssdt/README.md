@@ -17,7 +17,7 @@ A pre-created version of the database is available for download as part of the l
 ## About this sample
 
 <!-- Delete the ones that don't apply -->
-1. **Applies to:** SQL Server 2016 (or higher), Azure SQL Database [testing and modified instructions are TBD]
+1. **Applies to:** SQL Server 2016 (or higher), Azure SQL Database 
 1. **Key features:** Core database features
 1. **Workload:** OLTP
 1. **Programming Language:** Transact-SQL
@@ -35,7 +35,7 @@ To run this sample, you need the following prerequisites.
 
 **Software prerequisites:**
 
-1. SQL Server 2016 SP1 (or higher) or an Azure SQL Database. Also works with SQL Server 2016 RTM, for Evaluation, Developer, and Enterprise edition.
+1. SQL Server 2016 SP1 (or higher) or an Azure SQL Database (Premium). Also works with SQL Server 2016 RTM, for Evaluation, Developer, and Enterprise edition.
 2. Visual Studio 2015 Update (or higher) with SQL Server Data Tools (SSDT). We recommend you update to the latest available of SSDT from the Visual Studio Extensions and Updates feed.
 
 
@@ -88,7 +88,8 @@ To publish the database to Azure SQL Database, complete the following steps afte
 A. Update the partition schemes `Storage\PS_TransactionDate.sql` and `Storage\PS_TransactionDateTime.sql` as follows: replace every occurrence of `USERDATA` with `PRIMARY`.<br/>
 B. Delete the filegroups `Storage\USERDATA.sql` and `Storage\WWI_MemoryOptimized_Date.sql`.<br/>
 C. Right-click the project **WideWorldImporters** and select **Properties** to open the properties pane.<br/>
-D. Change the **Target Platform** to **Microsoft Azure SQL Database v12**, and press **Ctrl-S** to save.
+D. Change the **Target Platform** to **Microsoft Azure SQL Database v12**, and press **Ctrl-S** to save.<br/>
+E. Create a new Azure SQL Database with the name WideWorldImporters. As pricing tier, select **Premium**. For instructions see: [Create an Azure SQL database in the Azure portal](https://docs.microsoft.com/azure/sql-database/sql-database-get-started-portal).
 
 Continue with Step 2 above.
 
