@@ -2,7 +2,7 @@
 
 The Visual Studio SQL Server Data Tools project in this folder is used to construct the WideWorldImportersDW database from scratch on SQL Server or Azure SQL Database. It is possible to vary the data size.
 
-A pre-created version of the database is available for download as part of the latest release of the sample: [wide-world-importers-release](http://go.microsoft.com/fwlink/?LinkID=800630).
+A pre-created version of the database is available for download as part of the latest release of the sample: [wide-world-importers-release](https://aka.ms/wwi).
 
 ### Contents
 
@@ -10,7 +10,6 @@ A pre-created version of the database is available for download as part of the l
 [Before you begin](#before-you-begin)<br/>
 [Run this sample](#run-this-sample)<br/>
 [Disclaimers](#disclaimers)<br/>
-
 
 <a name=about-this-sample></a>
 
@@ -24,8 +23,6 @@ A pre-created version of the database is available for download as part of the l
 1. **Authors:** Greg Low, Denzil Ribeiro, Jos de Bruijn, Robert Cain
 
 The instructions below are for creating the sample database from scratch.
-
-A pre-created version of the database is available for download as part of the latest release of the sample: [wide-world-importers-release](http://go.microsoft.com/fwlink/?LinkID=800630).
 
 <a name=before-you-begin></a>
 
