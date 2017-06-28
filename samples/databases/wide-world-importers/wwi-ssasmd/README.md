@@ -33,7 +33,7 @@ To run this sample, you need the following prerequisites.
 **Software prerequisites:**
 
 1. SQL Server 2016 (or higher) with the database WideWorldImportersDW.
-2. Visual Studio 2015.
+2. Visual Studio 2015 Update 3 or higher. If you are using Visual Studio 2017, download and install the following: [Analysis Services](https://marketplace.visualstudio.com/items?itemName=ProBITools.MicrosoftAnalysisServicesModelingProjects)
 3. SQL Server 2016 (or higher) Analysis Services.
     1. This needs to be installed on the same machine as Visual Studio to be able to build the project.
     
