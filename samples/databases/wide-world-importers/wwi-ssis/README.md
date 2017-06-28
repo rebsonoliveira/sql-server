@@ -33,7 +33,7 @@ To run this sample, you need the following prerequisites.
 **Software prerequisites:**
 
 1. The databases WideWorldImporters and WideWorldImportersDW running on SQL Server 2016 (or higher) or Azure SQL Database. These can be on different servers.
-2. Visual Studio 2015 (or higher).
+2. Visual Studio 2015 Update 3 (or higher). At the time of writing, Visual Studio 2017 does not yet support Integration Services projects. You will need to install Visual Studio 2015 to open the SSIS project.
 3. SQL Server 2016 (or higher) Integration Services.
     1. This needs to be installed on the same machine as Visual Studio to be able to build the project.
     1. Make sure you have already created an SSIS Catalog. If not, to do that, right click Integration Services in Object Explorer, and choose to add catalog. Follow the defaults. It will ask you to enable sqlclr and provide a password.
