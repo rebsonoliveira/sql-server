@@ -145,7 +145,6 @@
     <Folder Include="Sequences\Sequences\" />
     <Folder Include="PostDeploymentScripts" />
     <Folder Include="DataLoadSimulation\Functions\" />
-    <Folder Include="Data" />
     <Folder Include="DataLoadSimulation\Tables" />
   </ItemGroup>
   <ItemGroup>
