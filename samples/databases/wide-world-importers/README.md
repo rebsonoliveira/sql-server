@@ -46,10 +46,10 @@ To run this sample, you need the following prerequisites.
 
 <!-- Examples -->
 1. SQL Server 2016 (or higher) or an Azure SQL Database.
-2. SQL Server Management Studio, preferably June 2016 release or later (version >= 13.0.15000.23).
-3. Visual Studio 2015 Update 3 (or higher) with SQL Server Data Tools.
-4. (to run ETL jobs) SQL Server 2016 (or higher) Integration Services
-5. (to install the SSASMD sample) SQL Server 2016 (or higher) Analysis Services
+1. SQL Server Management Studio, preferably June 2016 release or later (version >= 13.0.15000.23).
+1. Visual Studio 2015 Update 3 (or higher) with SQL Server Data Tools.
+1. (to run ETL jobs) SQL Server 2016 (or higher) Integration Services (SSIS). At the time of writing, Visual Studio 2017 does not yet support Integration Services projects. You will need to install Visual Studio 2015 to open the SSIS project.
+1. (to install the SSASMD sample) SQL Server 2016 (or higher) Analysis Services (SSAS). If you are using Visual Studio 2017, download and install the following: [Analysis Services](https://marketplace.visualstudio.com/items?itemName=ProBITools.MicrosoftAnalysisServicesModelingProjects)
 
 <a name=run-this-sample></a>
 
