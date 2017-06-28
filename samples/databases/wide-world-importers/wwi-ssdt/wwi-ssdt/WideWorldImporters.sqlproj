@@ -744,9 +744,6 @@
     <None Include="PostDeploymentScripts\pds250-ins-warehouse-stockitemholdings.sql" />
     <None Include="PostDeploymentScripts\pds260-ins-warehouse-stockitemstockgroups.sql" />
     <None Include="PostDeploymentScripts\pds270-ins-app-systemparameters.sql" />
-    <None Include="Data\application-cities-native-format.dat">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="PostDeploymentScripts\pds150-ins-app-cities.sql" />
     <None Include="PostDeploymentScripts\pds105-ins-dls-ficticiousnamepool.sql" />
     <None Include="PostDeploymentScripts\pds106-ins-dls-areacode.sql" />

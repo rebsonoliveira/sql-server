@@ -67,3 +67,7 @@ samples/databases/wide-world-importers/wwi-ssasmd/wwi-ssasmd/obj/Development/Inc
 samples/applications/iot-smart-grid/ConsoleClient/bin/Release/Reports/PowerDashboard.pbix
 samples/applications/iot-smart-grid/Db/obj/Release/Model.xml
 samples/databases/wide-world-importers/workload-drivers/order-insert/MultithreadedOrderInsert/obj/Release/MultithreadedOrderInsert.csproj.FileListAbsolute.txt
+samples/applications/iot-smart-grid/ConsoleClient/obj/Debug/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+samples/applications/iot-smart-grid/WinFormsClient/bin/Release/Client.exe.config
+samples/databases/wide-world-importers/workload-drivers/order-insert/MultithreadedOrderInsert/bin/Release/MultithreadedOrderInsert.exe.config
+samples/databases/wide-world-importers/workload-drivers/order-insert/MultithreadedOrderInsert/obj/Debug/MultithreadedInMemoryTableInsert.MultithreadedOrderInsertMain.resources
