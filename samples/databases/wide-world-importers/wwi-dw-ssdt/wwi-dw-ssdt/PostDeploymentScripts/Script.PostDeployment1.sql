@@ -122,7 +122,9 @@ BEGIN
 	SET MajorSampleVersion=2, MinorSampleVersion=0, MinSQLServerBuild=N'13.0.4000.0'
 END
 GO
-
+-- Configure DB option that SSDT does not support for Azure SQL DB targets
+ALTER DATABASE CURRENT SET MEMORY_OPTIMIZED_ELEVATE_TO_SNAPSHOT=ON
+GO
 -- By default, do not enable PolyBase in the sample. The following can be run afterwards to create PolyBase artifacts in the database.
 -- EXEC [Application].Configuration_ApplyPolybase;
 -- GO
