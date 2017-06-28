@@ -42,8 +42,7 @@ BEGIN
 
             SET @SQL = N'
 ALTER TABLE Warehouse.ColdRoomTemperatures SET (SYSTEM_VERSIONING = OFF);
-ALTER TABLE Warehouse.ColdRoomTemperatures DROP PERIOD FOR SYSTEM_TIME;
-ALTER TABLE Warehouse.ColdRoomTemperatures DROP CONSTRAINT PK_Warehouse_ColdRoomTemperatures;';
+ALTER TABLE Warehouse.ColdRoomTemperatures DROP PERIOD FOR SYSTEM_TIME;';
             EXECUTE (@SQL);
 
             SET @SQL = N'
@@ -471,7 +470,7 @@ SET MEMORY_OPTIMIZED_ELEVATE_TO_SNAPSHOT = OFF;';
 
         END TRY
         BEGIN CATCH
-            PRINT N'Unable to remove in-memory tables';
+            PRINT N'Unable to remove memory-optimized tables';
             THROW;
         END CATCH;
 END;

@@ -1,4 +1,5 @@
-﻿CREATE PROCEDURE [Application].[Configuration_PrepareForDowngradeToStandard]
+﻿-- remove features not supported in Azure SQL Database Standard tier
+CREATE PROCEDURE [Application].[Configuration_PrepareForDowngradeToStandard]
 AS
 
   EXEC [Application].[Configuration_RemoveColumnstoreIndexing]

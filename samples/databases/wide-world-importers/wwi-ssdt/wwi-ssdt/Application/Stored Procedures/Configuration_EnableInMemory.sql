@@ -16,20 +16,20 @@ BEGIN
 			IF CAST(SERVERPROPERTY(N'EngineEdition') AS int) <> 5   -- Not an Azure SQL DB
 			BEGIN
 				DECLARE @SQLDataFolder nvarchar(max) = CAST(SERVERPROPERTY('InstanceDefaultDataPath') AS nvarchar(max));
-				DECLARE @MemoryOptimizedFilegroupFolder nvarchar(max) = @SQLDataFolder + N'WideWorldImporters_InMemory_Data_1';
+				DECLARE @MemoryOptimizedFilegroupFolder nvarchar(max) = @SQLDataFolder + N'WideWorldImporters_MemoryOptimized_Data_1';
 
-				IF NOT EXISTS (SELECT 1 FROM sys.filegroups WHERE name = N'WWI_InMemory_Data')
+				IF NOT EXISTS (SELECT 1 FROM sys.filegroups WHERE type=N'FX')
 				BEGIN
 				    SET @SQL = N'
 ALTER DATABASE CURRENT
-ADD FILEGROUP WWI_InMemory_Data CONTAINS MEMORY_OPTIMIZED_DATA;';
+ADD FILEGROUP WWI_MemoryOptimized_Data CONTAINS MEMORY_OPTIMIZED_DATA;';
 					EXECUTE (@SQL);
 
 					SET @SQL = N'
 ALTER DATABASE CURRENT
-ADD FILE (name = N''WWI_InMemory_Data_1'', filename = '''
+ADD FILE (name = N''WWI_MemoryOptimized_Data_1'', filename = '''
 		                 + @MemoryOptimizedFilegroupFolder + N''')
-TO FILEGROUP WWI_InMemory_Data;';
+TO FILEGROUP WWI_MemoryOptimized_Data;';
 					EXECUTE (@SQL);
 
 				END;
@@ -486,7 +486,7 @@ END;';
 
         END TRY
         BEGIN CATCH
-            PRINT N'Unable to apply in-memory tables';
+            PRINT N'Unable to apply memory-optimized tables';
             THROW;
         END CATCH;
     END; -- of in-memory is allowed
