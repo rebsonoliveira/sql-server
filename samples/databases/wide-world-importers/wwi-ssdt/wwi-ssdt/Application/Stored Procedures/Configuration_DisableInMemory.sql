@@ -37,7 +37,16 @@ BEGIN
 /*-------------------------------------------------------------------------------------*/
 /* Cold Room Temperatures - Recreate as non temporal and not memory optimized          */
 /*-------------------------------------------------------------------------------------*/
-      SET @SQL = N'
+      IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = N'ColdRoomTemperatures' AND is_memory_optimized = 0)
+      BEGIN
+
+            SET @SQL = N'
+ALTER TABLE Warehouse.ColdRoomTemperatures SET (SYSTEM_VERSIONING = OFF);
+ALTER TABLE Warehouse.ColdRoomTemperatures DROP PERIOD FOR SYSTEM_TIME;
+ALTER TABLE Warehouse.ColdRoomTemperatures DROP CONSTRAINT PK_Warehouse_ColdRoomTemperatures;';
+            EXECUTE (@SQL);
+
+            SET @SQL = N'
 CREATE TABLE Warehouse.ColdRoomTemperatures_Staging
 (
     ColdRoomTemperatureID bigint IDENTITY(1,1) NOT NULL,
@@ -47,9 +56,9 @@ CREATE TABLE Warehouse.ColdRoomTemperatures_Staging
     ValidFrom datetime2(7) NOT NULL,
     ValidTo datetime2(7) NOT NULL,
 ) ;';
-      EXECUTE (@SQL);
+            EXECUTE (@SQL);
 
-      SET @SQL = N'
+            SET @SQL = N'
 SET IDENTITY_INSERT Warehouse.ColdRoomTemperatures_Staging ON;
 
 INSERT Warehouse.ColdRoomTemperatures_Staging (ColdRoomTemperatureID, ColdRoomSensorNumber, RecordedWhen, Temperature,
@@ -58,30 +67,39 @@ SELECT ColdRoomTemperatureID, ColdRoomSensorNumber, RecordedWhen, Temperature, V
 FROM Warehouse.ColdRoomTemperatures;
 
 SET IDENTITY_INSERT Warehouse.ColdRoomTemperatures_Staging OFF;';
-      EXECUTE (@SQL);
+        EXECUTE (@SQL);
 
-      SET @SQL = N'DROP TABLE Warehouse.ColdRoomTemperatures;';
-      EXECUTE (@SQL);
+        SET @SQL = N'DROP TABLE Warehouse.ColdRoomTemperatures;';
+        EXECUTE (@SQL);
           
-      SET @SQL = N'
+        SET @SQL = N'
 EXEC dbo.sp_rename @objname = N''Warehouse.ColdRoomTemperatures_Staging'',
                    @newname = N''ColdRoomTemperatures'',
                    @objtype = N''OBJECT'';';
-      EXECUTE (@SQL);
+        EXECUTE (@SQL);
 
-      SET @SQL = '
+        SET @SQL = '
 CREATE NONCLUSTERED INDEX [IX_Warehouse_ColdRoomTemperatures_ColdRoomSensorNumber]  
   ON Warehouse.ColdRoomTemperatures (ColdRoomSensorNumber)
                       ';
-      EXECUTE (@SQL);
+        EXECUTE (@SQL);
 
-      SET @SQL = '
+        SET @SQL = '
 ALTER TABLE Warehouse.ColdRoomTemperatures
   ADD CONSTRAINT PK_Warehouse_ColdRoomTemperatures 
-  PRIMARY KEY NONCLUSTERED (ColdRoomTemperatureID)
+  PRIMARY KEY CLUSTERED (ColdRoomTemperatureID)
                       ';
-      EXECUTE (@SQL);
+        EXECUTE (@SQL);
+                SET @SQL = N'
+ALTER TABLE Warehouse.ColdRoomTemperatures
+ADD PERIOD FOR SYSTEM_TIME(ValidFrom, ValidTo);';
+                EXECUTE (@SQL);
 
+                SET @SQL = N'
+ALTER TABLE Warehouse.ColdRoomTemperatures
+SET (SYSTEM_VERSIONING = ON (HISTORY_TABLE = Warehouse.ColdRoomTemperatures_Archive, DATA_CONSISTENCY_CHECK = ON));';
+                EXECUTE (@SQL);
+	  END
 /*-------------------------------------------------------------------------------------*/
 /* Vehicle Temperatures - Recreate as non temporal and not memory optimized            */
 /*-------------------------------------------------------------------------------------*/

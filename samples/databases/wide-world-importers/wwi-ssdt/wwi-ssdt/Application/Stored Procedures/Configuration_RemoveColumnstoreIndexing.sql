@@ -84,7 +84,7 @@ ON Sales.InvoiceLines
             COMMIT;
         END TRY
         BEGIN CATCH
-            PRINT N'Unable to remoce columnstore indexing';
+            PRINT N'Unable to remove columnstore indexing';
             THROW;
         END CATCH;
     END; -- of columnstore is allowed

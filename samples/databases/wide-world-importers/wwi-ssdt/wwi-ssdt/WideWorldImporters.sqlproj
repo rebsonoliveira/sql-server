@@ -688,7 +688,7 @@
     <Build Include="DataLoadSimulation\Functions\GetBogativePhoneNumber.sql" />
     <Build Include="Application\Stored Procedures\Configuration_RemoveColumnstoreIndexing.sql" />
     <Build Include="Application\Stored Procedures\Configuration_DisableInMemory.sql" />
-    <Build Include="Application\Stored Procedures\Configuration_PrepareForAzure.sql" />
+    <Build Include="Application\Stored Procedures\Configuration_PrepareForDowngradeToStandard.sql" />
     <Build Include="SampleVersion.sql" />
     <Build Include="DataLoadSimulation\Tables\ColdRoomTemperatures_temp.sql" />
     <Build Include="DataLoadSimulation\Stored Procedures\PopulateColdRoomTemperatures_temp.sql" />
