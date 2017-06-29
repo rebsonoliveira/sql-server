@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "WideWorldImportersDW", "wwi-dw-ssdt\wwi-dw-ssdt\WideWorldImportersDW.sqlproj", "{79C14C29-3A96-4B59-BC92-0290AF92F05B}"
 EndProject
-Project("{D2ABAB84-BF74-430A-B69E-9DC6D40DDA17}") = "WWI-SSASMD", "wwi-ssasmd\WWI-SSASMD\WWI-SSASMD.dwproj", "{AE481845-1E4D-4C1C-80DB-184CE847150F}"
+Project("{D2ABAB84-BF74-430A-B69E-9DC6D40DDA17}") = "WideWorldImportersMultidimensionalCube", "wwi-ssasmd\WWI-SSASMD\WideWorldImportersMultidimensionalCube.dwproj", "{AE481845-1E4D-4C1C-80DB-184CE847150F}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "WideWorldImporters", "wwi-ssdt\wwi-ssdt\WideWorldImporters.sqlproj", "{9E972C93-0716-4442-97FC-72C52C2C5AAA}"
 EndProject
