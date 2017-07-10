@@ -1,4 +1,4 @@
-﻿Data Driven Precision Marketing
+﻿Data Driven Precision Marketing with SQL Server R Service
 
 As a data professional, do you wonder how you can leverage data science for creating new value in your organization? In this sample, learn how you can leverage your familiar knowledge on working with databases, and learn how you can get started with doing data science with databases.
 
@@ -27,7 +27,7 @@ You have to do the following set-up before playing with this demo.
 
 - Install SQL Server 2016 or create a SQL Server 2016 Enterprise VM on Azure with Standalone R Server and R Services installed/configured. 
 - Install R IDE: R Tools for Visual Studio or R Studio.
-- Install ReportBuilder for SQL Server 2016 Enterprise.
+- Install PowerBI Desktop.
 - Validate the successful installation.
 
 ----------
