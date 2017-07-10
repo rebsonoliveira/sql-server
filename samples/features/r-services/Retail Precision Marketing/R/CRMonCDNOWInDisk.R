@@ -1,7 +1,6 @@
-
 #############################################################
 #CRM Demo on CDNOW
-#Fang Zhou
+#Microsoft 
 #############################################################
 ##check if necessary R packages are installed
 install.packages("RODBC")

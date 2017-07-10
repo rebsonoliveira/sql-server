@@ -1,6 +1,6 @@
 ################################################################
 ##CRM Demo in-SQL compute context
-##Fang Zhou
+##Microsoft
 #################################################################
 
 connectionString <- "Driver=SQL Server;Server=tcp:192.168.176.130,1433;Database=sqlr;Uid=sa;Pwd=Microsoft1"
@@ -155,10 +155,7 @@ sqlSave(channel,DTreePred,rownames=FALSE,append=FALSE,varTypes=list(numeric="flo
 odbcClose(channel)
 
 
-#Examples for RxInSqlSever compute context
-file.show(system.file("demoScripts/SqlServerIOQ_Tests_Setup.sql", package = "RevoScaleR"))
-file.show(system.file("demoScripts/SqlServerIOQ_Tests.sql", package = "RevoScaleR"))
-file.show(system.file("demoScripts/SqlServerIOQ_Tests_Teardown.sql", package = "RevoScaleR"))
+
 
 
 

@@ -1,7 +1,8 @@
 #############################################################
 #CRM Demo on CDNOW
-#Fang Zhou
+#Microsoft
 #############################################################
+
 #install package
 install.packages("rmarkdown")
 install.packages("fpc")
@@ -66,7 +67,7 @@ hist(df$Monetary)
 
 #set the Recency ranges as 0-120 days, 120-240 days, 240-450 days, 450-500days, and more than 500days.
 r <-c(120,240,450,500)
-#set the Frequency ranges as 0 – 2times, 2-5 times,5-8 times, 8-10 times, and more than 10 times.
+#set the Frequency ranges as 0 ? 2times, 2-5 times,5-8 times, 8-10 times, and more than 10 times.
 f <-c(2,5,8,10)
 #set the Monetary ranges as 0-10 dollars, 10-20 dollars, and so on.
 m <-c(10,20,30,100)
