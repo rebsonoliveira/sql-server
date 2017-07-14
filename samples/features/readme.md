@@ -20,6 +20,10 @@ Built-in JSON functions enable you to easily parse and query JSON data stored in
 
 Built-in temporal functions enable you to easily track history of changes in a table, go back in history, and analyze historical data.
 
+[Graph Tables](sql-graph)
+
+Graph tables enable you to add a non-relational capability to your database.
+
 ## Samples for Business Intelligence features within SQL Server
 
 [Reporting Services (SSRS)](reporting-services)
