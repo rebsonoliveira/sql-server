@@ -43,6 +43,10 @@ This sample consists of the following directory structure.
 
 To jumpstart, run the T-SQL files (crm_demo.sql)
 
+**Note**
+
+This is a demo built on SQL 2016 RC1 in Dec 2015. To try out it, please modify it to fit the new version of SQL Server R Services. 
+
 
 
 

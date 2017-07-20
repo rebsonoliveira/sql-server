@@ -1,4 +1,5 @@
 --use the database RREDemoSql
+
 use sqlr;
 go
 
@@ -6,6 +7,7 @@ drop procedure if exists get_CDNOW_RFM
 go
 
 --create stored procedure to get RFM 
+
 create proc get_CDNOW_RFM (@start datetime = '1900-1-1', @end datetime = '3000-1-1', @now datetime = null) 
 as
 begin
@@ -27,12 +29,14 @@ end
 go
 
 --execute the stored procedure to obtain CDNOWRFM table
+
 exec dbo.get_CDNOW_RFM @start='1997-1-1',@end='1998-7-1',@now='1998-7-1'
 go
 
 drop procedure if exists BreakScoreRFM
 go
 
+--create stored procedure to break RFM score
 
 create proc BreakScoreRFM (@start datetime = '1900-1-1', @end datetime = '3000-1-1', @now datetime = null, 
       @r_cut varchar(254) = null, @f_cut varchar(254) = null, @m_cut varchar(254) = null) 
@@ -175,10 +179,13 @@ end
 
 go
 
+--execute the stored procedure to obtain RFM_Score table
+
 exec dbo.BreakScoreRFM @start ='1997-1-1', @end = '1998-7-1' ,@now = '1998-7-1', @r_cut ='142-433-486-513', @f_cut = '1-1-2-4', @m_cut ='14.37-20.25-29.37-44.29'
 go
 
 --combine RFM and RFM_Score
+
 drop table RFM_Result;
 select a.*, b.R_Score, b.F_Score, b.M_Score, b.Toltal_Score
 into RFM_Result
@@ -188,7 +195,8 @@ from
       a.[ID] = b.[ID];
 select top 10 * from RFM_Result;
 
---visualize RFM
+--create stored procedure to visualize RFM
+
 drop procedure if exists visualizeRFM;
 go
 create procedure visualizeRFM
@@ -235,6 +243,7 @@ grant execute on visualizeRFM to rdemo;
 go
 
 --clustering based on RFM
+
 drop table if exists Kmeans_Result;
 drop table if exists CDNOW_rx_models;
 go
@@ -251,6 +260,8 @@ create table Kmeans_Result (
 );
 go
 
+--create stored procedure to do clustering
+
 drop procedure if exists generate_CDNOW_rx_Kmeans;
 go
 create procedure generate_CDNOW_rx_Kmeans
@@ -261,13 +272,13 @@ begin
 	, @script = N'
 		require("RevoScaleR");
 		CDNOWKmeans <- rxKmeans(formula=~R+F+M+R_Score+F_Score+M_Score, 
-						data = RFM_Result, 
- 						#outFile =Kmeans_Result,
-						numClusters=8,
-						algorithm = "lloyd",
-						writeModelVars=TRUE,
-						overwrite=TRUE)
-		rxKmeans_model <- data.frame(payload = as.raw(serialize(CDNOWKmeans, connection=NULL)));
+						                data=RFM_Result, 
+ 						                #outFile=Kmeans_Result,
+						                numClusters=8,
+					                	algorithm="lloyd",
+						                writeModelVars=TRUE,
+					                	overwrite=TRUE)
+		rxKmeans_model <- data.frame(payload=as.raw(serialize(CDNOWKmeans, connection=NULL)));
 '
 	, @input_data_1 = N'select * from RFM_Result'
 	, @input_data_1_name = N'RFM_Result'
@@ -275,7 +286,8 @@ begin
 	with result sets ((model varbinary(max)));
 end;
 go
---how to write Kmeans_Result back to database?
+
+--how to write Kmeans_Result back to database?[To Be Modified]
 
 insert into CDNOW_rx_models (model)
 exec generate_CDNOW_rx_Kmeans;
@@ -283,7 +295,7 @@ update CDNOW_rx_models set model_name = 'rxKmeans' where model_name = 'default m
 select * from CDNOW_rx_models;
 go
 
---cannot write result table back to data base in rxKmeans. 
+--create stored procedure to build logistic regression model
 
 drop procedure if exists generate_CDNOW_rx_Logit;
 go
@@ -294,11 +306,11 @@ begin
 	  @language = N'R'
 	, @script = N'
 		require("RevoScaleR");
-		CDNOWLogit<- rxLogit(IsVIP~R+F+M,
-                     data =RFMVIPCluster,
-                     variableSelection = rxStepControl(method="stepwise",
-                     scope = ~ R+F+M))
-        summary(CDNOWLogit)
+		CDNOWLogit <- rxLogit(IsVIP~R+F+M,
+                          data=RFMVIPCluster,
+                          variableSelection=rxStepControl(method="stepwise",
+                          scope=~R+F+M))
+    summary(CDNOWLogit)
 		rxLogit_model <- data.frame(payload = as.raw(serialize(CDNOWLogit, connection=NULL)));
 '
 	, @input_data_1 = N'select * from RFMVIPCluster'
@@ -314,6 +326,8 @@ update CDNOW_rx_models set model_name = 'rxLogit' where model_name = 'default mo
 select * from CDNOW_rx_models;
 go
 
+--create stored procedure to build decision tree model
+
 drop procedure if exists generate_CDNOW_rx_Dtree;
 go
 create procedure generate_CDNOW_rx_Dtree
@@ -323,8 +337,8 @@ begin
 	  @language = N'R'
 	, @script = N'
 		require("RevoScaleR");
-		CDNOWDtree <- rxDTree(Cluster~R+F+M,data=RFMVIPCluster, pruneCp="auto")
-		rxDtree_model <- data.frame(payload = as.raw(serialize(CDNOWDtree, connection=NULL)));
+		CDNOWDtree <- rxDTree(Cluster~R+F+M, data=RFMVIPCluster, pruneCp="auto")
+		rxDtree_model <- data.frame(payload=as.raw(serialize(CDNOWDtree, connection=NULL)));
 '
 	, @input_data_1 = N'select * from RFMVIPCluster'
 	, @input_data_1_name = N'RFMVIPCluster'
@@ -339,6 +353,7 @@ update CDNOW_rx_models set model_name = 'rxDtree' where model_name = 'default mo
 select * from CDNOW_rx_models;
 go
 
+--create stored procedure to predict whether the customer is VIP or not
 
 drop procedure if exists predict_CDNOW_IsVIP;
 go
@@ -350,12 +365,12 @@ begin
 	exec sp_execute_external_script 
 					@language = N'R'
 				  , @script = N'
-require("RevoScaleR");
-CDNOWmodel<-unserialize(rx_model);
-CDNOWpred<-rxPredict(CDNOWmodel,data=RFMVIPCluster,writeModelVars = TRUE);
-OutputDataSet <- cbind(RFMVIPCluster[,1], CDNOWpred$IsVIP, round(CDNOWpred$IsVIP_Pred,2));
-colnames(OutputDataSet) <- c("ID", "IsVIP.Actual", "IsVIP.Expected");
-OutputDataSet<-as.data.frame(OutputDataSet);
+          require("RevoScaleR");
+          CDNOWmodel <- unserialize(rx_model);
+          CDNOWpred <- rxPredict(CDNOWmodel, data=RFMVIPCluster, writeModelVars = TRUE);
+          OutputDataSet <- cbind(RFMVIPCluster[,1], CDNOWpred$IsVIP, round(CDNOWpred$IsVIP_Pred,2));
+          colnames(OutputDataSet) <- c("ID", "IsVIP.Actual", "IsVIP.Expected");
+          OutputDataSet <- as.data.frame(OutputDataSet);
 '
 	, @input_data_1 = N'
 	select * from RFMVIPCluster'
@@ -367,8 +382,12 @@ OutputDataSet<-as.data.frame(OutputDataSet);
 end;
 go
 
+--execute the stored procedure to obtain the prediction on IsVIP
+
 exec predict_CDNOW_IsVIP 'rxLogit';
 go
+
+--create stored procedure to predict which cluster the customer belongs to
 
 drop procedure if exists predict_CDNOW_Cluster;
 go
@@ -380,15 +399,20 @@ begin
 	exec sp_execute_external_script 
 					@language = N'R'
 				  , @script = N'
-require("RevoScaleR");
-CDNOWmodel<-unserialize(rx_model);
-CDNOWpred<-rxPredict(CDNOWmodel,data=RFMVIPCluster, predVarNames=c("prob1","prob2","prob3","prob4","prob5","prob6","prob7","prob8"),writeModelVars = TRUE,extraVarsToWrite="ID",computeResiduals=T,overwrite=TRUE);
-OutputDataSet <- round(cbind(RFMVIPCluster[,1], RFMVIPCluster[,10], 
-                       CDNOWpred$prob1,CDNOWpred$prob2,CDNOWpred$prob3,CDNOWpred$prob4,
-					   CDNOWpred$prob5,CDNOWpred$prob6,CDNOWpred$prob7,CDNOWpred$prob8),2);
-colnames(OutputDataSet) <- c("ID", "Cluster.Actual", "Cluster1.Prob","Cluster2.Prob","Cluster3.Prob","Cluster4.Prob","Cluster5.Prob","Cluster6.Prob","Cluster7.Prob","Cluster8.Prob");
-OutputDataSet<-as.data.frame(OutputDataSet);
-'
+          require("RevoScaleR");
+          CDNOWmodel <- unserialize(rx_model);
+          CDNOWpred <- rxPredict(CDNOWmodel,
+                                 data=RFMVIPCluster, 
+                                 predVarNames=c("prob1", "prob2", "prob3", "prob4", "prob5", "prob6", "prob7", "prob8"),
+                                 writeModelVars=TRUE, extraVarsToWrite="ID",
+                                 computeResiduals=T, overwrite=TRUE);
+          OutputDataSet <- round(cbind(RFMVIPCluster[,1], RFMVIPCluster[,10], 
+                                CDNOWpred$prob1,CDNOWpred$prob2,CDNOWpred$prob3,CDNOWpred$prob4,
+					                      CDNOWpred$prob5,CDNOWpred$prob6,CDNOWpred$prob7,CDNOWpred$prob8),2);
+					                      
+          colnames(OutputDataSet) <- c("ID", "Cluster.Actual", "Cluster1.Prob","Cluster2.Prob","Cluster3.Prob","Cluster4.Prob","Cluster5.Prob","Cluster6.Prob","Cluster7.Prob","Cluster8.Prob");
+          OutputDataSet<-as.data.frame(OutputDataSet);
+  '
 	, @input_data_1 = N'
 	select * from RFMVIPCluster'
 	, @input_data_1_name = N'RFMVIPCluster'
@@ -398,6 +422,8 @@ OutputDataSet<-as.data.frame(OutputDataSet);
 			  );
 end;
 go
+
+--execute the stored procedure to obtain the prediction on Cluster
 
 exec predict_CDNOW_Cluster 'rxDtree';
 go
