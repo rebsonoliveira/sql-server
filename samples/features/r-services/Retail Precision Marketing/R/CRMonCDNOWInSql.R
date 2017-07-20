@@ -44,12 +44,12 @@ KmeansData <- RxSqlServerData(connectionString=connectionString,
                               table = "Kmeans_Result")
 
 md.km <- rxKmeans(formula=~R+F+M+R_Score+F_Score+M_Score, 
-						      data=RFMData, 
- 						      outFile=KmeansData,
-						      numClusters=8,
-						      algorithm="lloyd",
-						      writeModelVars=TRUE,
-						      overwrite=TRUE)
+		  data=RFMData, 
+ 	          outFile=KmeansData,
+		  numClusters=8,
+		  algorithm="lloyd",
+		  writeModelVars=TRUE,
+		  overwrite=TRUE)
 
 rxGetInfo(KmeansData, getVarInfo=TRUE, numRows=10)
 
@@ -98,7 +98,7 @@ RFMVIPTrainTestData <- RxSqlServerData(connectionString = connectionString,
 
 rxDataStep(inData=RFMVIPRDData,
            outFile=RFMVIPTrainTestData,
-	         transforms=list(urv=factor(ifelse(RD <= 8,'TRAIN','TEST'))),
+	   transforms=list(urv=factor(ifelse(RD <= 8,'TRAIN','TEST'))),
            overwrite=T)
 
 rxGetInfo(RFMVIPTrainTestData, T, numRows=3)
