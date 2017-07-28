@@ -9,7 +9,7 @@ EXEC [dbo].[initialize]
 *	Plan regression identification.
 ********************************************************/
 
--- 1. Start workload - execute procedure 30 times:
+-- 1. Start workload - execute procedure 30-300 times:
 begin
 declare @packagetypeid int = 7;
 exec dbo.report @packagetypeid
@@ -34,14 +34,15 @@ go 20
 
 -- 4. Find recommendation recommended by database:
 SELECT planForceDetails.query_id, reason, score,
-      JSON_VALUE(details, '$.implementationDetails.script') script,
+      JSON_VALUE(details, '$.implementationDetails.script') [correction script],
       planForceDetails.[new plan_id], planForceDetails.[recommended plan_id]
 FROM sys.dm_db_tuning_recommendations
   CROSS APPLY OPENJSON (Details, '$.planForceDetails')
     WITH (  [query_id] int '$.queryId',
             [new plan_id] int '$.regressedPlanId',
-            [recommended plan_id] int '$.forcedPlanId'
+            [recommended plan_id] int '$.recommendedPlanId'
           ) as planForceDetails;
+
 
 -- Note: User can apply script and force the recommended plan to correct the error.
 <<Insert T-SQL from the script column here and execute the script>>
@@ -66,7 +67,7 @@ go 20
 /********************************************************
 *	RESET - clear everything
 ********************************************************/
-EXEC [dbo].[initialize]
+EXEC [dbo].[initialize];
 
 -- Enable automatic tuning on the database:
 ALTER DATABASE current
@@ -77,7 +78,7 @@ SELECT name, desired_state_desc, actual_state_desc, reason_desc
 FROM sys.database_automatic_tuning_options;
 
 
--- 1. Start workload - execute procedure 20 times like in the phase I
+-- 1. Start workload - execute procedure 30-300 times like in the phase I
 begin
 declare @packagetypeid int = 7;
 exec dbo.report @packagetypeid
@@ -85,12 +86,12 @@ end
 go 300
 
 -- 2. Execute the procedure that causes plan regression
-exec dbo.regression
+exec dbo.regression;
 
 -- 3. Start workload again - verify that it is slower.
 begin
 declare @packagetypeid int = 7;
-exec dbo.report @packagetypeid
+exec dbo.report @packagetypeid;
 end
 go 20
 
@@ -105,7 +106,7 @@ FROM sys.dm_db_tuning_recommendations
   CROSS APPLY OPENJSON (Details, '$.planForceDetails')
     WITH (  [query_id] int '$.queryId',
             [new plan_id] int '$.regressedPlanId',
-            [recommended plan_id] int '$.forcedPlanId'
+            [recommended plan_id] int '$.recommendedPlanId'
           ) as planForceDetails;
 
 		  
