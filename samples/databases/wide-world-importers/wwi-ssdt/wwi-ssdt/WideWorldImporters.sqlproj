@@ -146,6 +146,8 @@
     <Folder Include="PostDeploymentScripts" />
     <Folder Include="DataLoadSimulation\Functions\" />
     <Folder Include="DataLoadSimulation\Tables" />
+    <Folder Include="dbo" />
+    <Folder Include="dbo\Tables" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Warehouse\Tables\Colors.sql">
@@ -688,10 +690,10 @@
     <Build Include="DataLoadSimulation\Functions\GetBogativePhoneNumber.sql" />
     <Build Include="Application\Stored Procedures\Configuration_RemoveColumnstoreIndexing.sql" />
     <Build Include="Application\Stored Procedures\Configuration_DisableInMemory.sql" />
-    <Build Include="Application\Stored Procedures\Configuration_PrepareForDowngradeToStandard.sql" />
-    <Build Include="SampleVersion.sql" />
     <Build Include="DataLoadSimulation\Tables\ColdRoomTemperatures_temp.sql" />
     <Build Include="DataLoadSimulation\Stored Procedures\PopulateColdRoomTemperatures_temp.sql" />
+    <Build Include="dbo\Tables\SampleVersion.sql" />
+    <Build Include="Application\Stored Procedures\Configuration_PrepareForAzureStandard.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="PostDeploymentScripts\Script.PostDeployment1.sql" />
