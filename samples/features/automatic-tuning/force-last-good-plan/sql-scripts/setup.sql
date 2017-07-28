@@ -13,17 +13,18 @@ CREATE NONCLUSTERED COLUMNSTORE INDEX [NCCX_Sales_OrderLines] ON [Sales].[OrderL
 )WITH (DROP_EXISTING = OFF, COMPRESSION_DELAY = 0) ON [USERDATA]
 GO
 
-CREATE   procedure [dbo].[initialize]
+CREATE OR ALTER PROCEDURE [dbo].[initialize]
 as begin
 
-DBCC FREEPROCCACHE;
+ALTER DATABASE SCOPED CONFIGURATION CLEAR PROCEDURE_CACHE;
 ALTER DATABASE current SET QUERY_STORE CLEAR ALL;
 ALTER DATABASE current SET AUTOMATIC_TUNING ( FORCE_LAST_GOOD_PLAN = OFF);
 
 end
 GO
 
-CREATE   procedure [dbo].[report] (@packagetypeid int)
+
+CREATE OR ALTER PROCEDURE [dbo].[report] (@packagetypeid int)
 as begin
 
 select avg([UnitPrice]*[Quantity])
@@ -34,35 +35,47 @@ end
 GO
 
 
-CREATE   procedure [dbo].[regression]
+CREATE OR ALTER PROCEDURE [dbo].[regression]
 as begin
 
-DBCC FREEPROCCACHE;
+ALTER DATABASE SCOPED CONFIGURATION CLEAR PROCEDURE_CACHE;
 begin
        declare @packagetypeid int = 1;
-       exec report @packagetypeid
+       exec report @packagetypeid;
 end
 
 end
 GO
 
-CREATE   procedure [dbo].[auto_tuning_on]
+CREATE OR ALTER PROCEDURE [dbo].[auto_tuning_on]
 as begin
 
 ALTER DATABASE current SET AUTOMATIC_TUNING ( FORCE_LAST_GOOD_PLAN = ON);
-DBCC FREEPROCCACHE;
+ALTER DATABASE SCOPED CONFIGURATION CLEAR PROCEDURE_CACHE;
 ALTER DATABASE current SET QUERY_STORE CLEAR ALL;
 
 end
 GO
 
 
-CREATE   procedure [dbo].[auto_tuning_off]
+CREATE OR ALTER PROCEDURE [dbo].[auto_tuning_off]
 as begin
 
 ALTER DATABASE current SET AUTOMATIC_TUNING ( FORCE_LAST_GOOD_PLAN = OFF);
-DBCC FREEPROCCACHE;
+ALTER DATABASE SCOPED CONFIGURATION CLEAR PROCEDURE_CACHE;
 ALTER DATABASE current SET QUERY_STORE CLEAR ALL;
 
 end
 GO
+
+CREATE EVENT SESSION [APC - plans that are not corrected] ON SERVER
+
+ADD EVENT qds.automatic_tuning_plan_regression_detection_check_completed(
+WHERE ((([is_regression_detected]=(1))
+  AND ([is_regression_corrected]=(0)))
+  AND ([option_id]=(1))))
+ADD TARGET package0.event_file(SET filename=N'plans_that_are_not_corrected')
+WITH (STARTUP_STATE=ON);
+GO
+
+ALTER EVENT SESSION [APC - plans that are not corrected] ON SERVER STATE = start;
