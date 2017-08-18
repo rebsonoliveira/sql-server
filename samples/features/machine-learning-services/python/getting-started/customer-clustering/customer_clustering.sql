@@ -97,3 +97,4 @@ SELECT customer.[c_email_address], customer.c_customer_sk
   [dbo].[py_customer_clusters] as c
   ON c.Customer = customer.c_customer_sk
   WHERE c.cluster = 0;
+  
