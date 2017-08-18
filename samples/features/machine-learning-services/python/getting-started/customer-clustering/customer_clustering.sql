@@ -2,9 +2,7 @@ USE [tpcxbb_1gb]
 GO
 
 -- Stored procedure that performs customer clustering using Python and SQL Server ML Services
-DROP PROCEDURE IF EXISTS [dbo].[py_generate_customer_return_clusters]
-GO
-CREATE procedure [dbo].[py_generate_customer_return_clusters]
+CREATE OR ALTER PROCEDURE [dbo].[py_generate_customer_return_clusters]
 AS
 
 BEGIN
@@ -53,9 +51,6 @@ EXEC sp_execute_external_script
 import pandas as pd
 from sklearn.cluster import KMeans
 
-#get data from input query
-customer_data = my_input_data
-
 #We concluded in step2 in the tutorial that 4 would be a good number of clusters
 n_clusters = 4
 
@@ -64,14 +59,14 @@ est = KMeans(n_clusters=n_clusters, random_state=111).fit(customer_data[["orderR
 clusters = est.labels_
 customer_data["cluster"] = clusters
 
-OutputDataSet = customer_data
+#OutputDataSet = customer_data
 '
 	, @input_data_1 = @input_query
-	, @input_data_1_name = N'my_input_data'
+	, @input_data_1_name = N'customer_data'
+	,@output_data_1_name = N'customer_data'
 			 with result sets (("Customer" int, "orderRatio" float,"itemsRatio" float,"monetaryRatio" float,"frequency" float,"cluster" float));
 END;
 GO
-
 
 
 --Creating a table for storing the clustering data
