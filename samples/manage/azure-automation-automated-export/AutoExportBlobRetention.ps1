@@ -25,6 +25,6 @@ foreach($blob in $blobs)
 	{
 		echo ("Deleting blob " + $blob.Name)
         # Delete the blob.e
-		Remove-AzureStorageBlob -Container $storageContainer -Context $context -Blob $blob.Name;
+		Remove-AzureStorageBlob -Container $storageContainerName -Context $context -Blob $blob.Name;
 	}
 }

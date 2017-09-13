@@ -2,6 +2,10 @@
 
 Sample order processing workload that can be used for benchmarking transactional processing with in-memory technologies. The scripts in this folder leverage the In-Memory OLTP feature in SQL Server 2016.
 
+Some results from this benchmark:
+* [4 Terabyte and 343,000 transactions per second with SQL Server 2016 on Hyper-V](https://blogs.technet.microsoft.com/windowsserver/2016/09/28/windows-server-2016-hyper-v-large-scale-vm-performance-for-in-memory-transaction-processing/)
+* [11X perf gain with In-Memory OLTP in Azure SQL Database](https://azure.microsoft.com/blog/in-memory-oltp-in-azure-sql-database/)
+
 <a name=about-this-sample></a>
 
 ## About this sample

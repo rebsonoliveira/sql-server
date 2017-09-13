@@ -27,23 +27,24 @@ BEGIN
       @language = N'Python'
     , @script = N'
 
+from sklearn import linear_model
+
+import pickle
+
+
 df = rental_train_data
 
 # Get all the columns from the dataframe.
 columns = df.columns.tolist()
 
-
 # Store the variable well be predicting on.
 target = "RentalCount"
 
-from sklearn.linear_model import LinearRegression
-
 # Initialize the model class.
-lin_model = LinearRegression()
+lin_model = linear_model.LinearRegression()
 # Fit the model to the training data.
 lin_model.fit(df[columns], df[target])
 
-import pickle
 #Before saving the model to the DB table, we need to convert it to a binary object
 trained_model = pickle.dumps(lin_model)
 '
@@ -75,7 +76,7 @@ AS
 BEGIN
 	DECLARE @py_model varbinary(max) = (select model from rental_py_models where model_name = @model);
 
-	EXEC sp_execute_external_script 
+	EXEC sp_execute_external_script
 					@language = N'Python'
 				  , @script = N'
 
@@ -83,7 +84,7 @@ BEGIN
 import pickle
 rental_model = pickle.loads(py_model)
 
-  
+
 df = rental_score_data
 #print(df)
 
@@ -106,7 +107,7 @@ lin_mse = mean_squared_error(lin_predictions, df[target])
 #print(lin_mse)
 
 import pandas as pd
-predictions_df = pd.DataFrame(lin_predictions)  
+predictions_df = pd.DataFrame(lin_predictions)
 OutputDataSet = pd.concat([predictions_df, df["RentalCount"], df["Month"], df["Day"], df["WeekDay"], df["Snow"], df["Holiday"], df["Year"]], axis=1)
 '
 	, @input_data_1 = N'Select "RentalCount", "Year" ,"Month", "Day", "WeekDay", "Snow", "Holiday"  from rental_data where Year = 2015'
@@ -114,7 +115,7 @@ OutputDataSet = pd.concat([predictions_df, df["RentalCount"], df["Month"], df["D
 	, @params = N'@py_model varbinary(max)'
 	, @py_model = @py_model
 	with result sets (("RentalCount_Predicted" float, "RentalCount" float, "Month" float,"Day" float,"WeekDay" float,"Snow" float,"Holiday" float, "Year" float));
-			  
+
 END;
 GO
 
