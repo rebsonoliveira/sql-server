@@ -37,27 +37,37 @@
         <div class="col-md-4">
             <h1>Automatic tuning</h1>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 hidden">
             <div class="btn-group pull-right align-bottom" data-toggle="buttons">
-                <label class="btn btn-default active">
-                    <input type="radio" name="options" id="off" autocomplete="off" checked> OFF
-                </label>
                 <label class="btn btn-default">
-                    <input type="radio" name="options" id="on" autocomplete="off"> ON
+                    <input type="radio" name="options" id="off" autocomplete="off"> OFF
+                </label>
+                <label class="btn btn-default active">
+                    <input type="radio" name="options" id="on" autocomplete="off" checked> ON
                 </label>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-4">
-            <span id="speed">0</span> requests per second.
-        </div>
-        <div class="col-md-3">
-            <button id="regression" type="button" class="btn btn-danger pull-right">Regression</button>
+        <div class="col-md-12">
+            <span id="speed">0</span> requests per second. <button id="regression" type="button" class="btn btn-danger pull-right">Regression</button>
         </div>
     </div>
     <div class="row">
-        <svg width="500" height="500"></svg>
+        <div class="col-md-6">
+            <svg width="500" height="500"></svg>
+        </div>
+        <div class="col-md-6">
+            <h3>T-SQL query:</h3>
+            <pre>
+SELECT AVG( UnitPrice * Quantity )
+FROM Sales.OrderLines
+WHERE PackageTypeID = @packagetypeid;</pre>
+            <h3>Enable FORCE LAST GOOD PLAN:</h3>
+            <pre>
+ALTER DATABASE current
+SET AUTOMATIC_TUNING ( FORCE_LAST_GOOD_PLAN = ON);</pre>
+        </div>
     </div>
         <script src="media/d3.v3.min.js"></script>
         <script src="media/viz.v1.0.0.min.js"></script>
@@ -66,7 +76,7 @@
         <script src="media/GraphVizGauge.js"></script>
         <script src="/api/demo/init"></script>
         <script>
-            var gauge = new GraphVizGauge("svg", { to: 150 });
+            var gauge = new GraphVizGauge("svg", { to: 250 });
             var perfData = [];
             setInterval(function () {
                 $.ajax({
