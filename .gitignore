@@ -37,7 +37,6 @@ samples/features/in-memory/ticket-reservations/packages/CircularGauge.1.0.0/Read
 samples/features/in-memory/ticket-reservations/TicketReservations/obj/Release/Model.xml
 samples/features/in-memory/ticket-reservations/DemoWorkload/obj/Debug/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
 *.dat
-*.sln
 
 *.user
 samples/features/in-memory/ticket-reservations/DemoWorkload/obj/Release/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
@@ -48,3 +47,27 @@ samples/databases/wide-world-importers/wwi-integration-etl/Daily ETL/obj/Develop
 samples/features/in-memory/ticket-reservations/DemoWorkload/obj/Debug/DemoWorkload.csproj.FileListAbsolute.txt
 samples/features/in-memory/iot-smart-grid/Db/obj/Release/Model.xml
 samples/applications/iot-smart-grid/DataGenerator/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+samples/databases/wide-world-importers/workload-drivers/order-insert/MultithreadedOrderInsert/bin/Debug/MultithreadedOrderInsert.exe.config
+samples/features/in-memory/iot-smart-grid/ConsoleClient/bin/Release/ConsoleClient.exe.config
+*.jfm
+samples/features/in-memory/ticket-reservations/TicketReservations/bin/Release/TicketReservations.publish.sql
+samples/applications/iot-smart-grid/ConsoleClient/bin/Release/ConsoleClient.exe.config
+samples/applications/iot-smart-grid/Db/Db.dbmdl
+samples/databases/wide-world-importers/workload-drivers/order-insert/MultithreadedOrderInsert/obj/Release/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+samples/databases/wide-world-importers/wwi-dw-ssdt/wwi-dw-ssdt/obj/Debug/Model.xml
+samples/databases/wide-world-importers/wwi-dw-ssdt/wwi-dw-ssdt/WideWorldImportersDW.dbmdl
+samples/features/in-memory/iot-smart-grid/WinFormsClient/bin/Release/Reports/PowerDashboard.pbix
+samples/databases/wide-world-importers/wwi-ssdt/wwi-ssdt/WideWorldImporters.dbmdl
+samples/databases/wide-world-importers/workload-drivers/order-insert/MultithreadedOrderInsert/obj/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+samples/databases/wide-world-importers/wwi-ssasmd/wwi-ssasmd/bin/WWI-SSASMD.asdatabase
+samples/applications/iot-smart-grid/Db/obj/Release/Db.sqlproj.FileListAbsolute.txt
+*.manifest
+samples/applications/iot-smart-grid/WinFormsClient/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+samples/databases/wide-world-importers/wwi-ssasmd/wwi-ssasmd/obj/Development/IncrementalShapshot.xml
+samples/applications/iot-smart-grid/ConsoleClient/bin/Release/Reports/PowerDashboard.pbix
+samples/applications/iot-smart-grid/Db/obj/Release/Model.xml
+samples/databases/wide-world-importers/workload-drivers/order-insert/MultithreadedOrderInsert/obj/Release/MultithreadedOrderInsert.csproj.FileListAbsolute.txt
+samples/applications/iot-smart-grid/ConsoleClient/obj/Debug/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+samples/applications/iot-smart-grid/WinFormsClient/bin/Release/Client.exe.config
+samples/databases/wide-world-importers/workload-drivers/order-insert/MultithreadedOrderInsert/bin/Release/MultithreadedOrderInsert.exe.config
+samples/databases/wide-world-importers/workload-drivers/order-insert/MultithreadedOrderInsert/obj/Debug/MultithreadedInMemoryTableInsert.MultithreadedOrderInsertMain.resources

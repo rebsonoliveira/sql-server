@@ -10,3 +10,4 @@ Properties/PublishProfiles/*
 appsettings.Development.json
 appsettings.Production.json
 *.ndjson
+sql-scripts/bcp.sql.sql

@@ -1,13 +1,20 @@
-﻿# The storage key for the storage account you are using.
-$storageKey = Get-AutomationVariable -Name "STORAGEKEYVARIABLENAME";
-# The name of the storage container you are using.
-$storageContainer = "STORAGECONTAINERNAME";
-# Set up the storage context for the storage account.
-$context = New-AzureStorageContext -StorageAccountName "STORAGEACCOUNTNAME" -StorageAccountKey $storageKey
-# Get all of the blobs in the storage account.
-$blobs = Get-AzureStorageBlob -Container $storageContainer -Context $context
+﻿#Azure Automation String Variable name for your Storage Account Key
+$storageKeyVariableName = "STORAGEKEYVARIABLENAME";
+#Name of your Storage Account
+$storageAccountName = "STORAGEACCOUNTNAME";
+#Name of your Storage Container
+$storageContainerName = "STORAGECONTAINERNAME";
 # Set the number of days that you want the blob to be stored for.
 $retentionInDays = 30
+
+
+# Get the storage key
+$storageKey = Get-AutomationVariable -Name $storageKeyVariableName;
+# Set up the storage context for the storage account.
+$context = New-AzureStorageContext -StorageAccountName $storageAccountName -StorageAccountKey $storageKey
+# Get all of the blobs in the storage account.
+$blobs = Get-AzureStorageBlob -Container $storageContainerName -Context $context
+
 
 foreach($blob in $blobs)
 {
@@ -18,6 +25,6 @@ foreach($blob in $blobs)
 	{
 		echo ("Deleting blob " + $blob.Name)
         # Delete the blob.e
-		Remove-AzureStorageBlob -Container $storageContainer -Context $context -Blob $blob.Name;
+		Remove-AzureStorageBlob -Container $storageContainerName -Context $context -Blob $blob.Name;
 	}
 }

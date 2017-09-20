@@ -17,7 +17,7 @@
     <script src="media/js/lib/Bootstrap.js"></script>
     <script src="media/js/lib/jquery.dataTables.js"></script>
     <script src="media/js/lib/jquery.dataTables.Bootstrap.js"></script>
-    <script src="media/js/lib/jquery.dataTables.incremental_pagination.js"></script>
+    <script src="media/js/lib/simple_incremental_bootstrap.js"></script>
 
 	
 	<script type="text/javascript" class="init">	
@@ -33,7 +33,7 @@ $(document).ready(function() {
  	var table = $('#example').DataTable({
         "serverSide": true,
         "processing": true,
-        "pagingType": "incremental",
+        "pagingType": "simple_incremental_bootstrap",
         "ajax": "/api/People",
         "columns": [
             { "data": "name", "width": "10%" },

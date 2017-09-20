@@ -78,6 +78,7 @@ GO
 
 GRANT SELECT, UPDATE ON Sales.Customers TO [Great Lakes Sales];
 GRANT SELECT ON [Application].Cities TO [Great Lakes Sales];
+GRANT SELECT ON [Application].StateProvinces TO [Great Lakes Sales];
 GRANT SELECT ON [Application].Countries TO [Great Lakes Sales];
 GO
 
@@ -94,20 +95,37 @@ GO
 -- where are those customers? 
 -- note the spatial results tab
 
-SELECT c.Border 
+SELECT c.Border
 FROM [Application].Countries AS c
 WHERE c.CountryName = N'United States'
 UNION ALL
-SELECT c.DeliveryLocation 
-FROM Sales.Customers AS c;
+SELECT c.DeliveryLocation
+FROM Sales.Customers AS c
 GO
 
+-----------------------------------------------------------------------
 -- updating rows that are accessible to a non-accessible row is blocked
+-----------------------------------------------------------------------
+DECLARE @GreatLakesCustomerID INT
+DECLARE @NonGreatLakesCityID INT
 
-UPDATE Sales.Customers            -- Attempt to update
-SET DeliveryCityID = 3            -- to a city that is not in the Great Lakes Sales Territory
-WHERE DeliveryCityID = 32887;     -- for a customer that is in the Great Lakes Sales Territory
+-- pick a customer in the Great Lakes sales territory
+SELECT TOP 1 @GreatLakesCustomerID=c.CustomerID
+FROM Sales.Customers c JOIN Application.Cities ci ON c.DeliveryCityID=ci.CityID 
+	JOIN Application.StateProvinces sp ON ci.StateProvinceID=sp.StateProvinceID
+WHERE sp.SalesTerritory=N'Great Lakes'
 
+-- pick a City outside of the Great Lakes sales territory
+SELECT @NonGreatLakesCityID=c.CityID
+FROM Application.Cities c JOIN Application.StateProvinces sp ON c.StateProvinceID=sp.StateProvinceID
+WHERE CityName=N'Seattle' AND sp.StateProvinceCode=N'WA'
+
+UPDATE Sales.Customers                    -- Attempt to update
+SET DeliveryCityID = @NonGreatLakesCityID -- to a city that is not in the Great Lakes Sales Territory
+WHERE CustomerID = @GreatLakesCustomerID; -- for a customer that is in the Great Lakes Sales Territory
+GO
+
+-- revert the impersonation
 REVERT;
 GO
 
@@ -131,9 +149,6 @@ REVOKE SELECT ON [Application].Countries FROM [Great Lakes Sales];
 REVOKE SELECT, UPDATE ON Sales.Customers FROM [Website];
 REVOKE SELECT ON [Application].Cities FROM [Website];
 REVOKE SELECT ON [Application].Countries FROM [Website];
-GO
-
-EXEC [Application].Configuration_RemoveRowLevelSecurity;
 GO
 
 DROP USER GreatLakesUser;

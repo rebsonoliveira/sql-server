@@ -31,7 +31,7 @@ namespace ProductCatalog
             Configuration = builder.Build();
 #if NETCOREAPP1_0
             Log.Logger = new LoggerConfiguration()
-                .WriteTo.RollingFile(new Serilog.Formatting.Json.JsonFormatter(), System.IO.Path.Combine(env.ContentRootPath, "log-{Date}.ndjson"))
+                .WriteTo.RollingFile(new Serilog.Formatting.Json.JsonFormatter(), System.IO.Path.Combine(env.ContentRootPath, "logs\\log-{Date}.ndjson"))
                 .CreateLogger();
 #endif
 #if NET46
