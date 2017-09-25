@@ -1,0 +1,84 @@
+11/14/2016 4:00:47 PM	This log contains information about the import schema operation into project 'wwi-ssdt' on computer 'ARCANECODEPRO3' by user 'Arcane'.
+11/14/2016 4:00:48 PM	Import of database schema has started.
+11/14/2016 4:01:08 PM	Gathering database options
+11/14/2016 4:01:08 PM	Gathering users
+11/14/2016 4:01:08 PM	Gathering roles
+11/14/2016 4:01:08 PM	Gathering application roles
+11/14/2016 4:01:08 PM	Gathering role memberships
+11/14/2016 4:01:08 PM	Gathering filegroups
+11/14/2016 4:01:08 PM	Gathering full-text catalogs
+11/14/2016 4:01:08 PM	Gathering assemblies
+11/14/2016 4:01:08 PM	Gathering certificates
+11/14/2016 4:01:08 PM	Gathering asymmetric keys
+11/14/2016 4:01:08 PM	Gathering symmetric keys
+11/14/2016 4:01:08 PM	Gathering encrypted symmetric keys
+11/14/2016 4:01:08 PM	Gathering schemas
+11/14/2016 4:01:08 PM	Gathering XML schema collections
+11/14/2016 4:01:08 PM	Gathering user-defined data types
+11/14/2016 4:01:08 PM	Gathering user-defined types
+11/14/2016 4:01:08 PM	Gathering table types
+11/14/2016 4:01:08 PM	Gathering unique keys for table types
+11/14/2016 4:01:08 PM	Gathering primary keys for table types
+11/14/2016 4:01:08 PM	Gathering indexes for table types
+11/14/2016 4:01:08 PM	Gathering check constraints for table types
+11/14/2016 4:01:08 PM	Gathering default constraints for table types
+11/14/2016 4:01:08 PM	Gathering partition functions
+11/14/2016 4:01:08 PM	Gathering partition schemes
+11/14/2016 4:01:08 PM	Gathering functions
+11/14/2016 4:01:08 PM	Gathering encrypted functions
+11/14/2016 4:01:08 PM	Gathering aggregates
+11/14/2016 4:01:08 PM	Gathering procedures
+11/14/2016 4:01:09 PM	Gathering encrypted procedures
+11/14/2016 4:01:09 PM	Gathering tables
+11/14/2016 4:01:10 PM	Gathering primary keys
+11/14/2016 4:01:10 PM	Gathering unique constraints
+11/14/2016 4:01:10 PM	Gathering foreign keys
+11/14/2016 4:01:10 PM	Gathering default constraints
+11/14/2016 4:01:10 PM	Gathering check constraints
+11/14/2016 4:01:10 PM	Gathering views
+11/14/2016 4:01:10 PM	Gathering encrypted views
+11/14/2016 4:01:10 PM	Gathering indexes
+11/14/2016 4:01:10 PM	Gathering statistics
+11/14/2016 4:01:10 PM	Gathering full-text index stoplists
+11/14/2016 4:01:10 PM	Gathering search property lists
+11/14/2016 4:01:10 PM	Gathering search properties
+11/14/2016 4:01:10 PM	Gathering full-text indexes
+11/14/2016 4:01:10 PM	Gathering column store indexes
+11/14/2016 4:01:10 PM	Gathering spatial indexes
+11/14/2016 4:01:10 PM	Gathering XML indexes
+11/14/2016 4:01:10 PM	Gathering Selective XML indexes
+11/14/2016 4:01:11 PM	Gathering encrypted triggers
+11/14/2016 4:01:11 PM	Gathering triggers
+11/14/2016 4:01:11 PM	Gathering encrypted and clr ddl triggers
+11/14/2016 4:01:11 PM	Gathering ddl triggers
+11/14/2016 4:01:11 PM	Gathering synonyms
+11/14/2016 4:01:11 PM	Gathering defaults
+11/14/2016 4:01:11 PM	Gathering data constraint uddt bindings
+11/14/2016 4:01:11 PM	Gathering rules
+11/14/2016 4:01:11 PM	Gathering data constraint uddt bindings
+11/14/2016 4:01:11 PM	Gathering message types
+11/14/2016 4:01:11 PM	Gathering queues
+11/14/2016 4:01:11 PM	Gathering contracts
+11/14/2016 4:01:11 PM	Gathering services
+11/14/2016 4:01:11 PM	Gathering event notifications
+11/14/2016 4:01:11 PM	Gathering remote service bindings
+11/14/2016 4:01:11 PM	Gathering broker priorities
+11/14/2016 4:01:11 PM	Gathering signatures
+11/14/2016 4:01:11 PM	Gathering data compression options
+11/14/2016 4:01:11 PM	Gathering sequence types
+11/14/2016 4:01:11 PM	Gathering security policies
+11/14/2016 4:01:11 PM	Gather column encryption keys
+11/14/2016 4:01:11 PM	Gathering column master keys
+11/14/2016 4:01:11 PM	Gathering external data sources
+11/14/2016 4:01:11 PM	Gathering external file formats
+11/14/2016 4:01:11 PM	Gathering external tables
+11/14/2016 4:01:11 PM	Gathering database permissions
+11/14/2016 4:01:11 PM	Gathering extended properties
+11/14/2016 4:01:12 PM	Gathering credentials
+11/14/2016 4:01:12 PM	Gathering logins
+11/14/2016 4:01:12 PM	Gathering server audits
+11/14/2016 4:01:14 PM	Scanning project for duplicate elements
+11/14/2016 4:01:16 PM	Finished duplicate element processing
+11/14/2016 4:01:35 PM	Finished importing database.
+11/14/2016 4:01:35 PM	A summary of the import was saved to the following location: C:\Users\Arcane\OneDrive\Projects\WideWorldImports\wwi-ssdt\wwi-ssdt\Import Schema Logs\wwi-ssdt_20161114100047.log
+11/14/2016 4:01:35 PM	Click Finish to continue...

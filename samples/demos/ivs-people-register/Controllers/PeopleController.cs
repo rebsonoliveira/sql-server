@@ -1,6 +1,7 @@
 ﻿using Belgrade.SqlClient;
 using Microsoft.AspNetCore.Mvc;
 using SqlServerRestApi;
+using System.Text;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
@@ -38,7 +39,7 @@ namespace Register.Controllers
         {
             Response.ContentType = "application/json";
             await this
-                    .ODataHandler(tableSpec, pipe)
+                    .OData(tableSpec, pipe)
                     .Process();
         }
 
@@ -52,7 +53,8 @@ namespace Register.Controllers
         public async Task Get()
         {
             await this
-                    .JQueryDataTablesHandler(tableSpec, pipe)
+                    .JQueryDataTables(tableSpec, pipe)
+                    .OnError(ex => Response.Body.Write(Encoding.UTF8.GetBytes(ex.Message), 0, ex.Message.Length))
                     .Process();
         }
     }

@@ -45,6 +45,8 @@
 #include <string>
 #include <unistd.h>
 #include <uuid/uuid.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #include "vdi.h"      // interface declaration
 #include "vdierror.h" // error constants
@@ -131,7 +133,8 @@ int main(int argc, char* argv[])
                "Demonstrate a Backup or Restore using the Virtual Device Interface\n");
         return 1;
     }
-
+   
+    umask(0);
     vds = new ClientVirtualDeviceSet();
 
     // Setup the VDI configuration we want to use.

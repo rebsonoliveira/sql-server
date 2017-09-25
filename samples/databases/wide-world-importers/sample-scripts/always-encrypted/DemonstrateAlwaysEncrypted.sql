@@ -29,6 +29,7 @@ GO
 
 -- 1a. In Object Explorer, expand the security node in WideWorldImporters, then expand
 --     the Always Encrypted Keys node and note the contents.
+--       If you do not see the Always Encrypted node, install the latest version of Management Studio (17.X or higher): https://aka.ms/ssms
 -- 1b. Right-click the Column Master Keys node and click New Column Master Key.
 -- 1c. For the name, enter WWI_ColumnMasterKey.
 -- 1d. Note the available entries in the Key store dropdown list. Choose Windows Certificate Store - Current User. 

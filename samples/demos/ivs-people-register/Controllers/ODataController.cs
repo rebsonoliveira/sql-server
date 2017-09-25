@@ -52,7 +52,7 @@ namespace Register.Controllers
         public async Task People()
         {
             await this
-                .ODataHandler(tableSpec, this.pipe, ODataHandler.Metadata.MINIMAL)
+                .OData(tableSpec, this.pipe, ODataHandler.Metadata.MINIMAL)
                 .OnError(ex => Response.Body.Write(Encoding.UTF8.GetBytes(ex.Message), 0, (ex.Message).Length))
                 .Get();
         }

@@ -10,7 +10,7 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
     try{
         string ConnectionString = ConfigurationManager.ConnectionStrings["azure-db-connection"].ConnectionString;
         var sqlQuery = new QueryPipe(ConnectionString);
-        var tableSpec = new SqlServerRestApi.SQL.TableSpec("sys.objects", "object_id,name,type,schema_id,create_date");
+        var tableSpec = new SqlServerRestApi.TableSpec("sys","objects", "object_id,name,type,schema_id,create_date");
         return await req.CreateODataResponse(tableSpec, sqlQuery);
         
     } catch (Exception ex) {

@@ -10,7 +10,6 @@ __[contoso-data-warehouse](contoso-data-warehouse/)__
 
 Sample data warehouse that illustrates loading data into Azure SQL Data Warehouse.
 
-__[adventure-works-lt](adventure-works-lt/)__
+__[AdventureWorks2014](https://github.com/Microsoft/sql-server-samples/releases/tag/adventureworks2014)__
 
-AdventureWorksLT sample database.
-
+Sample databases and Analysis Services models for use with SQL Server 2014 and later. 
