@@ -1,4 +1,5 @@
-/********************************************************************************
+
+--/********************************************************************************
 *	Note: You can export file and create format file using bcp out command:
 *
 *>bcp "SELECT Name, Color, Price, Size, Quantity, Data, Tags FROM Product" queryout product.dat -d ProductCatalog -T
@@ -46,7 +47,8 @@ WITH (	TYPE = BLOB_STORAGE,
 
 DROP TABLE IF EXISTS Product;
 GO
-
+--Create a permanent table.  A temp table currently is not supported for BULK INSERT, although it will will work
+--with OPENROWSET
 CREATE TABLE dbo.Product(
 	Name nvarchar(50) NOT NULL,
 	Color nvarchar(15) NULL,
@@ -54,8 +56,8 @@ CREATE TABLE dbo.Product(
 	Size nvarchar(5) NULL,
 	Quantity int NULL,
 	Data nvarchar(4000) NULL,
-	Tags nvarchar(4000) NULL,
-	INDEX cci CLUSTERED COLUMNSTORE
+	Tags nvarchar(4000) NULL
+	--,INDEX cci CLUSTERED COLUMNSTORE
 )
 GO
 
@@ -69,6 +71,7 @@ FROM 'product.csv'
 WITH (	DATA_SOURCE = 'MyAzureBlobStorage',
 		FORMAT='CSV', CODEPAGE = 65001, --UTF-8 encoding
 		FIRSTROW=2,
+                ROWTERMINATOR = '0x0a',
 		TABLOCK); 
 
 -- 2.2. INSERT file exported using bcp.exe into Product table
