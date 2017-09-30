@@ -36,7 +36,7 @@ This is the OLTP version.
 3. Open SQL Server Management Studio (SSMS).
 4. In SSMS, open the file {SQL Server Path}\Tools\Samples\AdventureWorksDW2014\instawdb.sql. 
 4. In the script, change the :setvar SqlSamplesDatabasePath variable to your {DATA path}.
-5. In the script, change the :setvar SqlSamplesSourceDataPath variable to {SQL Server Path}\Tools\Samples\AdventureWorksDW2014. 
+5. In the script, change the :setvar SqlSamplesSourceDataPath variable to {SQL Server Path}\Tools\Samples\AdventureWorks2014. 
 5. On the Query menu, click SQLCMD Mode. 
 6. On the Standard toolbar, click the Execute button to run the script. 
 
