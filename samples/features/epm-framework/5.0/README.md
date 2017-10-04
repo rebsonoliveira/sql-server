@@ -1,4 +1,7 @@
-#EPM Framework 4 Release Notes
+#EPM Framework 5 Release Notes
+
+Over 4.12.1 below, EPM Framework 5 includes the following updates (as per received feedback): Now compatible with last SQLServer PowerShell Module
+https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-ps-module
 
 Over 4.12.1 below, EPM Framework 4.12.2 includes the following updates (as per received feedback): Fixed collation issues on views and reports
 
