@@ -1,7 +1,7 @@
 # Evaluate specific Policies against a Server List
 # Uses the Invoke-PolicyEvaluation Cmdlet
 
-#SAMPLE: #.\EPM_EnterpriseEvaluation_4.ps1 -ConfigurationGroup "DEV" -PolicyCategoryFilter "Name Pattern" –EvalMode “Check”
+#SAMPLE: #.\EPM_EnterpriseEvaluation_5.ps1 -ConfigurationGroup "DEV" -PolicyCategoryFilter "Name Pattern" –EvalMode “Check”
 
 <#
 Run Powershell ISE as Admin
@@ -23,7 +23,7 @@ param([string]$ConfigurationGroup=$(Throw `
 [string]$EvalMode=$(Throw "Parameter missing: -EvalMode EvalMode"))
 
 Remove-Module SQLPS -Force -ErrorAction SilentlyContinue
-Import-Module SqlServer -DisableNameChecking
+Import-Module SqlServer -DisableNameChecking -MinimumVersion "21.0.171.78"
 
 # Parameter -ConfigurationGroup specifies the 
 # Central Management Server group to evaluate
