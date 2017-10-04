@@ -76,3 +76,6 @@ samples/databases/wide-world-importers/workload-drivers/order-insert/Multithread
 /samples/features/epm-framework/5.0/2Reporting/PolicyReports/PolicyEvaluationDetails.rdl.data
 /samples/features/epm-framework/5.0/2Reporting/PolicyReports/PolicyDetails.rdl.data
 /samples/features/epm-framework/5.0/2Reporting/PolicyReports/PolicyDashboard.rdl.data
+/samples/features/epm-framework/5.0/2Reporting/PolicyReports/bin/Debug
+/samples/features/epm-framework/5.0/2Reporting/PolicyReports/PolicyDashboard - Backup.rdl
+/samples/features/epm-framework/5.0/2Reporting/PolicyReports/PolicyDashboardFiltered.rdl.data

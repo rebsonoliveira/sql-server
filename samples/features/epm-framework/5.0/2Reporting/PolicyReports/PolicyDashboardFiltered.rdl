@@ -11,21 +11,53 @@
   </DataSources>
   <DataSets>
     <DataSet Name="ReportHistory">
-      <SharedDataSet>
-        <SharedDataSetReference>ReportHistory</SharedDataSetReference>
+      <Query>
+        <DataSourceName>PolicyDW</DataSourceName>
         <QueryParameters>
-          <QueryParameter Name="@EvaluatedPolicy">
-            <Value>=Parameters!EvaluatedPolicy.Value</Value>
-            <rd:UserDefined>true</rd:UserDefined>
-          </QueryParameter>
           <QueryParameter Name="@CategoryName">
             <Value>=Parameters!CategoryName.Value</Value>
           </QueryParameter>
-          <QueryParameter Name="@ServerGroupName">
-            <Value>=Parameters!ServerGroupName.Value</Value>
+          <QueryParameter Name="@EvaluatedPolicy">
+            <Value>=Parameters!EvaluatedPolicy.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@ServerName">
+            <Value>=Parameters!ServerName.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@Object">
+            <Value>=Parameters!Object.Value</Value>
           </QueryParameter>
         </QueryParameters>
-      </SharedDataSet>
+        <CommandText>SELECT 
+	 *
+	,SUBSTRING (AggEvaluatedObject, 0, CHARINDEX('\',AggEvaluatedObject)) AggEvaluatedObject_First
+FROM
+(
+	SELECT 
+		  EvaluatedServer
+		, EvaluationDateTime
+		, EvaluatedPolicy
+		, EvaluatedObject
+		, CASE WHEN EvaluatedObject LIKE '%Databases\%\' THEN RIGHT(EvaluatedObject, CHARINDEX('\sesabataD',REVERSE(EvaluatedObject))-1) 
+			WHEN EvaluatedObject LIKE '%Databases\%' THEN RIGHT(EvaluatedObject, CHARINDEX('\sesabataD',REVERSE(EvaluatedObject))-1) + '\' 
+			WHEN EvaluatedObject = 'No Targets Found' THEN EvaluatedObject + '\'
+			ELSE RIGHT(EvaluatedObject, CHARINDEX('\',REVERSE(EvaluatedObject))-1) + '\' END AS AggEvaluatedObject
+		, PolicyResult
+		, policy_id
+		, CategoryName
+		, MonthYear
+		, CASE WHEN PolicyResult = 'Fail' THEN 1 ELSE 0 END AS FailedPolicyCount
+	FROM policy.v_PolicyHistory_LastEvaluation
+	WHERE CategoryName IN (@CategoryName)
+	AND EvaluatedPolicy IN (@EvaluatedPolicy)
+	AND EvaluatedServer IN (@ServerName)
+	AND EvaluatedPolicy NOT IN (SELECT spp.name 
+			FROM msdb..syspolicy_policies spp 
+			INNER JOIN msdb..syspolicy_policy_categories spc ON spp.policy_category_id = spc.policy_category_id
+			WHERE spc.name = 'Disabled')
+) A
+WHERE SUBSTRING (AggEvaluatedObject, 0, CHARINDEX('\',AggEvaluatedObject)) IN (@Object)
+ORDER BY PolicyResult, EvaluatedServer</CommandText>
+      </Query>
       <Fields>
         <Field Name="EvaluatedServer">
           <DataField>EvaluatedServer</DataField>
@@ -67,8 +99,12 @@
           <DataField>FailedPolicyCount</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
+        <Field Name="AggEvaluatedObject_First">
+          <DataField>AggEvaluatedObject_First</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="TrimCategoryName">
-          <DataField>TrimCategoryName</DataField>
+          <Value>=IIF(Fields!CategoryName.Value LIKE "*:*", Right(Fields!CategoryName.Value, (Len(Fields!CategoryName.Value) - InStrRev(Fields!CategoryName.Value,":") - 1)), Fields!CategoryName.Value)</Value>
         </Field>
       </Fields>
     </DataSet>
@@ -275,6 +311,60 @@ WHERE CategoryName IN (@CategoryName)</CommandText>
       <Fields>
         <Field Name="EvaluatedPolicy">
           <DataField>EvaluatedPolicy</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="ServerName">
+      <Query>
+        <DataSourceName>PolicyDW</DataSourceName>
+        <QueryParameters>
+          <QueryParameter Name="@ServerGroupName">
+            <Value>=Parameters!ServerGroupName.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <CommandText>SELECT DISTINCT [EvaluatedServer]
+FROM [policy].[PolicyHistoryDetail]
+WHERE 
+	(EvaluatedServer  COLLATE SQL_Latin1_General_CP1_CI_AI IN (SELECT server_name FROM policy.pfn_ServerGroupInstances(@ServerGroupName))
+	OR @ServerGroupName = '')
+ORDER BY [EvaluatedServer]</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="EvaluatedServer">
+          <DataField>EvaluatedServer</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="Objects">
+      <Query>
+        <DataSourceName>PolicyDW</DataSourceName>
+        <QueryParameters>
+          <QueryParameter Name="@ServerName">
+            <Value>=Parameters!ServerName.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <CommandText>SELECT DISTINCT
+	 SUBSTRING (AggEvaluatedObject, 0, CHARINDEX('\',AggEvaluatedObject)) AggEvaluatedObject_First
+FROM
+(
+	SELECT  
+		CASE 
+			WHEN EvaluatedObject LIKE '%Databases\%\' THEN RIGHT(EvaluatedObject, CHARINDEX('\sesabataD',REVERSE(EvaluatedObject))-1) 
+			WHEN EvaluatedObject LIKE '%Databases\%' THEN RIGHT(EvaluatedObject, CHARINDEX('\sesabataD',REVERSE(EvaluatedObject))-1) + '\' 
+			WHEN EvaluatedObject = 'No Targets Found' THEN EvaluatedObject + '\'
+			ELSE RIGHT(EvaluatedObject, CHARINDEX('\',REVERSE(EvaluatedObject))-1) + '\' 
+		END AS AggEvaluatedObject
+	FROM [policy].[PolicyHistoryDetail]
+	WHERE 
+		EvaluatedServer IN (@ServerName)
+) A
+ORDER BY AggEvaluatedObject_First</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="AggEvaluatedObject_First">
+          <DataField>AggEvaluatedObject_First</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
@@ -3183,6 +3273,36 @@ Count(Fields!ErrorHistoryID.Value, "Evaluation_Errors") = 0, "Black")</Color>
         </DataSetReference>
       </ValidValues>
     </ReportParameter>
+    <ReportParameter Name="ServerName">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <DataSetReference>
+          <DataSetName>ServerName</DataSetName>
+          <ValueField>EvaluatedServer</ValueField>
+        </DataSetReference>
+      </DefaultValue>
+      <Prompt>Server Name</Prompt>
+      <ValidValues>
+        <DataSetReference>
+          <DataSetName>ServerName</DataSetName>
+          <ValueField>EvaluatedServer</ValueField>
+          <LabelField>EvaluatedServer</LabelField>
+        </DataSetReference>
+      </ValidValues>
+      <MultiValue>true</MultiValue>
+    </ReportParameter>
+    <ReportParameter Name="Object">
+      <DataType>String</DataType>
+      <Prompt>Object</Prompt>
+      <ValidValues>
+        <DataSetReference>
+          <DataSetName>Objects</DataSetName>
+          <ValueField>AggEvaluatedObject_First</ValueField>
+          <LabelField>AggEvaluatedObject_First</LabelField>
+        </DataSetReference>
+      </ValidValues>
+      <MultiValue>true</MultiValue>
+    </ReportParameter>
     <ReportParameter Name="CategoryName">
       <DataType>String</DataType>
       <DefaultValue>
@@ -3217,6 +3337,24 @@ Count(Fields!ErrorHistoryID.Value, "Evaluation_Errors") = 0, "Black")</Color>
           <LabelField>MonthYear</LabelField>
         </DataSetReference>
       </ValidValues>
+    </ReportParameter>
+    <ReportParameter Name="EvaluatedPolicy">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <DataSetReference>
+          <DataSetName>Parameter_EvaluatedPolicy</DataSetName>
+          <ValueField>EvaluatedPolicy</ValueField>
+        </DataSetReference>
+      </DefaultValue>
+      <Prompt>Policy Name</Prompt>
+      <ValidValues>
+        <DataSetReference>
+          <DataSetName>Parameter_EvaluatedPolicy</DataSetName>
+          <ValueField>EvaluatedPolicy</ValueField>
+          <LabelField>EvaluatedPolicy</LabelField>
+        </DataSetReference>
+      </ValidValues>
+      <MultiValue>true</MultiValue>
     </ReportParameter>
     <ReportParameter Name="PolicyResult">
       <DataType>String</DataType>
@@ -3267,29 +3405,11 @@ Count(Fields!ErrorHistoryID.Value, "Evaluation_Errors") = 0, "Black")</Color>
       <Prompt>PolicyThresholdCaution</Prompt>
       <Hidden>true</Hidden>
     </ReportParameter>
-    <ReportParameter Name="EvaluatedPolicy">
-      <DataType>String</DataType>
-      <DefaultValue>
-        <DataSetReference>
-          <DataSetName>Parameter_EvaluatedPolicy</DataSetName>
-          <ValueField>EvaluatedPolicy</ValueField>
-        </DataSetReference>
-      </DefaultValue>
-      <Prompt>Policy Name</Prompt>
-      <ValidValues>
-        <DataSetReference>
-          <DataSetName>Parameter_EvaluatedPolicy</DataSetName>
-          <ValueField>EvaluatedPolicy</ValueField>
-          <LabelField>EvaluatedPolicy</LabelField>
-        </DataSetReference>
-      </ValidValues>
-      <MultiValue>true</MultiValue>
-    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>5</NumberOfColumns>
-      <NumberOfRows>2</NumberOfRows>
+      <NumberOfRows>3</NumberOfRows>
       <CellDefinitions>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
@@ -3297,34 +3417,44 @@ Count(Fields!ErrorHistoryID.Value, "Evaluation_Errors") = 0, "Black")</Color>
           <ParameterName>ServerGroupName</ParameterName>
         </CellDefinition>
         <CellDefinition>
-          <ColumnIndex>4</ColumnIndex>
-          <RowIndex>0</RowIndex>
-          <ParameterName>CategoryName</ParameterName>
-        </CellDefinition>
-        <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
           <RowIndex>1</RowIndex>
-          <ParameterName>DateMonth</ParameterName>
+          <ParameterName>CategoryName</ParameterName>
         </CellDefinition>
         <CellDefinition>
           <ColumnIndex>1</ColumnIndex>
           <RowIndex>1</RowIndex>
+          <ParameterName>DateMonth</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>2</RowIndex>
           <ParameterName>PolicyResult</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>PolicyThresholdWarning</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>2</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>PolicyThresholdCaution</ParameterName>
         </CellDefinition>
         <CellDefinition>
           <ColumnIndex>2</ColumnIndex>
           <RowIndex>1</RowIndex>
-          <ParameterName>PolicyThresholdWarning</ParameterName>
-        </CellDefinition>
-        <CellDefinition>
-          <ColumnIndex>3</ColumnIndex>
-          <RowIndex>1</RowIndex>
-          <ParameterName>PolicyThresholdCaution</ParameterName>
-        </CellDefinition>
-        <CellDefinition>
-          <ColumnIndex>4</ColumnIndex>
-          <RowIndex>1</RowIndex>
           <ParameterName>EvaluatedPolicy</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>ServerName</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>2</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>Object</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
