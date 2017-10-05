@@ -40,21 +40,23 @@ To run this sample, you need the following prerequisites.
 
 ## Run this sample
 
-1. From your favorite text editor, open the App.java file and update the connection string username and password with your own. 
+1. Select the specific tutorial you want to run through. 
 
-2. From your terminal, build the project and jar by performing the following command: 
+2. From your favorite text editor, open the App.java file and update the connection string username and password with your own. 
+
+3. From your terminal, change directories to the tutorial folder (ex. SqlServerSample) you're running through. Build the project and jar by performing the following command: 
 
     ```
     mvn package
     ```
 
-3. Run the program by performing the following command: 
+4. Run the program by performing the following command: 
 
     ```
     mvn -q exec:java -Dexec.mainClass=com.sqlsamples.App.java
     ```
 
-4. Repeat the above steps for any of the three samples provided.
+5. Repeat the above steps for any of the other tutorials provided.
 
 <a name=sample-details></a>
 

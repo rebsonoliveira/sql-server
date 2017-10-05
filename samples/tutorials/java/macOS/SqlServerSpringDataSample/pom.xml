@@ -16,7 +16,7 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<sqlserver.version>6.1.0.jre8</sqlserver.version>
+		<sqlserver.version>6.2.2.jre8</sqlserver.version>
 	</properties>
 
 	<dependencies>
