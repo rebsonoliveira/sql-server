@@ -19,9 +19,7 @@ To work in GitHub, go to https://github.com/microsoft/sql-server-samples and for
 Each sample should be in its own folder with a README.md file that follows the [template](README_samples_template.md). Generated files (e.g., .exe or .bacpac) and user configuration settings (e.g., .user) should not be committed to GitHub.
 
 ## Cloning only a subset of the repo (with sparse checkout)
-You can follow the steps below to clone individual files from the sql-server-samples git repo.
-
-Note: The folowing script clones only the files under the **features** and **demos** folders. 
+You can follow the steps below to clone individual files from the sql-server-samples git repo. Note: The following script clones only the files under the **features** and **demos** folders. 
 ```
 git clone -n https://github.com/Microsoft/sql-server-samples.\sql-server-samples
 cd sql-server-samples
