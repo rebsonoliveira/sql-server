@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Threading.Tasks;
@@ -96,5 +97,25 @@ from Product
 group by Color
 FOR JSON PATH");
         }
+
+        // GET api/Product/Report2
+        [HttpGet("ORM")]
+        public List<Product> ORM()
+        {
+            var products = connection.Query<Product>(@"select * from Product");
+            return products.AsList();
+        }
+    }
+
+    public class Product
+    {
+        public int ProductID;
+        public string Name;
+        public string Color;
+        public string Size;
+        public double Price;
+        public int Quantity;
+        public object Data;
+        public string[] Tags;
     }
 }
