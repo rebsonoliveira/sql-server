@@ -1,21 +1,22 @@
+using System;
+using System.Collections.Generic;
+
+namespace SqlServerEFSample
 {
-  "version": "1.0.0-*",
-  "buildOptions": {
-    "debugType": "portable",
-    "emitEntryPoint": true
-  },
-  "dependencies": {
-    "Microsoft.EntityFrameworkCore.SqlServer": "*"
-  },
-  "frameworks": {
-    "netcoreapp1.0": {
-      "dependencies": {
-        "Microsoft.NETCore.App": {
-          "type": "platform",
-          "version": "1.0.1"
+    public class User
+    {
+        public int UserId { get; set; }
+        public String FirstName { get; set; }
+        public String LastName { get; set; }
+        public virtual IList<Task> Tasks { get; set; }
+
+        public String GetFullName()
+        {
+            return this.FirstName + " " + this.LastName;
         }
-      },
-      "imports": "dnxcore50"
+        public override string ToString()
+        {
+            return "User [id=" + this.UserId + ", name=" + this.GetFullName() + "]";
+        }
     }
-  }
 }

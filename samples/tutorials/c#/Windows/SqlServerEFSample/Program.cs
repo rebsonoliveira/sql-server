@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Data.SqlClient;
 using System.Collections.Generic;
@@ -38,7 +38,7 @@ namespace SqlServerEFSample
                     // Association demo: Assign task to user
                     newTask.AssignedTo = newUser;
                     context.SaveChanges();
-                    Console.WriteLine("\nAssigned Task: '" + newTask.Title + "' to user '" + newUser.GetFullName());
+                    Console.WriteLine("\nAssigned Task: '" + newTask.Title + "' to user '" + newUser.GetFullName() + "'");
 
                     // Read demo: find incomplete tasks assigned to user 'Anna'
                     Console.WriteLine("\nIncomplete tasks assigned to 'Anna':");
@@ -46,7 +46,7 @@ namespace SqlServerEFSample
                                 where t.IsComplete == false &&
                                 t.AssignedTo.FirstName.Equals("Anna")
                                 select t;
-                    foreach(var t in query)
+                    foreach (var t in query)
                     {
                         Console.WriteLine(t.ToString());
                     }
@@ -64,7 +64,7 @@ namespace SqlServerEFSample
                     query = from t in context.Tasks
                             where t.DueDate < dueDate2016
                             select t;
-                    foreach(Task t in query)
+                    foreach (Task t in query)
                     {
                         Console.WriteLine("Deleting task: " + t.ToString());
                         context.Tasks.Remove(t);
