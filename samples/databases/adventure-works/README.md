@@ -12,7 +12,10 @@ For the complete set of downloads and install options, see these releases:
 
 ## 2014 install instructions
 
-These versions of AdventureWorks install on SQL Server 2014 or later.  
+These versions of AdventureWorks install on SQL Server 2014 or later.
+
+### Prerequisites
+The installs require that full-text search is enabled.  If this is not installed, you can re-run setup and add the feature.
 
 ### Determine path variables
 
@@ -34,7 +37,7 @@ This is the OLTP version.
 1. Create the folder {SQL Server Path}\Tools\Samples\AdventureWorks2014.
 2. Copy the files from the [2014-oltp](https://github.com/Microsoft/sql-server-samples/tree/master/samples/databases/adventure-works/2014-oltp) git folder to {SQL Server Path}\Tools\Samples\AdventureWorks2014.	 
 3. Open SQL Server Management Studio (SSMS).
-4. In SSMS, open the file {SQL Server Path}\Tools\Samples\AdventureWorksDW2014\instawdb.sql. 
+4. In SSMS, open the file {SQL Server Path}\Tools\Samples\AdventureWorks2014\instawdb.sql. 
 4. In the script, change the :setvar SqlSamplesDatabasePath variable to your {DATA path}.
 5. In the script, change the :setvar SqlSamplesSourceDataPath variable to {SQL Server Path}\Tools\Samples\AdventureWorks2014. 
 5. On the Query menu, click SQLCMD Mode. 
