@@ -18,7 +18,7 @@ This sample provides custom reports for SQL Server R Services that can be viewed
 <!-- Delete the ones that don't apply -->
 - **Applies to:** SQL Server 2016 (or higher)
 - **Key features:**
-- **Workload:** SQL Server R Services, SQL Server Machine Learnign Services
+- **Workload:** SQL Server R Services, SQL Server Machine Learning Services
 - **Programming Language:** T-SQL, R, Python
 - **Authors:** Umachandar Jayachandran
 - **Update history:** Custom reports for SQL Server Machine Learning Services to show configuration, resource usage & statistics.
