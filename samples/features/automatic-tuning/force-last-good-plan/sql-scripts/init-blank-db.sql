@@ -23,23 +23,23 @@ CREATE SEQUENCE [Sequences].[OrderLineID]
  INCREMENT BY 1
  MINVALUE -2147483648
  MAXVALUE 2147483647
- CACHE 
+ CACHE; 
 GO
 
-CREATE TABLE [Sales].[OrderLines](
-	[OrderLineID] [int] PRIMARY KEY,
-	[OrderID] [int] NOT NULL,
-	[StockItemID] [int] NOT NULL,
-	[Description] [nvarchar](100) NOT NULL,
-	[PackageTypeID] [int] NOT NULL,
-	[Quantity] [int] NOT NULL,
-	[UnitPrice] [decimal](18, 2) NULL,
-	[TaxRate] [decimal](18, 3) NOT NULL,
-	[PickedQuantity] [int] NOT NULL,
-	[PickingCompletedWhen] [datetime2](7) NULL,
-	[LastEditedBy] [int] NOT NULL,
-	[LastEditedWhen] [datetime2](7) NOT NULL
-) 
+CREATE TABLE Sales.OrderLines(
+	OrderLineID int PRIMARY KEY,
+	OrderID int NOT NULL,
+	StockItemID int NOT NULL,
+	Description nvarchar(100) NOT NULL,
+	PackageTypeID int NOT NULL,
+	Quantity int NOT NULL,
+	UnitPrice decimal(18, 2) NULL,
+	TaxRate decimal(18, 3) NOT NULL,
+	PickedQuantity int NOT NULL,
+	PickingCompletedWhen datetime2(7) NULL,
+	LastEditedBy int NOT NULL,
+	LastEditedWhen datetime2(7) NOT NULL
+); 
 GO
 ALTER TABLE [Sales].[OrderLines]
 	ADD  CONSTRAINT [DF_Sales_OrderLines_OrderLineID] 
@@ -56,6 +56,14 @@ CREATE NONCLUSTERED INDEX [FK_Sales_OrderLines_PackageTypeID]
 	ON [Sales].[OrderLines]([PackageTypeID] ASC)
 GO
 
+CREATE SCHEMA Warehouse;
+GO
+
+CREATE TABLE Warehouse.PackageType (
+	PackageTypeID int,
+	PackageType varchar(20),
+	LastEditedBy int
+);
 
 -- Export Sales.OrderLines from WWI database using bcp:
 -- bcp WideWorldImporters.Sales.OrderLines out OrderLines.dat -T -c -U <wwi_user_name, nvarchar(50), WWIUSERNAME> -P <wwi_password, nvarchar(50), WWIPASSWORD> -S <wwi server/instance, nvarchar(50), .//SQLEXPRESS>
