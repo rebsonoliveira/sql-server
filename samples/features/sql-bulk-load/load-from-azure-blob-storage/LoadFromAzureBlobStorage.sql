@@ -34,7 +34,7 @@
 *				(optionally add credential)										*
 ********************************************************************************/
 
--- Create external data source with with the roow URL of the Blob storage Account and associated credential (if it is not public).
+-- Create external data source with the URL of the Blob storage Account and associated credential (if it is not public).
 CREATE EXTERNAL DATA SOURCE MyAzureBlobStorage
 WITH (	TYPE = BLOB_STORAGE, 
 		LOCATION = 'https://sqlchoice.blob.core.windows.net/sqlchoice/samples/load-from-azure-blob-storage', 
