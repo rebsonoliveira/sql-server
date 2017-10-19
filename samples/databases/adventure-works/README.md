@@ -5,6 +5,7 @@ These instructions install AdventureWorks from the source scripts in this Git re
 For the complete set of downloads and install options, see these releases:
 
 - [AdventureWorks for Analysis Services](https://github.com/Microsoft/sql-server-samples/releases/tag/adventureworks-analysis-services)
+- [AdventureWorks2016](https://github.com/Microsoft/sql-server-samples/releases/tag/adventureworks2016)
 - [AdventureWorks2014](https://github.com/Microsoft/sql-server-samples/releases/tag/adventureworks2014)
 - [AdventureWorks2012](https://github.com/Microsoft/sql-server-samples/releases/tag/adventureworks2012)
 - [AdventureWorks2008r2](https://github.com/Microsoft/sql-server-samples/releases/tag/adventureworks2008r2)
