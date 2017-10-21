@@ -1,0 +1,38 @@
+<#@output extension=".sql"#>
+<#@ template language="C#" hostspecific="True" #>
+
+--Drop the functions if they already exist
+DROP FUNCTION IF EXISTS clr.REGEX_MATCH
+GO
+DROP FUNCTION IF EXISTS clr.REGEX_SUBSTRING
+GO
+DROP FUNCTION IF EXISTS clr.REGEX_REPLACE
+GO
+
+DROP SCHEMA IF EXISTS clr;
+GO
+
+--Drop the assembly if it already exists
+DROP ASSEMBLY IF EXISTS SqlClrRegEx
+GO
+
+--Create the assembly
+CREATE ASSEMBLY SqlClrRegEx FROM '<#= this.Host.ResolvePath("bin\\Release\\SqlClrRegEx.dll") #>' WITH PERMISSION_SET = SAFE
+GO
+
+CREATE SCHEMA clr;
+GO
+
+--Create the functions
+CREATE FUNCTION clr.REGEX_MATCH (@src NVARCHAR(MAX), @regex NVARCHAR(MAX))
+RETURNS BIT
+AS EXTERNAL NAME SqlClrRegEx.RegEx.CompiledMatch
+GO
+CREATE FUNCTION clr.REGEX_SUBSTRING (@src NVARCHAR(MAX), @regex NVARCHAR(MAX))
+RETURNS NVARCHAR(4000)
+AS EXTERNAL NAME SqlClrRegEx.RegEx.CompiledSubstring
+GO
+CREATE FUNCTION clr.REGEX_REPLACE (@src NVARCHAR(MAX), @regex NVARCHAR(MAX), @value NVARCHAR(4000))
+RETURNS NVARCHAR(MAX)
+AS EXTERNAL NAME SqlClrRegEx.RegEx.CompiledReplace
+GO
