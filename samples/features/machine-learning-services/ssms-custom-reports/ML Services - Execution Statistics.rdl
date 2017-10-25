@@ -254,9 +254,9 @@ select rtrim(counter_name) as counter_name, cntr_value as counter_value
                   </TablixMembers>
                 </TablixMember>
                 <TablixMember>
-                  <Group Name="counter_name1">
                   <Group Name="counter_name_stats">
                     <GroupExpressions>
+                      <GroupExpression>=Fields!language.Value</GroupExpression>
                       <GroupExpression>=Fields!counter_name.Value</GroupExpression>
                     </GroupExpressions>
                   </Group>
@@ -265,6 +265,7 @@ select rtrim(counter_name) as counter_name, cntr_value as counter_value
                     <CellContents>
                       <Textbox Name="language">
                         <CanGrow>true</CanGrow>
+                        <HideDuplicates>ml_statistics</HideDuplicates>
                         <KeepTogether>true</KeepTogether>
                         <Paragraphs>
                           <Paragraph>
@@ -576,6 +577,7 @@ select rtrim(counter_name) as counter_name, cntr_value as counter_value
             <rd:WatermarkTextbox>Title</rd:WatermarkTextbox>
             <rd:DefaultName>ReportTitle</rd:DefaultName>
             <Height>0.4in</Height>
+            <Width>8.625in</Width>
             <ZIndex>2</ZIndex>
             <Style>
               <Border>
