@@ -7,6 +7,7 @@ RSetup.exe /install /component MLM /<version>/language 1033 /destdir <SQL_DB_ins
 Example:
 RSetup.exe /install /component MLM /version 9.2.0.24 /language 1033 /destdir "C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\PYTHON_SERVICES\Lib\site-packages\microsoftml\mxLibs"
 The models will be downloaded and extracted.
+The database used for this sample can be downloaded here: https://sqlchoice.blob.core.windows.net/sqlchoice/static/tpcxbb_1gb.bak
 */
 
 

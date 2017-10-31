@@ -1,3 +1,4 @@
+--The database used for this sample can be downloaded here: https://sqlchoice.blob.core.windows.net/sqlchoice/static/tpcxbb_1gb.bak
 USE [tpcxbb_1gb]
 GO
 
