@@ -22,13 +22,12 @@ AS
 BEGIN
 	DECLARE	@script nvarchar(max);
 
---Check that text is not empty
-IF NULLIF(@text, '') is null 
-BEGIN
-THROW 50001, 'Please specify a text value to be analyzed.', 1; 
-RETURN
-END	
-
+	--Check that text is not empty
+	IF NULLIF(@text, '') is null 
+	BEGIN
+		THROW 50001, 'Please specify a text value to be analyzed.', 1; 
+		RETURN
+	END
 
 	--The Python script we want to execute
 	SET @script = N'
