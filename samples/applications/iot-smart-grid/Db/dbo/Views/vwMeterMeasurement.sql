@@ -1,4 +1,4 @@
-﻿CREATE VIEW vwMeterMeasurement
+﻿CREATE VIEW [dbo].[vwMeterMeasurement]
 AS
 SELECT	PostalCode,
 		DATETIMEFROMPARTS(
@@ -12,7 +12,7 @@ SELECT	PostalCode,
 		) AS MeasurementDate,
 		count(*) AS MeterCount,
 		AVG(MeasurementInkWh) AS AvgMeasurementInkWh
-FROM	[dbo].[MeterMeasurement] FOR SYSTEM_TIME ALL WITH (NOLOCK)
+FROM	[dbo].[MeterMeasurement] WITH (NOLOCK)
 GROUP BY
 		PostalCode,
 		DATETIMEFROMPARTS(
@@ -21,4 +21,4 @@ GROUP BY
 		DAY(MeasurementDate), 
 		DATEPART(HOUR,MeasurementDate), 
 		DATEPART(MINUTE,MeasurementDate), 
-		DATEPART(ss,MeasurementDate)/1,0) 
+		DATEPART(ss,MeasurementDate)/1,0)

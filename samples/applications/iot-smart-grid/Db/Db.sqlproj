@@ -7,7 +7,7 @@
     <Name>Db</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
-    <ProjectGuid>{074bb065-0cc1-438a-a963-ea3fd781ba2a}</ProjectGuid>
+    <ProjectGuid>{8a2d24db-3efa-4fac-84fc-b2ee1a760221}</ProjectGuid>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
@@ -17,7 +17,7 @@
     <ModelCollation>1033,CI</ModelCollation>
     <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <TargetLanguage>CS</TargetLanguage>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <SqlServerVerification>False</SqlServerVerification>
@@ -39,7 +39,7 @@
     <DbScopedConfigOptimizerHotfixes>Off</DbScopedConfigOptimizerHotfixes>
     <DelayedDurability>DISABLED</DelayedDurability>
     <AutoCreateStatisticsIncremental>False</AutoCreateStatisticsIncremental>
-    <MemoryOptimizedElevateToSnapshot>False</MemoryOptimizedElevateToSnapshot>
+    <MemoryOptimizedElevateToSnapshot>True</MemoryOptimizedElevateToSnapshot>
     <Containment>None</Containment>
     <IsNestedTriggersOn>True</IsNestedTriggersOn>
     <IsTransformNoiseWordsOn>False</IsTransformNoiseWordsOn>
@@ -140,6 +140,10 @@
     </Build>
     <Build Include="Storage\mod.sql" />
     <Build Include="dbo\Stored Procedures\InsertMeterMeasurement.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\InsertMeterMeasurementHistory.sql">
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
