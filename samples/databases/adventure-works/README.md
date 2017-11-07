@@ -1,8 +1,10 @@
-# AdventureWorks and AdventureWorksDW Readme
+# AdventureWorks Readme
 
-The AdventureWorks databases are sample databases that were originally published for SQL Server 2008.  AdventureWorks is the OLTP sample, and AdventureWorksDW is the data warehouse sample. For some versions of SQL Server, there are additional variations that are one-time only releases. 
+The AdventureWorks databases are sample databases that were originally published by Microsoft to show how to design a SQL Server database using SQL Server 2008. AdventureWorks is the OLTP sample, and AdventureWorksDW is the data warehouse sample.
 
-The database tables are the same for all releases of SQL Server. However, the database compatibility level and version-specific information is different according to the version of SQL Server. Therefore, if you install AdventureWorks2014 on SQL Server 2016, the database will not be running at the compatibility level for SQL Server 2016. When this happens, new features in SQL Server might not work on the sample database.
+Over the years, the databases have become popular for use in examples and database courses. Database design has changed since SQL Server 2008, and so AdventureWorks does not always exhibit the best practices of designing a database with the latest features of SQL Server. For compatibility with existing AdventureWorks examples, we continue to publish a version-bump of AdventureWorks for each new release of SQL Server.
+
+The database tables are the same for all releases of SQL Server. However, the database compatibility level and version-specific information is different according to the version of SQL Server. For example, if you install AdventureWorks2014 on SQL Server 2016, the database will not be running at the compatibility level for SQL Server 2016. 
 
 To install the AdventureWorks databases with the database compatibility level of your SQL Server instance, you can install from a version-specific backup file or from the install script. 
 
