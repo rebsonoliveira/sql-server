@@ -2,17 +2,14 @@
 
 The AdventureWorks databases are sample databases that were originally published by Microsoft to show how to design a SQL Server database using SQL Server 2008. AdventureWorks is the OLTP sample, and AdventureWorksDW is the data warehouse sample.
 
-Over the years, the databases have become popular for use in examples and database courses. Database design has changed since SQL Server 2008, and so AdventureWorks does not always exhibit the best practices of designing a database with the latest features of SQL Server. For compatibility with existing AdventureWorks examples, we continue to publish a version-bump of AdventureWorks for each new release of SQL Server.
+Database design has progressed since AdventureWorks was first published. For a sample database leveraging more recent features of SQL Server, see [WideWorldImporters](../wide-world-importers/).
 
-The database tables are the same for all releases of SQL Server. However, the database compatibility level and version-specific information is different according to the version of SQL Server. For example, if you install AdventureWorks2014 on SQL Server 2016, the database will not be running at the compatibility level for SQL Server 2016. 
-
-To install the AdventureWorks databases with the database compatibility level of your SQL Server instance, you can install from a version-specific backup file or from the install script. 
+Note that AdventureWorks has not seen any significant changes since the 2012 version. The only differences between the various versions of AdventureWorks are the name of the database and the database compatibility level. To install the AdventureWorks databases with the database compatibility level of your SQL Server instance, you can install from a version-specific backup file or from an install script. 
 
 
 ## Install from a script
 
 The install scripts create the sample database to have the database compatibility of your current version of SQL Server. Each script generates the version-specific information based on your current instance of SQL Server. This means you can use either the AdventureWorks or AdventureWorksDW install script on any version of SQL Server including CTPs, SPs, and interim releases.
-
 
 ### To install AdventureWorks
 
