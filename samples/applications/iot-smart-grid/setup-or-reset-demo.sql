@@ -49,37 +49,34 @@ CREATE TYPE [dbo].[udtMeterMeasurement] AS TABLE(
 	INDEX [IX_RowID] NONCLUSTERED HASH ([RowID])WITH ( BUCKET_COUNT = 100000)
 
 ) WITH ( MEMORY_OPTIMIZED = ON );
-
-EXEC(
-'CREATE PROCEDURE [dbo].[InsertMeterMeasurement] 
+GO
+CREATE PROCEDURE [dbo].[InsertMeterMeasurement] 
 	@Batch AS dbo.udtMeterMeasurement READONLY,
 	@BatchSize INT
 
 WITH NATIVE_COMPILATION, SCHEMABINDING
 AS
-BEGIN ATOMIC WITH (TRANSACTION ISOLATION LEVEL=SNAPSHOT, LANGUAGE=N''English'')
+BEGIN ATOMIC WITH (TRANSACTION ISOLATION LEVEL=SNAPSHOT, LANGUAGE=N'English')
 
 	INSERT INTO dbo.MeterMeasurement (MeterID, MeasurementInkWh, PostalCode, MeasurementDate)
 	SELECT MeterID, MeasurementInkWh, PostalCode, MeasurementDate FROM @Batch
 	
-END;') 	
-
-EXEC(
-'CREATE PROCEDURE [dbo].[InsertMeterMeasurementHistory] 
+END;
+GO
+CREATE PROCEDURE [dbo].[InsertMeterMeasurementHistory] 
 	@MeterID INT
 AS
 BEGIN 
 	BEGIN TRAN		
 		INSERT INTO dbo.MeterMeasurementHistory (MeterID, MeasurementInkWh, PostalCode, MeasurementDate) 
-		SELECT TOP 250000 MeterID, MeasurementInkWh, PostalCode, MeasurementDate FROM dbo.MeterMeasurement
+		SELECT TOP 250000 MeterID, MeasurementInkWh, PostalCode, MeasurementDate FROM dbo.MeterMeasurement WITH (SNAPSHOT)
 		WHERE MeterID = @MeterID
 
-		DELETE TOP (250000) FROM dbo.MeterMeasurement WHERE MeterID = @MeterID
+		DELETE TOP (250000) FROM dbo.MeterMeasurement WITH (SNAPSHOT) WHERE MeterID = @MeterID
 	COMMIT
-END;') 	
-
-EXEC(
-'CREATE VIEW [dbo].[vwMeterMeasurement]
+END;
+GO
+CREATE VIEW [dbo].[vwMeterMeasurement]
 AS
 SELECT	PostalCode,
 		DATETIMEFROMPARTS(
@@ -102,4 +99,5 @@ GROUP BY
 		DAY(MeasurementDate), 
 		DATEPART(HOUR,MeasurementDate), 
 		DATEPART(MINUTE,MeasurementDate), 
-		DATEPART(ss,MeasurementDate)/1,0)');
+		DATEPART(ss,MeasurementDate)/1,0);
+	GO
