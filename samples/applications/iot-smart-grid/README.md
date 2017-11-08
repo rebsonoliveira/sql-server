@@ -105,7 +105,6 @@ To run this sample, you need the following prerequisites.
 
 This code sample simulates an IoT Smart Grid scenario where multiple IoT power meters are sending electricity usage measurements to a SQL Server memory optimized database. The Data Generator can be started either from the Console or the Windows Form client. Every async task in the Data Generator produces a batch of records with random values in order to simulate the data of an IoT power meter. It then calls a natively compiled stored procedure, that accepts an memory optimized table valued parameter (TVP), to insert the data into an memory optimized SQL Server table. In addition to the in-memory features, the sample is leveraging [Clustered Columnstore Index](https://msdn.microsoft.com/en-us/library/dn817827.aspx) for enabling real time operational analytics, and [Power BI](https://powerbi.microsoft.com/en-us/desktop/) for data visualization.
 
-![Alt text](Screenshots/WinFormsClient.png "Windows Forms Data Generator")
 ![Alt text](Screenshots/ConsoleClient.png "Console Data Generator")
 ![Alt text](Screenshots/PowerBIDashboard.png "Power BI Dashboard")
 
