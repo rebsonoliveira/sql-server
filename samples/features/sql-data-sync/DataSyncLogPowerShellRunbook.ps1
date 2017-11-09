@@ -131,103 +131,103 @@ else
     $ResourceGroupName = $DS_ResourceGroupName
 }
 
-    foreach ($ResourceGroup in $ResourceGroupName)
+foreach ($ResourceGroup in $ResourceGroupName)
+{
+    if ($DS_ServerName -eq "")
     {
-        if ($DS_ServerName -eq "")
+        $ServerName = Get-AzureRmSqlServer -ResourceGroupName $ResourceGroup | select -ExpandProperty ServerName
+    }
+    else
+    {
+        $ServerName = $DS_ServerName
+    }
+
+    foreach ($Server in $ServerName)
+    {
+        if ($DS_DatabaseName -eq "")
         {
-            $ServerName = Get-AzureRmSqlServer -ResourceGroupName $ResourceGroup | select -ExpandProperty ServerName
+            $DatabaseName = Get-AzureRmSqlDatabase -ResourceGroupName $ResourceGroup -ServerName $Server | select -ExpandProperty DatabaseName
         }
         else
         {
-            $ServerName = $DS_ServerName
+            $DatabaseName = $DS_DatabaseName
         }
 
-        foreach ($Server in $ServerName)
+        foreach ($Database in $DatabaseName)
         {
-            if ($DS_DatabaseName -eq "")
+            if ($Database -eq "master")
             {
-                $DatabaseName = Get-AzureRmSqlDatabase -ResourceGroupName $ResourceGroup -ServerName $Server | select -ExpandProperty DatabaseName
+                continue;
+            }
+
+            if ($DS_SyncGroupName -eq "")
+            {
+                $SyncGroupName = Get-AzureRmSqlSyncGroup -ResourceGroupName $ResourceGroup -ServerName $Server -DatabaseName $Database | select -ExpandProperty SyncGroupName
             }
             else
             {
-                $DatabaseName = $DS_DatabaseName
+                $SyncGroupName = $DS_SyncGroupName
             }
 
-            foreach ($Database in $DatabaseName)
+            foreach ($SyncGroup in $SyncGroupName)
             {
-                if ($Database -eq "master")
+                $Logs = Get-AzureRmSqlSyncGroupLog -ResourceGroupName $ResourceGroup `
+                                                  -ServerName $Server `
+                                                  -DatabaseName $Database `
+                                                  -SyncGroupName $SyncGroup `
+                                                  -starttime $StartTime `
+                                                  -endtime $EndTime;
+
+                if ($Logs.Length -gt 0)
                 {
-                    continue;
+                foreach ($Log in $Logs)
+                {
+                    $Log | Add-Member -Name "SubscriptionId" -Value $SubscriptionId -MemberType NoteProperty
+                    $Log | Add-Member -Name "ResourceGroupName" -Value $ResourceGroup -MemberType NoteProperty
+                    $Log | Add-Member -Name "ServerName" -Value $Server -MemberType NoteProperty
+                    $Log | Add-Member -Name "HubDatabaseName" -Value $Database -MemberType NoteProperty
+                    $Log | Add-Member -Name "SyncGroupName" -Value $SyncGroup -MemberType NoteProperty 
+
+                    #Filter out Successes to Reduce Data Volume to OMS
+                    #Include the 5 commented out line below to enable the filter
+                    #For($i=0; $i -lt $Log.Length; $i++ ) {
+                    #    if($Log[$i].LogLevel -eq "Success") {
+                    #      $Log[$i] =""      
+                    #    }
+                    # }
+
+
+
                 }
 
-                if ($DS_SyncGroupName -eq "")
+
+                $json = ConvertTo-JSON $logs
+
+
+
+                Post-OMSData -customerId $customerId -sharedKey $sharedKey -body ([System.Text.Encoding]::UTF8.GetBytes($json)) -logType $logType
+                if ($result -eq 200) 
                 {
-                    $SyncGroupName = Get-AzureRmSqlSyncGroup -ResourceGroupName $ResourceGroup -ServerName $Server -DatabaseName $Database | select -ExpandProperty SyncGroupName
+                    Write-Host "Success"
                 }
-                else
-                {
-                    $SyncGroupName = $DS_SyncGroupName
-                }
-
-                foreach ($SyncGroup in $SyncGroupName)
-                {
-                    $Logs = Get-AzureRmSqlSyncGroupLog -ResourceGroupName $ResourceGroup `
-                                                      -ServerName $Server `
-                                                      -DatabaseName $Database `
-                                                      -SyncGroupName $SyncGroup `
-                                                      -starttime $StartTime `
-                                                      -endtime $EndTime;
-
-                    if ($Logs.Length -gt 0)
-                    {
-                    foreach ($Log in $Logs)
-                    {
-                        $Log | Add-Member -Name "SubscriptionId" -Value $SubscriptionId -MemberType NoteProperty
-                        $Log | Add-Member -Name "ResourceGroupName" -Value $ResourceGroup -MemberType NoteProperty
-                        $Log | Add-Member -Name "ServerName" -Value $Server -MemberType NoteProperty
-                        $Log | Add-Member -Name "HubDatabaseName" -Value $Database -MemberType NoteProperty
-                        $Log | Add-Member -Name "SyncGroupName" -Value $SyncGroup -MemberType NoteProperty 
-
-                        #Filter out Successes to Reduce Data Volume to OMS
-                        #Include the 5 commented out line below to enable the filter
-                        #For($i=0; $i -lt $Log.Length; $i++ ) {
-                        #    if($Log[$i].LogLevel -eq "Success") {
-                        #      $Log[$i] =""      
-                        #    }
-                        # }
-
-
-
-                    }
-
-
-                    $json = ConvertTo-JSON $logs
-
-
-
-                    Post-OMSData -customerId $customerId -sharedKey $sharedKey -body ([System.Text.Encoding]::UTF8.GetBytes($json)) -logType $logType
-                    if ($result -eq 200) 
-                    {
-                        Write-Host "Success"
-                    }
-                    if ($result -ne 200) 
-                   {
-                       throw 
+                if ($result -ne 200) 
+               {
+                   throw 
 @"
-                        Posting to OMS Failed                         
-                        Runbook Name: DataSyncOMSIntegration                         
+                    Posting to OMS Failed                         
+                    Runbook Name: DataSyncOMSIntegration                         
 "@
-                    }
-                    }
+                }
                 }
             }
         }
     }
+}
 
 
 
-    Set-AzureRmAutomationVariable -ResourceGroupName $AC_ResourceGroupName `
-                                  –AutomationAccountName $AC_AccountName `
-                                  -Name $AC_LastUpdatedTimeVariableName `
-                                  -Value $EndTime `
-                                  -Encrypted $False
+Set-AzureRmAutomationVariable -ResourceGroupName $AC_ResourceGroupName `
+                          –AutomationAccountName $AC_AccountName `
+                          -Name $AC_LastUpdatedTimeVariableName `
+                          -Value $EndTime `
+                          -Encrypted $False
