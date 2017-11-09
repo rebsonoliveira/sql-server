@@ -7,8 +7,8 @@
 
   vars:
     # The URL of the repo to fetch the mssql-server and mssql-server-ha packages from
-    centos_server_repo_url: 'https://packages.microsoft.com/config/rhel/7/mssql-server.repo'
-    ubuntu_server_repo_url: 'https://packages.microsoft.com/config/ubuntu/16.04/mssql-server.list'
+    centos_server_repo_url: 'https://packages.microsoft.com/config/rhel/7/mssql-server-2017.repo'
+    ubuntu_server_repo_url: 'https://packages.microsoft.com/config/ubuntu/16.04/mssql-server-2017.list'
 
     # The URL of the repo to fetch the mssql-tools package from
     centos_tools_repo_url: 'https://packages.microsoft.com/config/rhel/7/prod.repo'
