@@ -63,6 +63,8 @@ BEGIN ATOMIC WITH (TRANSACTION ISOLATION LEVEL=SNAPSHOT, LANGUAGE=N'English')
 	
 END;
 GO
+SET TRANSACTION ISOLATION LEVEL SNAPSHOT;
+GO
 CREATE PROCEDURE [dbo].[InsertMeterMeasurementHistory] 
 	@MeterID INT
 AS
@@ -71,8 +73,12 @@ BEGIN
 		INSERT INTO dbo.MeterMeasurementHistory (MeterID, MeasurementInkWh, PostalCode, MeasurementDate) 
 		SELECT TOP 250000 MeterID, MeasurementInkWh, PostalCode, MeasurementDate FROM dbo.MeterMeasurement WITH (SNAPSHOT)
 		WHERE MeterID = @MeterID
+		ORDER BY MeasurementID
 
-		DELETE TOP (250000) FROM dbo.MeterMeasurement WITH (SNAPSHOT) WHERE MeterID = @MeterID
+		DELETE FROM dbo.MeterMeasurement WHERE MeasurementID IN (
+			SELECT TOP 250000 MeasurementID FROM dbo.MeterMeasurement WITH (SNAPSHOT)
+			WHERE MeterID = @MeterID
+			ORDER BY MeasurementID)
 	COMMIT
 END;
 GO
