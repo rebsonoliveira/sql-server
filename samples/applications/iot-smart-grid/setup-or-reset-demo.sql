@@ -71,14 +71,10 @@ AS
 BEGIN 
 	BEGIN TRAN		
 		INSERT INTO dbo.MeterMeasurementHistory (MeterID, MeasurementInkWh, PostalCode, MeasurementDate) 
-		SELECT TOP 250000 MeterID, MeasurementInkWh, PostalCode, MeasurementDate FROM dbo.MeterMeasurement WITH (SNAPSHOT)
+		SELECT MeterID, MeasurementInkWh, PostalCode, MeasurementDate FROM dbo.MeterMeasurement WITH (SNAPSHOT)
 		WHERE MeterID = @MeterID
-		ORDER BY MeasurementID
 
-		DELETE FROM dbo.MeterMeasurement WHERE MeasurementID IN (
-			SELECT TOP 250000 MeasurementID FROM dbo.MeterMeasurement WITH (SNAPSHOT)
-			WHERE MeterID = @MeterID
-			ORDER BY MeasurementID)
+		DELETE FROM dbo.MeterMeasurement WITH (SNAPSHOT) WHERE MeterID = @MeterID
 	COMMIT
 END;
 GO
