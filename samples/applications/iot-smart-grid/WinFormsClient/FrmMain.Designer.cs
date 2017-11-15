@@ -29,17 +29,15 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint3 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 0D);
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint1 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 0D);
             this.bottomToolStrip = new System.Windows.Forms.ToolStrip();
             this.lblTasksTitle = new System.Windows.Forms.ToolStripLabel();
             this.lblTasksValue = new System.Windows.Forms.ToolStripLabel();
-            this.Start = new System.Windows.Forms.Button();
             this.Stop = new System.Windows.Forms.Button();
             this.rpsTimer = new System.Windows.Forms.Timer(this.components);
-            this.Reset = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.lblRpsValue = new System.Windows.Forms.Label();
             this.stopTimer = new System.Windows.Forms.Timer(this.components);
@@ -56,9 +54,9 @@
             this.bottomToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblTasksTitle,
             this.lblTasksValue});
-            this.bottomToolStrip.Location = new System.Drawing.Point(0, 505);
+            this.bottomToolStrip.Location = new System.Drawing.Point(0, 524);
             this.bottomToolStrip.Name = "bottomToolStrip";
-            this.bottomToolStrip.Size = new System.Drawing.Size(1336, 25);
+            this.bottomToolStrip.Size = new System.Drawing.Size(1351, 25);
             this.bottomToolStrip.TabIndex = 0;
             this.bottomToolStrip.Text = "toolStrip1";
             // 
@@ -79,19 +77,6 @@
             this.lblTasksValue.Text = "0";
             this.lblTasksValue.Visible = false;
             // 
-            // Start
-            // 
-            this.Start.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
-            this.Start.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Start.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Start.Location = new System.Drawing.Point(930, 569);
-            this.Start.Name = "Start";
-            this.Start.Size = new System.Drawing.Size(112, 50);
-            this.Start.TabIndex = 2;
-            this.Start.Text = "Start";
-            this.Start.UseVisualStyleBackColor = true;
-            this.Start.Click += new System.EventHandler(this.Start_Click);
-            // 
             // Stop
             // 
             this.Stop.Enabled = false;
@@ -110,20 +95,6 @@
             // 
             this.rpsTimer.Interval = 500;
             this.rpsTimer.Tick += new System.EventHandler(this.rpsTimer_Tick);
-            // 
-            // Reset
-            // 
-            this.Reset.BackColor = System.Drawing.Color.White;
-            this.Reset.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
-            this.Reset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Reset.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Reset.Location = new System.Drawing.Point(764, 569);
-            this.Reset.Name = "Reset";
-            this.Reset.Size = new System.Drawing.Size(160, 50);
-            this.Reset.TabIndex = 103;
-            this.Reset.Text = "Setup/Reset DB";
-            this.Reset.UseVisualStyleBackColor = false;
-            this.Reset.Click += new System.EventHandler(this.Reset_Click);
             // 
             // label1
             // 
@@ -156,45 +127,45 @@
             // 
             this.RpsChart.BackColor = System.Drawing.Color.Transparent;
             this.RpsChart.BorderlineColor = System.Drawing.Color.Black;
-            chartArea3.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Seconds;
-            chartArea3.AxisX.LabelAutoFitMaxFontSize = 8;
-            chartArea3.AxisX.LineColor = System.Drawing.Color.DimGray;
-            chartArea3.AxisX.MajorGrid.Enabled = false;
-            chartArea3.AxisX.MajorGrid.Interval = 0D;
-            chartArea3.AxisX.MajorGrid.IntervalOffset = 0D;
-            chartArea3.AxisX.MajorGrid.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea3.AxisX.MajorTickMark.Enabled = false;
-            chartArea3.AxisX.Maximum = 100D;
-            chartArea3.AxisX.Minimum = 0D;
-            chartArea3.AxisX.Title = "Seconds";
-            chartArea3.AxisX.TitleFont = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            chartArea3.AxisY.LabelAutoFitMaxFontSize = 8;
-            chartArea3.AxisY.LineColor = System.Drawing.Color.DimGray;
-            chartArea3.AxisY.MajorGrid.Enabled = false;
-            chartArea3.AxisY.Minimum = 0D;
-            chartArea3.AxisY.Title = "Number Of Rows";
-            chartArea3.AxisY.TitleFont = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            chartArea3.BackColor = System.Drawing.Color.Transparent;
-            chartArea3.Name = "Chart";
-            this.RpsChart.ChartAreas.Add(chartArea3);
-            legend3.BackColor = System.Drawing.Color.Transparent;
-            legend3.Enabled = false;
-            legend3.ForeColor = System.Drawing.Color.Maroon;
-            legend3.Name = "Legend1";
-            this.RpsChart.Legends.Add(legend3);
+            chartArea1.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Seconds;
+            chartArea1.AxisX.LabelAutoFitMaxFontSize = 8;
+            chartArea1.AxisX.LineColor = System.Drawing.Color.DimGray;
+            chartArea1.AxisX.MajorGrid.Enabled = false;
+            chartArea1.AxisX.MajorGrid.Interval = 0D;
+            chartArea1.AxisX.MajorGrid.IntervalOffset = 0D;
+            chartArea1.AxisX.MajorGrid.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea1.AxisX.MajorTickMark.Enabled = false;
+            chartArea1.AxisX.Maximum = 100D;
+            chartArea1.AxisX.Minimum = 0D;
+            chartArea1.AxisX.Title = "Seconds";
+            chartArea1.AxisX.TitleFont = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            chartArea1.AxisY.LabelAutoFitMaxFontSize = 8;
+            chartArea1.AxisY.LineColor = System.Drawing.Color.DimGray;
+            chartArea1.AxisY.MajorGrid.Enabled = false;
+            chartArea1.AxisY.Minimum = 0D;
+            chartArea1.AxisY.Title = "Number Of Rows";
+            chartArea1.AxisY.TitleFont = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            chartArea1.BackColor = System.Drawing.Color.Transparent;
+            chartArea1.Name = "Chart";
+            this.RpsChart.ChartAreas.Add(chartArea1);
+            legend1.BackColor = System.Drawing.Color.Transparent;
+            legend1.Enabled = false;
+            legend1.ForeColor = System.Drawing.Color.Maroon;
+            legend1.Name = "Legend1";
+            this.RpsChart.Legends.Add(legend1);
             this.RpsChart.Location = new System.Drawing.Point(12, 56);
             this.RpsChart.Name = "RpsChart";
             this.RpsChart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None;
-            series3.ChartArea = "Chart";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Area;
-            series3.Color = System.Drawing.Color.DimGray;
-            series3.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            series3.Legend = "Legend1";
-            series3.LegendText = "sadsaDS";
-            series3.MarkerBorderWidth = 3;
-            series3.Name = "RPS";
-            series3.Points.Add(dataPoint3);
-            this.RpsChart.Series.Add(series3);
+            series1.ChartArea = "Chart";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Area;
+            series1.Color = System.Drawing.Color.DimGray;
+            series1.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            series1.Legend = "Legend1";
+            series1.LegendText = "sadsaDS";
+            series1.MarkerBorderWidth = 3;
+            series1.Name = "RPS";
+            series1.Points.Add(dataPoint1);
+            this.RpsChart.Series.Add(series1);
             this.RpsChart.Size = new System.Drawing.Size(1324, 419);
             this.RpsChart.TabIndex = 106;
             this.RpsChart.Text = "Rows / Sec";
@@ -204,13 +175,11 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1336, 530);
+            this.ClientSize = new System.Drawing.Size(1351, 549);
             this.Controls.Add(this.RpsChart);
             this.Controls.Add(this.lblRpsValue);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.Reset);
             this.Controls.Add(this.Stop);
-            this.Controls.Add(this.Start);
             this.Controls.Add(this.bottomToolStrip);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "FrmMain";
@@ -229,10 +198,8 @@
         private System.Windows.Forms.ToolStrip bottomToolStrip;
         private System.Windows.Forms.ToolStripLabel lblTasksTitle;
         private System.Windows.Forms.ToolStripLabel lblTasksValue;
-        private System.Windows.Forms.Button Start;
         private System.Windows.Forms.Button Stop;
         private System.Windows.Forms.Timer rpsTimer;
-        private System.Windows.Forms.Button Reset;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblRpsValue;
         private System.Windows.Forms.Timer stopTimer;

@@ -96,25 +96,11 @@ namespace Client
                 this.stopTimer.Start();
                 this.Stop.Enabled = true;
                 this.Stop.Update();
-                this.Start.Enabled = false;
-                this.Start.Update();
-                this.Reset.Enabled = false;
-                this.Reset.Update();
-
                 this.dataGenerator.RunAsync();
                 await Task.Delay(this.delayStart);
                 this.rpsTimer.Start();
             }
         }
-        private async void Start_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                StartApp();
-            }
-            catch (Exception exception) { HandleException(exception); }
-        }
-
         private void StopApp()
         {
             if (dataGenerator.IsRunning)
@@ -127,10 +113,6 @@ namespace Client
                 this.lblTasksValue.Text = "0";
                 this.Stop.Enabled = false;
                 this.Stop.Update();
-                this.Start.Enabled = true;
-                this.Start.Update();
-                this.Reset.Enabled = true;
-                this.Reset.Update();
 
                 this.dataGenerator.StopAsync();
                 this.dataGenerator.RpsReset();
@@ -242,12 +224,6 @@ namespace Client
             }
             catch (Exception exception) { HandleException(exception); }
         }
-
-        private void Reset_Click(object sender, EventArgs e)
-        {
-            ResetDb();                
-        }
-
         private void ResetDb()
         {
             try
