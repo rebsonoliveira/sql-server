@@ -7,7 +7,8 @@ DECLARE @EndOfTime datetime2(7) =  '99991231 23:59:59.9999999'
 INSERT Warehouse.PackageTypes 
   (PackageTypeID, PackageTypeName, LastEditedBy, ValidFrom, ValidTo) 
 VALUES 
-  (1,'Bag', 1, @CurrentDateTime, @EndOfTime)
+  (0,'Unknown', 1, @CurrentDateTime, @EndOfTime)
+, (1,'Bag', 1, @CurrentDateTime, @EndOfTime)
 , (2,'Block', 1, @CurrentDateTime, @EndOfTime)
 , (3,'Bottle', 1, @CurrentDateTime, @EndOfTime)
 , (4,'Box', 1, @CurrentDateTime, @EndOfTime)
