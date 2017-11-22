@@ -748,5 +748,6 @@
     <None Include="PostDeploymentScripts\pds150-ins-app-cities.sql" />
     <None Include="PostDeploymentScripts\pds105-ins-dls-ficticiousnamepool.sql" />
     <None Include="PostDeploymentScripts\pds106-ins-dls-areacode.sql" />
+    <None Include="PostDeploymentScripts\pds400-ins-unkown-orderline.sql" />
   </ItemGroup>
 </Project>

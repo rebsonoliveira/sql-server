@@ -49,7 +49,7 @@ CREATE NONCLUSTERED INDEX [IX_Sales_OrderLines_Perf_20160301_02]
 
 GO
 CREATE COLUMNSTORE INDEX [NCCX_Sales_OrderLines]
-    ON [Sales].[OrderLines]([OrderID], [StockItemID], [Description], [Quantity], [UnitPrice], [PickedQuantity]);
+    ON [Sales].[OrderLines]([OrderID], [StockItemID], [Description], [Quantity], [UnitPrice], [PickedQuantity], [PackageTypeID]);
 
 
 GO

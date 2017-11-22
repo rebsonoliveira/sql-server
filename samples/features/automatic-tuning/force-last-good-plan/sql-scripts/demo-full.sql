@@ -1,8 +1,9 @@
 /********************************************************
 *	SETUP - clear everything
 ********************************************************/
+ALTER DATABASE SCOPED CONFIGURATION CLEAR PROCEDURE_CACHE;
+ALTER DATABASE current SET QUERY_STORE CLEAR ALL;
 ALTER DATABASE current SET AUTOMATIC_TUNING (FORCE_LAST_GOOD_PLAN = OFF);
-EXEC dbo.initialize;
 
 /********************************************************
 *	PART I
@@ -20,20 +21,30 @@ GO 60
 
 -- 2. Execute the procedure that causes plan regression
 -- Optionally, include "Actual execution plan" in SSMS and show the plan - it should have Stream Aggregate, Index Seek & Nested Loops
-EXEC dbo.regression;
-
+ALTER DATABASE SCOPED CONFIGURATION CLEAR PROCEDURE_CACHE;
+EXEC sp_executesql N'select avg([UnitPrice]*[Quantity])
+						from Sales.OrderLines
+						where PackageTypeID = @packagetypeid', N'@packagetypeid int',
+					@packagetypeid = 0;
 
 -- 3. Start the workload again - verify that is slower.
 EXEC sp_executesql N'select avg([UnitPrice]*[Quantity])
 						from Sales.OrderLines
-						where PackageTypeID = @packagetypeid', N'@packagetypeid int', @packagetypeid = 7;
+						where PackageTypeID = @packagetypeid', N'@packagetypeid int',
+					@packagetypeid = 7;
 go 20
 -- Optionally, include "Actual execution plan" in SSMS and show the plan - it should have Stream Aggregate with Non-clustered index seek.
+
+
+
 
 -- 4. Find a recommendation that can fix this issue:
 SELECT reason, score,
 	 script = JSON_VALUE(details, '$.implementationDetails.script')
  FROM sys.dm_db_tuning_recommendations;
+
+
+
 
 -- 4.1. Optionally get more detailed information about the regression and recommendation.
 SELECT reason, score,
@@ -81,7 +92,8 @@ GO 20
 /********************************************************
 *	RESET - clear everything
 ********************************************************/
-EXEC [dbo].[initialize];
+ALTER DATABASE SCOPED CONFIGURATION CLEAR PROCEDURE_CACHE;
+ALTER DATABASE current SET QUERY_STORE CLEAR ALL;
 
 -- Enable automatic tuning on the database:
 ALTER DATABASE current
@@ -95,17 +107,31 @@ WHERE name = 'FORCE_LAST_GOOD_PLAN';
 -- 1. Start workload - execute procedure 30-300 times like in the phase I
 EXEC sp_executesql N'select avg([UnitPrice]*[Quantity])
 						from Sales.OrderLines
-						where PackageTypeID = @packagetypeid', N'@packagetypeid int', @packagetypeid = 7;
-GO 60
+						where PackageTypeID = @packagetypeid', N'@packagetypeid int',
+					@packagetypeid = 7;
+GO 60 -- NOTE: This number shoudl be incrased if you don't get a plan change regression.
 
--- 2. Execute the procedure that causes the plan regression
-exec dbo.regression;
 
--- 3. Start the workload again - verify that it is slower.
+
+-- 2. Cause the plan regression
+ALTER DATABASE SCOPED CONFIGURATION CLEAR PROCEDURE_CACHE;
+EXEC sp_executesql N'select avg([UnitPrice]*[Quantity])
+						from Sales.OrderLines
+						where PackageTypeID = @packagetypeid', N'@packagetypeid int',
+					@packagetypeid = 0;
+
+
+
+
+-- 3. Start the workload again.
 EXEC sp_executesql N'select avg([UnitPrice]*[Quantity])
 						from Sales.OrderLines
 						where PackageTypeID = @packagetypeid', N'@packagetypeid int', @packagetypeid = 7;
-go 30
+go 20
+
+
+
+
 
 -- 4. Find a recommendation and check is it in "Verifying" or "Success" state:
 SELECT reason, score,

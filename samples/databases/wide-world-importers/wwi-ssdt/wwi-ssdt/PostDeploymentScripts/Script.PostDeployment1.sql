@@ -171,6 +171,7 @@ EXEC DataLoadSimulation.DailyProcessToCreateHistory
     @AreDatesPrinted = 1;
 GO
 
+:r .\pds400-ins-unkown-orderline.sql
 
 /*
   There is one other stored procedure you may find useful:
