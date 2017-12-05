@@ -62,7 +62,7 @@ To run this sample, you need the following prerequisites.
 
 ## Sample details
 
-Please visit the [C# on Ubuntu tutorial](https://www.microsoft.com/en-us/sql-server/developer-get-started/csharp-ubuntu) to run through the sample in full with more detail.
+Please visit the [C# on Ubuntu tutorial](https://www.microsoft.com/en-us/sql-server/developer-get-started/csharp/ubuntu/) to run through the sample in full with more detail.
 
 <a name=disclaimers></a>
 
