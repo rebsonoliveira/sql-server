@@ -80,7 +80,7 @@ CREATE EVENT SESSION [APC - plans that are not corrected] ON DATABASE
 ADD EVENT qds.automatic_tuning_plan_regression_detection_check_completed(
 WHERE ((([is_regression_detected]=(1))
   AND ([is_regression_corrected]=(0)))
-  AND ([option_id]=(1))))
+  AND ([option_id]=(0))))
 -- Use file target only on SQL Server 2017:
 -- ADD TARGET package0.event_file(SET filename=N'plans_that_are_not_corrected')
 ADD TARGET package0.ring_buffer (SET max_memory = 1000)
