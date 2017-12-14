@@ -694,6 +694,10 @@
     <Build Include="DataLoadSimulation\Stored Procedures\PopulateColdRoomTemperatures_temp.sql" />
     <Build Include="dbo\Tables\SampleVersion.sql" />
     <Build Include="Application\Stored Procedures\Configuration_PrepareForAzureStandard.sql" />
+    <Build Include="Website\Views\PurchaseOrderLines.sql" />
+    <Build Include="Website\Views\PurchaseOrders.sql" />
+    <Build Include="Website\Views\SalesOrders.sql" />
+    <Build Include="Website\Views\SalesOrderLines.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="PostDeploymentScripts\Script.PostDeployment1.sql" />
