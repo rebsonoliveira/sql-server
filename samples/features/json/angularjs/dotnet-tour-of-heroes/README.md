@@ -1,6 +1,7 @@
 # Angular Heroes ASP.NET Core REST Web App
 
-This project contains an implementation of [AngularJS Heroes sample app](https://angular.io/docs/ts/latest/tutorial/) implemented using ASP.NET Core REST API backend that use SQL/JSON functionalities. AngularJs code is modified version of johnpapa [Github sample project](https://github.com/johnpapa/angular2-tour-of-heroes). 
+This project contains an implementation of [AngularJS Heroes sample app](https://angular.io/docs/ts/latest/tutorial/) implemented using ASP.NET Core REST API backend that use SQL/JSON functionalities.
+AngularJs code is modified version of johnpapa [Github sample project](https://github.com/johnpapa/angular2-tour-of-heroes). 
 In this example you will see how easily you can integrate Single-page apps implemented using Angular JS with SQL Server 2016 or Azure SQL Database using ASP.NET Core and JSON functions.
 
 ### Contents
@@ -30,7 +31,7 @@ To run this sample, you need the following prerequisites.
 **Software prerequisites:**
 
 1. SQL Server 2016 (or higher) or an Azure SQL Database
-2. Visual Studio 2015 Update 3 (or higher) or Visual Studio Code Editor with the ASP.NET Core 1.0 (or higher)
+2. Visual Studio 2017 or Visual Studio Code Editor with the ASP.NET Core 1.0/.Net Framework 4.6
 3. .NET Core SDK for [Windows](https://go.microsoft.com/fwlink/?LinkID=827524) or other [operating systems](https://www.microsoft.com/net/core)
 4. Node.js installation [Node.js](https://nodejs.org/en/download/)
 
@@ -67,9 +68,9 @@ If your database is hosted on Azure you can add something like:
 
 ### Build and run sample
 
-1. Restore NugetPackages using **dotnet restore** command. This command will create **project.lock.json** file.
+1. Restore NugetPackages using **dotnet restore** command.
 2. Restore npm packages using **npm install** command lines. This command will download packages in **node_modules** folder.
-3. Build project using **dotnet build** command executed from command line (from project root folder) or using Visual Studion 2015. 
+3. Build project using **dotnet build** command executed from command line (from project root folder) or using Visual Studio 2017. 
 4. Run the sample app using **dotnet run** executed in the command prompt of the project root folder.  
 
 Sequence of commands is:
@@ -81,7 +82,8 @@ dotnet run
 ```
 
 ### Run the app
-. Open /index.html Url to see heroes from database. See more details about functionalities in [AngularJS Heroes sample app](https://angular.io/docs/ts/latest/tutorial/) 
+. Open /index.html Url to see heroes from database.
+See more details about functionalities in [AngularJS Heroes sample app](https://angular.io/docs/ts/latest/tutorial/) 
 
 <a name=sample-details></a>
 
