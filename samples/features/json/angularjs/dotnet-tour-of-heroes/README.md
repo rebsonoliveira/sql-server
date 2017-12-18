@@ -8,6 +8,7 @@ In this example you will see how easily you can integrate Single-page apps imple
 
 [About this sample](#about-this-sample)<br/>
 [Before you begin](#before-you-begin)<br/>
+[Get this sample](#get-this-sample)<br/>
 [Run this sample](#run-this-sample)<br/>
 [Sample details](#sample-details)<br/>
 [Disclaimers](#disclaimers)<br/>
@@ -38,6 +39,33 @@ To run this sample, you need the following prerequisites.
 **Azure prerequisites:**
 
 1. Permission to create an Azure SQL Database
+
+
+<a name=get-this-sample></a>
+
+## Get this sample
+
+Sample project is placed on SQL Server GitHub repository. You can clone or download repository and locate code 
+in samples/features/json/angularjs/dotnet-tour-of-heroes folder.
+
+If you want to clone only this sample (without other samples), run the following commands from Git Bash:
+
+```
+git clone -n https://github.com/Microsoft/sql-server-samples sql-server-samples
+cd sql-server-samples
+git config core.sparsecheckout true
+echo "samples/features/json/angularjs/dotnet-tour-of-heroes/*" >> .git/info/sparse-checkout
+git checkout
+```
+
+Or you can use the following PowerShell script:
+```
+git clone -n https://github.com/Microsoft/sql-server-samples .\sql-server-samples
+cd sql-server-samples
+git config core.sparsecheckout true
+echo samples/features/json/angularjs/dotnet-tour-of-heroes/* | Out-File -append -encoding ascii .git/info/sparse-checkout
+git checkout
+```
 
 <a name=run-this-sample></a>
 
