@@ -1,7 +1,10 @@
 <#@output extension=".sql"#>
 <#@ template language="C#" hostspecific="True" #>
 
-DROP AGGREGATE IF EXISTS TCC.CLUSTERING;
+DROP AGGREGATE IF EXISTS TC.CLUSTERING;
+GO
+
+DROP SCHEMA IF EXISTS TC;
 GO
 
 --Drop the assembly if it already exists
@@ -12,9 +15,9 @@ GO
 CREATE ASSEMBLY TransitiveClosure FROM '<#= this.Host.ResolvePath("bin\\Release\\TransitiveClosureAggregatorLibrary.dll") #>' WITH PERMISSION_SET = SAFE;
 GO
 
-CREATE SCHEMA TCC;
+CREATE SCHEMA TC;
 GO
 
-CREATE AGGREGATE TCC.CLUSTERING(@id1 INT, @id2 INT)  
+CREATE AGGREGATE TC.CLUSTERING(@id1 INT, @id2 INT)  
 RETURNS NVARCHAR(MAX)  
 EXTERNAL NAME TransitiveClosure.[TransitiveClosure.Aggregate]; 
