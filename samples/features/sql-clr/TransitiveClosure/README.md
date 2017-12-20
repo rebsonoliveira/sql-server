@@ -5,7 +5,7 @@ This code sample demonstrates how to create CLR User-Defined aggregate that impl
 ### Contents
 
 [About this sample](#about-this-sample)<br/>
-[Build the CLR/RegEx functions](#build-functions)<br/>
+[Build the CLR/TransitiveClosure aggregate](#build-functions)<br/>
 [Add RegEx functions to your SQL database](#add-functions)<br/>
 [Test the functions](#test)<br/>
 [Disclaimers](#disclaimers)<br/>
