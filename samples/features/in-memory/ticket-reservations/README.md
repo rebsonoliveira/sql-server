@@ -50,14 +50,15 @@ The demo is run in this [17-minute video explaining In-Memory OLTP](https://www.
 
 11. Go back to the app and run the workload again. No need to recompile or restart the application.
 
-The perf gains from In-Memory OLTP as shown by the load generation app depend on two factors:
--	Hardware
-  -	more cores => higher perf gain
-  -	slower log IO => lower perf gain
--	Configuration settings in the load generator
-  -	more rows per transaction => higher perf gain
-  -	more reads per write => lower perf gain
-  -	default setting is 100 rows per transaction and 1 read per write
+The perf gains from In-Memory OLTP as shown by the load generation app depend on two factors:\
+
+- Hardware
+    - more cores => higher perf gain
+    - slower log IO => lower perf gain
+- Configuration settings in the load generator
+    - more rows per transaction => higher perf gain
+    - more reads per write => lower perf gain
+    - default setting is 100 rows per transaction and 1 read per write
 
 If the performance profile after migration to In-Memory OLTP looks choppy, it is likely that log IO is the bottleneck. This can be mitigated by using [delayed durability] (https://msdn.microsoft.com/en-us/library/dn449490.aspx). This is enabled by running the following statement in the database:
 	`ALTER DATABASE CURRENT SET DELAYED_DURABILITY = FORCED`
