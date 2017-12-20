@@ -21,7 +21,7 @@ This code sample demonstrates how to create CLR User-Defined aggregate that impl
 
 <a name=build-functions></a>
 
-## Build the CLR/RegEx functions
+## Build the CLR/TransitiveClosure aggregate
 
 1. Download the source code and open the solution using Visual Studio.
 2. Change the password in .pfk file and rebuild the solution in **Release** mode.
@@ -53,13 +53,13 @@ RETURNS NVARCHAR(MAX)
 EXTERNAL NAME TransitiveClosure.[TransitiveClosure.Aggregate]; 
 ```
 
-This code will import assembly in SQL Database and add three functions that provide clustering functionalities.
+This code will import assembly in SQL Database and add an aggregate that provides clustering functionalities.
 
 <a name=test></a>
 
 ## Test the function
 
-Once you create the assembly and expose the functions, you can use it to cluster some relational data in T-SQL code:
+Once you create the assembly and expose the aggregate, you can use it to cluster some relational data in T-SQL code:
 
 ```
 declare @edges table(n1 int, n2 int);
@@ -71,6 +71,26 @@ values (1,2),(2,3),(3,4),(4,5),(2,21),(2,22),
 select TC.CLUSTERING(n1,n2)
 from @edges;
 ```
+The result will be JSON document that groups the numbers that belong to the same cluster.
+```javascript
+{
+	"0":[1,2,3,4,5,21,22],
+	"1":[7,8,9,10]
+}
+```
+You can transform this JSON document into relational formatusing **OPENJSON** function:
+```
+select cluster = [key], elements = value
+from openjson(
+       (select TC.CLUSTERING(n1,n2) from @edges)
+);
+```
+The result of this query is:
+
+|cluster|elements|
+|----|---|
+|0|[1,2,3,4,5,21,22]|
+|1|[7,8,9,10]|
 
 <a name=disclaimers></a>
 
