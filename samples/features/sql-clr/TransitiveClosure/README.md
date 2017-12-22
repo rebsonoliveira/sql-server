@@ -1,5 +1,9 @@
 # Implementing Transitive Closure Clustering in SQL Server using CLR UDF 
 SQL Database don't have built-in support for transitive closure clustering, so the only workaround is to implement this algorithm in .Net framework and expose it as T-SQL function.
+A discussion on the problem, the algorithm and a pure T-SQL based solution can be found here: 
+- [Transitive Closure Clustering with SQL Server, UDA and JSON](https://medium.com/@mauridb/transitive-closure-clustering-with-sql-server-uda-and-json-dade18953fd2)
+- [T-SQL Puzzle Challenge Grouping Connected Items](http://www.itprotoday.com/microsoft-sql-server/t-sql-puzzle-challenge-grouping-connected-items)
+
 This code sample demonstrates how to create CLR User-Defined aggregate that implements clustering.
 
 ### Contents
@@ -17,7 +21,7 @@ This code sample demonstrates how to create CLR User-Defined aggregate that impl
 2. **Key features:**
     - CLR, JSON
 3. **Programming Language:** .NET C#
-4. **Author:** Davide Mauri, Jovan Popovic [jovanpop-msft]
+4. **Author:** [Davide Mauri](https://github.com/yorek), Jovan Popovic [jovanpop-msft]
 
 <a name=build-functions></a>
 
@@ -65,8 +69,9 @@ Once you create the assembly and expose the aggregate, you can use it to cluster
 declare @edges table(n1 int, n2 int);
 
 insert into @edges
-values (1,2),(2,3),(3,4),(4,5),(2,21),(2,22),
-              (7,8),(8,9),(9,10);
+values 
+    (1,2),(2,3),(3,4),(4,5),(2,21),(2,22),
+    (7,8),(8,9),(9,10);
 
 select TC.CLUSTERING(n1,n2)
 from @edges;
@@ -74,21 +79,21 @@ from @edges;
 The result will be JSON document that groups the numbers that belong to the same cluster.
 ```javascript
 {
-	"0":[1,2,3,4,5,21,22],
-	"1":[7,8,9,10]
+    "0":[1,2,3,4,5,21,22],
+    "1":[7,8,9,10]
 }
 ```
 You can transform this JSON document into relational formatusing **OPENJSON** function:
 ```
 select cluster = [key], elements = value
 from openjson(
-       (select TC.CLUSTERING(n1,n2) from @edges)
+    (select TC.CLUSTERING(n1,n2) from @edges)
 );
 ```
 The result of this query is:
 
 |cluster|elements|
-|----|---|
+|---|---|
 |0|[1,2,3,4,5,21,22]|
 |1|[7,8,9,10]|
 

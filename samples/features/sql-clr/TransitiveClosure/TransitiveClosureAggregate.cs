@@ -14,11 +14,9 @@ namespace TransitiveClosure
     public class Group: IEnumerable<int>
     {
         private int? _groupRoot = null;
-
+                
         private Dictionary<int, bool> _group = new Dictionary<int, bool>();
-
         public Dictionary<int, bool>.KeyCollection Elements => _group.Keys;
-
         public int Count => _group.Keys.Count;
 
         public bool ContainsElement(int element)
@@ -89,13 +87,12 @@ namespace TransitiveClosure
     public class GroupSet: IEnumerable<Group>
     {
         private List<Group> _groupSet = new List<Group>();
+        // This keeps about the distinct numbers and in which group they are
         private Dictionary<int, Group> _numbers = new Dictionary<int, Group>();
         private int _merges = 0;
 
         public int Groups => _groupSet.Count;
-
         public int Numbers => _numbers.Count;
-
         public int Merges => _merges;
 
         public void Add(Group group)
@@ -212,9 +209,7 @@ namespace TransitiveClosure
         private GroupSet _groupSet;
 
         public int Groups => _groupSet.Groups;
-
         public int Numbers => _groupSet.Numbers;
-
         public int Merges => _groupSet.Merges;
 
         public void Init()
