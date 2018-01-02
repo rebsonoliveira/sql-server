@@ -40,7 +40,7 @@ namespace SqlServerEFSample
                     // Association demo: Assign task to user
                     newTask.AssignedTo = newUser;
                     context.SaveChanges();
-                    Console.WriteLine("\nAssigned Task: '" + newTask.Title + "' to user '" + newUser.GetFullName());
+                    Console.WriteLine("\nAssigned Task: '" + newTask.Title + "' to user '" + newUser.GetFullName() + "'");
 
                     // Read demo: find incomplete tasks assigned to user 'Anna'
                     Console.WriteLine("\nIncomplete tasks assigned to 'Anna':");

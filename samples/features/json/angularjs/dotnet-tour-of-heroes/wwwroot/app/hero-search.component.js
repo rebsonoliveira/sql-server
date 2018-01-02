@@ -8,11 +8,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var router_1 = require('@angular/router');
-var Observable_1 = require('rxjs/Observable');
-var Subject_1 = require('rxjs/Subject');
-var hero_search_service_1 = require('./hero-search.service');
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@angular/core");
+var router_1 = require("@angular/router");
+var Observable_1 = require("rxjs/Observable");
+var Subject_1 = require("rxjs/Subject");
+var hero_search_service_1 = require("./hero-search.service");
 var HeroSearchComponent = (function () {
     function HeroSearchComponent(heroSearchService, router) {
         this.heroSearchService = heroSearchService;
@@ -41,17 +42,18 @@ var HeroSearchComponent = (function () {
         var link = ['/detail', hero.id];
         this.router.navigate(link);
     };
-    HeroSearchComponent = __decorate([
-        core_1.Component({
-            moduleId: module.id,
-            selector: 'hero-search',
-            templateUrl: 'hero-search.component.html',
-            styleUrls: ['hero-search.component.css'],
-            providers: [hero_search_service_1.HeroSearchService]
-        }), 
-        __metadata('design:paramtypes', [hero_search_service_1.HeroSearchService, router_1.Router])
-    ], HeroSearchComponent);
     return HeroSearchComponent;
 }());
+HeroSearchComponent = __decorate([
+    core_1.Component({
+        moduleId: module.id,
+        selector: 'hero-search',
+        templateUrl: 'hero-search.component.html',
+        styleUrls: ['hero-search.component.css'],
+        providers: [hero_search_service_1.HeroSearchService]
+    }),
+    __metadata("design:paramtypes", [hero_search_service_1.HeroSearchService,
+        router_1.Router])
+], HeroSearchComponent);
 exports.HeroSearchComponent = HeroSearchComponent;
 //# sourceMappingURL=hero-search.component.js.map

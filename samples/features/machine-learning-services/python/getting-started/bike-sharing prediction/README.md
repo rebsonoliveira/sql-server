@@ -66,10 +66,10 @@ To run this sample, you need the following prerequisites:
 #### datasource.py
 This Python script defines the class that pull data from Sql database and provides access to SQL Server Compute Context.
 
-####  pipeline.sql
+####  pipeline.py
 This python file defines the machine learning pipeline that performs features engineering and the classifier that fits the RevoScalePy binary logistic regression.
 
-####  runner.sql
+####  runner.py
 This python file defines the startup code and main method from which to excecute the solution.
 
 ####  setup.sql

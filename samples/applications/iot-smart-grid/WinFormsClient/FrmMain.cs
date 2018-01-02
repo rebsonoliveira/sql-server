@@ -20,6 +20,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.Data;
+using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 /*----------------------------------------------------------------------------------  
 High Level Scenario:
@@ -33,8 +36,7 @@ The Data Generator, that can be started either from the Console or the Windows F
 shock absorber scenario: https://blogs.technet.microsoft.com/dataplatforminsider/2013/09/19/in-memory-oltp-common-design-pattern-high-data-input-rateshock-absorber/. 
 Every async task in the Data Generator produces a batch of records with random values in order to simulate the data of an IoT power meter. 
 It then calls a natively compiled stored procedure, that accepts an memory optimized table valued parameter (TVP), to insert the data into an memory optimized SQL Server table. 
-In addition to the in-memory features, the sample is leveraging System-Versioned Temporal Tables: https://msdn.microsoft.com/en-us/library/dn935015.aspx for building version history, 
-Clustered Columnstore Index: https://msdn.microsoft.com/en-us/library/dn817827.aspx) for enabling real time operational analytics, and 
+In addition to the in-memory features, the sample is offloading historical values to a Clustered Columnstore Index: https://msdn.microsoft.com/en-us/library/dn817827.aspx) for enabling real time operational analytics, and 
 Power BI: https://powerbi.microsoft.com/en-us/desktop/ for data visualization. 
 */
 namespace Client
@@ -42,27 +44,34 @@ namespace Client
     public partial class FrmMain : Form
     {
         private SqlDataGenerator dataGenerator;
-        private string connection;
+        private string[] connection;
         private string spName;
         private string logFileName;
-        private string powerBIDesktopPath;
-        private int tasks;
+        private int numberOfDataLoadTasks;
+        private int numberOfOffLoadTasks;
+
         private int meters;
         private int batchSize;
-        private int delay;
+        private int deleteBatchSize;
+
+        private string deleteSPName;
+        private int dataLoadCommandDelay;
+        private int offLoadCommandDelay;
+
         private int commandTimeout;
-        private int shockFrequency;
-        private int shockDuration;
         private int rpsFrequency;
         private int rpsChartTime = 0;
-        private int enableShock;
+        private int delayStart;
+        private int appRunDuration;
+        private int numberOfRowsOfloadLimit;
 
         public FrmMain()
         {
             InitializeComponent();            
             Init();
 
-            this.dataGenerator = new SqlDataGenerator(this.connection, this.spName, this.commandTimeout, this.meters, this.tasks, this.delay, this.batchSize, this.ExceptionCallback);
+            this.dataGenerator = new SqlDataGenerator(this.connection, this.spName, this.commandTimeout, this.meters, this.numberOfDataLoadTasks, this.dataLoadCommandDelay, this.batchSize, this.deleteSPName, this.numberOfOffLoadTasks, this.offLoadCommandDelay, this.deleteBatchSize, this.numberOfRowsOfloadLimit, this.ExceptionCallback);
+            StartApp();            
         }
 
         private void ExceptionCallback(int taskId, Exception exception)
@@ -75,42 +84,50 @@ namespace Client
             string ex = taskId?.ToString() + " - " + exception.Message + (exception.InnerException != null ? "\n\nInner Exception\n" + exception.InnerException : "");
 
             MessageBox.Show(ex, "Invalid Input Parameter", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            using (StreamWriter w = File.AppendText(logFileName)) { w.WriteLine("\r\n{0}: {1}", DateTime.Now, ex); }               
+            ////using (StreamWriter w = File.AppendText(logFileName)) { w.WriteLine("\r\n{0}: {1}", DateTime.Now, ex); }
         }
 
-        private async void Start_Click(object sender, EventArgs e)
+        private async void StartApp()
         {
-            try
+            if (!dataGenerator.IsRunning)
             {
-                if (enableShock == 1) this.mainTimer.Start();
-                this.rpsTimer.Start();
+                using (StreamWriter w = File.AppendText(logFileName)) { w.WriteLine("\r\n{0}: {1}", DateTime.Now, "Start"); }
+
+                this.stopTimer.Start();
                 this.Stop.Enabled = true;
                 this.Stop.Update();
-                this.Start.Enabled = false;
-                this.Start.Update();
-
-                await this.dataGenerator.RunAsync();
+                this.dataGenerator.RunAsync();
+                await Task.Delay(this.delayStart);
+                this.rpsTimer.Start();
             }
-            catch (Exception exception) { HandleException(exception); }
         }
-
-        private async void Stop_Click(object sender, EventArgs e)
+        private void StopApp()
         {
-            try
-            {                               
+            if (dataGenerator.IsRunning)
+            {
+                using (StreamWriter w = File.AppendText(logFileName)) { w.WriteLine("\r\n{0}: {1}", DateTime.Now, "Stop - Successful run"); }
+
                 this.UpdateChart(-1);
-                if (enableShock == 1) this.mainTimer.Stop();
                 this.rpsTimer.Stop();
-                if (enableShock == 1) this.shockTimer.Stop();
                 this.lblRpsValue.Text = "0";
                 this.lblTasksValue.Text = "0";
                 this.Stop.Enabled = false;
                 this.Stop.Update();
-                this.Start.Enabled = true;
-                this.Start.Update();
-                
-                await this.dataGenerator.StopAsync();
+
+                this.dataGenerator.StopAsync();
                 this.dataGenerator.RpsReset();
+
+                this.WindowState = FormWindowState.Minimized;
+                //ResetDb();
+            }
+        }
+
+        private void Stop_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                StopApp();
+                Application.Exit();
             }
             catch (Exception exception) { HandleException(exception); }
         }
@@ -139,48 +156,56 @@ namespace Client
         {
             try
             {
+                int numberOfSqlConnections = ConfigurationManager.ConnectionStrings.Count;
+                connection = new string[numberOfSqlConnections];
                 // Read Config Settings
-                this.connection = ConfigurationManager.ConnectionStrings["Db"].ConnectionString;
+                for (int i = 0; i < numberOfSqlConnections; i++)
+                {
+                    connection[i] = ConfigurationManager.ConnectionStrings[i].ConnectionString;
+                }
+
                 this.spName = ConfigurationManager.AppSettings["insertSPName"];
                 this.logFileName = ConfigurationManager.AppSettings["logFileName"];
-                this.powerBIDesktopPath = ConfigurationManager.AppSettings["powerBIDesktopPath"];
-                this.tasks = int.Parse(ConfigurationManager.AppSettings["numberOfTasks"]);
-                this.meters = int.Parse(ConfigurationManager.AppSettings["numberOfMeters"]);
+                this.numberOfDataLoadTasks = int.Parse(ConfigurationManager.AppSettings["numberOfDataLoadTasks"]);
+                this.dataLoadCommandDelay = int.Parse(ConfigurationManager.AppSettings["dataLoadCommandDelay"]);
                 this.batchSize = int.Parse(ConfigurationManager.AppSettings["batchSize"]);
-                this.delay = int.Parse(ConfigurationManager.AppSettings["commandDelay"]);
-                this.commandTimeout = int.Parse(ConfigurationManager.AppSettings["commandTimeout"]);
-                this.shockFrequency = int.Parse(ConfigurationManager.AppSettings["shockFrequency"]);
-                this.shockDuration = int.Parse(ConfigurationManager.AppSettings["shockDuration"]);
-                this.enableShock = int.Parse(ConfigurationManager.AppSettings["enableShock"]);
 
+                this.deleteSPName = ConfigurationManager.AppSettings["deleteSPName"];
+                this.numberOfOffLoadTasks = int.Parse(ConfigurationManager.AppSettings["numberOfOffLoadTasks"]);
+                this.offLoadCommandDelay = int.Parse(ConfigurationManager.AppSettings["offLoadCommandDelay"]);
+                this.deleteBatchSize = int.Parse(ConfigurationManager.AppSettings["deleteBatchSize"]);
+
+                this.meters = int.Parse(ConfigurationManager.AppSettings["numberOfMeters"]);
+                
+                this.commandTimeout = int.Parse(ConfigurationManager.AppSettings["commandTimeout"]);
+                this.delayStart = int.Parse(ConfigurationManager.AppSettings["delayStart"]);
+                this.appRunDuration = int.Parse(ConfigurationManager.AppSettings["appRunDuration"]);                
                 this.rpsFrequency = int.Parse(ConfigurationManager.AppSettings["rpsFrequency"]);
+                numberOfRowsOfloadLimit = int.Parse(ConfigurationManager.AppSettings["numberOfRowsOfloadLimit"]);
 
                 // Initialize Timers
-                this.mainTimer.Interval = shockFrequency;
-                this.shockTimer.Interval = shockDuration;         
                 this.rpsTimer.Interval = this.rpsFrequency;
+                this.stopTimer.Interval = this.appRunDuration;
 
                 // Initialize Labels
-                this.lblTasksValue.Text = string.Format("{0:#,#}", this.tasks).ToString();
-                this.lblFrequencyValue.Text = (this.shockFrequency/1000).ToString() + "/" + (this.shockDuration / 1000).ToString();
-                this.lblBatchSizeValue.Text = string.Format("{0:#,#}", this.batchSize).ToString();
-                this.lblMetersValue.Text = string.Format("{0:#,#}", this.meters).ToString();
-
+                this.lblTasksValue.Text = string.Format("{0:#,#}", this.numberOfDataLoadTasks).ToString();
+                
                 if (batchSize <= 0) throw new SqlDataGeneratorException("The Batch Size cannot be less or equal to zero.");
 
-                if (tasks <= 0) throw new SqlDataGeneratorException("Number Of Tasks cannot be less or equal to zero.");
+                if (numberOfDataLoadTasks <= 0) throw new SqlDataGeneratorException("Number Of Tasks cannot be less or equal to zero.");
 
-                if (delay < 0) throw new SqlDataGeneratorException("Delay cannot be less than zero");
+                if (dataLoadCommandDelay < 0) throw new SqlDataGeneratorException("Delay cannot be less than zero");
 
                 if (meters <= 0) throw new SqlDataGeneratorException("Number Of Meters cannot be less than zero");
 
-                if (meters < batchSize * tasks) throw new SqlDataGeneratorException("Number Of Meters cannot be less than (Tasks * BatchSize).");
+                if (meters < batchSize * numberOfDataLoadTasks) throw new SqlDataGeneratorException("Number Of Meters cannot be less than (Tasks * BatchSize).");
+
             }
             catch (Exception exception) { HandleException(exception); }
         }
 
         private void rpsTimer_Tick(object sender, EventArgs e)
-        {
+        {            
             try
             {
                 this.lblTasksValue.Text = this.dataGenerator.RunningTasks.ToString();
@@ -195,34 +220,58 @@ namespace Client
                         this.lblRpsValue.Text = string.Format("{0:#,#}", rps).ToString();
                         UpdateChart(rps);
                     }
-
                 }
             }
             catch (Exception exception) { HandleException(exception); }
         }
-
-        private void mainTimer_Tick(object sender, EventArgs e)
+        private void ResetDb()
         {
-            if (this.dataGenerator.IsRunning)
+            try
             {
-                this.dataGenerator.Delay = 0;
-                this.shockTimer.Start();
+                this.Stop.Text = "Stopping...";
+                this.Stop.Update();
+                
+                string script = File.ReadAllText(@"setup-or-reset-demo.sql");
+
+                int numberOfSqlConnections = ConfigurationManager.ConnectionStrings.Count;
+                for (int i = 0; i < numberOfSqlConnections; i++)
+                {
+                    using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings[i].ConnectionString))
+                    {
+                        connection.Open();
+
+                        using (SqlCommand command = new SqlCommand())
+                        {
+                            command.Connection = connection;
+                            command.CommandType = CommandType.Text;
+                            command.CommandTimeout = 1800;
+                            command.CommandText = script;
+                            command.ExecuteNonQuery();
+                        }
+                    }
+                }
+            }            
+            catch (Exception exception) { HandleException(exception); }
+            finally
+            {
+                this.Stop.Text = "Close";
+                this.Stop.Update();
             }
         }
 
-        private void shockTimer_Tick(object sender, EventArgs e)
+        private void stopTimer_Tick(object sender, EventArgs e)
         {
-            Random rand = new Random();
-            this.dataGenerator.Delay = rand.Next(1500,3000);
-            this.shockTimer.Stop();
+            try
+            {
+                StopApp();
+                Application.Exit();
+            }
+            catch (Exception exception) { HandleException(exception); }
         }
 
-        private void powerBIReport_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {            
-            ProcessStartInfo psi = new ProcessStartInfo();
-            psi.FileName = this.powerBIDesktopPath;
-            psi.Arguments = @"Reports\PowerDashboard.pbix";
-            Process.Start(psi);
+        private void RpsChart_Click(object sender, EventArgs e)
+        {
+            StartApp();            
         }
     }
 }

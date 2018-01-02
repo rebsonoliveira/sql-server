@@ -34,7 +34,7 @@ In this sample, you will learn how to create a predictive model in python and op
 ## Before you begin
 
 To run this sample, you need the following prerequisites: </br>
-[Download this DB backup file](https://deve2e.azureedge.net/sqlchoice/static/TutorialDB.bak) and restore it using Setup.sql. 
+[Download this DB backup file](https://sqlchoice.blob.core.windows.net/sqlchoice/TutorialDB.bak) and restore it using Setup.sql. 
 
 **Software prerequisites:**
 
