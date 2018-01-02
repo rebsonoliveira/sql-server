@@ -47,6 +47,11 @@ To run this sample, you need the following prerequisites.
 3. Click **Change Source** and edit the **Server** to point to the SQL Server instance that hosts the WideWorldImporters and WideWorldImportersDW databases.
 4. Click **OK** to save the changes, and click **Refresh** to update the data in the dashboard.
 
+The following dashboards are available:
+
+- [WWIDW-Sales.pbix](WWIDW-Sales.pbix) - Historical analysis of sales data from the WideWorldImportersDW OLAP database.
+- [WWI-SalesOrder.pbix](WWI-SalesOrder.pbix) - Real-time analysis of sales in the WideWorldImporters operational database. Run [data generation](https://docs.microsoft.com/sql/sample/world-wide-importers/data-generation) in the WideWorldImporters database before using this dashboard for the best experience.
+
 
 <a name=disclaimers></a>
 
