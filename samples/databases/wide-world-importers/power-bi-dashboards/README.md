@@ -50,7 +50,7 @@ To run this sample, you need the following prerequisites.
 The following dashboards are available:
 
 - [WWIDW-Sales.pbix](WWIDW-Sales.pbix) - Historical analysis of sales data from the WideWorldImportersDW OLAP database.
-- [WWI-SalesOrder.pbix](WWI-SalesOrder.pbix) - Real-time analysis of sales in the WideWorldImporters operational database. Run [data generation](https://docs.microsoft.com/sql/sample/world-wide-importers/data-generation) in the WideWorldImporters database before using this dashboard for the best experience.
+- [WWI-SalesOrders.pbix](WWI-SalesOrders.pbix) - Real-time analysis of sales in the WideWorldImporters operational database. Run [data generation](https://docs.microsoft.com/sql/sample/world-wide-importers/data-generation) in the WideWorldImporters database before using this dashboard for the best experience.
 
 
 <a name=disclaimers></a>
