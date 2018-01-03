@@ -1,13 +1,19 @@
 ﻿
-CREATE PROCEDURE DataLoadSimulation.DailyProcessToCreateHistory
+CREATE PROCEDURE [DataLoadSimulation].[DailyProcessToCreateHistory]
     @StartDate                           date
   , @EndDate                             date
-  , @AverageNumberOfCustomerOrdersPerDay int
+  , @AverageNumberOfCustomerOrdersPerDay int = 60
   , @SaturdayPercentageOfNormalWorkDay   int
   , @SundayPercentageOfNormalWorkDay     int
   , @UpdateCustomFields                  bit
   , @IsSilentMode                        bit
   , @AreDatesPrinted                     bit
+  , @MinYearlyGrowthPercent              int = 10
+  , @MaxYearlyGrowthPercent              int = 20
+  , @MinSeasonalVariationPercent         int = 30
+  , @MaxSeasonalVariationPercent         int = 50
+  , @MaxDailyVariationPercent            int = 20
+
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -16,6 +22,7 @@ BEGIN
     DECLARE @CurrentDateTime        datetime2(7) = @StartDate;
     DECLARE @EndOfTime              datetime2(7) =  '99991231 23:59:59.9999999';
     DECLARE @StartingWhen           datetime;
+	DECLARE @OldNumberOfCustomerOrders int;
     DECLARE @NumberOfCustomerOrders int;
     DECLARE @IsWeekday              bit;
     DECLARE @IsSaturday             bit;
@@ -24,6 +31,106 @@ BEGIN
     DECLARE @Weekday                int;
     DECLARE @IsStaffOnly            bit;
     DECLARE @DateMessage            nvarchar(256);
+	
+	-- verify whether orders exist, and if so, compute the avg number of customer orders in the last year
+	IF EXISTS (SELECT 1 FROM Sales.Orders)
+	BEGIN
+		SELECT @OldNumberOfCustomerOrders=	AVG(t.OrderCount) 
+		FROM (SELECT COUNT(*) AS OrderCount FROM Sales.Orders 
+			WHERE DATEPART(year,OrderDate) = DATEPART(year,(SELECT MAX(OrderDate) FROM Sales.Orders))
+				AND DATEPART(weekday,OrderDate) NOT IN (1,7)
+			GROUP BY OrderDate) t
+	END
+	ELSE
+		SET @OldNumberOfCustomerOrders = @AverageNumberOfCustomerOrdersPerDay
+
+
+	/*
+
+
+	delete from DataLoadSimulation.SeasonVariation
+	DECLARE @MinSeasonalVariationPercent int = 7
+	DECLARE @MaxSeasonalVariationPercent int = 25
+	DECLARE @MinYearlyGrowthPercent int = 3
+	DECLARE @MaxYearlyGrowthPercent int = 30
+	declare @StartDate date = '20130101'
+	declare @EndDate date = '20180101'
+	declare @CurrentDateTime datetime2 = @StartDate
+	declare @MaxDailyVariationPercent int = 5
+
+	drop table if exists #result
+	create table #result
+	(OrderDate date, OrderCount int)*/
+	
+	-- compute actual seasonal variation
+	DECLARE @CurrentYear int = DATEPART(year, @StartDate)
+	WHILE @CurrentYear <= DATEPART(year, @EndDate)
+	BEGIN
+		DECLARE @CurrentSeason smallint = 1
+		--compute new yearly variation for each year
+		DECLARE @YearlyVariation float = 1 + (@MinYearlyGrowthPercent + RAND() * CAST(@MaxYearlyGrowthPercent - @MinYearlyGrowthPercent AS float))/100;
+		WHILE @CurrentSeason <= 4
+		BEGIN
+			IF NOT EXISTS (SELECT 1 FROM DataLoadSimulation.SeasonVariation WHERE [Year]=@CurrentYear and Season=@CurrentSeason)
+			BEGIN
+				-- compute seasonal variation
+				DECLARE @SeasonalVariation float 
+				SET @SeasonalVariation = 1 + (@MinSeasonalVariationPercent + RAND() * CAST(@MaxSeasonalVariationPercent - @MinSeasonalVariationPercent AS float))/100
+				IF @CurrentSeason % 2 = 1
+					SET @SeasonalVariation = 1/@SeasonalVariation
+
+				INSERT DataLoadSimulation.SeasonVariation ([Year], [Season], YearlyVariation, SeasonalVariation) 
+				VALUES (@CurrentYear, @CurrentSeason, @YearlyVariation, @SeasonalVariation)
+			END
+			SET @CurrentSeason += 1
+		END
+		SET @CurrentYear += 1
+	END 
+	--select * from DataLoadSimulation.SeasonVariation
+
+
+	/*
+	DECLARE @OldNumberOfCustomerOrders int = 600;
+    DECLARE @NumberOfCustomerOrders int;
+	WHILE @CurrentDateTime <= @EndDate
+	BEGIN
+		SET @CurrentYear = DATEPART(year, @CurrentDateTime)
+		SET @CurrentSeason = CEILING(CAST(DATEPART(month, @CurrentDateTime) AS float)/ 3)
+
+		SELECT @SeasonalVariation=SeasonalVariation, @YearlyVariation=YearlyVariation
+		FROM DataLoadSimulation.SeasonVariation
+		WHERE [Year]=@CurrentYear AND Season=@CurrentSeason
+
+		DECLARE @x float = CAST(DATEDIFF(day, DATEFROMPARTS(@CurrentYear, (@CurrentSeason*3)-2, 1), @CurrentDateTime) AS FLOAT)/90
+		IF @x > 1
+			SET @x = 1;
+
+		--compute location on seasonal bell curve
+		DECLARE @SeasonEffect float = (SIN(2 * 3.1415926 * (@x-0.25)) + 1) / 2;
+
+		SET @SeasonEffect = ((@SeasonalVariation - 1) * @SeasonEffect) + 1
+
+		-- compute effect of yearly growth on day at hand
+		DECLARE @YearlyEffect float = 1+CAST((@YearlyVariation-1) AS float)*(CAST((DATEDIFF(day, DATEFROMPARTS(@CurrentYear-1, 12, 31), @CurrentDateTime)) AS float)/183)
+
+		DECLARE @DailyEffect float = RAND() 
+		IF @DailyEffect < 0.5
+			SET @DailyEffect = 0-@DailyEffect
+			
+		SET @DailyEffect = 1 + @DailyEffect * (CAST(@MaxDailyVariationPercent AS float)/100)
+
+		SET @NumberOfCustomerOrders = @OldNumberOfCustomerOrders * @DailyEffect * @SeasonEffect * @YearlyEffect
+
+		--INSERT #result select @CurrentDateTime, @NumberOfCustomerOrders
+		
+		SET @CurrentDateTime = DATEADD(day, 1, @CurrentDateTime);
+
+		--when rolling over to new year, take the old order count as baseline
+		IF DATEPART(day, @CurrentDateTime)=1 AND DATEPART(month, @CurrentDateTime)=1
+			SET @OldNumberOfCustomerOrders=@OldNumberOfCustomerOrders* @YearlyEffect
+	END*/
+	--select * from #result
+
 
     SET DATEFIRST 7;  -- Week begins on Sunday
 
@@ -48,10 +155,37 @@ BEGIN
 
 			IF @AreDatesPrinted <> 0 OR @IsSilentMode = 0
 			BEGIN
-				--PRINT SUBSTRING(DATENAME(weekday, @CurrentDateTime), 1,3) + N' ' + CONVERT(nvarchar(20), @CurrentDateTime, 107);
-				--PRINT N' ';
 				PRINT @DateMessage
 			END;
+
+
+		-- compute number of orders to process
+			SET @CurrentYear = DATEPART(year, @CurrentDateTime)
+			SET @CurrentSeason = CEILING(CAST(DATEPART(month, @CurrentDateTime) AS float)/ 3)
+
+			SELECT @SeasonalVariation=SeasonalVariation, @YearlyVariation=YearlyVariation
+			FROM DataLoadSimulation.SeasonVariation
+			WHERE [Year]=@CurrentYear AND Season=@CurrentSeason
+
+			DECLARE @x float = CAST(DATEDIFF(day, DATEFROMPARTS(@CurrentYear, (@CurrentSeason*3)-2, 1), @CurrentDateTime) AS FLOAT)/90
+			IF @x > 1
+				SET @x = 1;
+
+			--compute location on seasonal bell curve
+			DECLARE @SeasonEffect float = (SIN(2 * 3.1415926 * (@x-0.25)) + 1) / 2;
+
+			SET @SeasonEffect = ((@SeasonalVariation - 1) * @SeasonEffect) + 1
+
+			-- compute effect of yearly growth on day at hand
+			DECLARE @YearlyEffect float = 1+CAST((@YearlyVariation-1) AS float)*(CAST((DATEDIFF(day, DATEFROMPARTS(@CurrentYear-1, 12, 31), @CurrentDateTime)) AS float)/183)
+
+			DECLARE @DailyEffect float = RAND() 
+			IF @DailyEffect < 0.5
+				SET @DailyEffect = 0-@DailyEffect
+			
+			SET @DailyEffect = 1 + @DailyEffect * (CAST(@MaxDailyVariationPercent AS float)/100)
+
+			SET @NumberOfCustomerOrders = @OldNumberOfCustomerOrders * @DailyEffect * @SeasonEffect * @YearlyEffect
 
 		  -- Calculate the days of the week - different processing happens on each day
 			SET @Weekday = DATEPART(weekday, @CurrentDateTime);
@@ -114,8 +248,8 @@ BEGIN
 
 		-- Customer orders received
 			SET @StartingWhen = DATEADD(hour, 10, @CurrentDateTime);
-			SET @NumberOfCustomerOrders = @AverageNumberOfCustomerOrdersPerDay / 2
-										+ CEILING(RAND() * @AverageNumberOfCustomerOrdersPerDay);
+--			SET @NumberOfCustomerOrders = @AverageNumberOfCustomerOrdersPerDay / 2
+--										+ CEILING(RAND() * @AverageNumberOfCustomerOrdersPerDay);
 			SET @NumberOfCustomerOrders = CASE DATEPART(weekday, @CurrentDateTime)
 											   WHEN 7
 											   THEN FLOOR(@NumberOfCustomerOrders * @SaturdayPercentageOfNormalWorkDay / 100)
@@ -123,13 +257,13 @@ BEGIN
 											   THEN FLOOR(@NumberOfCustomerOrders * @SundayPercentageOfNormalWorkDay / 100)
 											   ELSE @NumberOfCustomerOrders
 										  END;
-				SET @NumberOfCustomerOrders = FLOOR(@NumberOfCustomerOrders * CASE WHEN YEAR(@StartingWhen) = 2013 THEN 1.0
+/*				SET @NumberOfCustomerOrders = FLOOR(@NumberOfCustomerOrders * CASE WHEN YEAR(@StartingWhen) = 2013 THEN 1.0
 																				   WHEN YEAR(@StartingWhen) = 2014 THEN 1.12
 																												   WHEN YEAR(@StartingWhen) = 2015 THEN 1.21
 																												   WHEN YEAR(@StartingWhen) = 2016 THEN 1.23
 																												   ELSE 1.26
 																											END
-											   );
+											   );*/
 			IF @IsSilentMode = 0
 			BEGIN
 				PRINT @DateMessage + N'- Creating Customer Orders'
@@ -243,14 +377,14 @@ BEGIN
 			END;
 
 		-- Record cold room temperatures
-			--IF @CurrentDateTime >= '20151220'
-			--BEGIN
+			IF @CurrentDateTime >= '20151220'
+			BEGIN
 				IF @IsSilentMode = 0
 				BEGIN
 					PRINT @DateMessage + N'- Recording Cold Room Temperatures'
 				END;
 				EXEC DataLoadSimulation.RecordColdRoomTemperatures 3600, 40, @CurrentDateTime, @EndOfTime, @IsSilentMode;
-			--END;
+			END;
 
 			IF @IsSilentMode = 0
 			BEGIN
@@ -258,6 +392,9 @@ BEGIN
 			END;
 
 			SET @CurrentDateTime = DATEADD(day, 1, @CurrentDateTime);
+			-- if rolling over the year, re-baseline order count
+			IF DATEPART(day, @CurrentDateTime)=1 AND DATEPART(month, @CurrentDateTime)=1
+				SET @OldNumberOfCustomerOrders=@OldNumberOfCustomerOrders* @YearlyEffect
 			COMMIT
 		END; -- of processing each day
 
