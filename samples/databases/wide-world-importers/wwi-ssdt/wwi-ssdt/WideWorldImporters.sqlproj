@@ -698,6 +698,7 @@
     <Build Include="Website\Views\PurchaseOrders.sql" />
     <Build Include="Website\Views\SalesOrders.sql" />
     <Build Include="Website\Views\SalesOrderLines.sql" />
+    <Build Include="DataLoadSimulation\Tables\SeasonVariation.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="PostDeploymentScripts\Script.PostDeployment1.sql" />
