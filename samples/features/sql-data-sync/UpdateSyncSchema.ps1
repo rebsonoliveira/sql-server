@@ -18,7 +18,7 @@ $TablesAndColumnsToRemoveList = [System.Collections.ArrayList]::new($TablesAndCo
 $TempFile = $env:TEMP+"\syncSchema.json"
 
 ##login to Azure account
-add-azurermaccount 
+login-azurermaccount 
 
 ##select the subscription
 select-azurermsubscription -SubscriptionId $SubscriptionId
