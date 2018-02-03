@@ -4,3 +4,4 @@ bin/*.dll
 obj/*
 *.sln
 *.log
+package-lock.json
