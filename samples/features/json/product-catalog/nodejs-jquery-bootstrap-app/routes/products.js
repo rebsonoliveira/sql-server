@@ -5,7 +5,7 @@ var TYPES = require('tedious').TYPES;
 /* GET products. */
 router.get('/', function (req, res) {
     req.sql("select ProductID, Name, Color, Price, Quantity, JSON_VALUE(Data, '$.MadeIn') as MadeIn, JSON_QUERY(Tags) as Tags from Product FOR JSON PATH, ROOT('data')")
-        .into(res, '[]');
+        .into(res);
 });
 
 /* GET single product. */

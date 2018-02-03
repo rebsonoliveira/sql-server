@@ -15,7 +15,7 @@
     "config": "^1.29.2",
     "debug": "^2.6.9",
     "express": "^4.16.2",
-    "express4-tedious": "^0.1.0",
+    "express4-tedious": "^0.2.0",
     "tedious": "^1.15.0"
   }
 }
