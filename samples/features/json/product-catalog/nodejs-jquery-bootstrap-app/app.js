@@ -10,7 +10,7 @@ app.use(express.static('wwwroot'));
 app.use(bodyParser.text({ type: 'application/json' }))
 
 app.use(function (req, res, next) {
-    req.sql = tediousExpress(req, config.get('connection'));
+    req.sql = tediousExpress(config.get('connection'));
     next();
 });
 
