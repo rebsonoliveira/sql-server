@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'SqlServerOnDocker.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'sql_server.pyodbc',
-        'NAME': 'docker2',
+        'NAME': 'AdventureWorksDW2017',
         'USER': 'sa',
         'PASSWORD': 'Alaska2017',
         'HOST': 'db1.internal.prod.example.com',
