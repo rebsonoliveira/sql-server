@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE WebApi.InsertCitiesFromJson(@Cities NVARCHAR(MAX), @UserID int)
+﻿CREATE PROCEDURE [WebApi].[InsertCitiesFromJson](@Cities NVARCHAR(MAX), @UserID int)
 WITH EXECUTE AS OWNER
 AS BEGIN
 	INSERT INTO Application.Cities(CityName,StateProvinceID,LatestRecordedPopulation,LastEditedBy)

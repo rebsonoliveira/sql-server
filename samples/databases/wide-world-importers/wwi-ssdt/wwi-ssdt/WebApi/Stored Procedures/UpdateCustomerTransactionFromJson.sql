@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE WebApi.UpdateCustomerTransactionUpdateFromJson(@CustomerTransaction NVARCHAR(MAX), @CustomerTransactionID int, @UserID int)
+﻿CREATE PROCEDURE [WebApi].[UpdateCustomerTransactionFromJson](@CustomerTransaction NVARCHAR(MAX), @CustomerTransactionID int, @UserID int)
 WITH EXECUTE AS OWNER
 AS BEGIN
 	UPDATE Sales.CustomerTransactions SET

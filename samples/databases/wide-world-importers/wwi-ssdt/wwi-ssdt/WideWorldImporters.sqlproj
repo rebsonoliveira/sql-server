@@ -739,7 +739,7 @@
     <Build Include="WebApi\Stored Procedures\UpdatePackageTypeFromJson.sql" />
     <Build Include="WebApi\Stored Procedures\DeletePaymentMethod.sql" />
     <Build Include="WebApi\Stored Procedures\InsertPaymentMethodsFromJson.sql" />
-    <Build Include="WebApi\Stored Procedures\UpdatePaumentMethodFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\UpdatePaymentMethodFromJson.sql" />
     <Build Include="WebApi\Stored Procedures\UpdatePurchaseOrderFromJson.sql" />
     <Build Include="WebApi\Stored Procedures\UpdateSalesOrderFromJson.sql" />
     <Build Include="WebApi\Views\SupplierTransactions.sql" />
@@ -766,6 +766,10 @@
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
     <Build Include="Website\Views\Suppliers.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="WebApi\Stored Procedures\SearchForStockItems.sql">
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>

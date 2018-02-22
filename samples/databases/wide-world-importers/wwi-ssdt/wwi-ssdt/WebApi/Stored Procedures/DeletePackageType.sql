@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE [WebApi].[DeletePackageType](@PackageTypeID int)
+﻿CREATE PROCEDURE [WebApi].[DeletePackageType](@PackageTypeID int)
 WITH EXECUTE AS OWNER
 AS BEGIN
 	DELETE Warehouse.PackageTypes

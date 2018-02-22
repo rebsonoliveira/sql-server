@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE WebApi.DeleteCustomer(@CustomerID int)
+﻿CREATE PROCEDURE [WebApi].[DeleteCustomer](@CustomerID int)
 WITH EXECUTE AS OWNER
 AS BEGIN
 	DELETE Sales.Customers

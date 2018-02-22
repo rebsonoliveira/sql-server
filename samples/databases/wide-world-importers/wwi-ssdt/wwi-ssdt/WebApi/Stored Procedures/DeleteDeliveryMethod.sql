@@ -1,7 +1,4 @@
-﻿
-
-
-CREATE PROCEDURE [WebApi].[DeleteDeliveryMethod](@DeliveryMethodID int)
+﻿CREATE PROCEDURE [WebApi].[DeleteDeliveryMethod](@DeliveryMethodID int)
 WITH EXECUTE AS OWNER
 AS BEGIN
 	DELETE Application.DeliveryMethods

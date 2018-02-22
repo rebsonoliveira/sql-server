@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE WebApi.UpdateInvoiceFromJson(@Invoice NVARCHAR(MAX), @InvoiceID int, @UserID int)
+﻿CREATE PROCEDURE [WebApi].UpdateInvoiceFromJson(@Invoice NVARCHAR(MAX), @InvoiceID int, @UserID int)
 WITH EXECUTE AS OWNER
 AS BEGIN	UPDATE Sales.Invoices SET
 				CustomerID = ISNULL(json.CustomerID, Sales.Invoices.CustomerID),

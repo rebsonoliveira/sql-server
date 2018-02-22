@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE WebApi.UpdateSupplierTransactionFromJson(@SupplierTransaction NVARCHAR(MAX), @SupplierTransactionID int, @UserID int)
+﻿CREATE PROCEDURE [WebApi].[UpdateSupplierTransactionFromJson](@SupplierTransaction NVARCHAR(MAX), @SupplierTransactionID int, @UserID int)
 WITH EXECUTE AS OWNER
 AS BEGIN	UPDATE Purchasing.SupplierTransactions SET
 				SupplierID = ISNULL(json.SupplierID,Purchasing.SupplierTransactions.SupplierID),

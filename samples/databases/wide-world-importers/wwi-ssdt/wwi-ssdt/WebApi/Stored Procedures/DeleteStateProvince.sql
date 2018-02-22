@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE WebApi.DeleteStateProvince(@StateProvinceID int)
+﻿CREATE PROCEDURE [WebApi].[DeleteStateProvince](@StateProvinceID int)
 WITH EXECUTE AS OWNER
 AS BEGIN
 	DELETE Application.StateProvinces

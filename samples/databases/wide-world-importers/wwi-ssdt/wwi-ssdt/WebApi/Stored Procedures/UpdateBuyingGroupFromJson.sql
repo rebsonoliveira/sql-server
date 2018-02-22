@@ -8,5 +8,4 @@ AS BEGIN
 		WITH (BuyingGroupName nvarchar(50)) as json
 	WHERE 
 		Sales.BuyingGroups.BuyingGroupID = @BuyingGroupID
-
 END
