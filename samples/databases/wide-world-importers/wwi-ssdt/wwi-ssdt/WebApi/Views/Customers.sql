@@ -1,5 +1,4 @@
-﻿
-CREATE VIEW WebApi.Customers
+﻿CREATE VIEW [WebApi].[Customers]
 AS
 SELECT s.CustomerID,
        s.CustomerName,

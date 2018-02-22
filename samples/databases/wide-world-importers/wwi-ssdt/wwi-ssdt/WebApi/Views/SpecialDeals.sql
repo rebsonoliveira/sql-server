@@ -1,4 +1,4 @@
-﻿CREATE VIEW WebApi.SpecialDeals
+﻿CREATE VIEW [WebApi].[SpecialDeals]
 AS
 SELECT	deal.SpecialDealID, deal.DealDescription, deal.StartDate, deal.EndDate, deal.DiscountAmount, deal.DiscountPercentage, deal.UnitPrice, 
 		si.StockItemName, si.Brand, si.Size, c.CustomerName, bg.BuyingGroupName, cat.CustomerCategoryName,

@@ -1,5 +1,4 @@
-﻿
-CREATE VIEW WebApi.CustomerTransactions
+﻿CREATE VIEW [WebApi].[CustomerTransactions]
 AS
 SELECT ct.CustomerTransactionID, ct.TransactionDate, ct.AmountExcludingTax, ct.TaxAmount, ct.TransactionAmount, ct.OutstandingBalance, ct.FinalizationDate, ct.IsFinalized,
 		c.CustomerName, tt.TransactionTypeName, i.InvoiceDate, i.CustomerPurchaseOrderNumber, pm.PaymentMethodName,

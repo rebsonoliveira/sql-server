@@ -1,5 +1,4 @@
-﻿
-CREATE VIEW WebApi.StockItems
+﻿CREATE VIEW [WebApi].[StockItems]
 AS
 SELECT	si.StockItemID, si.StockItemName, s.SupplierName, s.SupplierReference, c.ColorName,
 		opt.PackageTypeName AS OuterPackage, upt.PackageTypeName AS UnitPackage,

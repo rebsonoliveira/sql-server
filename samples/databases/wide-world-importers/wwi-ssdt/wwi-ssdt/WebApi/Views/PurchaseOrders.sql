@@ -1,5 +1,4 @@
-﻿
-CREATE   VIEW WebApi.PurchaseOrders
+﻿CREATE   VIEW [WebApi].[PurchaseOrders]
 AS
 SELECT	o.PurchaseOrderID, o.OrderDate, o.ExpectedDeliveryDate, o.SupplierReference, o.IsOrderFinalized,
 		dm.DeliveryMethodName, o.SupplierID,

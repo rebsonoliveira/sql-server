@@ -1,5 +1,4 @@
-﻿
-CREATE VIEW WebApi.SalesOrderLines
+﻿CREATE VIEW [WebApi].[SalesOrderLines]
 AS
 SELECT	ol.OrderLineID, ol.OrderID, ol.Description, ol.Quantity, ol.UnitPrice, ol.TaxRate,
 		ProductName = si.StockItemName, si.Brand, si.Size, c.ColorName, pt.PackageTypeName

@@ -1,5 +1,4 @@
-﻿
-CREATE VIEW WebApi.Suppliers
+﻿CREATE VIEW [WebApi].[Suppliers]
 AS
 SELECT s.SupplierID,
        s.SupplierName,

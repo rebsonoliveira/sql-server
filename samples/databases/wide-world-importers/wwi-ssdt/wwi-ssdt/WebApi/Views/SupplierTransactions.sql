@@ -1,5 +1,4 @@
-﻿
-CREATE VIEW WebApi.SupplierTransactions
+﻿CREATE VIEW [WebApi].[SupplierTransactions]
 AS
 SELECT        st.SupplierTransactionID, st.TransactionDate, st.AmountExcludingTax, st.TaxAmount, st.TransactionAmount, st.OutstandingBalance, st.FinalizationDate, st.IsFinalized, s.SupplierName, tt.TransactionTypeName, 
                          pm.PaymentMethodName, st.SupplierID, st.TransactionTypeID, st.PurchaseOrderID, st.PaymentMethodID, po.OrderDate, po.IsOrderFinalized, po.ExpectedDeliveryDate, po.SupplierReference

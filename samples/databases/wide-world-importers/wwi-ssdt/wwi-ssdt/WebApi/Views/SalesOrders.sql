@@ -1,5 +1,4 @@
-﻿
-CREATE   VIEW WebApi.SalesOrders
+﻿CREATE   VIEW [WebApi].[SalesOrders]
 AS
 SELECT	o.OrderID, o.OrderDate, OrderNumber = o.CustomerPurchaseOrderNumber,
 		o.ExpectedDeliveryDate, o.PickingCompletedWhen,

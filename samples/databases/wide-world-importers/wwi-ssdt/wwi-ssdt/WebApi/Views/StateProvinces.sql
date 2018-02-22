@@ -1,5 +1,4 @@
-﻿
-CREATE VIEW WebApi.StateProvinces
+﻿CREATE VIEW [WebApi].[StateProvinces]
 AS
 SELECT sp.StateProvinceID, sp.StateProvinceCode, sp.StateProvinceName, sp.CountryID, sp.SalesTerritory, sp.LatestRecordedPopulation,
 	Border = JSON_QUERY('{"type": "Feature","geometry":{' +

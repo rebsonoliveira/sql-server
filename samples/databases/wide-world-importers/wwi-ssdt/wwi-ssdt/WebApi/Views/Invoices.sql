@@ -1,5 +1,4 @@
-﻿
-CREATE VIEW WebApi.[Invoices]
+﻿CREATE VIEW [WebApi].[Invoices]
 AS
 SELECT        inv.InvoiceID, inv.InvoiceDate, inv.CustomerPurchaseOrderNumber, inv.IsCreditNote, inv.TotalDryItems, inv.TotalChillerItems, inv.DeliveryRun, inv.RunPosition, inv.ReturnedDeliveryData, inv.ConfirmedDeliveryTime, 
                          inv.ConfirmedReceivedBy, c.CustomerName, sp.FullName AS SalesPersonName, contact.FullName AS ContactName, contact.PhoneNumber AS ContactPhone, contact.EmailAddress AS ContactEmail, 
