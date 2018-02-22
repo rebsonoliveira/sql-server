@@ -148,6 +148,9 @@
     <Folder Include="DataLoadSimulation\Tables" />
     <Folder Include="dbo" />
     <Folder Include="dbo\Tables" />
+    <Folder Include="WebApi" />
+    <Folder Include="WebApi\Views" />
+    <Folder Include="WebApi\Stored Procedures" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Warehouse\Tables\Colors.sql">
@@ -339,14 +342,6 @@
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
     <Build Include="Sales\Tables\CustomerCategories_Archive.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="Website\Views\Suppliers.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="Website\Views\Customers.sql">
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
@@ -694,70 +689,86 @@
     <Build Include="DataLoadSimulation\Stored Procedures\PopulateColdRoomTemperatures_temp.sql" />
     <Build Include="dbo\Tables\SampleVersion.sql" />
     <Build Include="Application\Stored Procedures\Configuration_PrepareForAzureStandard.sql" />
-    <Build Include="Website\Views\PurchaseOrderLines.sql" />
-    <Build Include="Website\Views\PurchaseOrders.sql" />
-    <Build Include="Website\Views\SalesOrders.sql" />
-    <Build Include="Website\Views\SalesOrderLines.sql" />
     <Build Include="DataLoadSimulation\Tables\SeasonVariation.sql" />
-    <Build Include="Website\Stored Procedures\BuyingGroupsDelete.sql" />
-    <Build Include="Website\Stored Procedures\BuyingGroupsInsertFromJson.sql" />
-    <Build Include="Website\Stored Procedures\BuyingGroupsUpdateFromJson.sql" />
-    <Build Include="Website\Views\Cities.sql" />
-    <Build Include="Website\Views\CustomerTransactions.sql" />
-    <Build Include="Website\Views\Invoices.sql" />
-    <Build Include="Website\Views\SpecialDeals.sql" />
-    <Build Include="Website\Views\StateProvinces.sql" />
-    <Build Include="Website\Views\StockItems.sql" />
-    <Build Include="Website\Views\SupplierTransactions.sql" />
-    <Build Include="Website\Stored Procedures\CitiesDelete.sql" />
-    <Build Include="Website\Stored Procedures\CitiesInsertFromJson.sql" />
-    <Build Include="Website\Stored Procedures\CitiesUpdateFromJson.sql" />
-    <Build Include="Website\Stored Procedures\ColorsDelete.sql" />
-    <Build Include="Website\Stored Procedures\ColorsInsertFromJson.sql" />
-    <Build Include="Website\Stored Procedures\ColorsUpdateFromJson.sql" />
-    <Build Include="Website\Stored Procedures\CountriesDelete.sql" />
-    <Build Include="Website\Stored Procedures\CountriesInsertFromJson.sql" />
-    <Build Include="Website\Stored Procedures\CountriesUpdateFromJson.sql" />
-    <Build Include="Website\Stored Procedures\CustomerCategoriesDelete.sql" />
-    <Build Include="Website\Stored Procedures\CustomerCategoriesInsertFromJson.sql" />
-    <Build Include="Website\Stored Procedures\CustomerCategoriesUpdateFromJson.sql" />
-    <Build Include="Website\Stored Procedures\CustomersDelete.sql" />
-    <Build Include="Website\Stored Procedures\CustomersInsertFromJson.sql" />
-    <Build Include="Website\Stored Procedures\CustomersUpdateFromJson.sql" />
-    <Build Include="Website\Stored Procedures\CustomerTransactionsUpdateFromJson.sql" />
-    <Build Include="Website\Stored Procedures\DeliveryMethodsDelete.sql" />
-    <Build Include="Website\Stored Procedures\DeliveryMethodsInsertFromJson.sql" />
-    <Build Include="Website\Stored Procedures\DeliveryMethodsUpdateFromJson.sql" />
-    <Build Include="Website\Stored Procedures\InvoicesUpdateFromJson.sql" />
-    <Build Include="Website\Stored Procedures\PackageTypesDelete.sql" />
-    <Build Include="Website\Stored Procedures\PackageTypesInsertFromJson.sql" />
-    <Build Include="Website\Stored Procedures\PackageTypesUpdateFromJson.sql" />
-    <Build Include="Website\Stored Procedures\PaymentMethodsDelete.sql" />
-    <Build Include="Website\Stored Procedures\PaymentMethodsInsertFromJson.sql" />
-    <Build Include="Website\Stored Procedures\PaymentMethodsUpdateFromJson.sql" />
-    <Build Include="Website\Stored Procedures\PurchaseOrdersUpdateFromJson.sql" />
-    <Build Include="Website\Stored Procedures\SalesOrdersUpdateFromJson.sql" />
-    <Build Include="Website\Stored Procedures\SpecialDealsUpdateFromJson.sql" />
-    <Build Include="Website\Stored Procedures\StateProvincesDelete.sql" />
-    <Build Include="Website\Stored Procedures\StateProvincesInsertFromJson.sql" />
-    <Build Include="Website\Stored Procedures\StateProvincesUpdateFromJson.sql" />
-    <Build Include="Website\Stored Procedures\StockGroupsDelete.sql" />
-    <Build Include="Website\Stored Procedures\StockGroupsInsertFromJson.sql" />
-    <Build Include="Website\Stored Procedures\StockGroupsUpdateFromJson.sql" />
-    <Build Include="Website\Stored Procedures\StockItemsDelete.sql" />
-    <Build Include="Website\Stored Procedures\StockItemsInsertFromJson.sql" />
-    <Build Include="Website\Stored Procedures\StockItemsUpdateFromJson.sql" />
-    <Build Include="Website\Stored Procedures\SupplierCategoriesDelete.sql" />
-    <Build Include="Website\Stored Procedures\SupplierCategoriesInsertFromJson.sql" />
-    <Build Include="Website\Stored Procedures\SupplierCategoriesUpdateFromJson.sql" />
-    <Build Include="Website\Stored Procedures\SuppliersDelete.sql" />
-    <Build Include="Website\Stored Procedures\SuppliersInsertFromJson.sql" />
-    <Build Include="Website\Stored Procedures\SuppliersUpdateFromJson.sql" />
-    <Build Include="Website\Stored Procedures\SupplierTransactionsUpdateFromJson.sql" />
-    <Build Include="Website\Stored Procedures\TransactionTypesDelete.sql" />
-    <Build Include="Website\Stored Procedures\TransactionTypesInsertFromJson.sql" />
-    <Build Include="Website\Stored Procedures\TransactionTypesUpdateFromJson.sql" />
-    <Build Include="Website\Stored Procedures\UpdateInvoicesFromJson.sql" />
+    <Build Include="Security\WebApi.sql" />
+    <Build Include="WebApi\Stored Procedures\UpdateInvoiceFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\UpdateTransactionTypeFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\InsertTransactionTypesFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\DeleteTransactionType.sql" />
+    <Build Include="WebApi\Stored Procedures\UpdateSupplierTransactionFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\UpdateSupplierFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\InsertSuppliersFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\DeleteSupplier.sql" />
+    <Build Include="WebApi\Stored Procedures\UpdateSupplierCategoryFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\InsertSupplierCategoriesFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\DeleteSupplierCategory.sql" />
+    <Build Include="WebApi\Stored Procedures\UpdateStockItemFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\InsertStockItemsFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\DeleteStockItem.sql" />
+    <Build Include="WebApi\Stored Procedures\UpdateStockGroupFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\InsertStockGroupsFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\DeleteStockGroup.sql" />
+    <Build Include="WebApi\Stored Procedures\UpdateStateProvinceFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\InsertStateProvincesFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\DeleteStateProvince.sql" />
+    <Build Include="WebApi\Stored Procedures\UpdateSpecialDealFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\DeleteBuyingGroup.sql" />
+    <Build Include="WebApi\Stored Procedures\InsertBuyingGroupsFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\UpdateBuyingGroupFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\DeleteCity.sql" />
+    <Build Include="WebApi\Stored Procedures\InsertCitiesFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\UpdateCityFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\DeleteColor.sql" />
+    <Build Include="WebApi\Stored Procedures\InsertColorsFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\UpdateColorFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\DeleteCountry.sql" />
+    <Build Include="WebApi\Stored Procedures\InsertCountriesFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\UpdateCountryFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\DeleteCustomerCategory.sql" />
+    <Build Include="WebApi\Stored Procedures\InsertCustomerCategoriesFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\UpdateCustomerCategoryFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\DeleteCustomer.sql" />
+    <Build Include="WebApi\Stored Procedures\InsertCustomersFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\UpdateCustomerFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\UpdateCustomerTransactionFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\DeleteDeliveryMethod.sql" />
+    <Build Include="WebApi\Stored Procedures\InsertDeliveryMethodsFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\UpdateDeliveryMethodFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\DeletePackageType.sql" />
+    <Build Include="WebApi\Stored Procedures\InsertPackageTypesFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\UpdatePackageTypeFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\DeletePaymentMethod.sql" />
+    <Build Include="WebApi\Stored Procedures\InsertPaymentMethodsFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\UpdatePaumentMethodFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\UpdatePurchaseOrderFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\UpdateSalesOrderFromJson.sql" />
+    <Build Include="WebApi\Views\SupplierTransactions.sql" />
+    <Build Include="WebApi\Views\Cities.sql" />
+    <Build Include="WebApi\Views\Customers.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="WebApi\Views\CustomerTransactions.sql" />
+    <Build Include="WebApi\Views\Invoices.sql" />
+    <Build Include="WebApi\Views\PurchaseOrderLines.sql" />
+    <Build Include="WebApi\Views\PurchaseOrders.sql" />
+    <Build Include="WebApi\Views\SalesOrderLines.sql" />
+    <Build Include="WebApi\Views\SalesOrders.sql" />
+    <Build Include="WebApi\Views\SpecialDeals.sql" />
+    <Build Include="WebApi\Views\StateProvinces.sql" />
+    <Build Include="WebApi\Views\StockItems.sql" />
+    <Build Include="WebApi\Views\Suppliers.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="Website\Views\Customers.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="Website\Views\Suppliers.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="PostDeploymentScripts\Script.PostDeployment1.sql" />
@@ -813,5 +824,8 @@
     <None Include="PostDeploymentScripts\pds105-ins-dls-ficticiousnamepool.sql" />
     <None Include="PostDeploymentScripts\pds106-ins-dls-areacode.sql" />
     <None Include="PostDeploymentScripts\pds400-ins-unkown-orderline.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="WideWorldImporters.refactorlog" />
   </ItemGroup>
 </Project>
