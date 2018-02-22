@@ -829,7 +829,4 @@
     <None Include="PostDeploymentScripts\pds106-ins-dls-areacode.sql" />
     <None Include="PostDeploymentScripts\pds400-ins-unkown-orderline.sql" />
   </ItemGroup>
-  <ItemGroup>
-    <RefactorLog Include="WideWorldImporters.refactorlog" />
-  </ItemGroup>
 </Project>
