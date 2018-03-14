@@ -2,7 +2,7 @@
 WITH EXECUTE AS OWNER
 AS BEGIN
 	INSERT INTO Warehouse.PackageTypes(PackageTypeName,LastEditedBy)
-			OUTPUT  INSERTED.PackageTypeID
+			OUTPUT  inserted.PackageTypeID
 			SELECT PackageTypeName,@UserID
 			FROM OPENJSON(@PackageTypes)
 				WITH (PackageTypeName nvarchar(50))

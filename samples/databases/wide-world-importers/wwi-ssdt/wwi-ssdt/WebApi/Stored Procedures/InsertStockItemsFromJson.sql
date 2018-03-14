@@ -2,7 +2,7 @@
 WITH EXECUTE AS OWNER
 AS BEGIN
 	INSERT INTO Warehouse.StockItems(StockItemName,SupplierID,ColorID,UnitPackageID,OuterPackageID,Brand,Size,LeadTimeDays,QuantityPerOuter,IsChillerStock,Barcode,TaxRate,UnitPrice,RecommendedRetailPrice,TypicalWeightPerUnit,MarketingComments,InternalComments,Photo,CustomFields,LastEditedBy)
-	OUTPUT INSERTED.StockItemID
+	OUTPUT inserted.StockItemID
 	SELECT StockItemName,SupplierID,ColorID,UnitPackageID,OuterPackageID,Brand,Size,LeadTimeDays,QuantityPerOuter,IsChillerStock,Barcode,TaxRate,UnitPrice,RecommendedRetailPrice,TypicalWeightPerUnit,MarketingComments,InternalComments,Photo,CustomFields,@UserID
 	FROM OPENJSON (@StockItems)
 		WITH (

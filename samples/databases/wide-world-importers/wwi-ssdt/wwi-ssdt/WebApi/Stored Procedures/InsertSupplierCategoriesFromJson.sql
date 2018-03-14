@@ -2,7 +2,7 @@
 WITH EXECUTE AS OWNER
 AS BEGIN
 	INSERT INTO Purchasing.SupplierCategories(SupplierCategoryName,LastEditedBy)
-			OUTPUT  INSERTED.SupplierCategoryID
+			OUTPUT  inserted.SupplierCategoryID
 			SELECT SupplierCategoryName,@UserID
 			FROM OPENJSON(@SupplierCategories)
 				WITH (SupplierCategoryName nvarchar(50))

@@ -2,7 +2,7 @@
 WITH EXECUTE AS OWNER
 AS BEGIN
 	INSERT INTO Sales.BuyingGroups(BuyingGroupName,LastEditedBy)
-			OUTPUT  INSERTED.BuyingGroupID
+			OUTPUT  inserted.BuyingGroupID
 			SELECT BuyingGroupName,@UserID
 			FROM OPENJSON(@BuyingGroups)
 				WITH (BuyingGroupName nvarchar(50))

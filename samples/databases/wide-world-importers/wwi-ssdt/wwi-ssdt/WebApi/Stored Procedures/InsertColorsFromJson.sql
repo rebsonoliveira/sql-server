@@ -2,7 +2,7 @@
 WITH EXECUTE AS OWNER
 AS BEGIN
 	INSERT INTO Warehouse.Colors(ColorName,LastEditedBy)
-			OUTPUT  INSERTED.ColorID
+			OUTPUT  inserted.ColorID
 			SELECT ColorName,@UserID
 			FROM OPENJSON(@Colors)
 				WITH (ColorName nvarchar(50))

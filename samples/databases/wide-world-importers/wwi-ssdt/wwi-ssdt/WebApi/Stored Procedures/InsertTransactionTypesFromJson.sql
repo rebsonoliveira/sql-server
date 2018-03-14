@@ -2,7 +2,7 @@
 WITH EXECUTE AS OWNER
 AS BEGIN
 	INSERT INTO Application.TransactionTypes(TransactionTypeName,LastEditedBy)
-			OUTPUT  INSERTED.TransactionTypeID
+			OUTPUT  inserted.TransactionTypeID
 			SELECT TransactionTypeName,@UserID
 			FROM OPENJSON(@TransactionTypes)
 				WITH (TransactionTypeName nvarchar(50))

@@ -19,7 +19,7 @@ BEGIN
 		   si.Size,
 		   si.MarketingComments,
 		   si.CustomFields
-    FROM Website.StockItems AS si
+    FROM WebApi.StockItems AS si
     WHERE (@Name IS NULL OR si.StockItemName LIKE ('%' + @Name + '%'))
 	AND (@MinPrice IS NULL OR si.UnitPrice > @MinPrice)
 	AND (@MaxPrice IS NULL OR si.UnitPrice < @MaxPrice)

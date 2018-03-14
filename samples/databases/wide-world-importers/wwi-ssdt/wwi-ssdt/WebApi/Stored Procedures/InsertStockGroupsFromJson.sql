@@ -2,7 +2,7 @@
 WITH EXECUTE AS OWNER
 AS BEGIN
 	INSERT INTO Warehouse.StockGroups(StockGroupName,LastEditedBy)
-			OUTPUT  INSERTED.StockGroupID
+			OUTPUT  inserted.StockGroupID
 			SELECT StockGroupName,@UserID
 			FROM OPENJSON(@StockGroups)
 				WITH (StockGroupName nvarchar(50))

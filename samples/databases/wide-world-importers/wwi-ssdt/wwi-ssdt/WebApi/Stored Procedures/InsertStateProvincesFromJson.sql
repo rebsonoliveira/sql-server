@@ -2,7 +2,7 @@
 WITH EXECUTE AS OWNER
 AS BEGIN
 	INSERT INTO Application.StateProvinces(StateProvinceCode,StateProvinceName,CountryID,SalesTerritory,LatestRecordedPopulation,LastEditedBy)
-	OUTPUT  INSERTED.StateProvinceID
+	OUTPUT  inserted.StateProvinceID
 	SELECT StateProvinceCode,StateProvinceName,CountryID,SalesTerritory,LatestRecordedPopulation,@UserID
 	FROM OPENJSON(@StateProvinces)
 		WITH (

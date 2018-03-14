@@ -2,7 +2,7 @@
 WITH EXECUTE AS OWNER
 AS BEGIN
 	INSERT INTO Application.Cities(CityName,StateProvinceID,LatestRecordedPopulation,LastEditedBy)
-			OUTPUT  INSERTED.CityID
+			OUTPUT  inserted.CityID
 			SELECT CityName,StateProvinceID,LatestRecordedPopulation,@UserID
 			FROM OPENJSON(@Cities)
 				WITH (

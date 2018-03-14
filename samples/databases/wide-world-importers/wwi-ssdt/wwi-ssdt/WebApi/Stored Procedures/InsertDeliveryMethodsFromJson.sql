@@ -2,7 +2,7 @@
 WITH EXECUTE AS OWNER
 AS BEGIN
 	INSERT INTO Application.DeliveryMethods(DeliveryMethodName,LastEditedBy)
-			OUTPUT  INSERTED.DeliveryMethodID
+			OUTPUT  inserted.DeliveryMethodID
 			SELECT DeliveryMethodName,@UserID
 			FROM OPENJSON(@DeliveryMethods)
 				WITH (DeliveryMethodName nvarchar(50))

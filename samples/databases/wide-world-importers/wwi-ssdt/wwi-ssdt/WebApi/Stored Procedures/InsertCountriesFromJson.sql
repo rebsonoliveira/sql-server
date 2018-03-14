@@ -2,7 +2,7 @@
 WITH EXECUTE AS OWNER
 AS BEGIN
 	INSERT INTO Application.Countries(CountryName,FormalName,IsoAlpha3Code,IsoNumericCode,CountryType,LatestRecordedPopulation,Continent,Region,Subregion, LastEditedBy)
-	OUTPUT  INSERTED.CountryID
+	OUTPUT  inserted.CountryID
 	SELECT CountryName,FormalName,IsoAlpha3Code,IsoNumericCode,CountryType,LatestRecordedPopulation,Continent,Region,Subregion, @UserID
 	FROM OPENJSON (@Countries)
 		WITH (

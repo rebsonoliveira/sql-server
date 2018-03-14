@@ -2,7 +2,7 @@
 WITH EXECUTE AS OWNER
 AS BEGIN
 	INSERT INTO Sales.CustomerCategories(CustomerCategoryName,LastEditedBy)
-			OUTPUT  INSERTED.CustomerCategoryID
+			OUTPUT  inserted.CustomerCategoryID
 			SELECT CustomerCategoryName,@UserID
 			FROM OPENJSON(@CustomerCategories)
 				WITH (CustomerCategoryName nvarchar(50))
