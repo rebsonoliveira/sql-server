@@ -1,6 +1,6 @@
 ﻿CREATE   VIEW [WebApi].[SalesOrders]
 AS
-SELECT	o.OrderID, o.OrderDate, OrderNumber = o.CustomerPurchaseOrderNumber,
+SELECT	o.OrderID, o.OrderDate, o.CustomerPurchaseOrderNumber,
 		o.ExpectedDeliveryDate, o.PickingCompletedWhen,
 		o.CustomerID, c.CustomerName, c.PhoneNumber, c.FaxNumber, c.WebsiteURL, 
 		DeliveryLocation = JSON_QUERY((SELECT 
