@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [WebApi].[UpdateSpecialDealFromJson](@SpecialDeal NVARCHAR(MAX), @DealID int, @UserID int)
+﻿CREATE PROCEDURE [WebApi].[UpdateSpecialDealFromJson](@SpecialDeal NVARCHAR(MAX), @SpecialDealID int, @UserID int)
 WITH EXECUTE AS OWNER
 AS BEGIN	UPDATE Sales.SpecialDeals SET
 				StockItemID = ISNULL(json.StockItemID,Sales.SpecialDeals.StockItemID),
@@ -27,6 +27,6 @@ AS BEGIN	UPDATE Sales.SpecialDeals SET
 					DiscountPercentage decimal(18,3),
 					UnitPrice decimal(18,2)) as json
 			WHERE 
-				Sales.SpecialDeals.SpecialDealID = @DealID
+				Sales.SpecialDeals.SpecialDealID = @SpecialDealID
 
 END

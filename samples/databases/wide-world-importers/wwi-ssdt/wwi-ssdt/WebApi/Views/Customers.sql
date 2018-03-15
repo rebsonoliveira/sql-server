@@ -1,35 +1,52 @@
 ﻿CREATE VIEW [WebApi].[Customers]
 AS
-SELECT s.CustomerID,
-       s.CustomerName,
+SELECT c.CustomerID,
+       c.CustomerName,
        sc.CustomerCategoryName,
        pp.FullName AS PrimaryContact,
        ap.FullName AS AlternateContact,
-       s.PhoneNumber,
-       s.FaxNumber,
-       s.WebsiteURL,
+       c.PhoneNumber,
+       c.FaxNumber,
+       c.WebsiteURL,
+	   c.PostalAddressLine1,
+	   c.PostalAddressLine2,
+	   c.PostalPostalCode,
+	   c.PostalCityID,
+	   PostalCity = pc.CityName,
+	   c.AccountOpenedDate,
+	   c.CreditLimit,
+	   c.IsOnCreditHold,
+	   c.IsStatementSent,
+	   c.PaymentDays,
+	   c.RunPosition,
+	   c.StandardDiscountPercentage,
 	   bg.BuyingGroupName,
        DeliveryLocation = JSON_QUERY((SELECT
 				type = 'Feature',
 				[geometry.type] = 'Point',
-				[geometry.coordinates] = JSON_QUERY(CONCAT('[',s.DeliveryLocation.Long,',',s.DeliveryLocation.Lat ,']')),
+				[geometry.coordinates] = JSON_QUERY(CONCAT('[',c.DeliveryLocation.Long,',',c.DeliveryLocation.Lat ,']')),
 				[properties.DeliveryMethod] = DeliveryMethodName,
-				[properties.CityName] = c.CityName,
+				[properties.CityName] = pc.CityName,
 				[properties.Province] = sp.StateProvinceName,
 				[properties.Territory] = sp.SalesTerritory
-		FOR JSON PATH, WITHOUT_ARRAY_WRAPPER))
-FROM Sales.Customers AS s
+		FOR JSON PATH, WITHOUT_ARRAY_WRAPPER)),
+		c.PrimaryContactPersonID,
+		c.AlternateContactPersonID,
+		c.BillToCustomerID,
+		c.BuyingGroupID,
+		c.CustomerCategoryID
+FROM Sales.Customers AS c
 LEFT OUTER JOIN Sales.CustomerCategories AS sc
-ON s.CustomerCategoryID = sc.CustomerCategoryID
+ON c.CustomerCategoryID = sc.CustomerCategoryID
 LEFT OUTER JOIN [Application].People AS pp
-ON s.PrimaryContactPersonID = pp.PersonID
+ON c.PrimaryContactPersonID = pp.PersonID
 LEFT OUTER JOIN [Application].People AS ap
-ON s.AlternateContactPersonID = ap.PersonID
+ON c.AlternateContactPersonID = ap.PersonID
 LEFT OUTER JOIN Sales.BuyingGroups AS bg
-ON s.BuyingGroupID = bg.BuyingGroupID
+ON c.BuyingGroupID = bg.BuyingGroupID
 LEFT OUTER JOIN [Application].DeliveryMethods AS dm
-ON s.DeliveryMethodID = dm.DeliveryMethodID
-LEFT OUTER JOIN [Application].Cities AS c
-ON s.DeliveryCityID = c.CityID
+ON c.DeliveryMethodID = dm.DeliveryMethodID
+LEFT OUTER JOIN [Application].Cities AS pc
+ON c.PostalCityID = pc.CityID
 LEFT OUTER JOIN [Application].StateProvinces AS sp
-ON sp.StateProvinceID = c.StateProvinceID
+ON sp.StateProvinceID = pc.StateProvinceID
