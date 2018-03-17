@@ -774,6 +774,16 @@
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
     <Build Include="WebApi\Stored Procedures\Login.sql" />
+    <Build Include="WebApi\Views\BuyingGroups.sql" />
+    <Build Include="WebApi\Views\StockGroups.sql" />
+    <Build Include="WebApi\Views\Colors.sql" />
+    <Build Include="WebApi\Views\PackageTypes.sql" />
+    <Build Include="WebApi\Views\Countries.sql" />
+    <Build Include="WebApi\Views\CustomerCategories.sql" />
+    <Build Include="WebApi\Views\SupplierCategories.sql" />
+    <Build Include="WebApi\Views\TransactionTypes.sql" />
+    <Build Include="WebApi\Views\DeliveryMethods.sql" />
+    <Build Include="WebApi\Views\PaymentMethods.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="PostDeploymentScripts\Script.PostDeployment1.sql" />
