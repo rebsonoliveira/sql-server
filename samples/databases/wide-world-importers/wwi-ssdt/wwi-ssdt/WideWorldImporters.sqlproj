@@ -695,7 +695,9 @@
     <Build Include="WebApi\Stored Procedures\UpdateTransactionTypeFromJson.sql" />
     <Build Include="WebApi\Stored Procedures\InsertTransactionTypesFromJson.sql" />
     <Build Include="WebApi\Stored Procedures\DeleteTransactionType.sql" />
-    <Build Include="WebApi\Stored Procedures\UpdateSupplierTransactionFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\UpdateSupplierTransactionFromJson.sql">
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
     <Build Include="WebApi\Stored Procedures\UpdateSupplierFromJson.sql" />
     <Build Include="WebApi\Stored Procedures\InsertSuppliersFromJson.sql" />
     <Build Include="WebApi\Stored Procedures\DeleteSupplier.sql" />
@@ -730,7 +732,9 @@
     <Build Include="WebApi\Stored Procedures\DeleteCustomer.sql" />
     <Build Include="WebApi\Stored Procedures\InsertCustomersFromJson.sql" />
     <Build Include="WebApi\Stored Procedures\UpdateCustomerFromJson.sql" />
-    <Build Include="WebApi\Stored Procedures\UpdateCustomerTransactionFromJson.sql" />
+    <Build Include="WebApi\Stored Procedures\UpdateCustomerTransactionFromJson.sql">
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
     <Build Include="WebApi\Stored Procedures\DeleteDeliveryMethod.sql" />
     <Build Include="WebApi\Stored Procedures\InsertDeliveryMethodsFromJson.sql" />
     <Build Include="WebApi\Stored Procedures\UpdateDeliveryMethodFromJson.sql" />
