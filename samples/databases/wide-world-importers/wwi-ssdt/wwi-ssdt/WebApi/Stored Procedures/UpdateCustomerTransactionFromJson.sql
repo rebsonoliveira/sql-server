@@ -1,7 +1,6 @@
 ﻿CREATE PROCEDURE [WebApi].[UpdateCustomerTransactionFromJson](@CustomerTransaction NVARCHAR(MAX), @CustomerTransactionID int, @UserID int)
 WITH EXECUTE AS OWNER
 AS BEGIN
-	SET QUOTED_IDENTIFIER ON;
 	UPDATE Sales.CustomerTransactions SET
 			TransactionTypeID = ISNULL(json.TransactionTypeID, Sales.CustomerTransactions.TransactionTypeID),
 			PaymentMethodID = json.PaymentMethodID,
