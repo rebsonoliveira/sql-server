@@ -18,11 +18,13 @@ SELECT s.SupplierID,
 		s.PostalAddressLine2,
 		s.PostalPostalCode,
 		s.PaymentDays,
+		s.SupplierCategoryID,
 	   DeliveryLocation = JSON_QUERY((SELECT 
 				[type] = 'Feature',
 				[geometry.type] = 'Point',
 				[geometry.coordinates] = JSON_QUERY(CONCAT('[',s.DeliveryLocation.Long,',',s.DeliveryLocation.Lat ,']')),
 				[properties.DeliveryMethod] = dm.DeliveryMethodName,
+				[properties.DeliveryMethodID] = s.DeliveryMethodID,
 				[properties.City] = c.CityName,
 				[properties.Province] = sp.StateProvinceName,
 				[properties.Territory] = sp.SalesTerritory

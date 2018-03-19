@@ -1,17 +1,17 @@
 ﻿CREATE PROCEDURE [WebApi].[UpdateSpecialDealFromJson](@SpecialDeal NVARCHAR(MAX), @SpecialDealID int, @UserID int)
 WITH EXECUTE AS OWNER
 AS BEGIN	UPDATE Sales.SpecialDeals SET
-				StockItemID = ISNULL(json.StockItemID,Sales.SpecialDeals.StockItemID),
-				CustomerID = ISNULL(json.CustomerID,Sales.SpecialDeals.CustomerID),
-				BuyingGroupID = ISNULL(json.BuyingGroupID,Sales.SpecialDeals.BuyingGroupID),
-				CustomerCategoryID = ISNULL(json.CustomerCategoryID,Sales.SpecialDeals.CustomerCategoryID),
-				StockGroupID = ISNULL(json.StockGroupID,Sales.SpecialDeals.StockGroupID),
+				StockItemID = json.StockItemID,
+				CustomerID = json.CustomerID,
+				BuyingGroupID = json.BuyingGroupID,
+				CustomerCategoryID = json.CustomerCategoryID,
+				StockGroupID = json.StockGroupID,
 				DealDescription = ISNULL(json.DealDescription,Sales.SpecialDeals.DealDescription),
 				StartDate = ISNULL(json.StartDate,Sales.SpecialDeals.StartDate),
 				EndDate = ISNULL(json.EndDate,Sales.SpecialDeals.EndDate),
-				DiscountAmount = ISNULL(json.DiscountAmount,Sales.SpecialDeals.DiscountAmount),
-				DiscountPercentage = ISNULL(json.DiscountPercentage,Sales.SpecialDeals.DiscountPercentage),
-				UnitPrice = ISNULL(json.UnitPrice,Sales.SpecialDeals.UnitPrice),
+				DiscountAmount = json.DiscountAmount,
+				DiscountPercentage = json.DiscountPercentage,
+				UnitPrice = json.UnitPrice,
 				LastEditedBy = @UserID
 			FROM OPENJSON(@SpecialDeal)
 				WITH (

@@ -4,13 +4,13 @@ AS BEGIN
 	SET QUOTED_IDENTIFIER ON;
 	UPDATE Sales.CustomerTransactions SET
 			TransactionTypeID = ISNULL(json.TransactionTypeID, Sales.CustomerTransactions.TransactionTypeID),
-			PaymentMethodID = ISNULL(json.PaymentMethodID, Sales.CustomerTransactions.PaymentMethodID),
+			PaymentMethodID = json.PaymentMethodID,
 			TransactionDate = ISNULL(json.TransactionDate, Sales.CustomerTransactions.TransactionDate),
 			AmountExcludingTax = ISNULL(json.AmountExcludingTax, Sales.CustomerTransactions.AmountExcludingTax),
 			TaxAmount = ISNULL(json.TaxAmount, Sales.CustomerTransactions.TaxAmount),
 			TransactionAmount = ISNULL(json.TransactionAmount, Sales.CustomerTransactions.TransactionAmount),
 			OutstandingBalance = ISNULL(json.OutstandingBalance, Sales.CustomerTransactions.OutstandingBalance),
-			FinalizationDate = ISNULL(json.FinalizationDate, Sales.CustomerTransactions.FinalizationDate),
+			FinalizationDate = json.FinalizationDate,
 			LastEditedBy = @UserID
 		FROM OPENJSON(@CustomerTransaction)
 			WITH (

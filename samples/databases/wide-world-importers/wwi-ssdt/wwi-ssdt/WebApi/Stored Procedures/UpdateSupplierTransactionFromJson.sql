@@ -5,8 +5,8 @@ AS BEGIN
 	UPDATE Purchasing.SupplierTransactions SET
 			SupplierID = ISNULL(json.SupplierID,Purchasing.SupplierTransactions.SupplierID),
 			TransactionTypeID = ISNULL(json.TransactionTypeID,Purchasing.SupplierTransactions.TransactionTypeID),
-			PurchaseOrderID = ISNULL(json.PurchaseOrderID,Purchasing.SupplierTransactions.PurchaseOrderID),
-			PaymentMethodID = ISNULL(json.PaymentMethodID,Purchasing.SupplierTransactions.PaymentMethodID),
+			PurchaseOrderID = json.PurchaseOrderID,
+			PaymentMethodID = json.PaymentMethodID,
 			SupplierInvoiceNumber = ISNULL(json.SupplierInvoiceNumber,Purchasing.SupplierTransactions.SupplierInvoiceNumber),
 			TransactionDate = ISNULL(json.TransactionDate,Purchasing.SupplierTransactions.TransactionDate),
 			AmountExcludingTax = ISNULL(json.AmountExcludingTax,Purchasing.SupplierTransactions.AmountExcludingTax),
