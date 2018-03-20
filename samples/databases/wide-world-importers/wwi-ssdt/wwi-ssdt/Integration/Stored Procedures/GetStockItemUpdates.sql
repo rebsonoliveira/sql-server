@@ -64,7 +64,7 @@ BEGIN
              [Typical Weight Per Unit], Photo, [Valid From], [Valid To])
         SELECT si.StockItemID, si.StockItemName, c.ColorName, spt.PackageTypeName,
                bpt.PackageTypeName, si.Brand, si.Size, si.LeadTimeDays, si.QuantityPerOuter,
-               si.IsChillerStock, si.Barcode, si.LeadTimeDays, si.UnitPrice, si.RecommendedRetailPrice,
+               si.IsChillerStock, si.Barcode, si.TaxRate, si.UnitPrice, si.RecommendedRetailPrice,
                si.TypicalWeightPerUnit, si.Photo, si.ValidFrom, si.ValidTo
         FROM Warehouse.StockItems FOR SYSTEM_TIME AS OF @ValidFrom AS si
         INNER JOIN Warehouse.PackageTypes FOR SYSTEM_TIME AS OF @ValidFrom AS spt
