@@ -1,12 +1,13 @@
-﻿
-CREATE VIEW Website.PurchaseOrderLines
+﻿CREATE VIEW [WebApi].[SalesOrderLines]
 AS
-SELECT	 ol.PurchaseOrderLineID, ol.PurchaseOrderID, ol.Description, ol.IsOrderLineFinalized,
+SELECT	ol.OrderLineID, ol.OrderID, ol.Description, ol.Quantity, ol.UnitPrice, ol.TaxRate,
 		ProductName = si.StockItemName, si.Brand, si.Size, c.ColorName, pt.PackageTypeName
-FROM	Purchasing.PurchaseOrderLines ol
+FROM	Sales.OrderLines ol
 		INNER JOIN Warehouse.StockItems si
 			ON ol.StockItemID = si.StockItemID
 			INNER JOIN Warehouse.Colors c
 				ON c.ColorID = si.ColorID
 		INNER JOIN Warehouse.PackageTypes pt
 			ON ol.PackageTypeID = pt.PackageTypeID
+		
+
