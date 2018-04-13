@@ -24,8 +24,8 @@ You can follow the steps below to clone individual files from the sql-server-sam
 git clone -n https://github.com/Microsoft/sql-server-samples
 cd sql-server-samples
 git config core.sparsecheckout true
-echo samples/features/*| out-file -append -encoding ascii.git/info/sparse-checkout
-echo samples/demos/*| out-file -append -encoding ascii.git/info/sparse-checkout
+echo samples/features/*| out-file -append -encoding ascii .git/info/sparse-checkout
+echo samples/demos/*| out-file -append -encoding ascii .git/info/sparse-checkout
 git checkout
 ```
 For more information about sparse checkout please visit [this](https://stackoverflow.com/questions/23289006/on-windows-git-error-sparse-checkout-leaves-no-entry-on-the-working-directory) stackoverflow thread.
