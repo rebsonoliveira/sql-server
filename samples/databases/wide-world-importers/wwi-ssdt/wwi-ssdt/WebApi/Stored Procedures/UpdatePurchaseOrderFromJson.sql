@@ -1,7 +1,7 @@
 ﻿CREATE PROCEDURE [WebApi].[UpdatePurchaseOrderFromJson](@PurchaseOrder NVARCHAR(MAX), @PurchaseOrderID int, @UserID int)
 WITH EXECUTE AS OWNER
 AS BEGIN	UPDATE Purchasing.PurchaseOrders SET
-				SupplierID = json.SupplierID,
+				SupplierID = ISNULL(json.SupplierID, Purchasing.PurchaseOrders.SupplierID),
 				OrderDate = ISNULL(json.OrderDate,Purchasing.PurchaseOrders.OrderDate),
 				DeliveryMethodID = ISNULL(json.DeliveryMethodID,Purchasing.PurchaseOrders.DeliveryMethodID),
 				ContactPersonID = ISNULL(json.ContactPersonID,Purchasing.PurchaseOrders.ContactPersonID),
