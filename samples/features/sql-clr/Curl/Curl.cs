@@ -33,7 +33,7 @@ public partial class Curl
                     Uri.EscapeUriString(url.ToSqlString().Value),
                     d.ToSqlString().Value
                     );
-        SqlContext.Pipe.Send(response);
+        SqlContext.Pipe.Send("Request is executed. " + response);
     }
 
     [SqlProcedure]
