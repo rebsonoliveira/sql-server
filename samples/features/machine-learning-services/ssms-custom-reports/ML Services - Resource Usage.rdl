@@ -1861,12 +1861,12 @@ select concat('External Pool - ', ep.name) as pool_name, ep.max_memory_percent
               <Actions>
                 <Action>
                   <Drillthrough>
-                    <ReportName>=".\R Services - Script"</ReportName>
+                    <ReportName>=".\ML Services - Script"</ReportName>
                     <Parameters>
-                      <Parameter Name="SQLR_ReportName">
-                        <Value>SQL Server R Services - Resource Usage</Value>
+                      <Parameter Name="SQLML_ReportName">
+                        <Value>SQL Server ML Services - Resource Usage</Value>
                       </Parameter>
-                      <Parameter Name="SQLR_Script">
+                      <Parameter Name="SQLML_Script">
                         <Value>=DataSets("sql_memory_usage").CommandText &amp; chr(13) &amp; chr(10) &amp; "go" &amp; chr(13) &amp; chr(10) &amp; DataSets("memory_limits").CommandText &amp; chr(13) &amp; chr(10) &amp; "go" &amp; chr(13) &amp; chr(10) &amp; DataSets("pool_statistics").CommandText</Value>
                       </Parameter>
                     </Parameters>

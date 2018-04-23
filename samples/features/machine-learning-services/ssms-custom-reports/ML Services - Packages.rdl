@@ -930,13 +930,13 @@ end;</CommandText>
               <Actions>
                 <Action>
                   <Drillthrough>
-                    <ReportName>=".\R Services - Script"</ReportName>
+                    <ReportName>=".\ML Services - Script"</ReportName>
                     <Parameters>
-                      <Parameter Name="SQLR_ReportName">
-                        <Value>SQL Server R Services - Installed Packages</Value>
+                      <Parameter Name="SQLML_ReportName">
+                        <Value>SQL Server ML Services - Installed Packages</Value>
                       </Parameter>
-                      <Parameter Name="SQLR_Script">
-                        <Value>=DataSets("R_Packages").CommandText</Value>
+                      <Parameter Name="SQLML_Script">
+                        <Value>=DataSets("R_Packages").CommandText &amp; chr(13) &amp; chr(10) &amp; "go" &amp; chr(13) &amp; chr(10) &amp; DataSets("Py_Packages").CommandText</Value>
                       </Parameter>
                     </Parameters>
                   </Drillthrough>
@@ -1049,7 +1049,7 @@ end;</CommandText>
             <Top>1.71417in</Top>
             <Left>0.01834in</Left>
             <Height>0.25in</Height>
-            <Width>2.50778in</Width>
+            <Width>2.57723in</Width>
             <ZIndex>7</ZIndex>
             <Style>
               <Border>
@@ -1084,7 +1084,7 @@ end;</CommandText>
               </Paragraph>
             </Paragraphs>
             <Top>1.71916in</Top>
-            <Left>2.54001in</Left>
+            <Left>2.66501in</Left>
             <Height>0.25in</Height>
             <Width>1in</Width>
             <ZIndex>8</ZIndex>

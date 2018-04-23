@@ -15,7 +15,7 @@
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="r_extended_events">
+    <DataSet Name="ml_extended_events">
       <Query>
         <DataSourceName>SqlConnection</DataSourceName>
         <CommandText>/*
@@ -239,7 +239,7 @@ select o.name as event_name, o.description
                 </TablixMember>
               </TablixMembers>
             </TablixRowHierarchy>
-            <DataSetName>r_extended_events</DataSetName>
+            <DataSetName>ml_extended_events</DataSetName>
             <Top>1.09167in</Top>
             <Height>0.5in</Height>
             <Width>8.875in</Width>
@@ -365,13 +365,13 @@ select o.name as event_name, o.description
               <Actions>
                 <Action>
                   <Drillthrough>
-                    <ReportName>=".\R Services - Script"</ReportName>
+                    <ReportName>=".\ML Services - Script"</ReportName>
                     <Parameters>
-                      <Parameter Name="SQLR_ReportName">
-                        <Value>SQL Server R Services - Extended Events</Value>
+                      <Parameter Name="SQLML_ReportName">
+                        <Value>SQL Server ML Services - Extended Events</Value>
                       </Parameter>
-                      <Parameter Name="SQLR_Script">
-                        <Value>=DataSets("r_extended_events").CommandText</Value>
+                      <Parameter Name="SQLML_Script">
+                        <Value>=DataSets("ml_extended_events").CommandText</Value>
                       </Parameter>
                     </Parameters>
                   </Drillthrough>
