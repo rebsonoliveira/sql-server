@@ -22,7 +22,7 @@ These templates are offered for anyone to download and customize for their own u
 
 ## About this sample
 
-- **Applies to:** SQL Server 2016 (or higher), Azure SQL Database, Azure SQL Data Warehouse, Parallel Data Warehouse
+- **Applies to:** SQL Server 2008 (or higher), Azure SQL Database, Azure SQL Data Warehouse, Parallel Data Warehouse
 
 <a name=before-you-begin></a>
 
@@ -32,7 +32,7 @@ To run this sample, you need the following prerequisites.
 
 **Software prerequisites:**
 
-1. SQL Server 2005 (or higher) or an Azure SQL Database or SQL Analysis Services
+1. SQL Server 2008 (or higher) or an Azure SQL Database or SQL Analysis Services
 2. SSMS 2008 or higher
 
 <a name=run-this-sample></a>
