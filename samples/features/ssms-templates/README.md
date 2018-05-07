@@ -46,4 +46,4 @@ Download the templates to a folder of your choice and open them from the File/Op
 ## Related Links
 
 For more information, see these articles:
-https://docs.microsoft.com/en-us/sql/ssms/tutorials/templates-ssms
+https://docs.microsoft.com/sql/ssms/tutorials/templates-ssms
