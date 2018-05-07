@@ -1,3 +1,4 @@
 ## Windows Containers
-This includes samples for setting up mssql-server in Windows Containers. Currently it includes the following:
-- __[mssql-server-2014-express-windows] (mssql-server-2014-express-windows/)__
+
+Moved here: [Microsoft/mssql-docker](https://github.com/Microsoft/mssql-docker/blob/master/windows/README.md)
+

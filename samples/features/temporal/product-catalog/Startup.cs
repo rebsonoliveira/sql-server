@@ -26,10 +26,7 @@ namespace ProductCatalog
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Azure Sql Db connection:
-            // const string ConnString = "Server=<<SERVER>>.database.windows.net;Database=ProductCatalog;User Id=<<USER>>;Password=<<PASSWORD>>";
-            const string ConnString = "Server=.;Database=ProductCatalog;Integrated Security=true";
-
+            string ConnString = Configuration["ConnectionStrings:ProductCatalog"];
             services.AddTransient<IQueryPipe>(_ => new QueryPipe(new SqlConnection(ConnString)));
             services.AddTransient<ICommand>(_ => new Command(new SqlConnection(ConnString)));
 

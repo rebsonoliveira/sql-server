@@ -17,7 +17,7 @@ This project contains an example implementation of NodeJS REST API with CRUD ope
 
 - **Applies to:** SQL Server 2016 (or higher), Azure SQL Database
 - **Key features:** JSON Functions in SQL Server 2016/Azure SQL Database - FOR JSON and OPENJSON
-- **Programming Language:** JavaScript (NodeJS)
+- **Programming Language:** JavaScript (NodeJS), T-SQL
 - **Authors:** Jovan Popovic
 
 <a name=before-you-begin></a>
@@ -29,7 +29,7 @@ To run this sample, you need the following prerequisites.
 **Software prerequisites:**
 
 1. SQL Server 2016 (or higher) or an Azure SQL Database
-2. Visual Studio 2015 (or higher) with the NodeJS
+2. Node.js runtime.
 
 **Azure prerequisites:**
 
@@ -39,32 +39,34 @@ To run this sample, you need the following prerequisites.
 
 ## Run this sample
 
-1. Navigate to the folder where you have downloaded sample and run **npm install** in command window, or run setup.bat if you are on Windows operating system. This command will install necessary npm packages defined in project.json.
+1. Navigate to the folder where you have downloaded sample and run **npm update** in the command window.
 
-2. From SQL Server Management Studio or SQL Server Data Tools connect to your SQL Server 2016 or Azure SQL database and execute setup.sql script that will create and populate Todo table in the database.
+2. From SQL Server Management Studio or SQL Server Data Tools connect to your SQL Server 2016 or Azure SQL database and
+execute setup.sql script that will create and populate Todo table in the database and create necessary stored procedures.
 
-3. From Visual Studio, open the **TodoApp.xproj** file from the root directory,
-
-4. Locate db.js file in the project, change database connection info in createConnection() method to reference your database. the following tokens should be replaced:
- 1. SERVERNAME - name of the database server.
- 2. DATABASE - Name of database where Todo table is stored.
- 3. USERNAME - SQL Server login that can access table data and execute stored procedures.
- 4. PASSWORD - Password associated to SQL Server login.
-
+3. Locate config folder in the project and setup connection info in default.json file. The content of the file should look like:
 ```
-    var config = {
-        server  : "SERVER.database.windows.net",
-        userName: "USER",
-        password: "PASSWORD",
-        // If you're on Azure, you will need this:
-        options: { encrypt: true, database: 'DATABASE' }
-    };
+{
+    "connection":{
+        "server"  : "<<server name or ip>>",
+        "userName": "<<user name>>",
+        "password": "<<password>>",
+        "options": { "encrypt": true, "database": "<<database name>>" }
+    }
+}
 ```
+Content under connection key will be passed to Tedious package, which is used to
+interact with SQL Database. You can find more information
+about the properties in this object on [Tedious site](http://tediousjs.github.io/tedious/getting-started.html).
 
-5. Build project using Ctrl+Shift+B, right-click on project + Build, or Build/Build Solution from menu.
+As an alternative, you can put connection info into Development.json or
+Production.json file. This sample uses [config](https://www.npmjs.com/package/config)
+npm module to read configurations from a file, so you can find more information about
+the configuration there.
 
-6. Run sample app using F5 or Ctrl+F5. /todo Url will be opened with a list of all Todo items as a JSON array,
- 1. Open /api/Todo/1 Url to get details about a single Todo item with id 1,
+4. Run sample app from the command line using **node app.js**
+ 1. Open http://localhost:3000/todo Url to get list of all Todo items from a table,
+ 2. Open http://localhost:3000/todo/1 Url to get details about a single Todo item with id 1,
  2. Send POST, PUT, or DELETE Http requests to update content of Todo table.
 
 <a name=sample-details></a>
@@ -74,8 +76,7 @@ To run this sample, you need the following prerequisites.
 This sample application shows how to create simple REST API service that performs CRUD operations on a simple Todo table.
 NodeJS REST API is used to implement REST Service in the example.
 1. app.js file that contains startup code.
-2. db.js file that contains functions that wrap Tedious library
-3. todo.js file that contains action that will be called on GET, POST, PUT, and DELETE Http requests.
+3. routes/todo.js file that contains action that will be called on GET, POST, PUT, and DELETE Http requests.
 
 Service uses Tedious library for data access and built-in JSON functionalities that are available in SQL Server 2016 and Azure SQL Database.
 

@@ -36,25 +36,12 @@
             this.bottomToolStrip = new System.Windows.Forms.ToolStrip();
             this.lblTasksTitle = new System.Windows.Forms.ToolStripLabel();
             this.lblTasksValue = new System.Windows.Forms.ToolStripLabel();
-            this.tss_1 = new System.Windows.Forms.ToolStripSeparator();
-            this.lblBatchSizeTitle = new System.Windows.Forms.ToolStripLabel();
-            this.lblBatchSizeValue = new System.Windows.Forms.ToolStripLabel();
-            this.tss_2 = new System.Windows.Forms.ToolStripSeparator();
-            this.lblFrequencyTitle = new System.Windows.Forms.ToolStripLabel();
-            this.lblFrequencyValue = new System.Windows.Forms.ToolStripLabel();
-            this.tss_3 = new System.Windows.Forms.ToolStripSeparator();
-            this.lblMetersTitle = new System.Windows.Forms.ToolStripLabel();
-            this.lblMetersValue = new System.Windows.Forms.ToolStripLabel();
-            this.tss_5 = new System.Windows.Forms.ToolStripSeparator();
-            this.lblRpsTitle = new System.Windows.Forms.ToolStripLabel();
-            this.lblRpsValue = new System.Windows.Forms.ToolStripLabel();
-            this.Start = new System.Windows.Forms.Button();
             this.Stop = new System.Windows.Forms.Button();
-            this.RpsChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.rpsTimer = new System.Windows.Forms.Timer(this.components);
-            this.mainTimer = new System.Windows.Forms.Timer(this.components);
-            this.shockTimer = new System.Windows.Forms.Timer(this.components);
-            this.powerBIReport = new System.Windows.Forms.LinkLabel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lblRpsValue = new System.Windows.Forms.Label();
+            this.stopTimer = new System.Windows.Forms.Timer(this.components);
+            this.RpsChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.bottomToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RpsChart)).BeginInit();
             this.SuspendLayout();
@@ -63,137 +50,78 @@
             // 
             this.bottomToolStrip.BackColor = System.Drawing.Color.White;
             this.bottomToolStrip.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.bottomToolStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.bottomToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblTasksTitle,
-            this.lblTasksValue,
-            this.tss_1,
-            this.lblBatchSizeTitle,
-            this.lblBatchSizeValue,
-            this.tss_2,
-            this.lblFrequencyTitle,
-            this.lblFrequencyValue,
-            this.tss_3,
-            this.lblMetersTitle,
-            this.lblMetersValue,
-            this.tss_5,
-            this.lblRpsTitle,
-            this.lblRpsValue});
-            this.bottomToolStrip.Location = new System.Drawing.Point(0, 303);
+            this.lblTasksValue});
+            this.bottomToolStrip.Location = new System.Drawing.Point(0, 524);
             this.bottomToolStrip.Name = "bottomToolStrip";
-            this.bottomToolStrip.Size = new System.Drawing.Size(847, 25);
+            this.bottomToolStrip.Size = new System.Drawing.Size(1351, 25);
             this.bottomToolStrip.TabIndex = 0;
             this.bottomToolStrip.Text = "toolStrip1";
             // 
             // lblTasksTitle
             // 
-            this.lblTasksTitle.ForeColor = System.Drawing.Color.Gray;
+            this.lblTasksTitle.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.lblTasksTitle.ForeColor = System.Drawing.Color.DimGray;
             this.lblTasksTitle.Name = "lblTasksTitle";
-            this.lblTasksTitle.Size = new System.Drawing.Size(38, 22);
-            this.lblTasksTitle.Text = "Tasks:";
+            this.lblTasksTitle.Size = new System.Drawing.Size(129, 22);
+            this.lblTasksTitle.Text = "Number of Tasks:";
+            this.lblTasksTitle.Visible = false;
             // 
             // lblTasksValue
             // 
+            this.lblTasksValue.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.lblTasksValue.Name = "lblTasksValue";
-            this.lblTasksValue.Size = new System.Drawing.Size(13, 22);
+            this.lblTasksValue.Size = new System.Drawing.Size(19, 22);
             this.lblTasksValue.Text = "0";
-            // 
-            // tss_1
-            // 
-            this.tss_1.Name = "tss_1";
-            this.tss_1.Size = new System.Drawing.Size(6, 25);
-            // 
-            // lblBatchSizeTitle
-            // 
-            this.lblBatchSizeTitle.ForeColor = System.Drawing.Color.Gray;
-            this.lblBatchSizeTitle.Name = "lblBatchSizeTitle";
-            this.lblBatchSizeTitle.Size = new System.Drawing.Size(63, 22);
-            this.lblBatchSizeTitle.Text = "Batch Size:";
-            // 
-            // lblBatchSizeValue
-            // 
-            this.lblBatchSizeValue.Name = "lblBatchSizeValue";
-            this.lblBatchSizeValue.Size = new System.Drawing.Size(13, 22);
-            this.lblBatchSizeValue.Text = "0";
-            // 
-            // tss_2
-            // 
-            this.tss_2.Name = "tss_2";
-            this.tss_2.Size = new System.Drawing.Size(6, 25);
-            // 
-            // lblFrequencyTitle
-            // 
-            this.lblFrequencyTitle.ForeColor = System.Drawing.Color.Gray;
-            this.lblFrequencyTitle.Name = "lblFrequencyTitle";
-            this.lblFrequencyTitle.Size = new System.Drawing.Size(179, 22);
-            this.lblFrequencyTitle.Text = "Shock Frequency/Duration (sec):";
-            // 
-            // lblFrequencyValue
-            // 
-            this.lblFrequencyValue.Name = "lblFrequencyValue";
-            this.lblFrequencyValue.Size = new System.Drawing.Size(30, 22);
-            this.lblFrequencyValue.Text = "0 / 0";
-            // 
-            // tss_3
-            // 
-            this.tss_3.Name = "tss_3";
-            this.tss_3.Size = new System.Drawing.Size(6, 25);
-            // 
-            // lblMetersTitle
-            // 
-            this.lblMetersTitle.ForeColor = System.Drawing.Color.Gray;
-            this.lblMetersTitle.Name = "lblMetersTitle";
-            this.lblMetersTitle.Size = new System.Drawing.Size(46, 22);
-            this.lblMetersTitle.Text = "Meters:";
-            // 
-            // lblMetersValue
-            // 
-            this.lblMetersValue.Name = "lblMetersValue";
-            this.lblMetersValue.Size = new System.Drawing.Size(13, 22);
-            this.lblMetersValue.Text = "0";
-            // 
-            // tss_5
-            // 
-            this.tss_5.Name = "tss_5";
-            this.tss_5.Size = new System.Drawing.Size(6, 25);
-            // 
-            // lblRpsTitle
-            // 
-            this.lblRpsTitle.ForeColor = System.Drawing.Color.Gray;
-            this.lblRpsTitle.Name = "lblRpsTitle";
-            this.lblRpsTitle.Size = new System.Drawing.Size(29, 22);
-            this.lblRpsTitle.Text = "Rps:";
-            // 
-            // lblRpsValue
-            // 
-            this.lblRpsValue.ForeColor = System.Drawing.Color.Red;
-            this.lblRpsValue.Name = "lblRpsValue";
-            this.lblRpsValue.Size = new System.Drawing.Size(13, 22);
-            this.lblRpsValue.Text = "0";
-            // 
-            // Start
-            // 
-            this.Start.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
-            this.Start.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Start.Location = new System.Drawing.Point(720, 268);
-            this.Start.Name = "Start";
-            this.Start.Size = new System.Drawing.Size(105, 40);
-            this.Start.TabIndex = 2;
-            this.Start.Text = "Start";
-            this.Start.UseVisualStyleBackColor = true;
-            this.Start.Click += new System.EventHandler(this.Start_Click);
+            this.lblTasksValue.Visible = false;
             // 
             // Stop
             // 
             this.Stop.Enabled = false;
             this.Stop.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.Stop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Stop.Location = new System.Drawing.Point(609, 268);
+            this.Stop.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Stop.Location = new System.Drawing.Point(1191, 479);
             this.Stop.Name = "Stop";
-            this.Stop.Size = new System.Drawing.Size(105, 40);
+            this.Stop.Size = new System.Drawing.Size(111, 41);
             this.Stop.TabIndex = 3;
-            this.Stop.Text = "Stop";
+            this.Stop.Text = "Close";
             this.Stop.UseVisualStyleBackColor = true;
             this.Stop.Click += new System.EventHandler(this.Stop_Click);
+            // 
+            // rpsTimer
+            // 
+            this.rpsTimer.Interval = 500;
+            this.rpsTimer.Tick += new System.EventHandler(this.rpsTimer_Tick);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.DimGray;
+            this.label1.Location = new System.Drawing.Point(101, 14);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(255, 36);
+            this.label1.TabIndex = 104;
+            this.label1.Text = "rows inserted/sec:";
+            // 
+            // lblRpsValue
+            // 
+            this.lblRpsValue.AutoSize = true;
+            this.lblRpsValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRpsValue.ForeColor = System.Drawing.Color.Red;
+            this.lblRpsValue.Location = new System.Drawing.Point(351, 12);
+            this.lblRpsValue.Name = "lblRpsValue";
+            this.lblRpsValue.Size = new System.Drawing.Size(39, 42);
+            this.lblRpsValue.TabIndex = 105;
+            this.lblRpsValue.Text = "0";
+            // 
+            // stopTimer
+            // 
+            this.stopTimer.Interval = 6000;
+            this.stopTimer.Tick += new System.EventHandler(this.stopTimer_Tick);
             // 
             // RpsChart
             // 
@@ -201,7 +129,7 @@
             this.RpsChart.BorderlineColor = System.Drawing.Color.Black;
             chartArea1.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Seconds;
             chartArea1.AxisX.LabelAutoFitMaxFontSize = 8;
-            chartArea1.AxisX.LineColor = System.Drawing.Color.DarkGray;
+            chartArea1.AxisX.LineColor = System.Drawing.Color.DimGray;
             chartArea1.AxisX.MajorGrid.Enabled = false;
             chartArea1.AxisX.MajorGrid.Interval = 0D;
             chartArea1.AxisX.MajorGrid.IntervalOffset = 0D;
@@ -209,10 +137,14 @@
             chartArea1.AxisX.MajorTickMark.Enabled = false;
             chartArea1.AxisX.Maximum = 100D;
             chartArea1.AxisX.Minimum = 0D;
+            chartArea1.AxisX.Title = "Seconds";
+            chartArea1.AxisX.TitleFont = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             chartArea1.AxisY.LabelAutoFitMaxFontSize = 8;
-            chartArea1.AxisY.LineColor = System.Drawing.Color.DarkGray;
+            chartArea1.AxisY.LineColor = System.Drawing.Color.DimGray;
             chartArea1.AxisY.MajorGrid.Enabled = false;
             chartArea1.AxisY.Minimum = 0D;
+            chartArea1.AxisY.Title = "Number Of Rows";
+            chartArea1.AxisY.TitleFont = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             chartArea1.BackColor = System.Drawing.Color.Transparent;
             chartArea1.Name = "Chart";
             this.RpsChart.ChartAreas.Add(chartArea1);
@@ -221,12 +153,12 @@
             legend1.ForeColor = System.Drawing.Color.Maroon;
             legend1.Name = "Legend1";
             this.RpsChart.Legends.Add(legend1);
-            this.RpsChart.Location = new System.Drawing.Point(0, 0);
+            this.RpsChart.Location = new System.Drawing.Point(12, 56);
             this.RpsChart.Name = "RpsChart";
             this.RpsChart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None;
             series1.ChartArea = "Chart";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series1.Color = System.Drawing.Color.Red;
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Area;
+            series1.Color = System.Drawing.Color.DimGray;
             series1.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             series1.Legend = "Legend1";
             series1.LegendText = "sadsaDS";
@@ -234,49 +166,25 @@
             series1.Name = "RPS";
             series1.Points.Add(dataPoint1);
             this.RpsChart.Series.Add(series1);
-            this.RpsChart.Size = new System.Drawing.Size(847, 262);
-            this.RpsChart.TabIndex = 102;
+            this.RpsChart.Size = new System.Drawing.Size(1324, 419);
+            this.RpsChart.TabIndex = 106;
             this.RpsChart.Text = "Rows / Sec";
-            // 
-            // rpsTimer
-            // 
-            this.rpsTimer.Interval = 300;
-            this.rpsTimer.Tick += new System.EventHandler(this.rpsTimer_Tick);
-            // 
-            // mainTimer
-            // 
-            this.mainTimer.Tick += new System.EventHandler(this.mainTimer_Tick);
-            // 
-            // shockTimer
-            // 
-            this.shockTimer.Interval = 5000;
-            this.shockTimer.Tick += new System.EventHandler(this.shockTimer_Tick);
-            // 
-            // powerBIReport
-            // 
-            this.powerBIReport.AutoSize = true;
-            this.powerBIReport.Location = new System.Drawing.Point(47, 260);
-            this.powerBIReport.Name = "powerBIReport";
-            this.powerBIReport.Size = new System.Drawing.Size(85, 13);
-            this.powerBIReport.TabIndex = 103;
-            this.powerBIReport.TabStop = true;
-            this.powerBIReport.Text = "Power BI Report";
-            this.powerBIReport.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.powerBIReport_LinkClicked);
             // 
             // FrmMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(847, 328);
-            this.Controls.Add(this.powerBIReport);
+            this.ClientSize = new System.Drawing.Size(1351, 549);
             this.Controls.Add(this.RpsChart);
+            this.Controls.Add(this.lblRpsValue);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.Stop);
-            this.Controls.Add(this.Start);
             this.Controls.Add(this.bottomToolStrip);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "FrmMain";
-            this.Text = "Data Generator Client";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "IoT Smart City - Event Monitoring";
             this.bottomToolStrip.ResumeLayout(false);
             this.bottomToolStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RpsChart)).EndInit();
@@ -290,25 +198,12 @@
         private System.Windows.Forms.ToolStrip bottomToolStrip;
         private System.Windows.Forms.ToolStripLabel lblTasksTitle;
         private System.Windows.Forms.ToolStripLabel lblTasksValue;
-        private System.Windows.Forms.ToolStripSeparator tss_1;
-        private System.Windows.Forms.ToolStripLabel lblBatchSizeTitle;
-        private System.Windows.Forms.ToolStripLabel lblBatchSizeValue;
-        private System.Windows.Forms.ToolStripSeparator tss_2;
-        private System.Windows.Forms.ToolStripLabel lblFrequencyTitle;
-        private System.Windows.Forms.ToolStripLabel lblFrequencyValue;
-        private System.Windows.Forms.Button Start;
         private System.Windows.Forms.Button Stop;
-        private System.Windows.Forms.DataVisualization.Charting.Chart RpsChart;
-        private System.Windows.Forms.ToolStripLabel lblRpsTitle;
-        private System.Windows.Forms.ToolStripLabel lblRpsValue;
         private System.Windows.Forms.Timer rpsTimer;
-        private System.Windows.Forms.Timer mainTimer;
-        private System.Windows.Forms.ToolStripLabel lblMetersTitle;
-        private System.Windows.Forms.ToolStripLabel lblMetersValue;
-        private System.Windows.Forms.ToolStripSeparator tss_5;
-        private System.Windows.Forms.Timer shockTimer;
-        private System.Windows.Forms.ToolStripSeparator tss_3;
-        private System.Windows.Forms.LinkLabel powerBIReport;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblRpsValue;
+        private System.Windows.Forms.Timer stopTimer;
+        private System.Windows.Forms.DataVisualization.Charting.Chart RpsChart;
     }
 }
 

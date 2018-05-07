@@ -10,7 +10,11 @@ Master Data Services (MDS) is the SQL Server solution for master data management
 
 [R Services](r-services)
 
-SQL Server R Services brings R processing close to the data, allowing more scalable and more efficient predictive analytics.
+SQL Server R Services (in SQL Server 2016 and above) brings R processing close to the data, allowing more scalable and more efficient predictive analytics using R in-database.
+
+[ML Services](ml-services)
+
+SQL Server ML Services (SQL Server 2017) brings Python processing close to the data, allowing more scalable and more efficient predictive analytics using Python in-database.
 
 [JSON Support](json)
 
@@ -19,6 +23,10 @@ Built-in JSON functions enable you to easily parse and query JSON data stored in
 [Temporal (system-versioning)](temporal)
 
 Built-in temporal functions enable you to easily track history of changes in a table, go back in history, and analyze historical data.
+
+[Graph Tables](sql-graph)
+
+Graph tables enable you to add a non-relational capability to your database.
 
 ## Samples for Business Intelligence features within SQL Server
 

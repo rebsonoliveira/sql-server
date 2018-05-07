@@ -2,6 +2,10 @@
 
 Sample order processing workload that can be used for benchmarking transactional processing with in-memory technologies. The scripts in this folder leverage the In-Memory OLTP feature in SQL Server 2016.
 
+Some results from this benchmark:
+* [4 Terabyte and 343,000 transactions per second with SQL Server 2016 on Hyper-V](https://blogs.technet.microsoft.com/windowsserver/2016/09/28/windows-server-2016-hyper-v-large-scale-vm-performance-for-in-memory-transaction-processing/)
+* [11X perf gain with In-Memory OLTP in Azure SQL Database](https://azure.microsoft.com/blog/in-memory-oltp-in-azure-sql-database/)
+
 <a name=about-this-sample></a>
 
 ## About this sample
@@ -31,7 +35,8 @@ Sample order processing workload that can be used for benchmarking transactional
   |Products	|10	|
   |PurchaseCriteria	|1	|
   |Fulfillment|0|
- 
+
+  - The *scale factor* is a number that governs the actual database size for a given run of the workload. The actual row count for a given table is `[scale factor * weight * 10,000]`. For example, with scale factor 5, the Products table has 5 * 10 * 10,000 = 500,000 rows.
 
 2. Run the stored procedures using the following mix.
 

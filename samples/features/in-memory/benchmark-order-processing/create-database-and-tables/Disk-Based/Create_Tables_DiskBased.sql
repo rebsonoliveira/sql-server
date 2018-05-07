@@ -1,5 +1,6 @@
 -------------------------------------------
 -- version 0.0.0-1007
+-- for Azure SQL DB, replace all occurrences of "ON DiskBased_fg" with ""
 -------------------------------------------
 
 USE DiskBasedDB

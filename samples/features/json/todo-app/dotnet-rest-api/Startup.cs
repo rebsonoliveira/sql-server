@@ -26,8 +26,7 @@ namespace TodoApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //const string ConnString = "Server=SERVERNAME.database.windows.net;Database=DATABASENAME;User Id=USERNAME;Password=PASSWORD";
-            const string ConnString = "Server=.;Database=Todo;Integrated Security=true";
+            string ConnString = Configuration["ConnectionStrings:TodoDb"];
             services.AddTransient<IQueryPipe>( _=> new QueryPipe(new SqlConnection(ConnString)));
             services.AddTransient<ICommand>( _=> new Command(new SqlConnection(ConnString)));
 

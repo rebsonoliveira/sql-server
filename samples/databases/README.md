@@ -9,3 +9,7 @@ The new sample database for SQL Server 2016 and Azure SQL Database. It illustrat
 __[contoso-data-warehouse](contoso-data-warehouse/)__
 
 Sample data warehouse that illustrates loading data into Azure SQL Data Warehouse.
+
+__[AdventureWorks](adventure-works/)__
+
+Sample databases and Analysis Services models for use with SQL Server. 

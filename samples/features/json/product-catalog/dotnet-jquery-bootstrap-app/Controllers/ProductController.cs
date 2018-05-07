@@ -88,5 +88,40 @@ FOR JSON PATH, WITHOUT_ARRAY_WRAPPER");
             cmd.Parameters.AddWithValue("id", id);
             await sqlCmd.ExecuteNonQuery(cmd);
         }
+
+        // GET api/Product/Report1
+        [HttpGet("Report1")]
+        public async Task Report1()
+        {
+            await sqlQuery.Stream(
+@"select Color as [key],
+    	AVG( Price ) as value
+from Product
+group by Color
+FOR JSON PATH", Response.Body, "[]");
+        }
+
+        // GET api/Product/Report2
+        [HttpGet("Report2")]
+        public async Task Report2()
+        {
+            await sqlQuery.Stream(@"
+select  Color as x,
+        AVG (Price) / MAX(Price) as y
+from Product
+group by Color
+FOR JSON PATH", Response.Body, "[]");
+        }
+
+        [HttpGet("Report3")]
+        public async Task Report3()
+        {
+            await sqlQuery.Stream(@"
+select  Color as x,
+        AVG (Price) / MAX(Price) as y
+from Product
+group by Color
+FOR JSON PATH", Response.Body, "[]");
+        }
     }
 }
