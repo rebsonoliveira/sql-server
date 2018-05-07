@@ -2,8 +2,6 @@
 
 This Windows Forms sample application built on .NET Framework 4.6 demonstrates the benefits of using SQL Server Automatic Tuning. You can compare the performance difference between enabling Automatic Tuning or leaveing it disabled, while running a workload that introduces a parameter sniffing regression.
 
-The demo is run in this [17-minute video explaining In-Memory OLTP](https://www.youtube.com/watch?v=l5l5eophmK4) (demo is at 8:25).
-
 <a name=about-this-sample></a>
 
 ## About this sample
