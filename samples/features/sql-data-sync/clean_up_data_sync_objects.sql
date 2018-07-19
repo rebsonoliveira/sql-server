@@ -1,7 +1,7 @@
 declare @TableName nvarchar(max)
 set @TableName = 'yourTableName'
 --In case you wish to delete objects related to all the tables you can uncomment the following:
-set @TableName = ''
+--set @TableName = ''
 
 
 -- List Data Sync user tables
