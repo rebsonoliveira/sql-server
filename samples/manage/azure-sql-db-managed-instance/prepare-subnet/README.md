@@ -18,10 +18,10 @@ Script that validates and prepares virtual network and subnet for Managed Instan
 
 - **Applies to:** Azure SQL Database
 - **Key features:**  Managed Instance
-- **Workload:**n/a
-- **Programming Language:**PowerShell
-- **Authors:**Srdan Bozovic
-- **Update history:**n/a
+- **Workload:** n/a
+- **Programming Language:** PowerShell
+- **Authors:** Srdan Bozovic
+- **Update history:** n/a
 
 <a name=before-you-begin></a>
 
@@ -63,7 +63,7 @@ Invoke-Command -ScriptBlock ([Scriptblock]::Create((New-Object System.Net.WebCli
 
 ## Sample details
 
-This sample shows how to prepare Azure virtual network / subnet for Managed Instance deployment using PowerShell
+This sample shows how to prepare Azure virtual network and subnet for Managed Instance deployment using PowerShell
 
 This is done in three simple steps:
 - Validate - Selected virtual netwok and subnet are validated for Managed Instance networking requirements
