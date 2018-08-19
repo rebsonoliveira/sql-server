@@ -4,12 +4,7 @@ $subscriptionId = $parameters['subscriptionId']
 $resourceGroupName = $parameters['resourceGroupName']
 $virtualNetworkName = $parameters['virtualNetworkName']
 $subnetName = $parameters['subnetName']
-$force = $false
-
-If($args.Length > 1)
-{
-    $force = $args[1]
-}
+$force =  $parameters['force']
 
 function Ensure-Login () 
 {
