@@ -42,7 +42,7 @@ To run this sample, you need the following prerequisites.
 
 ## Run this sample
 
-Run the script below from either Windows or CloudShell
+Run the script below from either Windows or Azure Cloud Shell
 
 ```powershell
 

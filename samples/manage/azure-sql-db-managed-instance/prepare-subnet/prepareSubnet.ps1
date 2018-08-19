@@ -6,7 +6,7 @@ $virtualNetworkName = $parameters['virtualNetworkName']
 $subnetName = $parameters['subnetName']
 $force = $false
 
-If($args.Count > 1)
+If($args.Length > 1)
 {
     $force = $args[1]
 }
@@ -191,7 +191,7 @@ function Load-RouteTable {
             $subnet.RouteTable -ne $null
           )
         {
-            $rtSegments = ($subnet.RouteTable.Id).Split("{/}", [System.StringSplitOptions]::RemoveEmptyEntries)        
+            $rtSegments = ($subnet.RouteTable.Id).Split("/", [System.StringSplitOptions]::RemoveEmptyEntries)        
             $rtName = $rtSegments[-1].Trim()
             $rtResourceGroup = $rtSegments[3].Trim()
             $routeTable = Get-AzureRmRouteTable -ResourceGroupName $rtResourceGroup -Name $rtName
