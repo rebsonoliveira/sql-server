@@ -296,7 +296,7 @@ function Set-VirtualNetwork
 {
     param($virtualNetwork)
 
-    Write-Host "Applying changes to virtual network."
+    Write-Host "Applying changes to the virtual network."
     Try
     {
         Set-AzureRmVirtualNetwork -VirtualNetwork $virtualNetwork -ErrorAction Stop | Out-Null
@@ -371,8 +371,6 @@ If($isValid -ne $true)
 
     If ($applyChanges) 
     { 
-        Write-Host "Applying changes."
-
         If($isOkDnsServersList -ne $true)
         {
             Prepare-DNSServerList $virtualNetwork
