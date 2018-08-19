@@ -366,6 +366,7 @@ If($isValid -ne $true)
     {
         $reply = Read-Host -Prompt "Do you want to make these changes? [y/n]"
         $applyChanges = $reply -match "[yY]" 
+        Write-Host
     }
 
     If ($applyChanges) 
@@ -396,6 +397,7 @@ If($isValid -ne $true)
 
         Write-Host
         Write-Host "Subnet prepared for the Managed Instance." -ForegroundColor Green        
+        Write-Host "https://portal.azure.com/#create/Microsoft.SQLManagedInstance"
     }
     Else
     {
@@ -408,5 +410,6 @@ Else
 {
     Write-Host
     Write-Host "Subnet is already prepared." -ForegroundColor Green
+    Write-Host "https://portal.azure.com/#create/Microsoft.SQLManagedInstance"
 }
 
