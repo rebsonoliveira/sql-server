@@ -12,7 +12,7 @@ function Ensure-Login ()
     If($context.Subscription -eq $null)
     {
         Write-Host "Loging in ..."
-        If((Login-AzureRmAccount -ErrorAction SilentlyContinue -ErrorVariable $error) -eq $null)
+        If((Login-AzureRmAccount -ErrorAction SilentlyContinue) -eq $null)
         {
             Write-Host "Login failed: $error" -ForegroundColor Red
             Exit
