@@ -12,16 +12,11 @@ function Ensure-Login ()
     If($context.Subscription -eq $null)
     {
         Write-Host "Loging in ..."
-        Try
+        If((Login-AzureRmAccount -ErrorAction SilentlyContinue -ErrorVariable Errors) -eq $null)
         {
-            Login-AzureRmAccount -ErrorAction Stop | Out-null
+            Write-Host ("Login failed: {0}" -f $Errors[0].Exception.Message) -ForegroundColor Red
+            Break
         }
-        Catch
-        {
-            Write-Host "Login failed: $_" -ForegroundColor Red
-            Exit
-        }
-
     }
     Write-Host "User logedin." -ForegroundColor Green
 }
@@ -41,7 +36,7 @@ function Select-SubscriptionId {
         Catch
         {
             Write-Host "Subscription selection failed: $_" -ForegroundColor Red
-            Exit
+            Break
         }
     }
     Write-Host "Subscription selected." -ForegroundColor Green
@@ -62,7 +57,7 @@ function Load-VirtualNetwork {
         else
         {
             Write-Host "Virtual network not found." -ForegroundColor Red
-            Exit
+            Break
         }
 }
 
@@ -83,7 +78,7 @@ function Load-VirtualNetworkSubnet {
         else
         {
             Write-Host "Subnet not found." -ForegroundColor Red
-            Exit
+            Break
         }
 }
 
@@ -99,7 +94,7 @@ function Verify-Subnet {
         Else
         {
             Write-Host "Failed Validation - Minimum supported subnet size is /28." -ForegroundColor Red
-            Exit
+            Break
         }
         If(
             ($subnet.IpConfigurations.Count -eq 0) -and
@@ -114,7 +109,7 @@ function Verify-Subnet {
         Else
         {
             Write-Host "Failed Validation - Subnet is already in use." -ForegroundColor Red
-            Exit
+            Break
         }
 }
 
