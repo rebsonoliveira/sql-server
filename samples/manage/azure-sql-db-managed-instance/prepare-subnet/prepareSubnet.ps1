@@ -14,7 +14,7 @@ function Ensure-Login ()
         Write-Host "Loging in ..."
         Try
         {
-            Login-AzureRmAccount -ErrorAction Stop | Out-null
+            Login-AzureRmAccount -ErrorAction SilentlyContinue | Out-null
         }
         Catch
         {

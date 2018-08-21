@@ -55,7 +55,7 @@ $parameters = @{
     subnetName = '<subnetName>'
     }
 
-Invoke-Command -ScriptBlock ([Scriptblock]::Create((New-Object System.Net.WebClient).DownloadString($scriptUrlBase+'/prepareSubnet.ps1?t='+ [DateTime]::Now.Ticks))) -ArgumentList $parameters
+Invoke-Command -ScriptBlock ([Scriptblock]::Create((iwr ($scriptUrlBase+'/prepareSubnet.ps1?t='+ [DateTime]::Now.Ticks)).Content)) -ArgumentList $parameters
 
 ```
 
