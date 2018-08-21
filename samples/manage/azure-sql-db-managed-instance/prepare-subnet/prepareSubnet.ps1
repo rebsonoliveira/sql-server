@@ -15,7 +15,7 @@ function Ensure-Login ()
         If((Login-AzureRmAccount -ErrorAction SilentlyContinue -ErrorVariable Errors) -eq $null)
         {
             Write-Host ("Login failed: {0}" -f $Errors.Message) -ForegroundColor Red
-            Exit
+            Break
         }
     }
     Write-Host "User logedin." -ForegroundColor Green
