@@ -185,6 +185,8 @@ $vpnClientAddressPoolPrefix = CalculateVpnClientAddressPoolPrefix $gatewaySubnet
 $virtualNetwork.AddressSpace.AddressPrefixes.Add($gatewaySubnetPrefix)
 Add-AzureRmVirtualNetworkSubnetConfig -Name GatewaySubnet -VirtualNetwork $virtualNetwork -AddressPrefix $gatewaySubnetPrefix | Out-Null
 
+Set-VirtualNetwork $virtualNetwork
+
 Write-Host
 
 # Start the deployment
