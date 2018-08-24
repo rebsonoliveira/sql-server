@@ -35,8 +35,8 @@
         }
     },
     "variables": {
-        "gatewayPublicIpAddressName": "[concat('GatewayIP', substring(uniqueString(resourceGroup().id),0,3))]",
-        "gatewayName": "[concat('Gateway', substring(uniqueString(resourceGroup().id),0,3))]",
+        "gatewayPublicIpAddressName": "[concat('GatewayIP-', uniqueString(resourceGroup().id))]",
+        "gatewayName": "[concat('Gateway-', uniqueString(resourceGroup().id))]",
         "gatewaySku": "Basic",
         "gatewaySubnetName": "GatewaySubnet",
         "clientRootCertName": "RootCert"
