@@ -172,6 +172,7 @@ Write-Host
 Write-Host "Starting deployment..."
 
 $templateParameters = @{
+    location = $virtualNetwork.Location
     virtualNetworkName = $virtualNetworkName
     gatewaySubnetPrefix  = $gatewaySubnetPrefix
     vpnClientAddressPoolPrefix  = $vpnClientAddressPoolPrefix
