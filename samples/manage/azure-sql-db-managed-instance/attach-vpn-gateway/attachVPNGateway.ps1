@@ -81,6 +81,22 @@ function Load-ResourceGroup {
     }
 }
 
+function Set-VirtualNetwork
+{
+    param($virtualNetwork)
+
+    Write-Host "Applying changes to the virtual network."
+    Try
+    {
+        Set-AzureRmVirtualNetwork -VirtualNetwork $virtualNetwork -ErrorAction Stop | Out-Null
+    }
+    Catch
+    {
+        Write-Host "Failed: $_" -ForegroundColor Red
+    }
+
+}
+
 function ConvertCidrToUint32Array
 {
     param($cidrRange)
@@ -165,6 +181,9 @@ $publicRootCertData = [Convert]::ToBase64String((Get-Item cert:\currentuser\my\$
 $gatewaySubnetPrefix = CalculateNextAddressPrefix $virtualNetwork 28
 
 $vpnClientAddressPoolPrefix = CalculateVpnClientAddressPoolPrefix $gatewaySubnetPrefix
+
+$virtualNetwork.AddressSpace.AddressPrefixes.Add($gatewaySubnetPrefix)
+Add-AzureRmVirtualNetworkSubnetConfig -Name GatewaySubnet -VirtualNetwork $virtualNetwork -AddressPrefix $gatewaySubnetPrefix | Out-Null
 
 Write-Host
 
