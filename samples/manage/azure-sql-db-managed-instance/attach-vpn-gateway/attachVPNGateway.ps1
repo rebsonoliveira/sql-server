@@ -197,4 +197,4 @@ $templateParameters = @{
     publicRootCertData  = $publicRootCertData
     }
 
-New-AzureRmResourceGroupDeployment -Mode Incremental -ResourceGroupName $resourceGroupName -TemplateUri ($scriptUrlBase+'/azuredeploy.json?t='+ [DateTime]::Now.Ticks) -TemplateParameterObject $templateParameters
+New-AzureRmResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateUri ($scriptUrlBase+'/azuredeploy.json?t='+ [DateTime]::Now.Ticks) -TemplateParameterObject $templateParameters
