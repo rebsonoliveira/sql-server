@@ -46,9 +46,6 @@
             "name": "[parameters('virtualNetworkName')]",
             "type": "Microsoft.Network/virtualNetworks",
             "apiVersion": "2018-02-01",
-            "dependsOn": [
-                "[variables('routeTableName')]"
-            ],
             "location": "[parameters('location')]",
             "properties": {
                 "mode": "Incremental",
