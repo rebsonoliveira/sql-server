@@ -1,4 +1,3 @@
-﻿
 $parameters = $args[0]
 
 $subscriptionId = $parameters['subscriptionId']
