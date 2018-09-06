@@ -445,9 +445,6 @@ Write-Host "Creating .pfx blob."
 
 $base64EncodedCert = [CL.CertUtil]::CerPvkToPfx($base64EncodedPublicKey, $base64EncodedPrivateKey, $password)
 
-$bytes = [Convert]::FromBase64String($base64EncodedCert)
-[IO.File]::WriteAllBytes('C:/full_path/testps.pfx', $bytes)
-
 $securePrivateBlob = $base64EncodedCert  | ConvertTo-SecureString -AsPlainText -Force
 $securePassword = $password | ConvertTo-SecureString -AsPlainText -Force
 
