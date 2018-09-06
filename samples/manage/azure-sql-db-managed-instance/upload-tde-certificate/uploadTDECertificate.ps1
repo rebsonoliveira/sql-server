@@ -1,4 +1,5 @@
-﻿$parameters = $args[0]
+﻿
+$parameters = $args[0]
 
 $subscriptionId = $parameters['subscriptionId']
 $resourceGroupName = $parameters['resourceGroupName']
