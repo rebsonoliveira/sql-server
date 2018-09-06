@@ -1,9 +1,11 @@
-﻿$subscriptionId = $args[0]['subscriptionId']
-$resourceGroupName = $args[0]['resourceGroupName']
-$managedInstanceName =  $args[0]['managedInstanceName']
-$publicKeyFile = $args[0]['publicKeyFile']
-$privateKeyFile = $args[0]['privateKeyFile']
-$password = $args[0]['password']
+﻿$parameters = $args[0]
+
+$subscriptionId = $parameters['subscriptionId']
+$resourceGroupName = $parameters['resourceGroupName']
+$managedInstanceName =  $parameters['managedInstanceName']
+$publicKeyFile = $parameters['publicKeyFile']
+$privateKeyFile = $parameters['privateKeyFile']
+$password = $parameters['password']
 
 $Assem = @()
 
@@ -319,7 +321,7 @@ namespace CL
 
 "@
 
-Add-Type -ReferencedAssemblies $Assem -TypeDefinition $Source -Language CSharp  
+Add-Type -ReferencedAssemblies $Assem -TypeDefinition $Source -Language CSharp -ErrorAction SilentlyContinue  
 
 function Ensure-Login () 
 {
