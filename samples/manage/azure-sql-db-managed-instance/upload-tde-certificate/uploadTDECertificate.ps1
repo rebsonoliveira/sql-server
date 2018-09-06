@@ -380,7 +380,7 @@ function Ensure-SqlModule
     {
         param ($module)
 
-        Write-Host "Verifying if AzureRM.Sql module version, must be 4.10.0.0 or higher."
+        Write-Host "Verifying AzureRM.Sql module version, must be 4.10.0.0 or higher."
         if(
             ($module.Version.Major -gt 4) -or
             (($module.Version.Major -eq 4) -and ($module.Version.Minor -ge 10))
