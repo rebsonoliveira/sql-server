@@ -323,13 +323,13 @@ namespace CL
 
 Add-Type -ReferencedAssemblies $Assem -TypeDefinition $Source -Language CSharp -ErrorAction SilentlyContinue  
 
-function Ensure-Login () 
+function EnsureLogin () 
 {
     $context = Get-AzureRmContext
-    If($context.Subscription -eq $null)
+    If( $null -eq $context.Subscription)
     {
         Write-Host "Loging in ..."
-        If((Login-AzureRmAccount -ErrorAction SilentlyContinue -ErrorVariable Errors) -eq $null)
+        If($null -eq (Login-AzureRmAccount -ErrorAction SilentlyContinue -ErrorVariable Errors))
         {
             Write-Host ("Login failed: {0}" -f $Errors[0].Exception.Message) -ForegroundColor Red
             Break
@@ -359,7 +359,7 @@ function Select-SubscriptionId {
     Write-Host "Subscription selected." -ForegroundColor Green
 }
 
-function Verify-PSVersion
+function VerifyPSVersion
 {
     Write-Host "Verifying PowerShell version, must be 5.0 or higher."
     if($PSVersionTable.PSVersion.Major -ge 5)
@@ -373,9 +373,9 @@ function Verify-PSVersion
     }
 }
 
-function Ensure-SqlModule
+function EnsureSqlModule
 {
-    function Verify-SqlModule
+    function VerifySqlModule
     {
         param ($module)
 
@@ -415,19 +415,19 @@ function Ensure-SqlModule
 
     Write-Host "Checking if AzureRM.Sql module is imported."
     $module = Get-Module AzureRM.Sql
-    If($module -eq $null)
+    If($null -eq $module)
     {
         Import-Module AzureRM.Sql
         $module = Get-Module AzureRM.Sql
         Write-Host "Module AzureRM.Sql imported." -ForegroundColor Green
     }
-    Verify-SqlModule $module
+    VerifySqlModule $module
 }
 
-Verify-PSVersion
-Ensure-SqlModule
+VerifyPSVersion
+EnsureSqlModule
 
-Ensure-Login
+EnsureLogin
 
 Select-SubscriptionId -subscriptionId $subscriptionId
 
