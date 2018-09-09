@@ -77,6 +77,21 @@ function LoadVirtualNetwork {
         }
 }
 
+function SetVirtualNetwork
+{
+    param($virtualNetwork)
+
+    Write-Host "Applying changes to the virtual network."
+    Try
+    {
+        Set-AzureRmVirtualNetwork -VirtualNetwork $virtualNetwork -ErrorAction Stop | Out-Null
+    }
+    Catch
+    {
+        Write-Host "Failed: $_" -ForegroundColor Red
+    }
+}
+
 function ConvertCidrToUint32Array
 {
     param($cidrRange)
@@ -147,7 +162,7 @@ $managementSubnetPrefix = CalculateNextAddressPrefix $virtualNetwork 28
 $virtualNetwork.AddressSpace.AddressPrefixes.Add($managementSubnetPrefix)
 Add-AzureRmVirtualNetworkSubnetConfig -Name Management -VirtualNetwork $virtualNetwork -AddressPrefix $managementSubnetPrefix | Out-Null
 
-Set-VirtualNetwork $virtualNetwork
+SetVirtualNetwork $virtualNetwork
 
 Write-Host
 
