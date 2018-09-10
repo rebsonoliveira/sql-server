@@ -8,6 +8,20 @@ $force =  $parameters['force']
 
 $scriptUrlBase = $args[1]
 
+function VerifyPSVersion
+{
+    Write-Host "Verifying PowerShell version, must be 5.0 or higher."
+    if($PSVersionTable.PSVersion.Major -ge 5)
+    {
+        Write-Host "PowerShell version verified." -ForegroundColor Green
+    }
+    else
+    {
+        Write-Host "You need to install PowerShell version 5.0 or heigher." -ForegroundColor Red
+        Break;
+    }
+}
+
 function Ensure-Login () 
 {
     $context = Get-AzureRmContext
@@ -156,6 +170,7 @@ function CalculateVpnClientAddressPoolPrefix
 
 }
 
+VerifyPSVersion
 Ensure-Login
 Select-SubscriptionId -subscriptionId $subscriptionId
 
