@@ -1,7 +1,6 @@
 ﻿CREATE TABLE [Application].[Logs](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Message] NVARCHAR(max) NULL,
-	[Level] NVARCHAR(128) NULL,
+	[Message] NVARCHAR(4000) NOT NULL,
+	[Level] VARCHAR(16) NOT NULL,
 	[EventTime] DATETIME2 (7) NOT NULL,
 	[LogEvent] NVARCHAR(max) NULL,
 	INDEX CCX_Application_Logs CLUSTERED COLUMNSTORE
@@ -15,10 +14,6 @@ EXECUTE sp_addextendedproperty @name = N'Description', @value = 'CLUSTERED COLUM
 
 GO
 EXECUTE sp_addextendedproperty @name = N'Description', @value = N'Application logs that are stored in database', @level0type = N'SCHEMA', @level0name = N'Application', @level1type = N'TABLE', @level1name = N'Logs';
-
-
-GO
-EXECUTE sp_addextendedproperty @name = N'Description', @value = 'Numeric ID of a log entry', @level0type = N'SCHEMA', @level0name = N'Application', @level1type = N'TABLE', @level1name = N'Logs', @level2type = N'COLUMN', @level2name = N'Id';
 
 
 GO
