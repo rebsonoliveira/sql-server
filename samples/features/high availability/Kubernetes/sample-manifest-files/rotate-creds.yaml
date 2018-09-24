@@ -1,5 +1,3 @@
-#kubectl create secret generic new-sql-secrets --from-literal='sapassword=Yukon800' --from-literal='masterkeypassword=Yukon800'
-
 ---
 apiVersion: v1
 
