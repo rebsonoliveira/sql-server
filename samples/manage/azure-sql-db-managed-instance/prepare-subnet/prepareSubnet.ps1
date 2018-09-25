@@ -6,13 +6,16 @@ $virtualNetworkName = $parameters['virtualNetworkName']
 $subnetName = $parameters['subnetName']
 $force =  $parameters['force']
 
-function Ensure-Login () 
+$NSnetworkModels = "Microsoft.Azure.Commands.Network.Models"
+$NScollections = "System.Collections.Generic"
+
+function EnsureLogin () 
 {
     $context = Get-AzureRmContext
-    If($context.Subscription -eq $null)
+    If($null -eq $context.Subscription)
     {
         Write-Host "Loging in ..."
-        If((Login-AzureRmAccount -ErrorAction SilentlyContinue -ErrorVariable Errors) -eq $null)
+        If($null -eq (Login-AzureRmAccount -ErrorAction SilentlyContinue -ErrorVariable Errors))
         {
             Write-Host ("Login failed: {0}" -f $Errors[0].Exception.Message) -ForegroundColor Red
             Break
@@ -21,7 +24,7 @@ function Ensure-Login ()
     Write-Host "User logedin." -ForegroundColor Green
 }
 
-function Select-SubscriptionId {
+function SelectSubscriptionId {
     param (
         $subscriptionId
     )
@@ -42,14 +45,14 @@ function Select-SubscriptionId {
     Write-Host "Subscription selected." -ForegroundColor Green
 }
 
-function Load-VirtualNetwork {
+function LoadVirtualNetwork {
     param (
         $resourceGroupName,
         $virtualNetworkName
     )
         Write-Host("Loading virtual network '{0}' in resource group '{1}'." -f $virtualNetworkName, $resourceGroupName)
-        $virtualNetwork = Get-AzureRmVirtualNetwork -ResourceGroupName $resourceGroupName -Name $virtualNetworkName -ErrorAction SilentlyContinue
-        If($virtualNetwork.Id -ne $null)
+        $virtualNetwork = Get-AzureRmVirtualNetwork -ResourceGroupName $resourceGroupName -Name $virtualNetworkName -ErrorAction SilentlyContinue -WarningAction SilentlyContinue
+        If($null -ne $virtualNetwork.Id)
         {
             Write-Host "Virtual network loaded." -ForegroundColor Green
             return $virtualNetwork
@@ -61,7 +64,7 @@ function Load-VirtualNetwork {
         }
 }
 
-function Load-VirtualNetworkSubnet {
+function LoadVirtualNetworkSubnet {
     param (
         $virtualNetwork,
         $subnetName
@@ -82,7 +85,7 @@ function Load-VirtualNetworkSubnet {
         }
 }
 
-function Verify-Subnet {
+function VerifySubnet {
     param (
         $subnet
     )
@@ -113,7 +116,7 @@ function Verify-Subnet {
         }
 }
 
-function Verify-DNSServersList {
+function VerifyDNSServersList {
     param (
         $virtualNetwork
     )
@@ -133,7 +136,7 @@ function Verify-DNSServersList {
         }
 }
 
-function Verify-ServiceEndpoints {
+function VerifyServiceEndpoints {
     param (
         $subnet
     )
@@ -152,33 +155,371 @@ function Verify-ServiceEndpoints {
         }
 }
 
-
-function Verify-NSG {
+function LoadNetworkSecurityGroup {
     param (
         $subnet
     )
-        Write-Host("Verifying NSG for subnet '{0}'."-f $subnet.Name)
+        Write-Host("Loading Network security group for subnet '{0}'." -f $subnet.Name)
         If(
-            $subnet.NetworkSecurityGroup -eq $null
+            $null -ne $subnet.NetworkSecurityGroup
           )
         {
-            Write-Host "Passed Validation - No NSG." -ForegroundColor Green
-            return $true
+            $nsgSegments = ($subnet.NetworkSecurityGroup.Id).Split("/", [System.StringSplitOptions]::RemoveEmptyEntries)        
+            $nsgName = $nsgSegments[-1].Trim()
+            $nsgResourceGroup = $nsgSegments[3].Trim()
+            $networkSecurityGroup = Get-AzureRmNetworkSecurityGroup -ResourceGroupName $nsgResourceGroup -Name $nsgName
+            Write-Host "Network security group security group loaded." -ForegroundColor Green
+            return $networkSecurityGroup
         }
         Else
         {
-            Write-Host "Warning - NSG is not supported before provisioning." -ForegroundColor Yellow
-            return $false
+            return $null
         }
 }
 
-function Load-RouteTable {
+function DefineSecurityRules{
+
+        $securityRules = New-Object "$NScollections.List``1[$NSnetworkModels.PSSecurityRule]"
+        #begin NSG inbound rules
+        $rule = New-AzureRmNetworkSecurityRuleConfig `
+            -Name prepare-allow-management-inbound-9000 `
+            -Description "Allow inbound TCP traffic on port 9000" `
+            -Direction Inbound -Priority 110 -Access Allow -Protocol Tcp `
+            -SourceAddressPrefix * -DestinationAddressPrefix * `
+            -SourcePortRange * -DestinationPortRange 9000
+        $securityRules.Add($rule)
+        $rule = New-AzureRmNetworkSecurityRuleConfig `
+            -Name prepare-allow-management-inbound-9003 `
+            -Description "Allow inbound TCP traffic on port 9003" `
+            -Direction Inbound -Priority 120 -Access Allow -Protocol Tcp `
+            -SourceAddressPrefix * -DestinationAddressPrefix * `
+            -SourcePortRange * -DestinationPortRange 9003
+        $securityRules.Add($rule)
+        $rule = New-AzureRmNetworkSecurityRuleConfig `
+            -Name prepare-allow-management-inbound-1438 `
+            -Description "Allow inbound TCP traffic on port 1438" `
+            -Direction Inbound -Priority 130 -Access Allow -Protocol Tcp `
+            -SourceAddressPrefix * -DestinationAddressPrefix * `
+            -SourcePortRange * -DestinationPortRange 1438
+        $securityRules.Add($rule)
+        $rule = New-AzureRmNetworkSecurityRuleConfig `
+            -Name prepare-allow-management-inbound-1440 `
+            -Description "Allow inbound TCP traffic on port 1440" `
+            -Direction Inbound -Priority 140 -Access Allow -Protocol Tcp `
+            -SourceAddressPrefix * -DestinationAddressPrefix * `
+            -SourcePortRange * -DestinationPortRange 1440
+        $securityRules.Add($rule)
+        $rule = New-AzureRmNetworkSecurityRuleConfig `
+            -Name prepare-allow-management-inbound-1452 `
+            -Description "Allow inbound TCP traffic on port 1452" `
+            -Direction Inbound -Priority 150 -Access Allow -Protocol Tcp `
+            -SourceAddressPrefix * -DestinationAddressPrefix * `
+            -SourcePortRange * -DestinationPortRange 1452
+        $securityRules.Add($rule)
+        $rule = New-AzureRmNetworkSecurityRuleConfig `
+            -Name prepare-allow-mi_subnet-inbound `
+            -Description "Allow inbound inter-node traffic" `
+            -Direction Inbound -Priority 160 -Access Allow -Protocol * `
+            -SourceAddressPrefix $subnet.AddressPrefix -DestinationAddressPrefix * `
+            -SourcePortRange * -DestinationPortRange *
+        $securityRules.Add($rule)
+        $rule = New-AzureRmNetworkSecurityRuleConfig `
+            -Name prepare-allow-health_probe-inbound `
+            -Description "Allow healt probe inbound" `
+            -Direction Inbound -Priority 170 -Access Allow -Protocol * `
+            -SourceAddressPrefix AzureLoadBalancer -DestinationAddressPrefix * `
+            -SourcePortRange * -DestinationPortRange *
+        $securityRules.Add($rule)
+        #end NSG inbound rules
+        #begin NSG outbound rules
+        $rule = New-AzureRmNetworkSecurityRuleConfig `
+            -Name prepare-allow-management-outbound-80 `
+            -Description "Allow outbound TCP traffic on port 80" `
+            -Direction Outbound -Priority 110 -Access Allow -Protocol Tcp `
+            -SourceAddressPrefix * -DestinationAddressPrefix * `
+            -SourcePortRange * -DestinationPortRange 80
+        $securityRules.Add($rule)
+        $rule = New-AzureRmNetworkSecurityRuleConfig `
+            -Name prepare-allow-management-outbound-443 `
+            -Description "Allow outbound TCP traffic on port 443" `
+            -Direction Outbound -Priority 120 -Access Allow -Protocol Tcp `
+            -SourceAddressPrefix * -DestinationAddressPrefix * `
+            -SourcePortRange * -DestinationPortRange 443
+        $securityRules.Add($rule)
+        $rule = New-AzureRmNetworkSecurityRuleConfig `
+            -Name prepare-allow-management-outbound-12000 `
+            -Description "Allow outbound TCP traffic on port 12000" `
+            -Direction Outbound -Priority 130 -Access Allow -Protocol Tcp `
+            -SourceAddressPrefix * -DestinationAddressPrefix * `
+            -SourcePortRange * -DestinationPortRange 12000
+        $securityRules.Add($rule)
+        $rule = New-AzureRmNetworkSecurityRuleConfig `
+            -Name prepare-allow-mi_subnet-outbound `
+            -Description "Allow outbound inter-node traffic" `
+            -Direction Outbound -Priority 140 -Access Allow -Protocol * `
+            -SourceAddressPrefix * -DestinationAddressPrefix $subnet.AddressPrefix `
+            -SourcePortRange * -DestinationPortRange *
+        $securityRules.Add($rule)
+        #end NSG outbound rules
+
+        return $securityRules
+}
+
+function ConvertCidrToUint32Array
+{
+    param(
+        $cidrRange
+    )
+    $cidrRangeParts = $cidrRange.Split(@(".","/"))
+    $ipnum = ([Convert]::ToUInt32($cidrRangeParts[0]) -shl 24) -bor `
+             ([Convert]::ToUInt32($cidrRangeParts[1]) -shl 16) -bor `
+             ([Convert]::ToUInt32($cidrRangeParts[2]) -shl 8) -bor `
+             [Convert]::ToUInt32($cidrRangeParts[3])
+
+    $maskbits = [System.Convert]::ToInt32($cidrRangeParts[4])
+    $mask = 0xffffffff
+    $mask = $mask -shl (32 -$maskbits)
+    $ipstart = $ipnum -band $mask
+    $ipend = $ipnum -bor ($mask -bxor 0xffffffff)
+    return @($ipstart, $ipend)
+}
+
+function ContainsCidr
+{
+    param(
+        $cidrRangeA, 
+        $cidrRangeB
+    )
+    $a = ConvertCidrToUint32Array $cidrRangeA
+    $b = ConvertCidrToUint32Array $cidrRangeB
+
+    return `
+        (($a[0] -le $b[0]) -and ($a[1] -ge $b[1]))
+}
+
+function HasCidrOverlap
+{
+    param($cidrRangeA, $cidrRangeB)
+    $a = ConvertCidrToUint32Array $cidrRangeA
+    $b = ConvertCidrToUint32Array $cidrRangeB
+
+    return `
+        (($a[0] -ge $b[0]) -and ($a[0] -lt $b[1])) -or `
+        (($a[1] -le $b[1]) -and ($a[1] -gt $b[0])) -or `
+        (($a[0] -le $b[0]) -and ($a[1] -ge $b[1]))
+}
+
+function VerifyAddressPrefix {
+    param (
+        $nsgRuleAddressPrefixes,
+        $securityRuleAddressPrefix
+    )
+    
+    ForEach($nsgRuleAddressPrefix in $nsgRuleAddressPrefixes) {
+        If($nsgRuleAddressPrefix -eq "*"){
+            return $true;
+        }
+
+        If($nsgRuleAddressPrefix -eq $securityRuleAddressPrefix){
+            return $true;
+        }
+
+        If(($true -ne $securityRuleAddressPrefix.Contains('/')) -or ($true -ne $nsgRuleAddressPrefix.Contains('/'))) {
+            continue;
+        }
+
+        return ContainsCidr -cidrRangeA $nsgRuleAddressPrefix -cidrRangeB $securityRuleAddressPrefix
+    }
+
+    return $false
+}
+
+function VerifyDenyRuleAddressPrefix {
+    param (
+        $nsgRuleAddressPrefixes,
+        $securityRuleAddressPrefix
+    )
+    
+    ForEach($nsgRuleAddressPrefix in $nsgRuleAddressPrefixes) {
+        If($nsgRuleAddressPrefix -eq "*"){
+            return $true;
+        }
+
+        If($nsgRuleAddressPrefix -eq $securityRuleAddressPrefix){
+            return $true;
+        }
+
+        If(($true -ne $securityRuleAddressPrefix.Contains('/')) -or ($true -ne $nsgRuleAddressPrefix.Contains('/'))) {
+            continue;
+        }
+
+        return HasCidrOverlap -cidrRangeA $nsgRuleAddressPrefix -cidrRangeB $securityRuleAddressPrefix
+    }
+
+    return $false
+}
+
+function IsPrivateCidr
+{    
+    param($cidrRange)
+    return `
+        (ContainsCidr "10.0.0.0/8" $cidrRange) -or `
+        (ContainsCidr "172.16.0.0/12" $cidrRange) -or `
+        (ContainsCidr "192.168.0.0/16" $cidrRange)
+}
+
+
+function ContainsPort{
+    param(
+        $nsgRulePort,
+        $securityRulePort
+    )
+
+    If($nsgRulePort.Contains('-')){
+        $startPort = [Int32]::Parse($nsgRulePort.Split('-')[0])
+        $endPort =  [Int32]::Parse($nsgRulePort.Split('-')[1])
+        $port = [Int32]::Parse($securityRulePort)
+        return $startPort -le $port -and $port -le $endPort
+    }
+    else{
+        return $nsgRulePort -eq $securityRulePort
+    }
+}
+
+function VerifyPort {
+    param (
+        $nsgRulePorts,
+        $securityRulePort
+    )
+    
+    ForEach($nsgRulePort in $nsgRulePorts) {
+        If($true -eq (ContainsPort -nsgRulePort $nsgRulePort -securityRulePort $securityRulePort)) {
+            return $true
+        }
+    }
+
+    return $false
+}
+
+function VerifyNSGRule {
+    param (
+        $securityRule,
+        $nsgRule
+    )
+
+    If($securityRule.Direction -ne $nsgRule.Direction) {
+        return $false
+    }
+
+    If($nsgRule.Access -eq "Allow") {
+        If(($nsgRule.Protocol -ne "*") -and ($nsgRule.Protocol -ne $securityRule.Protocol)) {
+            return $false
+        }
+
+        If(($true -ne $nsgRule.SourceAddressPrefix.Contains('*')) -and ($true -ne (VerifyAddressPrefix -nsgRuleAddressPrefixes $nsgRule.SourceAddressPrefix -securityRuleAddressPrefix $securityRule.SourceAddressPrefix[0]))) {
+            return $false
+        }
+
+        If(($true -ne $nsgRule.DestinationAddressPrefix.Contains('*')) -and ($true -ne (VerifyAddressPrefix  -nsgRuleAddressPrefixes $nsgRule.DestinationAddressPrefix -securityRuleAddressPrefix $securityRule.DestinationAddressPrefix[0]))) {
+            return $false
+        }
+
+
+        If(($true -ne $nsgRule.SourcePortRange.Contains('*')) -and ($true -ne (VerifyPort -nsgRulePorts $nsgRule.SourcePortRange -securityRulePort $securityRule.SourcePortRange[0]))) {
+            return $false
+        }
+
+        If(($true -ne $nsgRule.DestinationPortRange.Contains('*')) -and ($true -ne (VerifyPort -nsgRulePorts $nsgRule.DestinationPortRange -securityRulePort $securityRule.DestinationPortRange[0]))) {
+            return $false
+        }
+    }
+    Else {
+        If(($securityRule.Protocol -ne "*") -and ($nsgRule.Protocol -ne "*") -and ($nsgRule.Protocol -ne $securityRule.Protocol)) {
+            return $false
+        }
+
+        If(($true -ne $securityRule.SourceAddressPrefix.Contains('*')) -and ($true -ne $nsgRule.SourceAddressPrefix.Contains('*')) -and ($true -ne (VerifyDenyRuleAddressPrefix -nsgRuleAddressPrefixes $nsgRule.SourceAddressPrefix -securityRuleAddressPrefix $securityRule.SourceAddressPrefix[0]))) {
+            return $false
+        }
+
+        If(($true -ne $securityRule.DestinationAddressPrefix.Contains('*')) -and ($true -ne $nsgRule.DestinationAddressPrefix.Contains('*')) -and ($true -ne (VerifyDenyRuleAddressPrefix  -nsgRuleAddressPrefixes $nsgRule.DestinationAddressPrefix -securityRuleAddressPrefix $securityRule.DestinationAddressPrefix[0]))) {
+            return $false
+        }
+
+
+        If(($true -ne $securityRule.SourcePortRange.Contains('*')) -and ($true -ne $nsgRule.SourcePortRange.Contains('*')) -and ($true -ne (VerifyPort -nsgRulePorts $nsgRule.SourcePortRange -securityRulePort $securityRule.SourcePortRange[0]))) {
+            return $false
+        }
+
+        If(($true -ne $securityRule.DestinationPortRange.Contains('*')) -and ($true -ne $nsgRule.DestinationPortRange.Contains('*')) -and ($true -ne (VerifyPort -nsgRulePorts $nsgRule.DestinationPortRange -securityRulePort $securityRule.DestinationPortRange[0]))) {
+            return $false
+        }
+    }
+
+    return $true
+
+}
+
+function VerifyNSGRules {
+    param (
+        $securityRule,
+        $nsgRules
+    )
+
+    ForEach($nsgRule in $nsgRules){
+        If(VerifyNSGRule -securityRule $securityRule -nsgRule $nsgRule){
+            return ($nsgRule.Access -eq "Allow")
+        }        
+    }
+
+    return $false
+}
+
+
+function VerifyNSG {
+    param (
+        $subnet
+    )
+        $securityRules = DefineSecurityRules
+
+        $result = @{ 
+            nsgSecurityRules = New-Object "$NScollections.List``1[$NSnetworkModels.PSSecurityRule]"
+            failedSecurityRules = New-Object "$NScollections.List``1[$NSnetworkModels.PSSecurityRule]"
+            success = $true 
+        }
+        Write-Host("Verifying Network security group for subnet '{0}'."-f $subnet.Name)
+        $nsg = LoadNetworkSecurityGroup $subnet
+        If(
+            $null -ne $nsg
+          )
+        {
+            $result['nsgSecurityRules'] = ($nsg.SecurityRules | Sort-Object -Property Priority)
+
+            ForEach($securityRule in $securityRules){
+                If($false -eq (VerifyNSGRules -securityRule $securityRule -nsgRules $result['nsgSecurityRules'])){
+                    $result['failedSecurityRules'].Add($securityRule)
+                }
+            }
+            $result['success'] = $result['failedSecurityRules'].Count -eq 0
+        }
+        If($true -eq $result['success'])
+        {
+            Write-Host "Passed Validation - Network security group." -ForegroundColor Green
+        }
+        Else
+        {
+            Write-Host "Warning - Network security group needs modifications." -ForegroundColor Yellow
+        }
+        return $result
+}
+
+function LoadRouteTable {
     param (
         $subnet
     )
         Write-Host("Loading Route table for subnet '{0}'." -f $subnet.Name)
         If(
-            $subnet.RouteTable -ne $null
+            $null -ne $subnet.RouteTable
           )
         {
             $rtSegments = ($subnet.RouteTable.Id).Split("/", [System.StringSplitOptions]::RemoveEmptyEntries)        
@@ -188,95 +529,169 @@ function Load-RouteTable {
             Write-Host "Route table loaded." -ForegroundColor Green
             return $routeTable
         }
-        Else
-        {
-            Write-Host "Warning - There is no route table on the subnet." -ForegroundColor Yellow
-            return $null
-        }
+        return $null
 }
 
-function Verify-RouteTable {
+function VerifyRouteTable {
     param (
-        $subnetAddressPrefix,
-        $routeTable
+        $subnet
     )
-        Write-Host("Verifying Route table '{0}'." -f $routeTable.Name)
-        
-        $hasDefaultRule = $false
-        $hasAnyOtherRule = $false
-
-        ForEach($route in $routeTable.Routes)
-        {
-            If(
-                $route.AddressPrefix -eq "0.0.0.0/0" -and `
-                $route.NextHopType -eq "Internet"
-              )
-            {
-                $hasDefaultRule = $true;
-            }
-            Else
-            {
-                $hasAnyOtherRule = $true
-            }
+        $result = @{ 
+            routes = New-Object "$NScollections.List``1[$NSnetworkModels.PSRoute]"
+            hasRouteTable = $false
+            hasDefaultRoute = $false
+            allowsInterNodeTraffic = $true
+            hasNoPublicIPRouting = $true
+            success = $false 
         }
-        
-        If($hasDefaultRule -ne $true)
-        {
-            Write-Host "Warning - 0.0.0.0/0 next hop type Internet rule is missing." -ForegroundColor Yellow
-        }
-
-        If($hasAnyOtherRule -eq $true)
-        {
-            Write-Host "Warning - Route table has rule other then 0.0.0.0/0 next hop type Internet." -ForegroundColor Yellow
-        }
-
-        $isValid = $hasDefaultRule -and ($hasAnyOtherRule -ne $true)
-                
+        $defaultRoute = New-AzureRmRouteConfig -Name "prepare-default" -AddressPrefix 0.0.0.0/0 -NextHopType Internet
+        Write-Host("Verifying RT for subnet '{0}'."-f $subnet.Name)
+        $routeTable = LoadRouteTable $subnet
         If(
-            $isValid
+            $null -ne $routeTable
           )
+        {
+            $result['hasRouteTable'] = $true
+            Write-Host("Verifying Route table '{0}'." -f $routeTable.Name)
+
+            ForEach($route in $routeTable.Routes)
+            {
+                If(
+                    (HasCidrOverlap -cidrRangeA $route.AddressPrefix -cidrRangeB $subnet.AddressPrefix[0])  -and `
+                    $route.NextHopType -ne "VnetLocal"
+                  )
+                {
+                    $result['allowsInterNodeTraffic'] = $false;
+                    Continue
+                }
+
+                If($false -eq (IsPrivateCidr -cidrRange $route.AddressPrefix)  -and `
+                    $route.NextHopType -ne "Internet"
+                  )
+                {
+                    $result['hasNoPublicIPRouting'] = $false;
+                    Continue
+                }
+
+                If(
+                    $route.AddressPrefix -eq "0.0.0.0/0" -and `
+                    $route.NextHopType -eq "Internet"
+                  )
+                {
+                    $result['hasDefaultRoute'] = $true;
+                }
+
+                $result['routes'].Add($route)
+            }
+
+
+            $result['success'] = $result['hasRouteTable'] -and $result['hasDefaultRoute'] -and $result['allowsInterNodeTraffic'] -and $result['hasNoPublicIPRouting']
+        }
+        
+        If($true -ne $result['hasDefaultRoute'])
+        {
+            $result['routes'].Insert(0, $defaultRoute)
+        }
+
+        If($true -eq $result['success'])
         {
             Write-Host "Passed Validation - Route table." -ForegroundColor Green
         }
-        return $isValid
+        Else
+        {
+            If($true -eq $result['hasRouteTable'])
+            {
+                Write-Host "Warning - Route table needs modifications." -ForegroundColor Yellow
+            }
+            Else
+            {
+                Write-Host "Warning - There is no route table on the subnet." -ForegroundColor Yellow
+            }
+        }
+        
+        return $result
 }
 
-function Prepare-DNSServerList
+
+function PrepareDNSServerList
 {
     param($virtualNetwork)
     Write-Host "Adding 168.63.129.16 to DNS servers list."
     $virtualNetwork.DhcpOptions.DnsServers += "168.63.129.16"
 }
 
-function Prepare-ServiceEndpoints
+function PrepareServiceEndpoints
 {
     param($subnet)
     Write-Host "Removing service endpoints."
     $subnet.ServiceEndpoints.Clear()
 }
 
-function Prepare-NSG
-{
-    param($subnet)
-    Write-Host "Dissasociating NSG."
-    $subnet.NetworkSecurityGroup = $null
-}
-
-function Prepare-RouteTable
+function PrepareNSG
 {
     param(
-        $existingRouteTable,
-        $virtualNetwork,    
+        $nsgVerificationResult,
+        $virtualNetwork,   
         $subnet
     )
-    Write-Host "Creating Route table."
-    $defaultRoute = New-AzureRmRouteConfig -Name "default" -AddressPrefix 0.0.0.0/0 -NextHopType "Internet"
-    $routeTableName = "rtManagedInstance" + (Get-Random -Maximum 1000)
-    $routeTable = $null
+    Write-Host "Creating Network security group."
+    $networkSecurityGroupName = "nsgManagedInstance" + (Get-Random -Maximum 1000)
+    $securityRules = $nsgVerificationResult['failedSecurityRules']
+    $inboundRulePriority = 0
+    $outboundRulePriority = 0
+
+    ForEach($securityRule in $nsgVerificationResult['failedSecurityRules']){
+        If($securityRule.Direction -eq "Inbound") {
+            $inboundRulePriority = $securityRule.Priority
+        }
+        Else{
+            $outboundRulePriority = $securityRule.Priority
+        }
+    }
+
+    ForEach($nsgRule in $nsgVerificationResult['nsgSecurityRules']){
+        If($nsgRule.Direction -eq "Inbound"){
+            if($nsgRule.Priority -lt $inboundRulePriority) {
+                $inboundRulePriority += 10
+                $nsgRule.Priority = $inboundRulePriority
+            }
+        }
+        Else{
+            if($nsgRule.Priority -lt $outboundRulePriority) {
+                $outboundRulePriority += 10
+                $nsgRule.Priority = $outboundRulePriority
+            }
+        }
+        $securityRules.Add($nsgRule)
+    }
 
     Try
     {
-        $routeTable = New-AzureRmRouteTable -Name $routeTableName -ResourceGroupName $virtualNetwork.ResourceGroupName -Location $virtualNetwork.Location -Route $defaultRoute
+        $networkSecurityGroup = New-AzureRmNetworkSecurityGroup -Name $networkSecurityGroupName -ResourceGroupName $virtualNetwork.ResourceGroupName -Location $virtualNetwork.Location -SecurityRules $securityRules
+    }
+    Catch
+    {
+        Write-Host "Failed: $_" -ForegroundColor Red
+    }
+
+    Write-Host "Associating Network security group."
+    $subnet.NetworkSecurityGroup = $networkSecurityGroup
+}
+
+function PrepareRouteTable
+{
+    param(
+        $routeTableVerificationResult,
+        $virtualNetwork,   
+        $subnet
+    )
+    Write-Host "Creating Route table."
+    $routeTableName = "rtManagedInstance" + (Get-Random -Maximum 1000)
+    $routes = $routeTableVerificationResult['routes']
+
+    Try
+    {
+        $routeTable = New-AzureRmRouteTable -Name $routeTableName -ResourceGroupName $virtualNetwork.ResourceGroupName -Location $virtualNetwork.Location -Route $routes
     }
     Catch
     {
@@ -287,14 +702,14 @@ function Prepare-RouteTable
     $subnet.RouteTable = $routeTable
 }
 
-function Set-VirtualNetwork
+function SetVirtualNetwork
 {
     param($virtualNetwork)
 
     Write-Host "Applying changes to the virtual network."
     Try
     {
-        Set-AzureRmVirtualNetwork -VirtualNetwork $virtualNetwork -ErrorAction Stop | Out-Null
+        Set-AzureRmVirtualNetwork -VirtualNetwork $virtualNetwork -ErrorAction Stop -WarningAction SilentlyContinue | Out-Null
     }
     Catch
     {
@@ -303,26 +718,22 @@ function Set-VirtualNetwork
 
 }
 
-Ensure-Login
-Select-SubscriptionId -subscriptionId $subscriptionId
+EnsureLogin
+SelectSubscriptionId -subscriptionId $subscriptionId
 
-$virtualNetwork = Load-VirtualNetwork -resourceGroupName $resourceGroupName -virtualNetworkName $virtualNetworkName
-$subnet = Load-VirtualNetworkSubnet -virtualNetwork $virtualNetwork -subnetName $subnetName
+$virtualNetwork = LoadVirtualNetwork -resourceGroupName $resourceGroupName -virtualNetworkName $virtualNetworkName
+$subnet = LoadVirtualNetworkSubnet -virtualNetwork $virtualNetwork -subnetName $subnetName
 
 Write-Host
 
-Verify-Subnet $subnet
-$isOkDnsServersList = Verify-DNSServersList $virtualNetwork
-$isOkServiceEndpoints = Verify-ServiceEndpoints $subnet
-$isOkNSG = Verify-NSG $subnet
-$routeTable = Load-RouteTable $subnet
-$hasRouteTable = $routeTable -ne $null
-$isOkRouteTable = $false
-If($hasRouteTable) 
-{ 
-    $isOkRouteTable = Verify-RouteTable $subnet.AddressPrefix $routeTable 
-}
-
+VerifySubnet $subnet
+$isOkDnsServersList = VerifyDNSServersList $virtualNetwork
+$isOkServiceEndpoints = VerifyServiceEndpoints $subnet
+$nsgVerificationResult = VerifyNSG $subnet
+$isOkNSG = $nsgVerificationResult['success']
+$routeTableVerificationResult = VerifyRouteTable $subnet
+$hasRouteTable = $routeTableVerificationResult['hasRouteTable']
+$isOkRouteTable = $routeTableVerificationResult['success']
 $isValid = $isOkDnsServersList -and $isOkServiceEndpoints -and $isOkNSG -and $isOkRouteTable
 
 If($isValid -ne $true)
@@ -340,15 +751,38 @@ If($isValid -ne $true)
     }    
     If($isOkNSG -ne $true)
     {
-        Write-Host "[NSG] Disassociate NSG from the subnet." -ForegroundColor Yellow
+        Write-Host "[NSG] Create a copy of assoicated Network security group and add security rules to:" -ForegroundColor Yellow
+        ForEach($rule in $nsgVerificationResult['failedSecurityRules']){
+            Write-Host ("[NSG] -"+$rule.Description) -ForegroundColor Yellow
+        }
+        Write-Host "[NSG] Associate newly created Network security group to subnet." -ForegroundColor Yellow
     }  
     If($isOkRouteTable -ne $true)
     {
-        If($hasRouteTable)
+        If($hasRouteTable -eq $true)
         {
-            Write-Host "[UDR] Disassociate existing Route table from the subnet." -ForegroundColor Yellow
+            Write-Host "[UDR] Create a copy of associated Route table." -ForegroundColor Yellow
+
+            If($false -eq $routeTableVerificationResult['hasDefaultRoute'])
+            {
+                Write-Host "[UDR] Add 0.0.0.0/0 -> Internet route." -ForegroundColor Yellow
+            }
+
+            If($false -eq $routeTableVerificationResult['allowsInterNodeTraffic'])
+            {
+                Write-Host "[UDR] Remove route(s) that interfere with intercluster traffic." -ForegroundColor Yellow
+            }
+
+            If($false -eq $routeTableVerificationResult['hasNoPublicIPRouting'])
+            {
+                Write-Host "[UDR] Remove route(s) that interfere with direct traffic to public IP addresses." -ForegroundColor Yellow
+            }
         }
-        Write-Host "[UDR] Create Route table with single 0.0.0.0/0 -> Internet rule and associate it to the subnet." -ForegroundColor Yellow
+        Else
+        {
+            Write-Host "[UDR] Create Route table with single 0.0.0.0/0 -> Internet route." -ForegroundColor Yellow
+        }
+        Write-Host "[UDR] Associate newly created Route table to subnet." -ForegroundColor Yellow
     }   
     Write-Host
     Write-Host("-------------------------------------------------------------------------------------------------------- ")  -ForegroundColor Yellow    
@@ -368,25 +802,25 @@ If($isValid -ne $true)
     { 
         If($isOkDnsServersList -ne $true)
         {
-            Prepare-DNSServerList $virtualNetwork
+            PrepareDNSServerList $virtualNetwork
         }    
 
         If($isOkServiceEndpoints -ne $true)
         {
-            Prepare-ServiceEndpoints $subnet
+            PrepareServiceEndpoints $subnet
         }
             
         If($isOkNSG -ne $true)
         {
-            Prepare-NSG $subnet
+            PrepareNSG $nsgVerificationResult $virtualNetwork $subnet
         }  
 
         If($isOkRouteTable -ne $true)
         {
-            Prepare-RouteTable $routeTable $virtualNetwork $subnet
+            PrepareRouteTable $routeTableVerificationResult $virtualNetwork $subnet
         }   
 
-        Set-VirtualNetwork $virtualNetwork
+        SetVirtualNetwork $virtualNetwork
 
         Write-Host
         Write-Host "Subnet prepared for the Managed Instance." -ForegroundColor Green        
