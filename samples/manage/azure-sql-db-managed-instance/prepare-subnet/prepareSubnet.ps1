@@ -557,7 +557,7 @@ function VerifyRouteTable {
             ForEach($route in $routeTable.Routes)
             {
                 If(
-                    (HasCidrOverlap -cidrRangeA $route.AddressPrefix -cidrRangeB $subnet.AddressPrefix[0])  -and `
+                    (HasCidrOverlap -cidrRangeA $route.AddressPrefix -cidrRangeB $subnet.AddressPrefix)  -and `
                     $route.NextHopType -ne "VnetLocal"
                   )
                 {
