@@ -139,7 +139,7 @@ In this example, you are going to run a sample notebook that analyzes the data o
 
 1. Connect to HDFS/Spark gateway and locate *Cluster_Diabetes_Demo.ipynb* file under *notebooks* folder in HDFS. Save it locally on your VM: right click on the file name, then "Save".
 1. Open the notebook saved locally (right click on the Knox/HDFS gateway server name-> **Manage**-> Open Notebook
-1. Wait for the “Kernel” and the target context (“Attach to”) to be populated. “Kernel” should be **PySpark3** and “Attach to” is **15.226.40.8**.
+1. Wait for the “Kernel” and the target context (“Attach to”) to be populated. “Kernel” should be **PySpark (NOT PySpark3)** and “Attach to” is **15.226.40.8**.
 1. Run each cell from the Notebook sequentially using Azure Data Studio.  It will take about 20 seconds to run the first cell.
 ## 6. Build a ML model and predict in SQL server Master instance
 Machine Learning services are running in the SQL Server Master instance of the big data cluster, which enables you to run R and Python scripts using the stored procedure “sp_execute_external_script”. 
