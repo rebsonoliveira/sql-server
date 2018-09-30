@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 // Observable class extensions
 require("rxjs/add/observable/of");
 require("rxjs/add/observable/throw");
