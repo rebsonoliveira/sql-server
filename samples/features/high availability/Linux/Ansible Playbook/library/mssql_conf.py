@@ -74,6 +74,7 @@ RETURN = '''
 
 from ansible.module_utils.basic import AnsibleModule
 import os.path
+import re
 import subprocess
 
 def main():
@@ -115,9 +116,14 @@ def main():
 	changed = True
 
 	if setup_sa_password is not None:
+		need_to_set_up = True
 		if os.path.isfile('/var/opt/mssql/mssql.conf'):
-			changed = False
-		else:
+			with open("/var/opt/mssql/mssql.conf", "r") as mssql_conf_file:
+				mssql_conf_file_data = mssql_conf_file.read()
+			if re.search(r'\b(accepteula)\b', mssql_conf_file_data, re.I) is not None:
+				need_to_set_up = False
+				changed = False
+		if need_to_set_up:
 			setup_env = os.environ.copy()
 			subprocess.check_call(
 				['/opt/mssql/bin/mssql-conf', '--noprompt', 'setup', 'accept-eula'],

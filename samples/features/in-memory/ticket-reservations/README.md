@@ -60,14 +60,14 @@ The perf gains from In-Memory OLTP as shown by the load generation app depend on
     - more reads per write => lower perf gain
     - default setting is 100 rows per transaction and 1 read per write
 
-If the performance profile after migration to In-Memory OLTP looks choppy, it is likely that log IO is the bottleneck. This can be mitigated by using [delayed durability] (https://msdn.microsoft.com/en-us/library/dn449490.aspx). This is enabled by running the following statement in the database:
+If the performance profile after migration to In-Memory OLTP looks choppy, it is likely that log IO is the bottleneck. This can be mitigated by using [delayed durability](https://msdn.microsoft.com/en-us/library/dn449490.aspx). This is enabled by running the following statement in the database:
 	`ALTER DATABASE CURRENT SET DELAYED_DURABILITY = FORCED`
 
 With default settings on one machine with 24 logical cores and relatively slow SSD for the log the app shows around performance 40X gain, and in this case the bottleneck was log IO. Note that the factor gain can vary with the hardware being used.
 
 When deploying to Azure SQL Database, make sure to run the app in an Azure VM in the same region as the database.
 
-If you have a beefy machine and are seeing a drop-off in transaction throughput after running the demo for a while, increase the BUCKET_COUNT in 'apply-in-memory-oltp.sql' by a factor of 10 or 100.
+If you have a beefy machine and are seeing a drop-off in transaction throughput after running the demo for a while, increase the BUCKET_COUNT in 'TicketReservations/dbo/Tables/TicketReservationDetail.sql' by a factor of 10 or 100.
 
 For any feedback on the sample, contact: sqlserversamples@microsoft.com
 

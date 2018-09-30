@@ -21,11 +21,11 @@ Each sample should be in its own folder with a README.md file that follows the [
 ## Cloning only a subset of the repo (with sparse checkout)
 You can follow the steps below to clone individual files from the sql-server-samples git repo. Note: The following script clones only the files under the **features** and **demos** folders. 
 ```
-git clone -n https://github.com/Microsoft/sql-server-samples.\sql-server-samples
+git clone -n https://github.com/Microsoft/sql-server-samples
 cd sql-server-samples
 git config core.sparsecheckout true
-echo samples/features/*| out-file -append -encoding ascii.git/info/sparse-checkout
-echo samples/demos/*| out-file -append -encoding ascii.git/info/sparse-checkout
+echo samples/features/*| out-file -append -encoding ascii .git/info/sparse-checkout
+echo samples/demos/*| out-file -append -encoding ascii .git/info/sparse-checkout
 git checkout
 ```
 For more information about sparse checkout please visit [this](https://stackoverflow.com/questions/23289006/on-windows-git-error-sparse-checkout-leaves-no-entry-on-the-working-directory) stackoverflow thread.

@@ -205,7 +205,7 @@ foreach ($ResourceGroup in $ResourceGroupName)
 
 
 
-                Post-OMSData -customerId $customerId -sharedKey $sharedKey -body ([System.Text.Encoding]::UTF8.GetBytes($json)) -logType $logType
+                $result = Post-OMSData -customerId $customerId -sharedKey $sharedKey -body ([System.Text.Encoding]::UTF8.GetBytes($json)) -logType $logType
                 if ($result -eq 200) 
                 {
                     Write-Host "Success"
