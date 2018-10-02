@@ -23,3 +23,7 @@ Samples that help with the management of SQL Server and Azure SQL Database.
 __[tutorials](tutorials/)__
 
 Samples showing how to connect to SQL databases using various programming languages, including Python, C#, Java, Ruby, Node.js, and PHP.
+
+__[containers](containers/)__
+
+Samples showing various SQL Server in container scenarios.
