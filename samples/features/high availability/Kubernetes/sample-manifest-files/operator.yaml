@@ -1,3 +1,7 @@
+apiVersion:v1
+kind: Namespace
+metadata: {name: ag1}
+---
 apiVersion: v1
 kind: ServiceAccount
 metadata: {name: mssql-operator, namespace: ag1}
