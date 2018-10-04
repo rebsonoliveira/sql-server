@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using NLog.Web;
 using System.IO;
 
 namespace ProductCatalog
@@ -12,6 +13,7 @@ namespace ProductCatalog
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
+                .UseNLog()
                 .UseStartup<Startup>()
                 .Build();
 

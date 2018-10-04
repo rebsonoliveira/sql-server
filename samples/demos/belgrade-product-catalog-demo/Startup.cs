@@ -1,6 +1,5 @@
 ﻿using Belgrade.SqlClient;
 using Belgrade.SqlClient.SqlDb;
-using Belgrade.SqlClient.SqlDb.Rls;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -9,12 +8,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using ProductCatalog.Models;
-using Serilog; 
-using Serilog.Sinks;
+using Serilog;
 using Serilog.Sinks.MSSqlServer;
 using System;
 using System.Data.SqlClient;
 using System.Linq;
+
+using NLog.Extensions.Logging;
+using NLog.Web;
 
 namespace ProductCatalog
 {
@@ -22,18 +23,20 @@ namespace ProductCatalog
     {
         public Startup(IHostingEnvironment env)
         {
+            env.ConfigureNLog("nlog.config");
+
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
-#if NETCOREAPP2_0
-            Log.Logger = new LoggerConfiguration()
-                .WriteTo.RollingFile(new Serilog.Formatting.Json.JsonFormatter(), System.IO.Path.Combine(env.ContentRootPath, "logs\\log-{Date}.ndjson"))
-                .CreateLogger();
-#endif
-#if NET46
+
+            // Enable this if you want to log into local folder as newline-delimited JSON
+            //Log.Logger = new LoggerConfiguration()
+            //    .WriteTo.RollingFile(new Serilog.Formatting.Json.JsonFormatter(), System.IO.Path.Combine(env.ContentRootPath, "logs\\log-{Date}.ndjson"))
+            //    .CreateLogger();
+
             var columnOptions = new ColumnOptions();
             // Don't include the Properties XML column.
             columnOptions.Store.Remove(StandardColumn.Id);
@@ -47,7 +50,6 @@ namespace ProductCatalog
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.MSSqlServer(Configuration["ConnectionStrings:BelgradeDemo"], "Logs", columnOptions: columnOptions, autoCreateSqlTable: false)
                 .CreateLogger();
-#endif
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -72,6 +74,7 @@ namespace ProductCatalog
 
             //// Add framework services.
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+           
             services.AddLogging();
             services.AddSession();
             services.AddMvc();
@@ -83,6 +86,11 @@ namespace ProductCatalog
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
             loggerFactory.AddSerilog();
+
+            //add NLog to ASP.NET Core
+            loggerFactory.AddNLog();
+            NLog.LogManager.ThrowExceptions = true;
+            NLog.LogManager.ThrowConfigExceptions = true;
 
             app.UseSession();
             app.UseStaticFiles();
