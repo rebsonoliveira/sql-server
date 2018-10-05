@@ -9,30 +9,11 @@ spec:
 ---
 apiVersion: v1
 kind: Service
-metadata: {annotations: null, name: ag1-secondary-sync, namespace: ag1}
+metadata: {annotations: null, name: ag1-secondary, namespace: ag1}
 spec:
   ports:
   - {name: tds, port: 1433}
-  selector: {mode.ag.mssql.microsoft.com/ag1: synchronousCommit, role.ag.mssql.microsoft.com/ag1: secondary,
+  selector: {role.ag.mssql.microsoft.com/ag1: secondary,
     type: sqlservr}
   type: LoadBalancer
 ---
-apiVersion: v1
-kind: Service
-metadata: {annotations: null, name: ag1-secondary-async, namespace: ag1}
-spec:
-  ports:
-  - {name: tds, port: 1433}
-  selector: {mode.ag.mssql.microsoft.com/ag1: asynchronousCommit, role.ag.mssql.microsoft.com/ag1: secondary,
-    type: sqlservr}
-  type: LoadBalancer
----
-apiVersion: v1
-kind: Service
-metadata: {annotations: null, name: ag1-secondary-config, namespace: ag1}
-spec:
-  ports:
-  - {name: tds, port: 1433}
-  selector: {mode.ag.mssql.microsoft.com/ag1: configurationOnly, role.ag.mssql.microsoft.com/ag1: secondary,
-    type: sqlservr}
-  type: LoadBalancer
