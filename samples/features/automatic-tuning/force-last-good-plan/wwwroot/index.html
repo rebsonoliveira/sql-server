@@ -82,6 +82,10 @@ SET AUTOMATIC_TUNING ( FORCE_LAST_GOOD_PLAN = ON);</pre>
                 $.ajax({
                     url: "/api/demo",
                     success: function (result) {
+                        if (result.y == 0) {
+                            console.log("No response");
+                            return;
+                        }
                         (perfData.length == 10) && perfData.shift();
                         if(result.y>0)
                             perfData.push(result.y);
