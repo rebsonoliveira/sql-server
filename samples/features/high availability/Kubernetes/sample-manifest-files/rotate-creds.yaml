@@ -33,7 +33,7 @@ kind: RoleBinding
 
 metadata:
   name: rotate-creds
-  namespace: default
+  namespace: ag1
 
 roleRef:
   name: rotate-creds
