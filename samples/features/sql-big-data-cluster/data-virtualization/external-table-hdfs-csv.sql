@@ -18,7 +18,7 @@ WITH (
 -- is a special data source that is available in any new database in
 -- SQL Master instance.
 --
-CREATE EXTERNAL TABLE [web_clickstreams_hdfs]
+CREATE EXTERNAL TABLE [web_clickstreams_hdfs_csv]
 ("wcs_click_date_sk" BIGINT , "wcs_click_time_sk" BIGINT , "wcs_sales_sk" BIGINT , "wcs_item_sk" BIGINT , "wcs_web_page_sk" BIGINT , "wcs_user_sk" BIGINT)
 WITH
 (
@@ -42,11 +42,11 @@ SELECT
     SUM( CASE WHEN i_category_id = 7 THEN 1 ELSE 0 END) AS [Toys & Games],
     SUM( CASE WHEN i_category_id = 8 THEN 1 ELSE 0 END) AS [Movies & TV],
     SUM( CASE WHEN i_category_id = 9 THEN 1 ELSE 0 END) AS [Sports & Outdoors]
-  FROM [dbo].[web_clickstreams_hdfs]
+  FROM [dbo].[web_clickstreams_hdfs_csv]
   INNER JOIN item it ON (wcs_item_sk = i_item_sk
                         AND wcs_user_sk IS NOT NULL)
 GROUP BY  wcs_user_sk;
 GO
 
-DROP EXTERNAL TABLE [dbo].[web_clickstreams_hdfs];
+DROP EXTERNAL TABLE [dbo].[web_clickstreams_hdfs_csv];
 GO

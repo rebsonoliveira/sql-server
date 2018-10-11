@@ -10,7 +10,9 @@ In this example, you are going to create an external table in the SQL Server Mas
 
 1. Connect to SQL Server Master instance.
 
-1. Execute the [external-table-hdfs.sql](external-table-hdfs.sql).
+1. Execute the [external-table-hdfs-csv.sql](external-table-hdfs-csv.sql). This script demonstrates how to read CSV file(s) stored in HDFS.
+
+1. Before you use execute the *external-table-hdfs-parquet.sql* script, make sure you run the [../spark/spark-sql.ipynb](../spark/spark-sql.ipynb/) notebook to generate the sample parquet file. Execute the [external-table-hdfs-parquet.sql](external-table-hdfs-parquet.sql). This script demonstrates how to read parquet file(s) stored in HDFS. 
 
 ## Query data in Oracle from SQL Server master
 
