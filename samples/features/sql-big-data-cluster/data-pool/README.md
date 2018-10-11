@@ -1,6 +1,20 @@
-# Data ingestion using Spark streaming
+# Data pools in SQL Server 2019 big data cluster
 
-SQL Server Big Data clusters provide scale-out compute and storage to improve the performance of analyzing any data. Data from a variety of sources can be ingested and distributed across data pool instances for analysis. In this example, you are going to use Spark to read and transform data from HDFS and cache it in a data pool. Querying the external table created over this aggregated data stored in data pools will be much more efficient than going to the raw data always.  
+SQL Server Big Data clusters provide scale-out compute and storage to improve the performance of analyzing any data. Data from a variety of sources can be ingested and distributed across data pool instances for analysis. In this example, we will insert data from a SQL query into an external table stored in a data pool and query it.
+
+## Data ingestion using SQL stored procedure
+
+SQL Server Big Data clusters provide scale-out compute and storage to improve the performance of analyzing any data. Data from a variety of sources can be ingested and distributed across data pool instances for analysis. In this example, we will insert data from a SQL query into an external table stored in a data pool and query it.
+
+### Instructions
+
+1. Connect to SQL Server Master instance.
+
+1. Execute the .sql script [data-ingestion-sql.sql](data-ingestion-sql.sql).
+
+## Data ingestion using Spark streaming
+
+In this example, you are going to use Spark to read and transform data from HDFS and cache it in a data pool. Querying the external table created over this aggregated data stored in data pools will be much more efficient than going to the raw data always.  
 
 ### Instructions
 

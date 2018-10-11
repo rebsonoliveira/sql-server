@@ -1,26 +1,38 @@
-# Machine learning with Spark on SQL Server 2019 big data cluster
+# Machine learning in SQL Server 2019 big data cluster
+
+## SQL Server Machine Learning Services on SQL Master instance
+
+In this example, we are building a machine learning model using R and a logistic regression algorithm for a recommendation engine on an online store. Based on existing users' click pattern online and their interest in other categories and demographics, we are training a machine learning model. This model will then be used to predict if the visitor is interested in a given item category using the T-SQL PREDICT function.
+
+### Instructions
+
+1. Connect to SQL Server Master instance.
+
+1. Execute the SQL [sql/book-click-prediction-r.sql](sql/book-click-prediction-r.sql/).
+
+## Machine learning using Spark
 
 The new built-in notebooks in Azure Data Studio enables data scientists and data engineers to run Python, R, or Scala code against the cluster. This is a great way to explore the data and build machine learning models. Notebooks facilitate collaboration between teammates working on a shared data set.
 
 This sample builds a machine learning model using AdultCensusIncome.csv available [here](https://amldockerdatasets.azureedge.net/AdultCensusIncome.csv).
 
 
-## Instructions
+### Instructions
 
 In this example, you are going to run sample notebooks that build a machine learning model over a public data set.
 
 Follow the steps below to get up and running with the sample.
 
-## Upload the data for analysis
+#### Upload the data for analysis
 
 1. From Azure Data Studio, connect to the SQL Server big data cluster endpoint. Information about how you connect from Azure Data Studio can be found [here](https://docs.microsoft.com/en-us/sql/azure-data-studio/sql-server-2019-extension?view=sql-server-ver15).
 
 2. Download the data from https://amldockerdatasets.azureedge.net/AdultCensusIncome.csv and save AdultCensusIncome.csv in a folder called spark_ml in HDFS.
 
-## Run notebook for data preparation
+#### Run notebook for data preparation
 As a first step we'll load the data, do some basic cleanup on that data, choose the features that we want to build the machine learning model with. Finally we'll split the data set as training and test sets.
 
-1. Download and save the notebook file [1-data-prep.ipynb](1-data-prep.ipynb/) locally.
+1. Download and save the notebook file [spark/1-data-prep.ipynb](spark/1-data-prep.ipynb/) locally.
 
 1. Open the notebook file in Azure Data Studio (right click on the SQL Server big data cluster  server name-> **Manage**-> Open Notebook.
 
@@ -30,10 +42,10 @@ As a first step we'll load the data, do some basic cleanup on that data, choose 
 
 1. The training and test sets created would be stored as /spark_ml/AdultCensusIncomeTrain and /spark_ml/AdultCensusIncomeTest
 
-## Run notebook to create a machine learning model and use it to predict
+#### Run notebook to create a machine learning model and use it to predict
 We'll now create the machine learning model, use the model to predict results on the test set and then save the created model to a file.
 
-1. Download and save the notebook (ipynb) file [2-build-ml-model.ipynb] (2-build-ml-model.ipynb/)
+1. Download and save the notebook (ipynb) file [spark\2-build-ml-model.ipynb](spark/2-build-ml-model.ipynb/)
 
 1. Open the notebook file in Azure Data Studio (right click on the SQL Server big data cluster  server name-> **Manage**-> Open Notebook.
 
