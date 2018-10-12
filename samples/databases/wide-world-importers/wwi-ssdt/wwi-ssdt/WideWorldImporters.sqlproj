@@ -844,5 +844,6 @@
     <None Include="PostDeploymentScripts\pds105-ins-dls-ficticiousnamepool.sql" />
     <None Include="PostDeploymentScripts\pds106-ins-dls-areacode.sql" />
     <None Include="PostDeploymentScripts\pds400-ins-unkown-orderline.sql" />
+    <None Include="PostDeploymentScripts\pds410-update-archive-tables.sql" />
   </ItemGroup>
 </Project>

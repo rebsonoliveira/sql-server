@@ -172,6 +172,7 @@ EXEC DataLoadSimulation.DailyProcessToCreateHistory
 GO
 
 :r .\pds400-ins-unkown-orderline.sql
+:r .\pds410-update-archive-tables.sql
 
 /*
   There is one other stored procedure you may find useful:
