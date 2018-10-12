@@ -18,4 +18,9 @@ apt-get install -y docker.io
 apt-get install -y apt-transport-https
 apt-get install -y kubelet=$KUBE_DPKG_VERSION kubeadm=$KUBE_DPKG_VERSION kubectl=$KUBE_DPKG_VERSION
 curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash
+
+. /etc/os-release
+if [ "$VERSION_CODENAME" == "bionic" ]; then
+    modprobe br_netfilter
+fi
 sysctl net.bridge.bridge-nf-call-iptables=1
