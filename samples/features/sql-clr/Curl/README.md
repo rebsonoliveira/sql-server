@@ -28,8 +28,11 @@ One of the most popular tool for calling API on `http:` endpoints is [curl](http
 ## Build the CLR/CURL functions
 
 1. Download the source code and open the solution using Visual Studio.
-2. Change the password in .pfk file (go to Project > Properties > Signing) and rebuild the solution in **Retail** mode.
-3. Open and save [SqlClrCurl.tt](SqlClrCurl.tt) to generate T-SQL file that will contain the script that inserts CLR assembly with the **CURL** functionalities, and exposes T-SQL/CLR functions.
+2. Create a .pfk file (go to Project > Properties > Signing) to sign te assembly:
+![Sign assembly](..\..\..\..\media\features\sql-clr\sign-assembly.png)
+
+3. Rebuild the solution in **Retail** mode.
+4. Open and save [SqlClrCurl.tt](SqlClrCurl.tt) to generate T-SQL file that will contain the script that inserts CLR assembly with the **CURL** functionalities, and exposes T-SQL/CLR functions.
 
 <a name=add-functions></a>
 ## Add CURL functions to your SQL database
