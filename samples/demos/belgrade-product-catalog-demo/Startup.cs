@@ -23,7 +23,8 @@ namespace ProductCatalog
     {
         public Startup(IHostingEnvironment env)
         {
-            env.ConfigureNLog("nlog.config");
+            // Deprecated way to initialize NLog form nlog.config, but works if you don't copy file to /bin.
+            //env.ConfigureNLog("nlog.config");
 
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -86,12 +87,7 @@ namespace ProductCatalog
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
             loggerFactory.AddSerilog();
-
-            //add NLog to ASP.NET Core
-            loggerFactory.AddNLog();
-            NLog.LogManager.ThrowExceptions = true;
-            NLog.LogManager.ThrowConfigExceptions = true;
-
+            
             app.UseSession();
             app.UseStaticFiles();
             app.UseMvc(routes =>
