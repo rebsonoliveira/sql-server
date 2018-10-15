@@ -64,11 +64,12 @@ AS
 GO
 
 -- Create table for storing the machine learning models
-CREATE TABLE sales_models (
-	model_name varchar(100) NOT NULL PRIMARY KEY,
-	model varbinary(max) NOT NULL,
-	model_native varbinary(max) NOT NULL,
-	created_by nvarchar(300) NOT NULL DEFAULT(SYSTEM_USER),
-	create_time datetime2 NOT NULL DEFAULT(SYSDATETIME())
-);
+IF NOT EXISTS(SELECT * FROM sys.tables WHERE name = 'sales_models')
+	CREATE TABLE sales_models (
+		model_name varchar(100) NOT NULL PRIMARY KEY,
+		model varbinary(max) NOT NULL,
+		model_native varbinary(max) NOT NULL,
+		created_by nvarchar(300) NOT NULL DEFAULT(SYSTEM_USER),
+		create_time datetime2 NOT NULL DEFAULT(SYSDATETIME())
+	);
 GO
