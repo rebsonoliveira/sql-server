@@ -6,13 +6,14 @@ GO
 -- any new database in SQL Master instance. This is used to reference the
 -- data pool in a SQL Server 2019 big data cluster.
 --
-CREATE EXTERNAL TABLE [web_clickstreams_spark_results]
-("wcs_click_date_sk" BIGINT , "wcs_click_time_sk" BIGINT , "wcs_sales_sk" BIGINT , "wcs_item_sk" BIGINT , "wcs_web_page_sk" BIGINT , "wcs_user_sk" BIGINT)
-WITH
-(
-    DATA_SOURCE = SqlDataPool,
-	DISTRIBUTION = ROUND_ROBIN
-);
+IF NOT EXISTS(SELECT * FROM sys.external_tables WHERE name = 'web_clickstreams_spark_results')
+    CREATE EXTERNAL TABLE [web_clickstreams_spark_results]
+    ("wcs_click_date_sk" BIGINT , "wcs_click_time_sk" BIGINT , "wcs_sales_sk" BIGINT , "wcs_item_sk" BIGINT , "wcs_web_page_sk" BIGINT , "wcs_user_sk" BIGINT)
+    WITH
+    (
+        DATA_SOURCE = SqlDataPool,
+        DISTRIBUTION = ROUND_ROBIN
+    );
 
 -- Data can be ingested into the external table from a spark job.
 --
