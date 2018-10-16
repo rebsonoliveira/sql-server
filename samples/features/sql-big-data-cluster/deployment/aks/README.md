@@ -6,6 +6,7 @@ Using this sample Python script, you will deploy a Kubernetes cluster in Azure u
 
 ## Pre-requisites
 
+1. Install latest version of [az cli](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 1. Running the script will require: [python minimum version 3.0](https://www.python.org/downloads)
 1. Ensure you have installed `mssqlctl` CLI and its prerequisites:
     - Install [pip3](https://pip.pypa.io/en/stable/installing/).
@@ -30,9 +31,9 @@ Run the script using:
 python deploy-sql-big-data-aks.py
 ```
 
->[!Note]
+>**Note**
 >
->If you have both pyhon3 and pyhon2 on your client machine and in the path, you will have to run the command using pyhon3:
+>If you have both python3 and python2 on your client machine and in the path, you will have to run the command using python3:
 >```
 >python3 deploy-sql-big-data-aks.py
 >```
