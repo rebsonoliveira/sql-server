@@ -32,6 +32,7 @@ AS
 	  q.clicks_in_category,
 	  CASE WHEN cd.cd_education_status IN ('Advanced Degree', 'College', '4 yr Degree', '2 yr Degree') THEN 1 ELSE 0 END AS college_education,
 	  CASE WHEN cd.cd_gender = 'M' THEN 1 ELSE 0 END AS male,
+	  COALESCE(cd.cd_credit_rating, 'Unknown') as cd_credit_rating,
 	  q.clicks_in_1,
 	  q.clicks_in_2,
 	  q.clicks_in_3,
@@ -68,7 +69,7 @@ IF NOT EXISTS(SELECT * FROM sys.tables WHERE name = 'sales_models')
 	CREATE TABLE sales_models (
 		model_name varchar(100) NOT NULL PRIMARY KEY,
 		model varbinary(max) NOT NULL,
-		model_native varbinary(max) NOT NULL,
+		model_native varbinary(max) NULL,
 		created_by nvarchar(300) NOT NULL DEFAULT(SYSTEM_USER),
 		create_time datetime2 NOT NULL DEFAULT(SYSDATETIME())
 	);
