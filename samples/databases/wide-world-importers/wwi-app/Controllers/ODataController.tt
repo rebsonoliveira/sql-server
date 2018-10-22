@@ -2,7 +2,7 @@
 <#@ assembly name="Newtonsoft.Json" #>
 <#@ template language="C#" hostspecific="True" #>
 <#
-	var o = Newtonsoft.Json.Linq.JObject.Parse(System.IO.File.ReadAllText(this.Host.ResolvePath("..") + "\\appsettings.Development.json"));
+	var o = Newtonsoft.Json.Linq.JObject.Parse(System.IO.File.ReadAllText(this.Host.ResolvePath("..") + "\\appsettings.json"));
 	var json = o["ApiModel"].ToString();
 	TableDef[] config = Newtonsoft.Json.JsonConvert.DeserializeObject<TableDef[]>(json);
 #>
@@ -10,7 +10,7 @@
 using Belgrade.SqlClient;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SqlServerRestApi;
+using MsSql.RestApi;
 using System;
 using System.IO;
 using System.Security.Claims;
@@ -26,7 +26,7 @@ namespace wwi_app.Controllers
         {
 			this.sqlCmd = sqlCommandService;
         }
-		
+
 <# foreach(var t in config) {#>
 
 <# if(string.IsNullOrEmpty(t.ODataColumns)) continue; #>
@@ -35,7 +35,7 @@ namespace wwi_app.Controllers
 		[HttpGet]
         public async Task <#= t.Table #>(int? id)
         {
-			await this.OData(<#= t.Table.ToLower() #>, this.sqlCmd, id: id).Process();
+			await this.OData(<#= t.Table.ToLower() #>, id: id).Process(this.sqlCmd);
         }
 		
 <# if(!t.IsReadOnly) { #>

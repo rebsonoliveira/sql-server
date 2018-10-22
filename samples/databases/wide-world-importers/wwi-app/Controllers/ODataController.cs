@@ -2,7 +2,7 @@
 using Belgrade.SqlClient;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SqlServerRestApi;
+using MsSql.RestApi;
 using System;
 using System.IO;
 using System.Security.Claims;
@@ -18,14 +18,14 @@ namespace wwi_app.Controllers
         {
 			this.sqlCmd = sqlCommandService;
         }
-		
+
 
 		TableSpec salesorders = new TableSpec("WebApi","SalesOrders", "OrderID,OrderDate,CustomerPurchaseOrderNumber,ExpectedDeliveryDate,PickingCompletedWhen,CustomerID,CustomerName,PhoneNumber,FaxNumber,WebsiteURL,DeliveryLocation,SalesPerson,SalesPersonPhone,SalesPersonEmail");
 
 		[HttpGet]
         public async Task SalesOrders(int? id)
         {
-			await this.OData(salesorders, this.sqlCmd, id: id).Process();
+			await this.OData(salesorders, id: id).Process(this.sqlCmd);
         }
 		
         [Authorize]
@@ -61,12 +61,12 @@ namespace wwi_app.Controllers
         }
 
 
-		TableSpec salesorderlines = new TableSpec("WebApi","SalesOrderLines", "OrderLineID,OrderID,Description,Quantity,UnitPrice,TaxRate,ProductName,Brand,Size,ColorName,PackageTypeName");
+		TableSpec salesorderlines = new TableSpec("WebApi","SalesOrderLines", "OrderLineID,OrderID,Description,Quantity,UnitPrice,TaxRate,ProductName,Brand,Size,ColorName,PackageTypeName,PickingCompletedWhen");
 
 		[HttpGet]
         public async Task SalesOrderLines(int? id)
         {
-			await this.OData(salesorderlines, this.sqlCmd, id: id).Process();
+			await this.OData(salesorderlines, id: id).Process(this.sqlCmd);
         }
 		
         [Authorize]
@@ -107,7 +107,7 @@ namespace wwi_app.Controllers
 		[HttpGet]
         public async Task PurchaseOrders(int? id)
         {
-			await this.OData(purchaseorders, this.sqlCmd, id: id).Process();
+			await this.OData(purchaseorders, id: id).Process(this.sqlCmd);
         }
 		
         [Authorize]
@@ -148,7 +148,7 @@ namespace wwi_app.Controllers
 		[HttpGet]
         public async Task PurchaseOrderLines(int? id)
         {
-			await this.OData(purchaseorderlines, this.sqlCmd, id: id).Process();
+			await this.OData(purchaseorderlines, id: id).Process(this.sqlCmd);
         }
 		
         [Authorize]
@@ -189,7 +189,7 @@ namespace wwi_app.Controllers
 		[HttpGet]
         public async Task Invoices(int? id)
         {
-			await this.OData(invoices, this.sqlCmd, id: id).Process();
+			await this.OData(invoices, id: id).Process(this.sqlCmd);
         }
 		
         [Authorize]
@@ -230,7 +230,7 @@ namespace wwi_app.Controllers
 		[HttpGet]
         public async Task SpecialDeals(int? id)
         {
-			await this.OData(specialdeals, this.sqlCmd, id: id).Process();
+			await this.OData(specialdeals, id: id).Process(this.sqlCmd);
         }
 		
         [Authorize]
@@ -271,7 +271,7 @@ namespace wwi_app.Controllers
 		[HttpGet]
         public async Task CustomerTransactions(int? id)
         {
-			await this.OData(customertransactions, this.sqlCmd, id: id).Process();
+			await this.OData(customertransactions, id: id).Process(this.sqlCmd);
         }
 		
         [Authorize]
@@ -312,7 +312,7 @@ namespace wwi_app.Controllers
 		[HttpGet]
         public async Task SupplierTransactions(int? id)
         {
-			await this.OData(suppliertransactions, this.sqlCmd, id: id).Process();
+			await this.OData(suppliertransactions, id: id).Process(this.sqlCmd);
         }
 		
         [Authorize]
@@ -353,7 +353,7 @@ namespace wwi_app.Controllers
 		[HttpGet]
         public async Task Customers(int? id)
         {
-			await this.OData(customers, this.sqlCmd, id: id).Process();
+			await this.OData(customers, id: id).Process(this.sqlCmd);
         }
 		
         [Authorize]
@@ -394,7 +394,7 @@ namespace wwi_app.Controllers
 		[HttpGet]
         public async Task Suppliers(int? id)
         {
-			await this.OData(suppliers, this.sqlCmd, id: id).Process();
+			await this.OData(suppliers, id: id).Process(this.sqlCmd);
         }
 		
         [Authorize]
@@ -435,7 +435,7 @@ namespace wwi_app.Controllers
 		[HttpGet]
         public async Task Countries(int? id)
         {
-			await this.OData(countries, this.sqlCmd, id: id).Process();
+			await this.OData(countries, id: id).Process(this.sqlCmd);
         }
 		
         [Authorize]
@@ -476,7 +476,7 @@ namespace wwi_app.Controllers
 		[HttpGet]
         public async Task Cities(int? id)
         {
-			await this.OData(cities, this.sqlCmd, id: id).Process();
+			await this.OData(cities, id: id).Process(this.sqlCmd);
         }
 		
         [Authorize]
@@ -517,7 +517,7 @@ namespace wwi_app.Controllers
 		[HttpGet]
         public async Task StateProvinces(int? id)
         {
-			await this.OData(stateprovinces, this.sqlCmd, id: id).Process();
+			await this.OData(stateprovinces, id: id).Process(this.sqlCmd);
         }
 		
         [Authorize]
@@ -558,7 +558,7 @@ namespace wwi_app.Controllers
 		[HttpGet]
         public async Task StockItems(int? id)
         {
-			await this.OData(stockitems, this.sqlCmd, id: id).Process();
+			await this.OData(stockitems, id: id).Process(this.sqlCmd);
         }
 		
         [Authorize]
@@ -599,7 +599,7 @@ namespace wwi_app.Controllers
 		[HttpGet]
         public async Task PackageTypes(int? id)
         {
-			await this.OData(packagetypes, this.sqlCmd, id: id).Process();
+			await this.OData(packagetypes, id: id).Process(this.sqlCmd);
         }
 		
         [Authorize]
@@ -640,7 +640,7 @@ namespace wwi_app.Controllers
 		[HttpGet]
         public async Task Colors(int? id)
         {
-			await this.OData(colors, this.sqlCmd, id: id).Process();
+			await this.OData(colors, id: id).Process(this.sqlCmd);
         }
 		
         [Authorize]
@@ -681,7 +681,7 @@ namespace wwi_app.Controllers
 		[HttpGet]
         public async Task StockGroups(int? id)
         {
-			await this.OData(stockgroups, this.sqlCmd, id: id).Process();
+			await this.OData(stockgroups, id: id).Process(this.sqlCmd);
         }
 		
         [Authorize]
@@ -722,7 +722,7 @@ namespace wwi_app.Controllers
 		[HttpGet]
         public async Task BuyingGroups(int? id)
         {
-			await this.OData(buyinggroups, this.sqlCmd, id: id).Process();
+			await this.OData(buyinggroups, id: id).Process(this.sqlCmd);
         }
 		
         [Authorize]
@@ -763,7 +763,7 @@ namespace wwi_app.Controllers
 		[HttpGet]
         public async Task CustomerCategories(int? id)
         {
-			await this.OData(customercategories, this.sqlCmd, id: id).Process();
+			await this.OData(customercategories, id: id).Process(this.sqlCmd);
         }
 		
         [Authorize]
@@ -804,7 +804,7 @@ namespace wwi_app.Controllers
 		[HttpGet]
         public async Task SupplierCategories(int? id)
         {
-			await this.OData(suppliercategories, this.sqlCmd, id: id).Process();
+			await this.OData(suppliercategories, id: id).Process(this.sqlCmd);
         }
 		
         [Authorize]
@@ -845,7 +845,7 @@ namespace wwi_app.Controllers
 		[HttpGet]
         public async Task TransactionTypes(int? id)
         {
-			await this.OData(transactiontypes, this.sqlCmd, id: id).Process();
+			await this.OData(transactiontypes, id: id).Process(this.sqlCmd);
         }
 		
         [Authorize]
@@ -886,7 +886,7 @@ namespace wwi_app.Controllers
 		[HttpGet]
         public async Task PaymentMethods(int? id)
         {
-			await this.OData(paymentmethods, this.sqlCmd, id: id).Process();
+			await this.OData(paymentmethods, id: id).Process(this.sqlCmd);
         }
 		
         [Authorize]
@@ -927,7 +927,7 @@ namespace wwi_app.Controllers
 		[HttpGet]
         public async Task DeliveryMethods(int? id)
         {
-			await this.OData(deliverymethods, this.sqlCmd, id: id).Process();
+			await this.OData(deliverymethods, id: id).Process(this.sqlCmd);
         }
 		
         [Authorize]

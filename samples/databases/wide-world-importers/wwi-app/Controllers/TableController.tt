@@ -2,14 +2,14 @@
 <#@ assembly name="Newtonsoft.Json" #>
 <#@ template language="C#" hostspecific="True" #>
 <#
-	var o = Newtonsoft.Json.Linq.JObject.Parse(System.IO.File.ReadAllText(this.Host.ResolvePath("..") + "\\appsettings.Development.json"));
+	var o = Newtonsoft.Json.Linq.JObject.Parse(System.IO.File.ReadAllText(this.Host.ResolvePath("..") + "\\appsettings.json"));
 	var json = o["ApiModel"].ToString();
 	TableDef[] config = Newtonsoft.Json.JsonConvert.DeserializeObject<TableDef[]>(json);
 #>
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Belgrade.SqlClient;
-using SqlServerRestApi;
+using MsSql.RestApi;
 
 namespace wwi_app.Controllers
 {
@@ -29,9 +29,9 @@ namespace wwi_app.Controllers
         public async Task <#= t.Table #>()
         {
             await this
-				.Table(<#= t.Table.ToLower() #>, this.sqlQuery)
-				.OnError(e => { this.Response.Body.Dispose(); throw e; })
-				.Process();
+				.Table(<#= t.Table.ToLower() #>)
+				//.OnError(e => { this.Response.Body.Dispose(); throw e; })
+				.Process(this.sqlQuery);
         }
 <# } #>
     }

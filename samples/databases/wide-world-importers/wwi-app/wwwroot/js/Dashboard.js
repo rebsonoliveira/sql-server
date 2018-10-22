@@ -1,11 +1,11 @@
 ﻿$(() => {
     
-    $.ajax('/odata/Customers?$apply=(groupby(PostalCity),aggregate(CustomerID with sum as Total))&$orderby=CustomerID with sum desc&$top=5', { dataType: 'json' })
+    $.ajax('/odata/Customers?$apply=groupby((PostalCity),aggregate(CustomerID with sum as Total))&$orderby=CustomerID with sum desc&$top=5', { dataType: 'json' })
         .done(data => {
             $("#part1 table tbody tr").view(data.value);
         });
 
-    $.ajax('/odata/SalesOrderLines?$apply=(groupby(ColorName),aggregate(Quantity mul UnitPrice with sum as Total))', { dataType: 'json' })
+    $.ajax('/odata/SalesOrderLines?$apply=groupby((ColorName),aggregate(Quantity mul UnitPrice with sum as Total))', { dataType: 'json' })
         .done(data => {
 
             nv.addGraph(function () {
@@ -26,7 +26,7 @@
             });
         });
 
-    $.ajax('/odata/PurchaseOrderLines?$apply=(groupby(ColorName),aggregate(OrderedOuters mul ExpectedUnitPricePerOuter with sum as Total))', { dataType: 'json' })
+    $.ajax('/odata/PurchaseOrderLines?$apply=groupby((ColorName),aggregate(OrderedOuters mul ExpectedUnitPricePerOuter with sum as Total))', { dataType: 'json' })
         .done(data => {
 
             nv.addGraph(function () {
@@ -50,31 +50,31 @@
         });
 
 
-    $.ajax('/odata/SalesOrders?$apply=(groupby(OrderDate),aggregate(OrderID%20with%20sum%20as%20Total))&$orderby=OrderDate%20desc&$filter=OrderDate lt \'2016-07-04\'', { dataType: 'json' })
+    $.ajax('/odata/SalesOrderLines?$apply=groupby((PickingCompletedWhen),aggregate(Quantity mul UnitPrice with sum as Total))&$orderby=PickingCompletedWhen desc&$filter=PickingCompletedWhen ge \'2000-01-01\'', { dataType: 'json' })
         .done(data => {
 
             nv.addGraph(function () {
 
                 var chart = nv.models.lineChart()
                     .margin({ right: 100 })
-                    .x(function (d) { return new Date(d.OrderDate).getTime() })   //We can modify the data accessor functions...
-                    .y(function (d) { return d.Total })   //...in case your data is formatted differently.
+                    .x(function (d) { return new Date(d.PickingCompletedWhen).getTime(); })   //We can modify the data accessor functions...
+                    .y(function (d) { return d.Total; })   //...in case your data is formatted differently.
                     .useInteractiveGuideline(true)    //Tooltips which show all data points. Very nice!
                     .rightAlignYAxis(true)      //Let's move the y-axis to the right side.
-                    .height(300)
+                    .height(250)
                     .showXAxis(true)
-                    .showYAxis(true)
+                    .showYAxis(true);
 
                 //Format x-axis labels with custom function.
                 chart.xAxis
                     .tickFormat(function (d) {
-                        return d3.time.format('%x')(new Date(d))
+                        return d3.time.format('%x')(new Date(d));
                     });
 
                 d3.select("#part4 svg")
                     .datum([{
                         values: data.value,
-                        key: 'Number of sales orders',
+                        key: 'Daily sales ($)',
                         color: '#2ca02c' }])
                     .call(chart);
 
