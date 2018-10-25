@@ -3,7 +3,7 @@
 ## Pre-requisites
 1. Kubernetes cluster configuration & Kubectl command-line utility
 2. Curl utility
-3. Sqlcmd and bcp. utility (Installation instructions [here for Linux](https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-setup-tools?view=sql-server-ver15) and [here for Windows](https://www.microsoft.com/en-us/download/details.aspx?id=53591))
+3. Sqlcmd and bcp utility (Installation instructions [here for Linux](https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-setup-tools?view=sql-server-ver15) and [here for Windows](https://www.microsoft.com/en-us/download/details.aspx?id=53591))
 4. Azure Data Studio or SQL Server Management Studio
 5. SQL Server 2019 big data cluster
 
