@@ -21,14 +21,14 @@ namespace WideWorldImportersFunctions
     {
 <# foreach(var t in config) {#>
 <# if(string.IsNullOrEmpty(t.ODataColumns)) continue; #>
-		[FunctionName("<#= t.Table #>")]
+        [FunctionName("<#= t.Table #>")]
         public static async Task<IActionResult> <#= t.Table #>(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req, ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
             try
             {
-				TableSpec <#= t.Table.ToLower() #> = new TableSpec(schema: "<#= t.Schema #>", table: "<#= t.Table #>", columns: "<#= t.ODataColumns #>");
+                TableSpec <#= t.Table.ToLower() #> = new TableSpec(schema: "<#= t.Schema #>", table: "<#= t.Table #>", columns: "<#= t.ODataColumns #>");
                 return await req.OData(<#= t.Table.ToLower() #>).GetResult(Environment.GetEnvironmentVariable("SqlDb"));
             }
             catch (Exception ex)
