@@ -50,7 +50,7 @@ To install docker, you can follow the steps below:
 
 ### Instructions
 
-1. Execute [kubeadm/ubuntu-setup-k8s-prereqs.sh](kubeadm/ubuntu-setup-k8s-prereqs.sh/) script on each machine
-1. Execute [kubeadm/ubuntu-setup-k8s-master.sh](kubeadm/ubuntu-setup-k8s-master.sh/) script on the machine designated as Kubernetes master
+1. Execute [ubuntu/ubuntu-setup-k8s-prereqs.sh](ubuntu/ubuntu-setup-k8s-prereqs.sh/) script on each machine
+1. Execute [ubuntu/ubuntu-setup-k8s-master.sh](ubuntu/ubuntu-setup-k8s-master.sh/) script on the machine designated as Kubernetes master
 1. After successful initialization of the Kubernetes master, follow the kubeadm join commands output by the script on each agent machine
 1. Now, you can deploy SQL Server 2019 big data cluster using instructions [here](https://docs.microsoft.com/en-us/sql/big-data-cluster/deployment-guidance?view=sqlallproducts-allversions)
