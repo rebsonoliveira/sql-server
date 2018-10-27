@@ -1,9 +1,9 @@
 # CURL in SQL Server using CLR 
-SQL Server Database Engine don't have built-in functions that would enable you to send information to some API using `http://` protocol. If you would need to call some REST endpoint or a web hook from the T-SQL code, you would need to use `WebClient` or `WebRequest` classes from .Net framework and expose them as T-SQL function or procedure.
+SQL Server Database Engine doesn't have built-in functions that would enable you to send information to some API using `http://` protocol. If you need to call some REST endpoint or a web hook from the T-SQL code, you will need to use `WebClient` or `WebRequest` classes from .Net framework and expose them as a T-SQL function or procedure.
 
-One of the most popular tool for calling API on `http:` endpoints is [curl](https://curl.haxx.se). This code sample demonstrates how to create CLR User-Defined function/procedure that provides CURL-like functionalities in T-SQL.
+One of the most popular tools for calling an API on `http:` endpoints is [curl](https://curl.haxx.se). This code sample demonstrates how to create CLR User-Defined function/procedure that provides CURL-like functionalities in T-SQL.
 
-> This code exposes minimal CURL functionalities required for the basic demo purposes. If you need some advanced features, you can modify the code.
+> This code exposes minimal CURL functionalities required for the basic demo purposes. If you need more advanced features, you can modify the code.
 
 ### Contents
 
@@ -28,7 +28,7 @@ One of the most popular tool for calling API on `http:` endpoints is [curl](http
 ## Build the CLR/CURL functions
 
 1. Download the source code and open the solution using Visual Studio.
-2. Create a .pfk file (go to Project > Properties > Signing) to sign te assembly:
+2. Create a .pfx file (go to Project > Properties > Signing) to sign the assembly:
 ![Sign assembly](/media/features/sql-clr/sign-assembly.png)
 
 3. Rebuild the solution in **Retail** mode.
@@ -37,7 +37,7 @@ One of the most popular tool for calling API on `http:` endpoints is [curl](http
 <a name=add-functions></a>
 ## Add CURL functions to your SQL database
 
-File SqlClrCurl.sql contains the code that will import CURL assembly into SQL Database.
+File SqlClrCurl.sql contains the code that will import the CURL assembly into SQL Database.
 
 If you have not added CLR assemblies in your database, you should use the following script to enable CLR:
 ```
@@ -47,7 +47,7 @@ RECONFIGURE
 GO
 ```
 
-Once you enable CLR, you can use the T-SQL script to add the **CURL** functions. The script depends on the location where you have built the project, and might look like:
+Once you enabled CLR, you can use the T-SQL script to add the **CURL** functions. The script depends on the location where you have built the project, and might look like:
 ```
 
 --Create the assembly
@@ -111,7 +111,7 @@ exec curl.XPOST @H = @hkey, @d = @body, @url = @endpoint;
 The code included in this sample is not intended to be a set of best practices on how to build scalable enterprise grade applications. This is beyond the scope of this sample. 
 
 ## Apendix
-In order to quickly test the function in your dev environment, you can create and assembly using the following script that imports assembly from binary format. Recommendation it to take the source code, compile it, and execute the script shown above.
+In order to quickly test the function in your dev environment, you can create an assembly using the following script that imports the assembly from binary format. Recommendation is to take the source code, compile it, and execute the script shown above.
 
 
 ```
