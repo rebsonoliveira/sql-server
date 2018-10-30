@@ -1,31 +1,32 @@
 ﻿# Japanese IVS text processing
 
-This project contains an example implementation of ASP.NET Core application that shows how SQL Database handles complex text processing rules such as sorting and filtering Japanese IVS ideographs. In the application you can see a table with a people information written with Japanese symbols:
+This project contains an example implementation of ASP.NET Core. It shows how SQL Database handles complex text processing rules such as sorting and filtering Japanese IVS ideographs. 
+
+In the application you can see a table containg information about people written with Japanese symbols:
 
 ![Japanese people register app](../../../media/demos/ivs-people-register-app.PNG)
 
-If you open this page and try to sort columns by town, you might see that results might not be always what someone would expect. You might notice that rows are sorted by town column; however, people from town 芦󠄂屋 are in the 5th and 7th rows, and people from town 芦󠄆別市 are in the 4th, 6th, and 8th rows. Obviously, although the table is sorted by town column sort order is not correct. 
+If you open this page and try to sort columns by town, you might see unexpected results. Notice that rows are sorted by town column; however, people from town 芦󠄂屋 are in the 5th and 7th rows, and people from town 芦󠄆別市 are in the 4th, 6th, and 8th rows. Obviously, although the table is sorted by town column, sort order is not correct. 
 
-The reason for this behavior is that some client-side components do not understand some text comparison rules specific to some languages. In this example, problem is in the IVS characters used in town names. If you take a better look at the towns, you will see slight differences in the shapes of the symbols used to write towns starting with symbol 芦󠄆.
+The reason for this behavior is that some client-side components do not understand some text comparison rules specific to some languages. In this example, the problem is with the IVS characters used in town names. If you take a better look at the towns, you will see slight differences in the shapes of the symbols used to write towns starting with symbol 芦󠄆.
 
-In Japanese language there are different shapes of the same symbol written with small differences. In the following figure, you can see 3 variations of symbol U+8FBA, 16 variations of symbol U+9089, and 10 variations of symbol U+908A: 
+In written Japanese there are different shapes of the same symbol written with small differences. In the following figure, you can see 3 variations of symbol U+8FBA, 16 variations of symbol U+9089, and 10 variations of symbol U+908A: 
 
 ![Japanese IVS symbols](../../../media/demos/ivs-symbols.png)
 
-The difference might in a few strokes, but still these are the same symbols. Additional problem is the fact that these symbols are not identically binary encoded. Each symbol has a first character that defines the actual value of the symbol (e.g. U+8FBA), followed by the additional character that describes what is the variation of the symbol (e.g. U+E0101, U+E0102). This additional symbol is called variation selector character.
-Unfortunately, some client-side components do not use these rules, so sort/filter results might be incorrect.
+There might be differences in a few strokes, but these are still the same symbols. An additional problem is that these symbols are not identically binary encoded. Each symbol has a first character that defines the actual value of the symbol (e.g. U+8FBA), followed by an additional character that describes what is the variation of the symbol (e.g. U+E0101, U+E0102). This additional symbol is called a variation selector character. Unfortunately, some client-side components do not take variation selector characters into account, so sort/filter results might be incorrect.
 
-Sql Database has powerful text processing rules where you can exactly specify what linguistic rues should be applied. as an example, you can specify that town column contains Japanese characters and that Japanese linguistic rules should be applied when string are compared or ordered:
+SQL Database has powerful text processing options with which you can exactly specify what linguistic rues should be applied. As an example, you can specify that town column contains Japanese characters and that Japanese linguistic rules should be applied when strings are compared or ordered:
 
 ```sql
 alter table people
 	alter column town nvarchar(50) collate Japanese_Bushu_Kakusu_140;
 ```
 
-**collate Japanese_Bushu_Kakusu_140** would tell SQL database that the text stored in the town column would contain some Japanese characters, and that SQL queries should use sorting and comparison rules specific for Japanese linguistic rules.
-If you switch to the server.html page and sort results by town, you would see that towns are correctly sorted. The difference is in the fact that sort and filter operations are sent to the server-side via AJAX calls, and processed in T-SQL using **where** and **order by** clauses that apply Japanese linguistic rules specified in the column definition. Results that are processed using build in T-SQL linguistic rules are shown in the table.
+**collate Japanese_Bushu_Kakusu_140** would tell SQL Database that the text stored in the town column contains Japanese characters, and that SQL queries should use sorting and comparison rules specific to Japanese linguistic rules.
+If you switch to the server.html page and sort results by town, you will see that towns are correctly sorted. The difference is in the fact that sort and filter operations are sent to the server-side via AJAX calls, and processed in T-SQL using **where** and **order by** clauses that apply Japanese linguistic rules specified in the column definition. Results that are processed using build in T-SQL linguistic rules are shown in the table.
 
-In addition, SQL Database enables you to customize rules that would be applied on each column such as do you want to use case sensitive or case insensitive search, should t-sql query see difference between Japanese Hiragana and Katakana symbols (i.e. Kana sensitivity), would T-SQL queries use variation selector when compared two IVS symbols (new VSS flag):
+In addition, SQL Database enables you to customize rules for each column. The following code sample shows several of these options. It specifies case insensitive search, enables Kana sensitivity for sorting using the difference between Japanese Hiragana and Katakana symbols, and indicates that T-SQL queries should use variation selectors when comparing two IVS symbols (new VSS flag):
 
 ```sql
 alter table people
@@ -72,11 +73,11 @@ To run this sample, you need the following prerequisites.
 
 ### Setup
 
-1. Download source code from SQL Server GitHub account.
+1. Download the source code from the SQL Server GitHub account.
 
-2. From SQL Server Management Studio or Sql Server Data Tools connect to your SQL Server 2016 or Azure SQL database and execute [sql-scripts/setup.sql](sql-scripts/setup.sql) script that will create People table populated with demo data.
+2. From SQL Server Management Studio or Sql Server Data Tools, connect to your SQL Server 2016 or Azure SQL database and execute [sql-scripts/setup.sql](sql-scripts/setup.sql). This will create a People table populated with demo data.
 
-3. Add a connection string in appsettings.json or appsettings.development.json file. An example of the content of appsettings.development.json is shown in the following configuration:
+3. Add a connection string in the appsettings.json or appsettings.development.json file. An example of the content of appsettings.development.json is shown in the following configuration:
 
 ```
 {
@@ -96,31 +97,35 @@ If your database is hosted on Azure you can add something like:
 ```
 
 >**Note**
-> This sample is build using dotnet core version 1.0.0. If your build fails because you have some other version, you should change the version in project.json file.
+> This sample build uses dotnet core version 1.0.0. If your build fails because you have some other version, you should change the version in project.json file.
 ```
 "Microsoft.NETCore.App": {
       "version": "1.0.0",
       "type": "platform"
     }
 ```
-As an alternative you can deploy app directly to Azure Web App.
+As an alternative you can deploy the app directly to Azure Web App.
 [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
 
 ### Build and run sample
 
-1. Open command prompt in project root folder and run **dotnet restore** and **dotnet build** commands from the root folder of application. If you are using Visual Studio, you can build solution using Ctrl+Shift+B, right-click on project + Build, Build/Build Solution from menu. 
+1. Open the command prompt in your project root folder and run **dotnet restore** and **dotnet build** commands. If you are using Visual Studio, you can build your solution using Ctrl+Shift+B, right-click on project + Build, Build/Build Solution from menu. 
 
-2. Run the sample app using **dotnet run** executed in the command prompt of the project root folder. As an alternative you can use F5 or Ctrl+F5 in Visual Studio 2015.  
-  1. Open /client.html Url to get all people from database,
-  2. Sort by town to see that some towns are not correctly sorted,
-  3. Open /server.html Url to get all people from database using server-side processing code,
-  2. Sort by town to see that towns are correctly sorted.
+2. Run the sample app using **dotnet run** executed in the command prompt of the project root folder. As an alternative you can use F5 or Ctrl+F5 in Visual Studio 2015.
+   
+3. Open /client.html Url to get all people from database.
+
+4. Sort by town to see that some towns are not correctly sorted.
+
+5. Open /server.html Url to get all people from database using server-side processing code.
+   
+6. Sort by town to see that towns are correctly sorted.
 
 <a name=sample-details></a>
 
 ## Sample details
 
-This sample application is implemented as ASP.NET Core application where most of the processing is done on the front-end (JavaScript) or backend (T-SQL).
+This sample application is implemented as an ASP.NET Core application where most of the processing is done on the front-end (JavaScript) or backend (T-SQL).
 Front-end code is implemented using JQuery, and JQuery Datatables component.
 Server-side code is implemented using ASP.NET Core Web API. Server-side code serves AJAX requests sent from client page and returns JSON responses formatted in via T-SQL queries in database.
 
@@ -134,7 +139,7 @@ You can easily modify this code to fit the architecture of your application.
 
 ## Related Links
 
-You can find more information about the components that are used in this sample on these locations: 
+You can find more information about the components that are used in this sample in these locations: 
 - [ASP.NET Core](http://www.asp.net/core).
 - [JSON Support in Sql Server](https://msdn.microsoft.com/en-us/library/dn921897.aspx).
 - [JQuery DataTables]( https://datatables.net/).
