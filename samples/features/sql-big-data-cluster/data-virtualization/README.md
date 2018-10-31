@@ -8,20 +8,26 @@ In this example, you are going to create an external table in the SQL Server Mas
 
 ### Instructions
 
+1. Connect to HDFS/Knox gateway from Azure Data Studio using SQL Server big data cluster connection type.
+
+1. Run the [../spark/spark-sql.ipynb](../spark/spark-sql.ipynb/) notebook to generate the sample parquet file(s).
+
 1. Connect to SQL Server Master instance.
 
-1. Execute the [external-table-hdfs-csv.sql](external-table-hdfs-csv.sql). This script demonstrates how to read CSV file(s) stored in HDFS.
+1. Execute the [web-clickstreams-hdfs-csv.sql](web-clickstreams-hdfs-csv.sql). This script demonstrates how to read CSV file(s) stored in HDFS.
 
-1. Before you use execute the *external-table-hdfs-parquet.sql* script, make sure you run the [../spark/spark-sql.ipynb](../spark/spark-sql.ipynb/) notebook to generate the sample parquet file. Execute the [external-table-hdfs-parquet.sql](external-table-hdfs-parquet.sql). This script demonstrates how to read parquet file(s) stored in HDFS. 
+1. Execute the [web-clickstreams-parquet.sql](web-clickstreams-hdfs-parquet.sql). This script demonstrates how to read parquet file(s) stored in HDFS.
+
+1. Execute the [product-reviews-hdfs-csv.sql](product-reviews-hdfs-csv.sql). This script demonstrates how to read CSV file(s) stored in HDFS.
 
 ## Query data in Oracle from SQL Server master
 
 In this example, you are going to create an external table in SQL Server Master instance over the inventory table that sits on an Oracle server.
 
-**Before you begin**, you need to have an Oracle instance and credentials. Execute the SQL script [inventory-ora.sql](inventory-ora.sql/) in Oracle to create the table and import the "inventory.csv" file created by the bootstrap sample database.
+**Before you begin**, you need to have an Oracle instance and credentials. Follow the instruction in the [oracle-setup\README.md](oracle-setup\README.md).
 
 ### Instructions
 
 1. Connect to SQL Server Master instance.
 
-1. Execute the SQL [external-table-oracle.sql](external-table-oracle.sql/).
+1. Execute the SQL [inventory-oracle.sql](inventory-oracle.sql/).

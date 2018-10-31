@@ -38,12 +38,18 @@ for %%F in (web_clickstreams inventory) do (
     %DEBUG% bcp sales.dbo.%%F out "%STARTUP_PATH%%%F.csv" -S %SQL_MASTER_INSTANCE% -Usa -P%SQL_MASTER_SA_PASSWORD% -c -t, -o "%STARTUP_PATH%%%F.out" -e "%STARTUP_PATH%%%F.err" || goto exit
 )
 
+echo Exporting product_reviews data...
+%DEBUG% bcp "select pr_review_sk, replace(replace(pr_review_content, ',', ';'), '\"', '') from sales.dbo.product_reviews" queryout "%STARTUP_PATH%product_reviews.csv" -S %SQL_MASTER_INSTANCE% -Usa -P%SQL_MASTER_SA_PASSWORD% -c -t, -o "%STARTUP_PATH%product_reviews.out" -e "%STARTUP_PATH%product_reviews.err" || goto exit
+
 REM Copy the data file to HDFS
-echo Uploading web_clickstreams data to HDFS...
 pushd "%STARTUP_PATH%"
+echo Uploading web_clickstreams data to HDFS...
 %DEBUG% curl -i -L -k -u root:%KNOX_PASSWORD% -X PUT "https://%KNOX_ENDPOINT%/gateway/default/webhdfs/v1/clickstream_data?op=MKDIRS" || goto exit
 %DEBUG% curl -i -L -k -u root:%KNOX_PASSWORD% -X PUT "https://%KNOX_ENDPOINT%/gateway/default/webhdfs/v1/clickstream_data/web_clickstreams.csv?op=create" -H "Content-Type: application/octet-stream" -T "web_clickstreams.csv" || goto exit
 
+echo Uploading product_reviews data to HDFS...
+%DEBUG% curl -i -L -k -u root:%KNOX_PASSWORD% -X PUT "https://%KNOX_ENDPOINT%/gateway/default/webhdfs/v1/product_review_data?op=MKDIRS" || goto exit
+%DEBUG% curl -i -L -k -u root:%KNOX_PASSWORD% -X PUT "https://%KNOX_ENDPOINT%/gateway/default/webhdfs/v1/product_review_data/product_reviews.csv?op=create" -H "Content-Type: application/octet-stream" -T "product_reviews.csv" || goto exit
 :: del /q *.out *.err *.csv
 popd
 

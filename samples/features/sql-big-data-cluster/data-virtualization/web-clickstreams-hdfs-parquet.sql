@@ -3,10 +3,11 @@ GO
 
 -- Create file format for parquet file with appropriate properties.
 --
-CREATE EXTERNAL FILE FORMAT parquet_file
-WITH (
-    FORMAT_TYPE = PARQUET
-);
+IF NOT EXISTS(SELECT * FROM sys.external_file_formats WHERE name = 'parquet_file')
+    CREATE EXTERNAL FILE FORMAT parquet_file
+    WITH (
+        FORMAT_TYPE = PARQUET
+    );
 
 -- Create external table over HDFS data source (SqlStoragePool) in
 -- SQL Server 2019 big data cluster. The SqlStoragePool data source

@@ -3,15 +3,15 @@ GO
 
 -- Create file format for CSV file with appropriate properties.
 --
-CREATE EXTERNAL FILE FORMAT csv_file
-WITH (
-    FORMAT_TYPE = DELIMITEDTEXT,
-    FORMAT_OPTIONS(
-        FIELD_TERMINATOR = ',',
-        STRING_DELIMITER = '"',
-        FIRST_ROW = 2,
-        USE_TYPE_DEFAULT = TRUE)
-);
+IF NOT EXISTS(SELECT * FROM sys.external_file_formats WHERE name = 'csv_file')
+    CREATE EXTERNAL FILE FORMAT csv_file
+    WITH (
+        FORMAT_TYPE = DELIMITEDTEXT,
+        FORMAT_OPTIONS(
+            FIELD_TERMINATOR = ',',
+            STRING_DELIMITER = '"',
+            USE_TYPE_DEFAULT = TRUE)
+    );
 
 -- Create external table over HDFS data source (SqlStoragePool) in
 -- SQL Server 2019 big data cluster. The SqlStoragePool data source
