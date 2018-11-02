@@ -15,11 +15,13 @@ IF NOT EXISTS(SELECT * FROM sys.external_tables WHERE name = 'web_clickstream_cl
         DISTRIBUTION = ROUND_ROBIN
     );
 GO
+
 -- Currently the create external table operation is asynchronous and there is no
 -- way to determine completion of the operation. To prevent failures of the insert
 -- into the external table, wait for few minutes.
 WAITFOR DELAY '00:02:00';
 GO
+
 -- Insert results of a SELECT statement into the external table created on the data pool.
 -- Store summary results for quick access instead of going to the source tables always.
 --
@@ -46,16 +48,16 @@ SELECT TOP 10 * FROM [dbo].[web_clickstream_clicks_data_pool]
 --
 SELECT TOP (100)
     w.wcs_user_sk,
-    SUM( CASE WHEN i.i_category = 'Books' THEN 1 ELSE 0 END) AS book_category_clicks,
-    SUM( CASE WHEN w.i_category_id = 1 THEN 1 ELSE 0 END) AS [Home & Kitchen],
-    SUM( CASE WHEN w.i_category_id = 2 THEN 1 ELSE 0 END) AS [Music],
-    SUM( CASE WHEN w.i_category_id = 3 THEN 1 ELSE 0 END) AS [Books],
-    SUM( CASE WHEN w.i_category_id = 4 THEN 1 ELSE 0 END) AS [Clothing & Accessories],
-    SUM( CASE WHEN w.i_category_id = 5 THEN 1 ELSE 0 END) AS [Electronics],
-    SUM( CASE WHEN w.i_category_id = 6 THEN 1 ELSE 0 END) AS [Tools & Home Improvement],
-    SUM( CASE WHEN w.i_category_id = 7 THEN 1 ELSE 0 END) AS [Toys & Games],
-    SUM( CASE WHEN w.i_category_id = 8 THEN 1 ELSE 0 END) AS [Movies & TV],
-    SUM( CASE WHEN w.i_category_id = 9 THEN 1 ELSE 0 END) AS [Sports & Outdoors]
+    SUM( CASE WHEN i.i_category = 'Books' THEN w.clicks ELSE 0 END) AS book_category_clicks,
+    SUM( CASE WHEN w.i_category_id = 1 THEN w.clicks ELSE 0 END) AS [Home & Kitchen],
+    SUM( CASE WHEN w.i_category_id = 2 THEN w.clicks ELSE 0 END) AS [Music],
+    SUM( CASE WHEN w.i_category_id = 3 THEN w.clicks ELSE 0 END) AS [Books],
+    SUM( CASE WHEN w.i_category_id = 4 THEN w.clicks ELSE 0 END) AS [Clothing & Accessories],
+    SUM( CASE WHEN w.i_category_id = 5 THEN w.clicks ELSE 0 END) AS [Electronics],
+    SUM( CASE WHEN w.i_category_id = 6 THEN w.clicks ELSE 0 END) AS [Tools & Home Improvement],
+    SUM( CASE WHEN w.i_category_id = 7 THEN w.clicks ELSE 0 END) AS [Toys & Games],
+    SUM( CASE WHEN w.i_category_id = 8 THEN w.clicks ELSE 0 END) AS [Movies & TV],
+    SUM( CASE WHEN w.i_category_id = 9 THEN w.clicks ELSE 0 END) AS [Sports & Outdoors]
   FROM [dbo].[web_clickstream_clicks_data_pool] as w
   INNER JOIN (SELECT DISTINCT i_category_id, i_category FROM item) as i
     ON i.i_category_id = w.i_category_id
