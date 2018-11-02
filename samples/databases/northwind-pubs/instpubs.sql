@@ -53,7 +53,12 @@ if db_name() <> 'pubs'
 
 GO
 
-execute sp_dboption 'pubs' ,'trunc. log on chkpt.' ,'true'
+if CAST(SERVERPROPERTY('ProductMajorVersion') AS INT)<12 
+BEGIN
+  exec sp_dboption 'pubs','trunc. log on chkpt.','true'
+  exec sp_dboption 'pubs','select into/bulkcopy','true'
+END
+ELSE ALTER DATABASE [pubs] SET RECOVERY SIMPLE WITH NO_WAIT
 GO
 
 execute sp_addtype id      ,'varchar(11)' ,'NOT NULL'
