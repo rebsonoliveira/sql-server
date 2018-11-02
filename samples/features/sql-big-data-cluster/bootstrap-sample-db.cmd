@@ -1,5 +1,5 @@
 @echo off
-REM CLICKSTREAM FILES
+REM bootstrap sample database CMD script
 setlocal enableextensions
 set CLUSTER_NAMESPACE=%1
 set SQL_MASTER_IP=%2
@@ -33,9 +33,10 @@ popd
 echo Configuring sample database...
 %DEBUG% sqlcmd -S %SQL_MASTER_INSTANCE% -Usa -P%SQL_MASTER_SA_PASSWORD% -i "%STARTUP_PATH%bootstrap-sample-db.sql" -o "%STARTUP_PATH%bootstrap.out" -I -b || goto exit
 
-for %%F in (web_clickstreams inventory) do (
+for %%F in (web_clickstreams inventory customer) do (
     echo Exporting %%F data...
-    %DEBUG% bcp sales.dbo.%%F out "%STARTUP_PATH%%%F.csv" -S %SQL_MASTER_INSTANCE% -Usa -P%SQL_MASTER_SA_PASSWORD% -c -t, -o "%STARTUP_PATH%%%F.out" -e "%STARTUP_PATH%%%F.err" || goto exit
+    if /i %%F EQU web_clickstreams (set DELIMITER=,) else (SET DELIMITER=^|)
+    %DEBUG% bcp sales.dbo.%%F out "%STARTUP_PATH%%%F.csv" -S %SQL_MASTER_INSTANCE% -Usa -P%SQL_MASTER_SA_PASSWORD% -c -t"%DELIMITER%" -o "%STARTUP_PATH%%%F.out" -e "%STARTUP_PATH%%%F.err" || goto exit
 )
 
 echo Exporting product_reviews data...
@@ -59,7 +60,7 @@ goto :eof
 
 :exit
     echo Bootstrap of the sample database failed.
-    exit /b %ERRORLEVEL%
+    exit /b 1
 
 :usage
     echo USAGE: %0 ^<CLUSTER_NAMESPACE^> ^<SQL_MASTER_IP^> ^<SQL_MASTER_SA_PASSWORD^> ^<BACKUP_FILE_PATH^> ^<KNOX_IP^> [^<KNOX_PASSWORD^>]
