@@ -12,7 +12,7 @@ In SQL Server 2019 big data cluster, the storage pool consists of HDFS data node
 
 1. Connect to HDFS/Knox gateway from Azure Data Studio using SQL Server big data cluster connection type.
 
-1. Run the [../../spark/spark-sql.ipynb](../spark/spark-sql.ipynb/) notebook to generate the sample parquet file(s).
+1. Run the [../../../spark/spark-sql.ipynb](../../../spark/spark-sql.ipynb/) notebook to generate the sample parquet file(s).
 
 1. Connect to SQL Server Master instance.
 
