@@ -4,9 +4,8 @@ setlocal enableextensions
 set CLUSTER_NAMESPACE=%1
 set SQL_MASTER_IP=%2
 set SQL_MASTER_SA_PASSWORD=%3
-set BACKUP_FILE_PATH=%~4
-set KNOX_IP=%5
-set KNOX_PASSWORD=%6
+set KNOX_IP=%3
+set KNOX_PASSWORD=%4
 set STARTUP_PATH=%~dp0
 
 if NOT DEFINED CLUSTER_NAMESPACE goto :usage
@@ -19,15 +18,19 @@ if NOT DEFINED KNOX_PASSWORD set KNOX_PASSWORD=%SQL_MASTER_SA_PASSWORD%
 set SQL_MASTER_INSTANCE=%SQL_MASTER_IP%,31433
 set KNOX_ENDPOINT=%KNOX_IP%:30443
 
-echo Verifying sqlcmd.exe is in path & CALL WHERE /Q sqlcmd.exe || GOTO exit
-echo Verifying bcp.exe is in path & CALL WHERE /Q bcp.exe || GOTO exit
-echo Verifying kubectl.exe is in path & CALL WHERE /Q kubectl.exe || echo HINT: Install the kubernetes-cli - https://kubernetes.io/docs/tasks/tools/install-kubectl && GOTO exit
-echo Verifying curl.exe is in path & CALL WHERE /Q curl.exe || echo HINT: Install curl - https://curl.haxx.se/download.html && GOTO exit
+for %%F in (sqlcmd.exe bcp.exe kubectl.exe curl.exe) do (
+    echo Verifying %%F is in path & CALL WHERE /Q %%F || GOTO exit
+)
+
+pushd "%tmp%"
+echo Downloading sample database backup file...
+curl -G "https://sqlchoice.blob.core.windows.net/sqlchoice/static/tpcxbb_1gb.bak" -o tpcxbb_1gb.bak
 
 REM Copy the backup file, restore the database, create necessary objects and data file
 echo Copying database backup file...
-pushd "%BACKUP_FILE_PATH%"
 %DEBUG% kubectl cp tpcxbb_1gb.bak mssql-master-pool-0:/var/opt/mssql/data -c mssql-server -n %CLUSTER_NAMESPACE% || goto exit
+
+del tpcxbb_1gb.bak >NUL
 popd
 
 echo Configuring sample database...

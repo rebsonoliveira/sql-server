@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 set -o pipefail
-USAGE_MESSAGE="USAGE: $0 <CLUSTER_NAMESPACE> <SQL_MASTER_IP> <SQL_MASTER_SA_PASSWORD> <BACKUP_FILE_PATH> <KNOX_IP> [<KNOX_PASSWORD>]"
+USAGE_MESSAGE="USAGE: $0 <CLUSTER_NAMESPACE> <SQL_MASTER_IP> <SQL_MASTER_SA_PASSWORD> <KNOX_IP> [<KNOX_PASSWORD>]"
 ERROR_MESSAGE="Bootstrap of the sample database failed."
 
 # Print usage if mandatory parameters are missing
@@ -9,26 +9,34 @@ ERROR_MESSAGE="Bootstrap of the sample database failed."
 : "${2:?$USAGE_MESSAGE}"
 : "${3:?$USAGE_MESSAGE}"
 : "${4:?$USAGE_MESSAGE}"
-: "${5:?$USAGE_MESSAGE}"
 : "${DEBUG=}"
 
 # Save the input parameters
 CLUSTER_NAMESPACE=$1
 SQL_MASTER_IP=$2
 SQL_MASTER_SA_PASSWORD=$3
-BACKUP_FILE_PATH=$4
-KNOX_IP=$5
-KNOX_PASSWORD=$6
+KNOX_IP=$4
+KNOX_PASSWORD=$5
 # If Knox password is not supplied then default to SQL Master password
 KNOX_PASSWORD=${KNOX_PASSWORD:=$SQL_MASTER_SA_PASSWORD}
 
 SQL_MASTER_INSTANCE=$SQL_MASTER_IP,31433
 KNOX_ENDPOINT=$KNOX_IP:30443
 
+
+for util in sqlcmd.exe bcp.exe kubectl.exe curl.exe
+    do
+    echo Verifying $util is in path & which $util 1>NUL 2>NUL || (echo Unable to locate $util && exit 1)
+done
+
 # Copy the backup file, restore the database, create necessary objects and data file
+pushd "/tmp"
+echo Downloading sample database backup file...
+$DEBUG curl -G "https://sqlchoice.blob.core.windows.net/sqlchoice/static/tpcxbb_1gb.bak" -o tpcxbb_1gb.bak
+
 echo Copying database backup file...
-pushd "$BACKUP_FILE_PATH"
 $DEBUG kubectl cp tpcxbb_1gb.bak mssql-master-pool-0:/var/opt/mssql/data -c mssql-server -n $CLUSTER_NAMESPACE || (echo $ERROR_MESSAGE && exit 1)
+rm tpcxbb_1gb.bak
 popd
 
 echo Configuring sample database...
