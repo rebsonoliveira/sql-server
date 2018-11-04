@@ -1,6 +1,8 @@
-# Machine learning in SQL Server 2019 big data cluster
+# Machine Learning in SQL Server 2019 big data cluster
 
 ## SQL Server Machine Learning Services
+
+SQL Server 2016 added capability to run R script from T-SQL. SQL Server 2017 added support for running Python scripts from T-SQL. SQL Server 2019 adds support for running Java code from T-SQL. You can now run R, Python or Java code from T-SQL in SQL Server 2019 on Windows or Linux or SQL Server 2019 big data cluster.
 
 [sql](sql)
 
