@@ -2,11 +2,19 @@ $parameters = $args[0]
 
 $subscriptionId = $parameters['subscriptionId']
 $resourceGroupName = $parameters['resourceGroupName']
+$virtualMachineName = $parameters['virtualMachineName']
 $virtualNetworkName = $parameters['virtualNetworkName']
+$managementSubnetName = $parameters['subnetName']
 $administratorLogin  = $parameters['administratorLogin']
 $administratorLoginPassword  = $parameters['administratorLoginPassword']
 
 $scriptUrlBase = $args[1]
+
+if($virtualMachineName -eq '')
+    $virtualMachineName = 'JumpboxVM'
+
+if($managementSubnetName -eq '')
+    $managementSubnetName = 'Management'
 
 function VerifyPSVersion
 {
@@ -157,12 +165,20 @@ SelectSubscriptionId -subscriptionId $subscriptionId
 
 $virtualNetwork = LoadVirtualNetwork -resourceGroupName $resourceGroupName -virtualNetworkName $virtualNetworkName
 
-$managementSubnetPrefix = CalculateNextAddressPrefix $virtualNetwork 28
+$subnets = $virtualNetwork.Subnets.Name
+If($false -eq $subnets.Contains($managementSubnetName))
+{
+        
+    $managementSubnetPrefix = CalculateNextAddressPrefix $virtualNetwork 28
 
-$virtualNetwork.AddressSpace.AddressPrefixes.Add($managementSubnetPrefix)
-Add-AzureRmVirtualNetworkSubnetConfig -Name Management -VirtualNetwork $virtualNetwork -AddressPrefix $managementSubnetPrefix | Out-Null
+    $virtualNetwork.AddressSpace.AddressPrefixes.Add($managementSubnetPrefix)
+    Add-AzureRmVirtualNetworkSubnetConfig -Name Management -VirtualNetwork $virtualNetwork -AddressPrefix $managementSubnetPrefix | Out-Null
 
-SetVirtualNetwork $virtualNetwork
+    SetVirtualNetwork $virtualNetwork
+    Write-Host "Added subnet into VNet." -ForegroundColor Green
+} else {
+    Write-Host "The subnet already exists in the VNet." -ForegroundColor Green
+}
 
 Write-Host
 
@@ -172,6 +188,8 @@ Write-Host "Starting deployment..."
 $templateParameters = @{
     virtualNetworkName = $virtualNetworkName
     managementSubnetPrefix  = $managementSubnetPrefix
+    managementSubnetName  = $managementSubnetName
+    virtualMachineName  = $virtualMachineName
     administratorLogin  = $administratorLogin
     administratorLoginPassword  = $administratorLoginPassword
 }

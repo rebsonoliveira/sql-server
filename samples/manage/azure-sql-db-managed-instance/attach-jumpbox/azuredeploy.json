@@ -32,15 +32,25 @@
             "metadata": {
                 "description": "Enter password."
             }
+        },
+        "virtualMachineName": {
+            "type": "string",
+            "metadata": {
+                "description": "VM name."
+            }
+        },
+        "managementSubnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "VM subnet name."
+            }
         }
     },
     "variables": {
-        "managementSubnetName": "Management",
-        "virtualMachineName": "JumpBox",
         "virtualMachineSize": "Standard_B2s",
-        "networkInterfaceName": "nicJumpBox",
-        "publicIPAddressName": "ipJumpBox",
-        "networkSecurityGroupName": "nsgJumpBox",
+        "networkInterfaceName": "[concat('nic', parameters('virtualMachineName'))]",
+        "publicIPAddressName": "[concat('ip', parameters('virtualMachineName'))]",
+        "networkSecurityGroupName": "[concat('nsg', parameters('virtualMachineName'))]",
         "scriptFileUri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/201-sqlmi-new-vnet-w-jumpbox/installSSMS.ps1"
     },
     "resources": [
@@ -54,7 +64,7 @@
             ],
             "properties": {
                 "osProfile": {
-                    "computerName": "[variables('virtualMachineName')]",
+                    "computerName": "[parameters('virtualMachineName')]",
                     "adminUsername": "[parameters('administratorLogin')]",
                     "adminPassword": "[parameters('administratorLoginPassword')]",
                     "windowsConfiguration": {
@@ -130,7 +140,7 @@
                         "name": "ipconfig1",
                         "properties": {
                             "subnet": {
-                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), variables('managementSubnetName'))]"
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('managementSubnetName'))]"
                             },
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIpAddress": {
