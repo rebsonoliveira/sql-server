@@ -15,13 +15,6 @@
                 "description": "Enter virtual network name. If you leave this field blank name will be created by the template."
             }
         },
-        "managementSubnetPrefix": {
-            "type": "string",
-            "defaultValue":"THIS IS NOT USED",
-            "metadata": {
-                "description": "Enter management subnet address prefix."
-            }
-        },
         "administratorLogin": {
             "type": "string",
             "metadata": {
