@@ -31,7 +31,7 @@ DOCKER_PASSWORD = input("Provide your Docker password:")
 #
 AZURE_REGION=input("Provide Azure region - Press ENTER for using `westus`:") or "westus"
 VM_SIZE=input("Provide VM size for the AKS cluster - Press ENTER for using  `Standard_E4s_v3`:") or "Standard_E4s_v3"
-AKS_NODE_COUNT=input("Provide number of worker nodes for AKS cluster - Press ENTER for using  `2`:") or "2"
+AKS_NODE_COUNT=input("Provide number of worker nodes for AKS cluster - Press ENTER for using  `3`:") or "3"
 #This is both Kubernetes cluster name and SQL Big Data cluster name
 CLUSTER_NAME=input("Provide name of AKS cluster and SQL big data cluster - Press ENTER for using  `sqlbigdata`:") or "sqlbigdata"
 #This password will be use for Controller user, Knox user and SQL Server Master SA accounts
