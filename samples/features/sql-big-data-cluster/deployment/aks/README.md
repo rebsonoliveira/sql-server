@@ -41,7 +41,7 @@ python deploy-sql-big-data-aks.py
 
 When prompted, provide your input for Azure subscription ID, Azure resource group to create the resources in, and Docker credentials. Optionally, you can also provide your input for below configurations or use the defaults provided:
 - azure_region
-- vm_size - we recommend to use a VM size to accommodate your workload. Default `Standard_DS3_v2` is minimum for running just basic validations
+- vm_size - we recommend to use a VM size to accommodate your workload. Default `Standard_E4s_v3` is minimum for running just basic validations
 - aks_node_count - this is the number of the worker nodes for the AKS cluster, excluding master node 
 - cluster_name - this value is used for both AKS cluster and SQL big data cluster created on top of AKS. Note that the name of the SQL big data cluster is going to be a Kubernetes namespace
 - password - same value is going to be used for all accounts that require user password input: SQL Server master instance SA account, controller user and Knox user
