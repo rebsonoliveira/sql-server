@@ -17,6 +17,7 @@
         },
         "managementSubnetPrefix": {
             "type": "string",
+            "defaultValue":"THIS IS NOT USED",
             "metadata": {
                 "description": "Enter management subnet address prefix."
             }
