@@ -173,7 +173,7 @@ If($false -eq $subnets.Contains($managementSubnetName))
     $managementSubnetPrefix = CalculateNextAddressPrefix $virtualNetwork 28
 
     $virtualNetwork.AddressSpace.AddressPrefixes.Add($managementSubnetPrefix)
-    Add-AzureRmVirtualNetworkSubnetConfig -Name Management -VirtualNetwork $virtualNetwork -AddressPrefix $managementSubnetPrefix | Out-Null
+    Add-AzureRmVirtualNetworkSubnetConfig -Name $managementSubnetName -VirtualNetwork $virtualNetwork -AddressPrefix $managementSubnetPrefix | Out-Null
 
     SetVirtualNetwork $virtualNetwork
     Write-Host "Added subnet into VNet." -ForegroundColor Green

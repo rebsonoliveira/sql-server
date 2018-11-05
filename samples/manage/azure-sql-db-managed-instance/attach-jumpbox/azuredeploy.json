@@ -55,7 +55,7 @@
     },
     "resources": [
         {
-            "name": "[variables('virtualMachineName')]",
+            "name": "[parameters('virtualMachineName')]",
             "type": "Microsoft.Compute/virtualMachines",
             "apiVersion": "2018-06-01",
             "location": "[parameters('location')]",
@@ -104,7 +104,7 @@
                   "location": "[parameters('location')]",
                   "apiVersion": "2018-06-01",
                   "dependsOn": [
-                    "[concat('Microsoft.Compute/virtualMachines/', variables('virtualMachineName'))]"
+                    "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
                   ],
                   "tags": {
                     "displayName": "SetupChocolatey"
