@@ -178,6 +178,7 @@ If($false -eq $subnets.Contains($managementSubnetName))
     SetVirtualNetwork $virtualNetwork
     Write-Host "Added subnet into VNet." -ForegroundColor Green
 } else {
+    $managementSubnetPrefix = 'N/A'
     Write-Host "The subnet already exists in the VNet." -ForegroundColor Green
 }
 
