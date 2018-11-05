@@ -10,11 +10,13 @@ $administratorLoginPassword  = $parameters['administratorLoginPassword']
 
 $scriptUrlBase = $args[1]
 
-if($virtualMachineName -eq '')
+if($virtualMachineName -eq '') {
     $virtualMachineName = 'JumpboxVM'
+}
 
-if($managementSubnetName -eq '')
+if($managementSubnetName -eq '') {
     $managementSubnetName = 'Management'
+}
 
 function VerifyPSVersion
 {
@@ -168,7 +170,6 @@ $virtualNetwork = LoadVirtualNetwork -resourceGroupName $resourceGroupName -virt
 $subnets = $virtualNetwork.Subnets.Name
 If($false -eq $subnets.Contains($managementSubnetName))
 {
-        
     $managementSubnetPrefix = CalculateNextAddressPrefix $virtualNetwork 28
 
     $virtualNetwork.AddressSpace.AddressPrefixes.Add($managementSubnetPrefix)
