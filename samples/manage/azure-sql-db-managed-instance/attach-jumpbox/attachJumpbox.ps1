@@ -10,11 +10,11 @@ $administratorLoginPassword  = $parameters['administratorLoginPassword']
 
 $scriptUrlBase = $args[1]
 
-if($virtualMachineName -eq '') {
-    $virtualMachineName = 'JumpboxVM'
+if($virtualMachineName -eq '' -or $virtualMachineName -eq $null) {
+    $virtualMachineName = 'Jumpbox'
 }
 
-if($managementSubnetName -eq '') {
+if($managementSubnetName -eq '' -or $managementSubnetName -eq $null) {
     $managementSubnetName = 'Management'
 }
 
@@ -168,6 +168,7 @@ SelectSubscriptionId -subscriptionId $subscriptionId
 $virtualNetwork = LoadVirtualNetwork -resourceGroupName $resourceGroupName -virtualNetworkName $virtualNetworkName
 
 $subnets = $virtualNetwork.Subnets.Name
+Write-Host $subnets
 If($false -eq $subnets.Contains($managementSubnetName))
 {
     $managementSubnetPrefix = CalculateNextAddressPrefix $virtualNetwork 28
