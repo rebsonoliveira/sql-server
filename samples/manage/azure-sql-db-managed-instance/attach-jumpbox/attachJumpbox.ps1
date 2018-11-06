@@ -12,10 +12,12 @@ $scriptUrlBase = $args[1]
 
 if($virtualMachineName -eq '' -or $virtualMachineName -eq $null) {
     $virtualMachineName = 'Jumpbox'
+    Write-Host "VM Name: 'Jumpbox'." -ForegroundColor Green
 }
 
 if($managementSubnetName -eq '' -or $managementSubnetName -eq $null) {
     $managementSubnetName = 'Management'
+    Write-Host "Using subnet 'Management'." -ForegroundColor Green
 }
 
 function VerifyPSVersion
@@ -177,6 +179,7 @@ $subnets = $virtualNetwork.Subnets.Name
 
 If($false -eq $subnets.Contains($managementSubnetName))
 {
+    Write-Host "Creating subnet $managementSubnetName ($managementSubnetPrefix) in the VNet..." -ForegroundColor Green
     $managementSubnetPrefix = CalculateNextAddressPrefix $virtualNetwork 28
 
     $virtualNetwork.AddressSpace.AddressPrefixes.Add($managementSubnetPrefix)
@@ -201,4 +204,4 @@ $templateParameters = @{
     administratorLoginPassword  = $administratorLoginPassword
 }
 
-New-AzureRmResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateUri ($scriptUrlBase+'/azuredeploy.json?t='+ [DateTime]::Now.Ticks) -TemplateParameterObject $templateParameters
+# New-AzureRmResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateUri ($scriptUrlBase+'/azuredeploy.json?t='+ [DateTime]::Now.Ticks) -TemplateParameterObject $templateParameters
