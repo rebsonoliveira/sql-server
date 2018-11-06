@@ -78,9 +78,10 @@ function LoadVirtualNetwork {
     )
         Write-Host("Loading virtual network '{0}' in resource group '{1}'." -f $virtualNetworkName, $resourceGroupName)
         $virtualNetwork = Get-AzureRmVirtualNetwork -ResourceGroupName $resourceGroupName -Name $virtualNetworkName -ErrorAction SilentlyContinue
-        If($null -ne $virtualNetwork.Id)
+        $id = $virtualNetwork.Id
+        If($null -ne $id)
         {
-            Write-Host "Virtual network with id $virtualNetwork.Id is loaded." -ForegroundColor Green
+            Write-Host "Virtual network with id $id is loaded." -ForegroundColor Green
             If($virtualNetwork.VirtualNetworkPeerings.Count -gt 0) {
                 Write-Host "Virtual network is loaded, but it should not have peerings." -ForegroundColor Red
             }
@@ -88,7 +89,7 @@ function LoadVirtualNetwork {
         }
         else
         {
-            Write-Host "Virtual network cannot be found." -ForegroundColor Red
+            Write-Host "Virtual network $virtualNetworkName cannot be found." -ForegroundColor Red
             Break
         }
 }
@@ -138,7 +139,7 @@ function ConvertUInt32ToIPAddress
 function CalculateNextAddressPrefix
 {
     param($virtualNetwork, $prefixLength)
-    Write-Host "Calculating address prefix..."
+    Write-Host "Calculating address prefix with length $prefixLength..."
     $startIPAddress = 0
     ForEach($addressPrefix in $virtualNetwork.AddressSpace.AddressPrefixes)
     {
