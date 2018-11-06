@@ -78,6 +78,10 @@ function LoadVirtualNetwork {
         If($null -ne $virtualNetwork.Id)
         {
             Write-Host "Virtual network loaded." -ForegroundColor Green
+            If($virtualNetwork.VirtualNetworkPeerings.Count -gt 0) {
+                Write-Host "Virtual should not have peerings." -ForegroundColor Red
+            }
+
             return $virtualNetwork
         }
         else
@@ -168,7 +172,7 @@ SelectSubscriptionId -subscriptionId $subscriptionId
 $virtualNetwork = LoadVirtualNetwork -resourceGroupName $resourceGroupName -virtualNetworkName $virtualNetworkName
 
 $subnets = $virtualNetwork.Subnets.Name
-Write-Host $subnets
+
 If($false -eq $subnets.Contains($managementSubnetName))
 {
     $managementSubnetPrefix = CalculateNextAddressPrefix $virtualNetwork 28
@@ -177,9 +181,9 @@ If($false -eq $subnets.Contains($managementSubnetName))
     Add-AzureRmVirtualNetworkSubnetConfig -Name $managementSubnetName -VirtualNetwork $virtualNetwork -AddressPrefix $managementSubnetPrefix | Out-Null
 
     SetVirtualNetwork $virtualNetwork
-    Write-Host "Added subnet into VNet." -ForegroundColor Green
+    Write-Host "Added subnet $managementSubnetName into VNet." -ForegroundColor Green
 } else {
-    Write-Host "The subnet already exists in the VNet." -ForegroundColor Green
+    Write-Host "The subnet $managementSubnetName already exists in the VNet." -ForegroundColor Green
 }
 
 Write-Host
