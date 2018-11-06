@@ -138,7 +138,7 @@ function ConvertUInt32ToIPAddress
 function CalculateNextAddressPrefix
 {
     param($virtualNetwork, $prefixLength)
-    Write-Host "Calculating address prefix."
+    Write-Host "Calculating address prefix..."
     $startIPAddress = 0
     ForEach($addressPrefix in $virtualNetwork.AddressSpace.AddressPrefixes)
     {
@@ -179,6 +179,7 @@ $subnets = $virtualNetwork.Subnets.Name
 
 If($false -eq $subnets.Contains($managementSubnetName))
 {
+    Write-Host "$managementSubnetName is not one of the subnets in $subnets" -ForegroundColor Yellow
     Write-Host "Creating subnet $managementSubnetName ($managementSubnetPrefix) in the VNet..." -ForegroundColor Green
     $managementSubnetPrefix = CalculateNextAddressPrefix $virtualNetwork 28
 
@@ -205,3 +206,5 @@ $templateParameters = @{
 }
 
 # New-AzureRmResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateUri ($scriptUrlBase+'/azuredeploy.json?t='+ [DateTime]::Now.Ticks) -TemplateParameterObject $templateParameters
+
+Write-Host "Deployment completed"
