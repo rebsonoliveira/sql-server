@@ -147,7 +147,9 @@ function CalculateNextAddressPrefix
         }
     }
     $startIPAddress += 1
-    return (ConvertUInt32ToIPAddress $startIPAddress) + "/" + $prefixLength
+    $addressPrefixResult = (ConvertUInt32ToIPAddress $startIPAddress) + "/" + $prefixLength
+    Write-Host "Using address prefix $addressPrefixResult." -ForegroundColor Green
+    return $addressPrefixResult
 }
 
 function CalculateVpnClientAddressPoolPrefix
