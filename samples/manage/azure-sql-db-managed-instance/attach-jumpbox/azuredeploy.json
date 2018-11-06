@@ -42,9 +42,9 @@
     },
     "variables": {
         "virtualMachineSize": "Standard_B2s",
-        "networkInterfaceName": "[concat('nic', parameters('virtualMachineName'))]",
-        "publicIPAddressName": "[concat('ip', parameters('virtualMachineName'))]",
-        "networkSecurityGroupName": "[concat('nsg', parameters('virtualMachineName'))]",
+        "networkInterfaceName": "[concat(parameters('virtualMachineName'),'-nic0')]",
+        "publicIPAddressName": "[concat(parameters('virtualMachineName'),'-pip')]",
+        "networkSecurityGroupName": "[concat(parameters('virtualMachineName'),'-nsg')]",
         "scriptFileUri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/201-sqlmi-new-vnet-w-jumpbox/installSSMS.ps1"
     },
     "resources": [
