@@ -17,7 +17,7 @@ if($virtualMachineName -eq '' -or $virtualMachineName -eq $null) {
 
 if($managementSubnetName -eq '' -or $managementSubnetName -eq $null) {
     $managementSubnetName = 'Management'
-    Write-Host "Using subnet 'Management'." -ForegroundColor Green
+    Write-Host "Using subnet 'Management' to deploy jumpbox VM." -ForegroundColor Green
 }
 
 function VerifyPSVersion
@@ -39,26 +39,27 @@ function EnsureLogin ()
     $context = Get-AzureRmContext
     If($null -eq $context.Subscription)
     {
-        Write-Host "Loging in ..."
+        Write-Host "Sign-in..."
         If($null -eq (Login-AzureRmAccount -ErrorAction SilentlyContinue -ErrorVariable Errors))
         {
-            Write-Host ("Login failed: {0}" -f $Errors[0].Exception.Message) -ForegroundColor Red
+            Write-Host ("Sign-in failed: {0}" -f $Errors[0].Exception.Message) -ForegroundColor Red
             Break
         }
     }
-    Write-Host "User logedin." -ForegroundColor Green
+    Write-Host "Sign-in successful." -ForegroundColor Green
 }
 
 function SelectSubscriptionId {
     param (
         $subscriptionId
     )
-    Write-Host "Selecting subscription '$subscriptionId'."
+    Write-Host "Selecting subscription '$subscriptionId'..."
     $context = Get-AzureRmContext
     If($context.Subscription.Id -ne $subscriptionId)
     {
         Try
         {
+            Write-Host "Switching subscription $context.Subscription.Id to '$subscriptionId'." -ForegroundColor Green
             Select-AzureRmSubscription -SubscriptionId $subscriptionId -ErrorAction Stop | Out-null
         }
         Catch
@@ -79,16 +80,15 @@ function LoadVirtualNetwork {
         $virtualNetwork = Get-AzureRmVirtualNetwork -ResourceGroupName $resourceGroupName -Name $virtualNetworkName -ErrorAction SilentlyContinue
         If($null -ne $virtualNetwork.Id)
         {
-            Write-Host "Virtual network loaded." -ForegroundColor Green
+            Write-Host "Virtual network with id $virtualNetwork.Id is loaded." -ForegroundColor Green
             If($virtualNetwork.VirtualNetworkPeerings.Count -gt 0) {
-                Write-Host "Virtual should not have peerings." -ForegroundColor Red
+                Write-Host "Virtual network is loaded, but it should not have peerings." -ForegroundColor Red
             }
-
             return $virtualNetwork
         }
         else
         {
-            Write-Host "Virtual network not found." -ForegroundColor Red
+            Write-Host "Virtual network cannot be found." -ForegroundColor Red
             Break
         }
 }
@@ -104,7 +104,7 @@ function SetVirtualNetwork
     }
     Catch
     {
-        Write-Host "Failed: $_" -ForegroundColor Red
+        Write-Host "Failed to configure Virtual Network: $_" -ForegroundColor Red
     }
 }
 
@@ -189,7 +189,7 @@ If($false -eq $subnets.Contains($managementSubnetName))
     SetVirtualNetwork $virtualNetwork
     Write-Host "Added subnet $managementSubnetName into VNet." -ForegroundColor Green
 } else {
-    Write-Host "The subnet $managementSubnetName already exists in the VNet." -ForegroundColor Green
+    Write-Host "The subnet $managementSubnetName exists in the VNet." -ForegroundColor Green
 }
 
 Write-Host
@@ -205,6 +205,6 @@ $templateParameters = @{
     administratorLoginPassword  = $administratorLoginPassword
 }
 
-# New-AzureRmResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateUri ($scriptUrlBase+'/azuredeploy.json?t='+ [DateTime]::Now.Ticks) -TemplateParameterObject $templateParameters
+New-AzureRmResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateUri ($scriptUrlBase+'/azuredeploy.json?t='+ [DateTime]::Now.Ticks) -TemplateParameterObject $templateParameters
 
-Write-Host "Deployment completed"
+Write-Host "Deployment completed."
