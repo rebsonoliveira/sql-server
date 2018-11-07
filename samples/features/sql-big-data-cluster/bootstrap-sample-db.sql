@@ -25,11 +25,14 @@ IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'SqlStoragePo
 	WITH (LOCATION = 'sqlhdfs://service-mssql-controller:8080');
 GO
 
--- Create view used for ML services training stored procedure
-CREATE OR ALTER VIEW [dbo].[web_clickstreams_book_clicks]
+-- Create view used for ML services training and scoring stored procedures
+CREATE OR ALTER  VIEW [dbo].[web_clickstreams_book_clicks]
 AS
 	SELECT
-	  q.clicks_in_category,
+        /* There is a bug in TPCx-BB data generator which results in data where all users have purchased books.
+        As a result, we cannot use the data as is for ML training purposes. So we will treat users with 1-5 clicks
+		in the book category as not interested in books. */
+	  CASE WHEN q.clicks_in_category < 6 THEN 0 ELSE q.clicks_in_category END AS clicks_in_category,
 	  CASE WHEN cd.cd_education_status IN ('Advanced Degree', 'College', '4 yr Degree', '2 yr Degree') THEN 1 ELSE 0 END AS college_education,
 	  CASE WHEN cd.cd_gender = 'M' THEN 1 ELSE 0 END AS male,
 	  COALESCE(cd.cd_credit_rating, 'Unknown') as cd_credit_rating,
@@ -62,15 +65,4 @@ AS
 	) AS q
 	INNER JOIN customer as c ON q.wcs_user_sk = c.c_customer_sk
 	INNER JOIN customer_demographics as cd ON c.c_current_cdemo_sk = cd.cd_demo_sk;
-GO
-
--- Create table for storing the machine learning models
-IF NOT EXISTS(SELECT * FROM sys.tables WHERE name = 'sales_models')
-	CREATE TABLE sales_models (
-		model_name varchar(100) NOT NULL PRIMARY KEY,
-		model varbinary(max) NOT NULL,
-		model_native varbinary(max) NULL,
-		created_by nvarchar(300) NOT NULL DEFAULT(SYSTEM_USER),
-		create_time datetime2 NOT NULL DEFAULT(SYSDATETIME())
-	);
 GO

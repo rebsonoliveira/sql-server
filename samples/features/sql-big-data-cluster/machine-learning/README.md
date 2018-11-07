@@ -14,6 +14,7 @@ The new built-in notebooks in Azure Data Studio enables data scientists and data
 
 This sample builds a machine learning model using AdultCensusIncome.csv available [here](https://amldockerdatasets.azureedge.net/AdultCensusIncome.csv).
 
+[spark](spark)
 
 ### Instructions
 

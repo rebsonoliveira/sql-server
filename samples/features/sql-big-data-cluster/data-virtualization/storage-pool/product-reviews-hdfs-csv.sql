@@ -19,14 +19,15 @@ IF NOT EXISTS(SELECT * FROM sys.external_file_formats WHERE name = 'csv_file')
 -- is a special data source that is available in any new database in
 -- SQL Master instance.
 --
-CREATE EXTERNAL TABLE [product_reviews_hdfs_csv]
-("pr_review_sk" BIGINT , "pr_review_content" varchar(8000))
-WITH
-(
-    DATA_SOURCE = SqlStoragePool,
-	LOCATION = '/product_review_data',
-    FILE_FORMAT = csv_file
-);
+IF NOT EXISTS(SELECT * FROM sys.external_tables WHERE name = 'product_reviews_hdfs_csv')
+    CREATE EXTERNAL TABLE [product_reviews_hdfs_csv]
+    ("pr_review_sk" BIGINT , "pr_review_content" varchar(8000))
+    WITH
+    (
+        DATA_SOURCE = SqlStoragePool,
+        LOCATION = '/product_review_data',
+        FILE_FORMAT = csv_file
+    );
 GO
 
 -- Join external table with local tables
@@ -38,5 +39,8 @@ SELECT
     ON pc.pr_review_sk = p.pr_review_sk;
 GO
 
+-- Cleanup
+/*
 DROP EXTERNAL TABLE [dbo].[product_reviews_hdfs_csv];
 GO
+*/

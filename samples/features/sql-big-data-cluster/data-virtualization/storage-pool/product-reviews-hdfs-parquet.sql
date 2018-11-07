@@ -15,14 +15,15 @@ IF NOT EXISTS(SELECT * FROM sys.external_file_formats WHERE name = 'parquet_file
 -- is a special data source that is available in any new database in
 -- SQL Master instance.
 --
-CREATE EXTERNAL TABLE [product_reviews_hdfs_parquet]
-("pr_review_sk" BIGINT , "pr_review_content" varchar(8000))
-WITH
-(
-    DATA_SOURCE = SqlStoragePool,
-	LOCATION = '/user/hive/warehouse/product_review_data',
-    FILE_FORMAT = parquet_file
-);
+IF NOT EXISTS(SELECT * FROM sys.external_tables WHERE name = 'product_reviews_hdfs_parquet')
+    CREATE EXTERNAL TABLE [product_reviews_hdfs_parquet]
+    ("pr_review_sk" BIGINT , "pr_review_content" varchar(8000))
+    WITH
+    (
+        DATA_SOURCE = SqlStoragePool,
+        LOCATION = '/user/hive/warehouse/product_reviews',
+        FILE_FORMAT = parquet_file
+    );
 GO
 
 -- Join external table with local tables
@@ -34,5 +35,8 @@ SELECT
     ON pc.pr_review_sk = p.pr_review_sk;
 GO
 
+-- Cleanup
+/*
 DROP EXTERNAL TABLE [dbo].[product_reviews_hdfs_parquet];
 GO
+*/

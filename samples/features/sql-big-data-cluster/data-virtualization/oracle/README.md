@@ -1,6 +1,6 @@
 # Data virtualization in SQL Server 2019
 
-**Applies to: SQL Server 2019 on Windows or Linux, SQL Server 2019 big data cluster**
+***Applies to:*** SQL Server 2019 on Windows or Linux, SQL Server 2019 big data cluster
 
 SQL Server 2019 introduces new ODBC connectors to data sources like SQL Server, Oracle, MongoDB and Teradata. These connectors can be used from stand-alone SQL Server 2019 on Windows or Linux or SQL Server 2019 big data cluster.
 

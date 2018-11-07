@@ -9,19 +9,21 @@ if NOT DEFINED ORACLE_SERVER goto :usage
 if NOT DEFINED ORACLE_USER goto :usage
 if NOT DEFINED ORACLE_PASSWORD goto :usage
 
-echo Verifying sqlplus.exe is in path & CALL WHERE /Q sqlplus.exe || GOTO exit
-echo Verifying sqlldr.exe is in path & CALL WHERE /Q sqlldr.exe || GOTO exit
+for %F in (sqlplus.exe sqlldr.exe) do (
+    echo Verifying %%F is in path & CALL WHERE /Q %%F || GOTO exit
+)
 
-echo Creating user & tables...
-echo exit | sqlplus -S %ORACLE_USER%/%ORACLE_PASSWORD%@%ORACLE_SERVER% @sales-user.sql || GOTO exit
-echo exit | sqlplus -S %ORACLE_USER%/%ORACLE_PASSWORD%@%ORACLE_SERVER% @inventory.sql || GOTO exit
-echo exit | sqlplus -S %ORACLE_USER%/%ORACLE_PASSWORD%@%ORACLE_SERVER% @customer.sql || GOTO exit
 
-echo Loading tables data...
-sqlldr CONTROL=inventory.ctl userid=%ORACLE_USER%/%ORACLE_PASSWORD%@%ORACLE_SERVER% || GOTO exit
-sqlldr CONTROL=customer.ctl userid=%ORACLE_USER%/%ORACLE_PASSWORD%@%ORACLE_SERVER% || GOTO exit
+for %%F in (sales-user.sql inventory.sql customer.sql) do (
+    echo Executing [%%F]...
+    echo exit | sqlplus -S %ORACLE_USER%/%ORACLE_PASSWORD%@%ORACLE_SERVER% @sales-user.sql || GOTO exit
+)
 
-:: del /q *.out *.err *.csv
+for %%F in (inventory.ctl customer.ctl) do (
+    echo Loading [%%F]...
+    sqlldr CONTROL=%%F userid=%ORACLE_USER%/%ORACLE_PASSWORD%@%ORACLE_SERVER% || GOTO exit
+)
+
 endlocal
 exit /b 0
 goto :eof
