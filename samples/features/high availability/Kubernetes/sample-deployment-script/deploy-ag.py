@@ -18,7 +18,7 @@ from utils import (AgRole, AgMode, OperatorYaml, SqlSecretsYaml,
                    SqlServerYaml, AgServiceYaml, FailoverYaml)
 
 DEFAULT_K8S_AGENTS_IMAGE = (
-    "mcr.microsoft.com/mssql/ha:vNext-CTP2.0-ubuntu")
+    "mcr.microsoft.com/mssql/ha:2019-CTP2.1-ubuntu")
   
 
 
