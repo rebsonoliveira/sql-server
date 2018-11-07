@@ -25,8 +25,7 @@ KNOX_PASSWORD=${KNOX_PASSWORD:=$SQL_MASTER_SA_PASSWORD}
 SQL_MASTER_INSTANCE=$SQL_MASTER_IP,31433
 KNOX_ENDPOINT=$KNOX_IP:30443
 
-
-for util in sqlcmd.exe bcp.exe kubectl.exe curl.exe
+for util in sqlcmd bcp kubectl curl
     do
     echo Verifying $util is in path & which $util 1>/dev/nul 2>/dev/nul || (echo Unable to locate $util && exit 1)
 done
