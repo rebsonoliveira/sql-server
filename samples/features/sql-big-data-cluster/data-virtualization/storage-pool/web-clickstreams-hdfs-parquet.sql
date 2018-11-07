@@ -45,6 +45,54 @@ SELECT
 GROUP BY  wcs_user_sk;
 GO
 
+-- Create view used for ML services training stored procedure
+CREATE OR ALTER VIEW [dbo].[web_clickstreams_hdfs_book_clicks]
+AS
+	SELECT
+        /* There is bug in TPCx-BB data generator which results in data where all users have purchased books.
+        This will not work for the ML training purposes. So we will treat users with 1-5 clicks in the book category as
+        not interested in books. */
+	  CASE WHEN q.clicks_in_category < 6 THEN 0 ELSE q.clicks_in_category END AS clicks_in_category,
+	  CASE WHEN cd.cd_education_status IN ('Advanced Degree', 'College', '4 yr Degree', '2 yr Degree') THEN 1 ELSE 0 END AS college_education,
+	  CASE WHEN cd.cd_gender = 'M' THEN 1 ELSE 0 END AS male,
+	  COALESCE(cd.cd_credit_rating, 'Unknown') as cd_credit_rating,
+	  q.clicks_in_1,
+	  q.clicks_in_2,
+	  q.clicks_in_3,
+	  q.clicks_in_4,
+	  q.clicks_in_5,
+	  q.clicks_in_6,
+	  q.clicks_in_7,
+	  q.clicks_in_8,
+	  q.clicks_in_9,
+	  q.wcs_user_sk
+	FROM( 
+	  SELECT 
+		w.wcs_user_sk,
+		SUM( CASE WHEN i.i_category = 'Books' THEN 1 ELSE 0 END) AS clicks_in_category,
+		SUM( CASE WHEN i.i_category_id = 1 THEN 1 ELSE 0 END) AS clicks_in_1,
+		SUM( CASE WHEN i.i_category_id = 2 THEN 1 ELSE 0 END) AS clicks_in_2,
+		SUM( CASE WHEN i.i_category_id = 3 THEN 1 ELSE 0 END) AS clicks_in_3,
+		SUM( CASE WHEN i.i_category_id = 4 THEN 1 ELSE 0 END) AS clicks_in_4,
+		SUM( CASE WHEN i.i_category_id = 5 THEN 1 ELSE 0 END) AS clicks_in_5,
+		SUM( CASE WHEN i.i_category_id = 6 THEN 1 ELSE 0 END) AS clicks_in_6,
+		SUM( CASE WHEN i.i_category_id = 7 THEN 1 ELSE 0 END) AS clicks_in_7,
+		SUM( CASE WHEN i.i_category_id = 8 THEN 1 ELSE 0 END) AS clicks_in_8,
+		SUM( CASE WHEN i.i_category_id = 9 THEN 1 ELSE 0 END) AS clicks_in_9
+	  FROM web_clickstreams_hdfs_parquet as w
+	  INNER JOIN item as i ON (w.wcs_item_sk = i_item_sk
+						 AND w.wcs_user_sk IS NOT NULL)
+	  GROUP BY w.wcs_user_sk
+	) AS q
+	INNER JOIN customer as c ON q.wcs_user_sk = c.c_customer_sk
+	INNER JOIN customer_demographics as cd ON c.c_current_cdemo_sk = cd.cd_demo_sk;
+GO
+
+
+-- Inspect top 100 rows
+SELECT TOP(100) * FROM web_clickstreams_hdfs_book_clicks;
+GO
+
 -- Cleanup
 /*
 DROP EXTERNAL TABLE [dbo].[web_clickstreams_hdfs_parquet];
