@@ -16,7 +16,7 @@ BEGIN
 		, @input_query nvarchar(max)
 		, @train_script nvarchar(max)
 		
--- Set the input query for training. We will use 80% of the data.
+	-- Set the input query for training. We will use 80% of the data.
 	SET @input_query = N'
 SELECT TOP(80) PERCENT SIGN(q.clicks_in_category) AS book_category
 		, q.college_education
@@ -32,8 +32,8 @@ SELECT TOP(80) PERCENT SIGN(q.clicks_in_category) AS book_category
 		, q.clicks_in_9
 	FROM web_clickstreams_hdfs_book_clicks as q
 ';
-	-- Training R script that uses rxLogit function from RevoScaleR package (Microsoft R Server) to generate model to predict book_category click(s).
-		SET @train_script = N'
+	-- Training that uses rx_logit function from revoscalepy package (Microsoft ML Server) to generate model to predict book_category click(s).
+	SET @train_script = N'
 # build classification model to predict book_category
 import pickle
 from revoscalepy import rx_logit, rx_serialize_model
