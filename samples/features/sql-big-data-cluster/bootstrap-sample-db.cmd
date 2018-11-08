@@ -60,6 +60,7 @@ echo Uploading product_reviews data to HDFS...
 del /q product_reviews.*
 
 REM %DEBUG% del /q *.out *.err *.csv
+echo Bootstrap of the sample database completed successfully.
 echo Data files for Oracle setup are located at [%TMPDIRNAME%].
 
 popd
