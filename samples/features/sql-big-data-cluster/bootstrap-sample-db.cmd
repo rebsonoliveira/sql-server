@@ -25,6 +25,7 @@ for %%F in (sqlcmd.exe bcp.exe kubectl.exe curl.exe) do (
 
 pushd "%tmp%"
 md %TMP_DIR_NAME%
+cd %TMP_DIR_NAME%
 echo Downloading sample database backup file...
 %DEBUG% curl -G "https://sqlchoice.blob.core.windows.net/sqlchoice/static/tpcxbb_1gb.bak" -o tpcxbb_1gb.bak
 
@@ -40,26 +41,28 @@ echo Configuring sample database...
 for %%F in (web_clickstreams inventory customer) do (
     echo Exporting %%F data...
     if /i %%F EQU web_clickstreams (set DELIMITER=,) else (SET DELIMITER=^|)
-    %DEBUG% bcp sales.dbo.%%F out "%STARTUP_PATH%%%F.csv" -S %SQL_MASTER_INSTANCE% -Usa -P%SQL_MASTER_SA_PASSWORD% -c -t"!DELIMITER!" -o "%%F.out" -e "%%F.err" || goto exit
+    %DEBUG% bcp sales.dbo.%%F out "%%F.csv" -S %SQL_MASTER_INSTANCE% -Usa -P%SQL_MASTER_SA_PASSWORD% -c -t"!DELIMITER!" -o "%%F.out" -e "%%F.err" || goto exit
 )
 
 echo Exporting product_reviews data...
-%DEBUG% bcp "select pr_review_sk, replace(replace(pr_review_content, ',', ';'), char(34), '') as pr_review_content from sales.dbo.product_reviews" queryout "%TMP_DIR_NAME%product_reviews.csv" -S %SQL_MASTER_INSTANCE% -Usa -P%SQL_MASTER_SA_PASSWORD% -c -t, -o "product_reviews.out" -e "product_reviews.err" || goto exit
+%DEBUG% bcp "select pr_review_sk, replace(replace(pr_review_content, ',', ';'), char(34), '') as pr_review_content from sales.dbo.product_reviews" queryout "product_reviews.csv" -S %SQL_MASTER_INSTANCE% -Usa -P%SQL_MASTER_SA_PASSWORD% -c -t, -o "product_reviews.out" -e "product_reviews.err" || goto exit
 
 REM Copy the data file to HDFS
 echo Uploading web_clickstreams data to HDFS...
 %DEBUG% curl -i -L -k -u root:%KNOX_PASSWORD% -X PUT "https://%KNOX_ENDPOINT%/gateway/default/webhdfs/v1/clickstream_data?op=MKDIRS" || goto exit
 %DEBUG% curl -i -L -k -u root:%KNOX_PASSWORD% -X PUT "https://%KNOX_ENDPOINT%/gateway/default/webhdfs/v1/clickstream_data/web_clickstreams.csv?op=create&overwrite=true&noredirect=true" -H "Content-Type: application/octet-stream" -T "web_clickstreams.csv" || goto exit
+del /q web_clickstreams.*
 
 echo.
 echo Uploading product_reviews data to HDFS...
 %DEBUG% curl -i -L -k -u root:%KNOX_PASSWORD% -X PUT "https://%KNOX_ENDPOINT%/gateway/default/webhdfs/v1/product_review_data?op=MKDIRS" || goto exit
 %DEBUG% curl -i -L -k -u root:%KNOX_PASSWORD% -X PUT "https://%KNOX_ENDPOINT%/gateway/default/webhdfs/v1/product_review_data/product_reviews.csv?op=create&overwrite=true&noredirect=true" -H "Content-Type: application/octet-stream" -T "product_reviews.csv" || goto exit
+del /q product_reviews.*
 
-%DEBUG% del /q *.out *.err *.csv
+REM %DEBUG% del /q *.out *.err *.csv
+echo Data files for Oracle setup are located at [%TMPDIRNAME%].
 
 popd
-%DEBUG% rd /q "%tmp%\%TMP_DIR_NAME%"
 endlocal
 exit /b 0
 goto :eof

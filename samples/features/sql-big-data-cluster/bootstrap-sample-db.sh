@@ -33,6 +33,8 @@ done
 # Copy the backup file, restore the database, create necessary objects and data file
 pushd "/tmp"
 $DEBUG mkdir "$TMP_DIR_NAME"
+$DEBUG cd "$TMP_DIR_NAME"
+
 echo Downloading sample database backup file...
 $DEBUG curl -G "https://sqlchoice.blob.core.windows.net/sqlchoice/static/tpcxbb_1gb.bak" -o tpcxbb_1gb.bak
 
@@ -64,14 +66,18 @@ $DEBUG bcp "select pr_review_sk, replace(replace(pr_review_content, ',', ';'), c
 echo Uploading web_clickstreams data to HDFS...
 $DEBUG curl -i -L -k -u root:$KNOX_PASSWORD -X PUT "https://$KNOX_ENDPOINT/gateway/default/webhdfs/v1/clickstream_data?op=MKDIRS" || (echo $ERROR_MESSAGE && exit 4)
 $DEBUG curl -i -L -k -u root:$KNOX_PASSWORD -X PUT "https://$KNOX_ENDPOINT/gateway/default/webhdfs/v1/clickstream_data/web_clickstreams.csv?op=create&overwrite=true&noredirect=true" -H 'Content-Type: application/octet-stream' -T "web_clickstreams.csv" || (echo $ERROR_MESSAGE && exit 5)
+$DEBUG rm -f web_clickstreams.*
 
 echo
 echo Uploading product_reviews data to HDFS...
 $DEBUG curl -i -L -k -u root:$KNOX_PASSWORD -X PUT "https://$KNOX_ENDPOINT/gateway/default/webhdfs/v1/product_review_data?op=MKDIRS" || (echo $ERROR_MESSAGE && exit 6)
 $DEBUG curl -i -L -k -u root:$KNOX_PASSWORD -X PUT "https://$KNOX_ENDPOINT/gateway/default/webhdfs/v1/product_review_data/product_reviews.csv?op=create&overwrite=true&noredirect=true" -H "Content-Type: application/octet-stream" -T "product_reviews.csv" || (echo $ERROR_MESSAGE && exit 7)
+$DEBUG rm -f product_reviews.*
 
-$DEBUG rm -f *.out *.err *.csv
+echo
+echo Bootstrap of the sample database completed successfully.
+echo Data files for Oracle setup are located at [$TMPDIRNAME].
+
+# $DEBUG rm -f *.out *.err *.csv
 popd
-
-$DEBUG rmdir "/tmp/$TMP_DIR_NAME"
-exit
+exit 0
