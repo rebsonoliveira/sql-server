@@ -76,7 +76,7 @@ $DEBUG rm -f product_reviews.*
 
 echo
 echo Bootstrap of the sample database completed successfully.
-echo Data files for Oracle setup are located at [$TMPDIRNAME].
+echo Data files for Oracle setup are located at [/tmp/$TMP_DIR_NAME].
 
 # $DEBUG rm -f *.out *.err *.csv
 popd
