@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <!-- PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wp8+wpa81;</PackageTargetFallback -->
@@ -6,17 +6,8 @@
     <AssemblyOriginatorKeyFile>hrkljush.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Areas\**" />
-    <Compile Remove="SqlServerRestApi\**" />
-    <Compile Remove="wwwroot\public\**" />
-    <Content Remove="Areas\**" />
-    <Content Remove="SqlServerRestApi\**" />
     <Content Remove="wwwroot\public\**" />
-    <EmbeddedResource Remove="Areas\**" />
-    <EmbeddedResource Remove="SqlServerRestApi\**" />
     <EmbeddedResource Remove="wwwroot\public\**" />
-    <None Remove="Areas\**" />
-    <None Remove="SqlServerRestApi\**" />
     <None Remove="wwwroot\public\**" />
   </ItemGroup>
   <ItemGroup>

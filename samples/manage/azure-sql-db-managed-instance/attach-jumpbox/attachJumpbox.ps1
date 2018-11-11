@@ -2,11 +2,23 @@ $parameters = $args[0]
 
 $subscriptionId = $parameters['subscriptionId']
 $resourceGroupName = $parameters['resourceGroupName']
+$virtualMachineName = $parameters['virtualMachineName']
 $virtualNetworkName = $parameters['virtualNetworkName']
+$managementSubnetName = $parameters['subnetName']
 $administratorLogin  = $parameters['administratorLogin']
 $administratorLoginPassword  = $parameters['administratorLoginPassword']
 
 $scriptUrlBase = $args[1]
+
+if($virtualMachineName -eq '' -or $virtualMachineName -eq $null) {
+    $virtualMachineName = 'Jumpbox'
+    Write-Host "VM Name: 'Jumpbox'." -ForegroundColor Green
+}
+
+if($managementSubnetName -eq '' -or $managementSubnetName -eq $null) {
+    $managementSubnetName = 'Management'
+    Write-Host "Using subnet 'Management' to deploy jumpbox VM." -ForegroundColor Green
+}
 
 function VerifyPSVersion
 {
@@ -27,26 +39,27 @@ function EnsureLogin ()
     $context = Get-AzureRmContext
     If($null -eq $context.Subscription)
     {
-        Write-Host "Loging in ..."
+        Write-Host "Sign-in..."
         If($null -eq (Login-AzureRmAccount -ErrorAction SilentlyContinue -ErrorVariable Errors))
         {
-            Write-Host ("Login failed: {0}" -f $Errors[0].Exception.Message) -ForegroundColor Red
+            Write-Host ("Sign-in failed: {0}" -f $Errors[0].Exception.Message) -ForegroundColor Red
             Break
         }
     }
-    Write-Host "User logedin." -ForegroundColor Green
+    Write-Host "Sign-in successful." -ForegroundColor Green
 }
 
 function SelectSubscriptionId {
     param (
         $subscriptionId
     )
-    Write-Host "Selecting subscription '$subscriptionId'."
+    Write-Host "Selecting subscription '$subscriptionId'..."
     $context = Get-AzureRmContext
     If($context.Subscription.Id -ne $subscriptionId)
     {
         Try
         {
+            Write-Host "Switching subscription $context.Subscription.Id to '$subscriptionId'." -ForegroundColor Green
             Select-AzureRmSubscription -SubscriptionId $subscriptionId -ErrorAction Stop | Out-null
         }
         Catch
@@ -65,14 +78,18 @@ function LoadVirtualNetwork {
     )
         Write-Host("Loading virtual network '{0}' in resource group '{1}'." -f $virtualNetworkName, $resourceGroupName)
         $virtualNetwork = Get-AzureRmVirtualNetwork -ResourceGroupName $resourceGroupName -Name $virtualNetworkName -ErrorAction SilentlyContinue
-        If($null -ne $virtualNetwork.Id)
+        $id = $virtualNetwork.Id
+        If($null -ne $id)
         {
-            Write-Host "Virtual network loaded." -ForegroundColor Green
+            Write-Host "Virtual network with id $id is loaded." -ForegroundColor Green
+            If($virtualNetwork.VirtualNetworkPeerings.Count -gt 0) {
+                Write-Host "Virtual network is loaded, but it should not have peerings." -ForegroundColor Red
+            }
             return $virtualNetwork
         }
         else
         {
-            Write-Host "Virtual network not found." -ForegroundColor Red
+            Write-Host "Virtual network $virtualNetworkName cannot be found." -ForegroundColor Red
             Break
         }
 }
@@ -88,7 +105,7 @@ function SetVirtualNetwork
     }
     Catch
     {
-        Write-Host "Failed: $_" -ForegroundColor Red
+        Write-Host "Failed to configure Virtual Network: $_" -ForegroundColor Red
     }
 }
 
@@ -122,7 +139,7 @@ function ConvertUInt32ToIPAddress
 function CalculateNextAddressPrefix
 {
     param($virtualNetwork, $prefixLength)
-    Write-Host "Calculating address prefix."
+    Write-Host "Calculating address prefix with length $prefixLength..."
     $startIPAddress = 0
     ForEach($addressPrefix in $virtualNetwork.AddressSpace.AddressPrefixes)
     {
@@ -133,7 +150,9 @@ function CalculateNextAddressPrefix
         }
     }
     $startIPAddress += 1
-    return (ConvertUInt32ToIPAddress $startIPAddress) + "/" + $prefixLength
+    $addressPrefixResult = (ConvertUInt32ToIPAddress $startIPAddress) + "/" + $prefixLength
+    Write-Host "Using address prefix $addressPrefixResult." -ForegroundColor Green
+    return $addressPrefixResult
 }
 
 function CalculateVpnClientAddressPoolPrefix
@@ -157,12 +176,22 @@ SelectSubscriptionId -subscriptionId $subscriptionId
 
 $virtualNetwork = LoadVirtualNetwork -resourceGroupName $resourceGroupName -virtualNetworkName $virtualNetworkName
 
-$managementSubnetPrefix = CalculateNextAddressPrefix $virtualNetwork 28
+$subnets = $virtualNetwork.Subnets.Name
 
-$virtualNetwork.AddressSpace.AddressPrefixes.Add($managementSubnetPrefix)
-Add-AzureRmVirtualNetworkSubnetConfig -Name Management -VirtualNetwork $virtualNetwork -AddressPrefix $managementSubnetPrefix | Out-Null
+If($false -eq $subnets.Contains($managementSubnetName))
+{
+    Write-Host "$managementSubnetName is not one of the subnets in $subnets" -ForegroundColor Yellow
+    Write-Host "Creating subnet $managementSubnetName ($managementSubnetPrefix) in the VNet..." -ForegroundColor Green
+    $managementSubnetPrefix = CalculateNextAddressPrefix $virtualNetwork 28
 
-SetVirtualNetwork $virtualNetwork
+    $virtualNetwork.AddressSpace.AddressPrefixes.Add($managementSubnetPrefix)
+    Add-AzureRmVirtualNetworkSubnetConfig -Name $managementSubnetName -VirtualNetwork $virtualNetwork -AddressPrefix $managementSubnetPrefix | Out-Null
+
+    SetVirtualNetwork $virtualNetwork
+    Write-Host "Added subnet $managementSubnetName into VNet." -ForegroundColor Green
+} else {
+    Write-Host "The subnet $managementSubnetName exists in the VNet." -ForegroundColor Green
+}
 
 Write-Host
 
@@ -171,9 +200,12 @@ Write-Host "Starting deployment..."
 
 $templateParameters = @{
     virtualNetworkName = $virtualNetworkName
-    managementSubnetPrefix  = $managementSubnetPrefix
+    managementSubnetName  = $managementSubnetName
+    virtualMachineName  = $virtualMachineName
     administratorLogin  = $administratorLogin
     administratorLoginPassword  = $administratorLoginPassword
 }
 
 New-AzureRmResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateUri ($scriptUrlBase+'/azuredeploy.json?t='+ [DateTime]::Now.Ticks) -TemplateParameterObject $templateParameters
+
+Write-Host "Deployment completed."

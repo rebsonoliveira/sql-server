@@ -15,12 +15,6 @@
                 "description": "Enter virtual network name. If you leave this field blank name will be created by the template."
             }
         },
-        "managementSubnetPrefix": {
-            "type": "string",
-            "metadata": {
-                "description": "Enter management subnet address prefix."
-            }
-        },
         "administratorLogin": {
             "type": "string",
             "metadata": {
@@ -32,20 +26,30 @@
             "metadata": {
                 "description": "Enter password."
             }
+        },
+        "virtualMachineName": {
+            "type": "string",
+            "metadata": {
+                "description": "VM name."
+            }
+        },
+        "managementSubnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "VM subnet name."
+            }
         }
     },
     "variables": {
-        "managementSubnetName": "Management",
-        "virtualMachineName": "JumpBox",
         "virtualMachineSize": "Standard_B2s",
-        "networkInterfaceName": "nicJumpBox",
-        "publicIPAddressName": "ipJumpBox",
-        "networkSecurityGroupName": "nsgJumpBox",
+        "networkInterfaceName": "[concat(parameters('virtualMachineName'),'-nic0')]",
+        "publicIPAddressName": "[concat(parameters('virtualMachineName'),'-pip')]",
+        "networkSecurityGroupName": "[concat(parameters('virtualMachineName'),'-nsg')]",
         "scriptFileUri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/201-sqlmi-new-vnet-w-jumpbox/installSSMS.ps1"
     },
     "resources": [
         {
-            "name": "[variables('virtualMachineName')]",
+            "name": "[parameters('virtualMachineName')]",
             "type": "Microsoft.Compute/virtualMachines",
             "apiVersion": "2018-06-01",
             "location": "[parameters('location')]",
@@ -54,7 +58,7 @@
             ],
             "properties": {
                 "osProfile": {
-                    "computerName": "[variables('virtualMachineName')]",
+                    "computerName": "[parameters('virtualMachineName')]",
                     "adminUsername": "[parameters('administratorLogin')]",
                     "adminPassword": "[parameters('administratorLoginPassword')]",
                     "windowsConfiguration": {
@@ -94,7 +98,7 @@
                   "location": "[parameters('location')]",
                   "apiVersion": "2018-06-01",
                   "dependsOn": [
-                    "[concat('Microsoft.Compute/virtualMachines/', variables('virtualMachineName'))]"
+                    "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
                   ],
                   "tags": {
                     "displayName": "SetupChocolatey"
@@ -130,7 +134,7 @@
                         "name": "ipconfig1",
                         "properties": {
                             "subnet": {
-                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), variables('managementSubnetName'))]"
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('managementSubnetName'))]"
                             },
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIpAddress": {
