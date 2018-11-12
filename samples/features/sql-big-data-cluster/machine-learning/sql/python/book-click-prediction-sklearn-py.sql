@@ -136,5 +136,5 @@ GO
 -- Predict the book category clicks for new users based on their pattern of 
 -- visiting various categories in the web site
 DECLARE @model_name varchar(100) = 'category_model - sklearn (Python)';
-EXECUTE dbo.predict_book_category_visitor_sklearn_python @model_name, 1 /* Score only on 1 PERENT for testing purpose. */;
+EXECUTE dbo.predict_book_category_visitor_sklearn_python @model_name, 1 /* Score only on 1 PERCENT for testing purpose. */;
 GO
