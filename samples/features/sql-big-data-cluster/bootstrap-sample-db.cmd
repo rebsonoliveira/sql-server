@@ -50,13 +50,13 @@ echo Exporting product_reviews data...
 REM Copy the data file to HDFS
 echo Uploading web_clickstreams data to HDFS...
 %DEBUG% curl -i -L -k -u root:%KNOX_PASSWORD% -X PUT "https://%KNOX_ENDPOINT%/gateway/default/webhdfs/v1/clickstream_data?op=MKDIRS" || goto exit
-%DEBUG% curl -i -L -k -u root:%KNOX_PASSWORD% -X PUT "https://%KNOX_ENDPOINT%/gateway/default/webhdfs/v1/clickstream_data/web_clickstreams.csv?op=create&overwrite=true&noredirect=true" -H "Content-Type: application/octet-stream" -T "web_clickstreams.csv" || goto exit
+%DEBUG% curl -i -L -k -u root:%KNOX_PASSWORD% -X PUT "https://%KNOX_ENDPOINT%/gateway/default/webhdfs/v1/clickstream_data/web_clickstreams.csv?op=create&overwrite=true" -H "Content-Type: application/octet-stream" -T "web_clickstreams.csv" || goto exit
 del /q web_clickstreams.*
 
 echo.
 echo Uploading product_reviews data to HDFS...
 %DEBUG% curl -i -L -k -u root:%KNOX_PASSWORD% -X PUT "https://%KNOX_ENDPOINT%/gateway/default/webhdfs/v1/product_review_data?op=MKDIRS" || goto exit
-%DEBUG% curl -i -L -k -u root:%KNOX_PASSWORD% -X PUT "https://%KNOX_ENDPOINT%/gateway/default/webhdfs/v1/product_review_data/product_reviews.csv?op=create&overwrite=true&noredirect=true" -H "Content-Type: application/octet-stream" -T "product_reviews.csv" || goto exit
+%DEBUG% curl -i -L -k -u root:%KNOX_PASSWORD% -X PUT "https://%KNOX_ENDPOINT%/gateway/default/webhdfs/v1/product_review_data/product_reviews.csv?op=create&overwrite=true" -H "Content-Type: application/octet-stream" -T "product_reviews.csv" || goto exit
 del /q product_reviews.*
 
 REM %DEBUG% del /q *.out *.err *.csv
