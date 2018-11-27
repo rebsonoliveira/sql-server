@@ -112,13 +112,14 @@ function SetVirtualNetwork
 function ConvertCidrToUint32Array
 {
     param($cidrRange)
-    $cidrRangeParts = $cidrRange.Split(@(".","/"))
-    $ipnum = ([Convert]::ToUInt32($cidrRangeParts[0]) -shl 24) -bor `
-             ([Convert]::ToUInt32($cidrRangeParts[1]) -shl 16) -bor `
-             ([Convert]::ToUInt32($cidrRangeParts[2]) -shl 8) -bor `
-             [Convert]::ToUInt32($cidrRangeParts[3])
+    $cidrRangeParts = $cidrRange.Split("/")
+    $ipParts = $cidrRangeParts[0].Split(".")
+    $ipnum = ([Convert]::ToUInt32($ipParts[0]) -shl 24) -bor `
+             ([Convert]::ToUInt32($ipParts[1]) -shl 16) -bor `
+             ([Convert]::ToUInt32($ipParts[2]) -shl 8) -bor `
+             [Convert]::ToUInt32($ipParts[3])
 
-    $maskbits = [System.Convert]::ToInt32($cidrRangeParts[4])
+    $maskbits = [System.Convert]::ToInt32($cidrRangeParts[1])
     $mask = 0xffffffff
     $mask = $mask -shl (32 -$maskbits)
     $ipstart = $ipnum -band $mask
