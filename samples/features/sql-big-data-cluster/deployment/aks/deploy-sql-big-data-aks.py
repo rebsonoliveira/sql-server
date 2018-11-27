@@ -30,7 +30,7 @@ DOCKER_PASSWORD = input("Provide your Docker password:")
 # Optionally change these configuration settings
 #
 AZURE_REGION=input("Provide Azure region - Press ENTER for using `westus`:") or "westus"
-VM_SIZE=input("Provide VM size for the AKS cluster - Press ENTER for using  `Standard_E4s_v3`:") or "Standard_E4s_v3"
+VM_SIZE=input("Provide VM size for the AKS cluster - Press ENTER for using  `Standard_L4s`:") or "Standard_L4s"
 AKS_NODE_COUNT=input("Provide number of worker nodes for AKS cluster - Press ENTER for using  `3`:") or "3"
 #This is both Kubernetes cluster name and SQL Big Data cluster name
 CLUSTER_NAME=input("Provide name of AKS cluster and SQL big data cluster - Press ENTER for using  `sqlbigdata`:") or "sqlbigdata"
