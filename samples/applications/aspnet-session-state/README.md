@@ -60,6 +60,6 @@ The code included in this sample is not intended to be a set of best practices o
 For more information, see these articles:
 
 - [In-Memory OLTP (In-Memory Optimization)](https://msdn.microsoft.com/en-us/library/dn133186.aspx)
-- [OLTP and database management](https://www.microsoft.com/en-us/server-cloud/solutions/oltp-database-management.aspx)
+- [OLTP and database management](https://www.microsoft.com/en-us/sql-server/oltp-database-management)
 - [Session State Provider](https://msdn.microsoft.com/en-us/library/aa478952.aspx)
 - [Implementing a Session-State Store Provider](https://msdn.microsoft.com/en-us/library/ms178587.aspx)

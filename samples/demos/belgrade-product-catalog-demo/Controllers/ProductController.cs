@@ -37,11 +37,11 @@ namespace ProductCatalog.Controllers
                         this.Response.StatusCode = 500;
                         throw ex;
                     })
-                .Stream(@"
+                .Sql(@"
             select  ProductID, Name, Color, Price, Quantity,
                     JSON_VALUE(Data, '$.MadeIn') as MadeIn, JSON_QUERY(Tags) as Tags
             from Product
-            FOR JSON PATH, ROOT('data')", Response.Body, EMPTY_PRODUCTS_ARRAY);
+            FOR JSON PATH, ROOT('data')").Stream(Response.Body);
         }
 
         // GET api/Product/compressed
@@ -50,29 +50,28 @@ namespace ProductCatalog.Controllers
         {
             Response.Headers.Add("Content-Type", "application/json;charset=utf-16");
             Response.Headers.Add("Content-Encoding", "gzip");
-            await sqlQuery.Stream(@"
+            await sqlQuery.Sql(@"
 select COMPRESS(
            (select  ProductID, Name, Color, Price, Quantity,
                     JSON_VALUE(Data, '$.MadeIn') as MadeIn, JSON_QUERY(Tags) as Tags
             from Product
             FOR JSON PATH, ROOT('data') )
-)", Response.Body, EMPTY_PRODUCTS_ARRAY_GZIPPED);
+)").Stream(Response.Body, EMPTY_PRODUCTS_ARRAY_GZIPPED);
         }
 
         // GET api/Product/5
         [HttpGet("{id}")]
         public async Task Get(int id)
         {
-            var cmd = new SqlCommand(
+            await sqlQuery.Sql(
 @"select    ProductID, Product.Name, Color, Price, Quantity,
             Company.Name as Company, Company.Address, Company.Email, Company.Phone 
 from Product
     join Company on Product.CompanyID = Company.CompanyID
 where ProductID = @id
-FOR JSON PATH, WITHOUT_ARRAY_WRAPPER");
-
-            cmd.Parameters.AddWithValue("id", id);
-            await sqlQuery.Stream(cmd, Response.Body, "{}");
+FOR JSON PATH, WITHOUT_ARRAY_WRAPPER")
+                .Param("id", id)
+                .Stream(Response.Body, "{}");
         }
 
         // POST api/Product
@@ -80,9 +79,10 @@ FOR JSON PATH, WITHOUT_ARRAY_WRAPPER");
         public async Task Post()
         {
             string product = new StreamReader(Request.Body).ReadToEnd();
-            var cmd = new SqlCommand("EXEC InsertProductFromJson @ProductJson");
-            cmd.Parameters.AddWithValue("ProductJson", product);
-            await sqlCmd.ExecuteNonQuery(cmd);
+            await sqlCmd
+                    .Sql("EXEC InsertProductFromJson @ProductJson")
+                    .Param("ProductJson", product)
+                    .Exec();
         }
 
         // PUT api/Product/5
@@ -90,19 +90,20 @@ FOR JSON PATH, WITHOUT_ARRAY_WRAPPER");
         public async Task Put(int id)
         {
             string product = new StreamReader(Request.Body).ReadToEnd();
-            var cmd = new SqlCommand("EXEC UpdateProductFromJson @ProductID, @ProductJson");
-            cmd.Parameters.AddWithValue("ProductID", id);
-            cmd.Parameters.AddWithValue("ProductJson", product);
-            await sqlCmd.ExecuteNonQuery(cmd);
+            await sqlCmd
+                .Sql("EXEC UpdateProductFromJson @ProductID, @ProductJson")
+                .Param("ProductID", id)
+                .Param("ProductJson", product)
+                .Exec();
         }
 
         // DELETE api/Product/5
         [HttpDelete("{id}")]
         public async Task Delete(int id)
         {
-            var cmd = new SqlCommand(@"delete Product where ProductID = @id");
-            cmd.Parameters.AddWithValue("id", id);
-            await sqlCmd.ExecuteNonQuery(cmd);
+            await sqlCmd.Sql(@"delete Product where ProductID = @id")
+                        .Param("id", id)
+                        .Exec();
         }
 
         [HttpGet("temporal")]
@@ -110,23 +111,23 @@ FOR JSON PATH, WITHOUT_ARRAY_WRAPPER");
         public async Task Get(DateTime? date)
         {
             if (date == null)
-                await this.sqlQuery.Stream("EXEC GetProducts", this.Response.Body, EMPTY_PRODUCTS_ARRAY);
+                await this.sqlQuery
+                    .Sql("EXEC GetProducts")
+                    .Stream(this.Response.Body, EMPTY_PRODUCTS_ARRAY);
             else
-            {
-                var cmd = new SqlCommand("EXEC GetProductsAsOf @date");
-                cmd.Parameters.AddWithValue("@date", date);
-                await this.sqlQuery.Stream(cmd, this.Response.Body, EMPTY_PRODUCTS_ARRAY);
-            }
+                await this.sqlQuery.Sql("EXEC GetProductsAsOf @date")
+                    .Param("date", date)
+                    .Stream(this.Response.Body, EMPTY_PRODUCTS_ARRAY);
         }
 
         [HttpGet("restore")]
         [Produces("application/json")]
         public void RestoreVersion(int ProductId, DateTime DateModified)
         {
-            var cmd = new SqlCommand("EXEC RestoreProduct @productid, @date");
-            cmd.Parameters.AddWithValue("@productid", ProductId);
-            cmd.Parameters.AddWithValue("@date", DateModified);
             this.sqlCmd
+                .Sql("EXEC RestoreProduct @productid, @date")
+                .Param("productid", ProductId)
+                .Param("date", DateModified)
                 .OnError(
                     ex =>
                     {
@@ -134,7 +135,7 @@ FOR JSON PATH, WITHOUT_ARRAY_WRAPPER");
                         this.Response.StatusCode = 500;
                         throw ex;
                     })
-                .ExecuteNonQuery(cmd);
+                .Exec();
         }
 
 
@@ -143,12 +144,13 @@ FOR JSON PATH, WITHOUT_ARRAY_WRAPPER");
         public async Task Report1()
         {
             await sqlQuery
-                .Stream(@"
+                .Sql(@"
 select color as x, sum(quantity) as y
 from product
 where color is not null
 group by color
-for json path", Response.Body, EMPTY_PRODUCTS_ARRAY);
+for json path")
+                .Stream(Response.Body, EMPTY_PRODUCTS_ARRAY);
         }
 
 
@@ -157,7 +159,7 @@ for json path", Response.Body, EMPTY_PRODUCTS_ARRAY);
         public async Task Report2()
         {
             await sqlQuery
-                .Stream(@"
+                .Sql(@"
 select name as [key], [values].x, [values].y
 	from company
 		join (select companyid, color as x, sum(quantity) as y
@@ -166,7 +168,8 @@ select name as [key], [values].x, [values].y
 				group by companyid, color
 				) as [values] on company.companyid = [values].companyid
 order by company.companyid
-for json auto", Response.Body, EMPTY_PRODUCTS_ARRAY);
+for json auto")
+            .Stream(Response.Body, EMPTY_PRODUCTS_ARRAY);
         }
     }
 }

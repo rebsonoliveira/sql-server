@@ -1,12 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp1.0;net46</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.1;net46</TargetFrameworks>
     <PreserveCompilationContext>true</PreserveCompilationContext>
     <AssemblyName>dotnet-tour-of-heroes</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>dotnet-tour-of-heroes</PackageId>
-    <RuntimeFrameworkVersion Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">1.0.4</RuntimeFrameworkVersion>
   </PropertyGroup>
 
   <ItemGroup>

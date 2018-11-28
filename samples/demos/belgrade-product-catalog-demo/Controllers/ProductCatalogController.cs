@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using ProductCatalog.Models;
 using System;
 using System.Collections.Generic;
@@ -9,9 +10,11 @@ namespace ProductCatalog.Controllers
     public class ProductCatalogController : Controller
     {
         private ProductCatalogContext _context;
-
-        public ProductCatalogController (ProductCatalogContext context)
+        private readonly ILogger<ProductCatalogController> _logger;
+        
+        public ProductCatalogController (ProductCatalogContext context, ILogger<ProductCatalogController> logger)
         {
+            _logger = logger;
             _context = context;
         }
 
