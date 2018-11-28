@@ -1,5 +1,5 @@
 -- =============================================
--- Create database on mulitple filegroups
+-- Create database on multiple filegroups
 -- =============================================
 IF EXISTS (
   SELECT * 

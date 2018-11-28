@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var http_1 = require("@angular/http");
-var HeroSearchService = (function () {
+var HeroSearchService = /** @class */ (function () {
     function HeroSearchService(http) {
         this.http = http;
     }
@@ -20,11 +20,11 @@ var HeroSearchService = (function () {
             .get("app/heroes/?name=" + term)
             .map(function (r) { return r.json(); });
     };
+    HeroSearchService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [http_1.Http])
+    ], HeroSearchService);
     return HeroSearchService;
 }());
-HeroSearchService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [http_1.Http])
-], HeroSearchService);
 exports.HeroSearchService = HeroSearchService;
 //# sourceMappingURL=hero-search.service.js.map

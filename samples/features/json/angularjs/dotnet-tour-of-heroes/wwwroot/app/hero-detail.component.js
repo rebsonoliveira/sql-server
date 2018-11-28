@@ -13,7 +13,7 @@ var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var hero_1 = require("./hero");
 var hero_service_1 = require("./hero.service");
-var HeroDetailComponent = (function () {
+var HeroDetailComponent = /** @class */ (function () {
     function HeroDetailComponent(heroService, route) {
         this.heroService = heroService;
         this.route = route;
@@ -52,25 +52,25 @@ var HeroDetailComponent = (function () {
             window.history.back();
         }
     };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", hero_1.Hero)
+    ], HeroDetailComponent.prototype, "hero", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", Object)
+    ], HeroDetailComponent.prototype, "close", void 0);
+    HeroDetailComponent = __decorate([
+        core_1.Component({
+            moduleId: module.id,
+            selector: 'my-hero-detail',
+            templateUrl: 'hero-detail.component.html',
+            styleUrls: ['hero-detail.component.css']
+        }),
+        __metadata("design:paramtypes", [hero_service_1.HeroService,
+            router_1.ActivatedRoute])
+    ], HeroDetailComponent);
     return HeroDetailComponent;
 }());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", hero_1.Hero)
-], HeroDetailComponent.prototype, "hero", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", Object)
-], HeroDetailComponent.prototype, "close", void 0);
-HeroDetailComponent = __decorate([
-    core_1.Component({
-        moduleId: module.id,
-        selector: 'my-hero-detail',
-        templateUrl: 'hero-detail.component.html',
-        styleUrls: ['hero-detail.component.css']
-    }),
-    __metadata("design:paramtypes", [hero_service_1.HeroService,
-        router_1.ActivatedRoute])
-], HeroDetailComponent);
 exports.HeroDetailComponent = HeroDetailComponent;
 //# sourceMappingURL=hero-detail.component.js.map
