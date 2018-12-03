@@ -1,6 +1,6 @@
 ﻿CREATE VIEW [WebApi].[SalesOrderLines]
 AS
-SELECT	ol.OrderLineID, ol.OrderID, ol.Description, ol.Quantity, ol.UnitPrice, ol.TaxRate,
+SELECT	ol.OrderLineID, ol.OrderID, ol.Description, ol.Quantity, ol.UnitPrice, ol.TaxRate, ol.PickingCompletedWhen,
 		ProductName = si.StockItemName, si.Brand, si.Size, c.ColorName, pt.PackageTypeName
 FROM	Sales.OrderLines ol
 		INNER JOIN Warehouse.StockItems si

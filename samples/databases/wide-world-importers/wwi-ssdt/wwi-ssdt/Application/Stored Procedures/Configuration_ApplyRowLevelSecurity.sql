@@ -28,7 +28,7 @@ RETURN (SELECT 1 AS AccessResult
                           INNER JOIN [Application].StateProvinces AS sp
                           ON c.StateProvinceID = sp.StateProvinceID
                           WHERE c.CityID = @CityID) + N'' Sales'') <> 0
-	    OR (ORIGINAL_LOGIN() = N''Website''
+	    OR (ORIGINAL_LOGIN() = N''Website'' OR ORIGINAL_LOGIN() = N''WebApi''
 		    AND EXISTS (SELECT 1
 		                FROM [Application].Cities AS c
 				        INNER JOIN [Application].StateProvinces AS sp

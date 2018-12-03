@@ -115,13 +115,10 @@ END
 GO
 DROP TABLE IF EXISTS Logs;
 GO
-CREATE TABLE Logs (
-   Id int IDENTITY PRIMARY KEY,
-   Message nvarchar(max) NULL,
-   MessageTemplate nvarchar(max) NULL,
-   Level nvarchar(128) NULL,
-   TimeStamp datetimeoffset(7) NOT NULL,
-   Exception nvarchar(max) NULL,
-   Properties xml NULL,
-   LogEvent nvarchar(max) NULL
-);
+
+CREATE TABLE Logs( 
+	[Message] NVARCHAR(4000) NOT NULL,
+	[Level] VARCHAR(16) NOT NULL,
+	[EventTime] DATETIME2 (7) NOT NULL,
+	[LogEvent] NVARCHAR(max) NULL
+) 
