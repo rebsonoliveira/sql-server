@@ -17,7 +17,7 @@ Using this sample Python script, you will deploy a Kubernetes cluster in Azure u
         ```
     - Install mssqlctl CLI latest version using . Run the command below using elevated priviledges (sudo or admin cmd window):
         ```
-        pip3 install --index-url https://private-repo.microsoft.com/python/ctp-2.0 mssqlctl
+        pip3 install --extra-index-url https://private-repo.microsoft.com/python/ctp-2.2 mssqlctl
         ```
 1. Login into your Azure account. Run this command:
 ```
