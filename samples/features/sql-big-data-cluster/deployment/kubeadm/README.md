@@ -55,5 +55,5 @@ To install docker, you can follow the steps below:
 1. Execute [ubuntu/setup-k8s-master.sh](ubuntu/setup-k8s-master.sh/) script on the machine designated as Kubernetes master
 1. After successful initialization of the Kubernetes master, follow the kubeadm join commands output by the setup script on each agent machine
 1. Execute [ubuntu/setup-volumes.sh](ubuntu/setup-volumes.sh/) script on each agent machine to create volumes for local storage
-1. Execute ***kubectl apply -f ubuntu/local-storage-provisioner.yaml*** against the Kubernetes cluster to create the local storage provisioner. You can now use persistent volumes by setting the USE_PERSISTENT_VOLUME environment variable to ***true** and STORAGE_CLASS_NAME environment variable to ***local-storage*** during deployment
+1. Execute ***kubectl apply -f ubuntu/local-storage-provisioner.yaml*** against the Kubernetes cluster to create the local storage provisioner. You can now use persistent volumes by setting the USE_PERSISTENT_VOLUME environment variable to ***true*** and STORAGE_CLASS_NAME environment variable to ***local-storage*** during deployment
 1. Now, you can deploy the SQL Server 2019 big data cluster following instructions [here](https://docs.microsoft.com/en-us/sql/big-data-cluster/deployment-guidance?view=sqlallproducts-allversions)
