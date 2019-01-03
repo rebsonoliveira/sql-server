@@ -1,6 +1,8 @@
 # IoT Smart Grid
 This code sample demonstrates how a SQL Server 2016 (or higher) memory optimized database could be used to ingest a very high input data rate and ultimately help improve the performance of applications with this scenario. The code simulates an IoT Smart Grid scenario where multiple IoT power meters are constantly sending electricity usage measurements to the database.
 
+![Alt text](Screenshots/RowsInserted.png "Windows Forms Data Generator")
+
 ### Contents
 
 [About this sample](#about-this-sample)<br/>
@@ -18,7 +20,6 @@ This code sample demonstrates how a SQL Server 2016 (or higher) memory optimized
 2. **Key features:**
 	- Memory Optimized Tables and Table valued Parameters (TVPs)
 	- Natively Compiled Stored Procedures
-	- System-Versioned Temporal Tables
 	- Clustered Columnstore Index (CCI)
 	- Power BI
 3. **Workload:** Data Ingestion for IoT
@@ -54,20 +55,25 @@ To run this sample, you need the following prerequisites.
 
 5. Modify the **App.config Settings** (located in the **Solution Items** solution folder)
 
-	By accepting the default values for the following settings you should be able to see a data generated spike every 35 seconds with a 4 second duration. If you want to produce a continuous high data volume workload you should set the **commandDelay to 0** and adjust the **numberOfTasks** and **batchSize** according to the hardware specifications of your environment.
+	You might want to adjust the configuration settings according to the hardware specifications of your environment.
 
 	- **Db**:  SQL Server connectionString. Currently it is configured to connect to the local default SQL Server Instance using Integrated Security.
 	- **insertSPName**: The name of the Natively Compiled Stored Procedure that inserted the sample data. (Default Value: InsertMeterMeasurement)
-	- **numberOfTasks**: The number of Asynchronous Tasks the Data Generator uses. (Default Value: 50)    
-	- **numberOfMeters**: The number of IoT Power Meters to be used. (Default Value: 1000000)
-	- **batchSize**: The sample data batch size.(Default Value: 1000)    
-	- **commandDelay**: The delay between sql calls. Note that during a data generated spike the app changes this to 0. (Default Value: 1500ms)
+	- **deleteSPName**: The name of the Stored Procedure that offloads historical data to a columnstore index (Default Value: InsertMeterMeasurementHistory)
+	- **numberOfDataLoadTasks**: The number of Asynchronous Tasks the Data Generator uses.  
+	- **numberOfOffLoadTasks**:  The number of Asynchronous Tasks the Data Generator uses.  
+	- **numberOfMeters**: The number of IoT Power Meters to be used.
+	- **batchSize**: The sample data batch size.  
+	- **dataLoadCommandDelay**: The delay between sql calls.
+	- **offLoadCommandDelay**: The delay between offload calls.
+	- **deleteBatchSize**: Delete Batch size
 	- **enableShock**: Flag that turns on/off the data shock. This should be set to 0 for max high volume workload   
-	- **commandTimeout**: SQL Command Timeout(Default Value: 600)    
-	- **shockFrequency**: How often to generate a data spike. (Default Value: 35000ms)    
-	- **shockDuration**: The duration of the data spike. (Default Value: 4000ms)    
+	- **commandTimeout**: SQL Command Timeout   
 	- **rpsFrequency**: The polling frequency for Rows per Second. (Default Value: 2000ms)    
+	- **delayStart**: Delay Graph Interval
 	- **logFileName**: Log File Name. (Default Value: log.txt)    
+	- **appRunDuration**: Run App duration time
+	- **numberOfRowsOfloadLimit**: Number Of Rows Ofload Limit
 	- **powerBIDesktopPath**: The local path to the PBIDesktop.exe. (Default Value: C:\Program Files\Microsoft Power BI Desktop\bin\PBIDesktop.exe)
 
 6. Publish the Database
@@ -97,9 +103,8 @@ To run this sample, you need the following prerequisites.
 
 **High Level Description**
 
-This code sample simulates an IoT Smart Grid scenario where multiple IoT power meters are sending electricity usage measurements to a SQL Server memory optimized database. The Data Generator, that can be started either from the Console or the Windows Form client, produces a data generated spike to simulate a [shock absorber scenario] (https://blogs.technet.microsoft.com/dataplatforminsider/2013/09/19/in-memory-oltp-common-design-pattern-high-data-input-rateshock-absorber/). Every async task in the Data Generator produces a batch of records with random values in order to simulate the data of an IoT power meter. It then calls a natively compiled stored procedure, that accepts an memory optimized table valued parameter (TVP), to insert the data into an memory optimized SQL Server table. In addition to the in-memory features, the sample is leveraging [System-Versioned Temporal Tables](https://msdn.microsoft.com/en-us/library/dn935015.aspx) for building version history, [Clustered Columnstore Index](https://msdn.microsoft.com/en-us/library/dn817827.aspx) for enabling real time operational analytics, and [Power BI](https://powerbi.microsoft.com/en-us/desktop/) for data visualization.
+This code sample simulates an IoT Smart Grid scenario where multiple IoT power meters are sending electricity usage measurements to a SQL Server memory optimized database. The Data Generator can be started either from the Console or the Windows Form client. Every async task in the Data Generator produces a batch of records with random values in order to simulate the data of an IoT power meter. It then calls a natively compiled stored procedure, that accepts an memory optimized table valued parameter (TVP), to insert the data into an memory optimized SQL Server table. In addition to the in-memory features, the sample is leveraging [Clustered Columnstore Index](https://msdn.microsoft.com/en-us/library/dn817827.aspx) for enabling real time operational analytics, and [Power BI](https://powerbi.microsoft.com/en-us/desktop/) for data visualization.
 
-![Alt text](Screenshots/WinFormsClient.png "Windows Forms Data Generator")
 ![Alt text](Screenshots/ConsoleClient.png "Console Data Generator")
 ![Alt text](Screenshots/PowerBIDashboard.png "Power BI Dashboard")
 
@@ -123,6 +128,5 @@ The code included in this sample is not intended to be a set of best practices o
 For more information, see these articles:
 - [In-Memory OLTP (In-Memory Optimization)] (https://msdn.microsoft.com/en-us/library/dn133186.aspx)
 - [OLTP and database management] (https://www.microsoft.com/en-us/server-cloud/solutions/oltp-database-management.aspx)
-- [SQL Server 2016 Temporal Tables] (https://msdn.microsoft.com/en-us/library/dn935015.aspx)
 - [In-Memory OLTP Common Design Pattern – High Data Input Rate/Shock Absorber] (https://blogs.technet.microsoft.com/dataplatforminsider/2013/09/19/in-memory-oltp-common-design-pattern-high-data-input-rateshock-absorber/)
 - [Power BI Download] (https://powerbi.microsoft.com/en-us/desktop/)

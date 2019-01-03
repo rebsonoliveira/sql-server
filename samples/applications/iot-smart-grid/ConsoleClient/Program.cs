@@ -36,8 +36,7 @@ The Data Generator, that can be started either from the Console or the Windows F
 shock absorber scenario: https://blogs.technet.microsoft.com/dataplatforminsider/2013/09/19/in-memory-oltp-common-design-pattern-high-data-input-rateshock-absorber/. 
 Every async task in the Data Generator produces a batch of records with random values in order to simulate the data of an IoT power meter. 
 It then calls a natively compiled stored procedure, that accepts an memory optimized table valued parameter (TVP), to insert the data into an memory optimized SQL Server table. 
-In addition to the in-memory features, the sample is leveraging System-Versioned Temporal Tables: https://msdn.microsoft.com/en-us/library/dn935015.aspx for building version history, 
-Clustered Columnstore Index: https://msdn.microsoft.com/en-us/library/dn817827.aspx) for enabling real time operational analytics, and 
+In addition to the in-memory features, the sample is offloading historical values to a Clustered Columnstore Index: https://msdn.microsoft.com/en-us/library/dn817827.aspx) for enabling real time operational analytics, and 
 Power BI: https://powerbi.microsoft.com/en-us/desktop/ for data visualization. 
 */
 namespace ConsoleClient
@@ -45,31 +44,31 @@ namespace ConsoleClient
     class Program
     {
         static SqlDataGenerator dataGenerator;
-        static string connection;
+        static string[] connection;
         static string spName;
         static string logFileName;
         static string powerBIDesktopPath;
-        static int tasks;
         static int meters;
         static int batchSize;
-        static int delay;
         static int commandTimeout;
-        static int shockFrequency;
-        static int shockDuration;
-        static int rpsFrequency;
-        static int enableShock;
-        static Timer mainTimer = new Timer();
+        static int rpsFrequency;    
+        static int numberOfDataLoadTasks;
+        static int numberOfOffLoadTasks;
+        static int deleteBatchSize;
+        static string deleteSPName;
+        static int dataLoadCommandDelay;
+        static int offLoadCommandDelay;
+        static int delayStart;
+        static int appRunDuration;
+        static int numberOfRowsOfloadLimit;
         static Timer rpsTimer = new Timer();
-        static Timer shockTimer = new Timer();
 
         static void Main(string[] args)
         {
             Init();
-            dataGenerator = new SqlDataGenerator(connection, spName, commandTimeout, meters, tasks, delay, batchSize, ExceptionCallback);
-
-            mainTimer.Elapsed += mainTimer_Tick;
+            dataGenerator = new SqlDataGenerator(connection, spName, commandTimeout, meters, numberOfDataLoadTasks, dataLoadCommandDelay, batchSize, deleteSPName, numberOfOffLoadTasks, offLoadCommandDelay, deleteBatchSize, numberOfRowsOfloadLimit, ExceptionCallback);
             rpsTimer.Elapsed += rpsTimer_Tick;
-            shockTimer.Elapsed += shockTimer_Tick;
+
 
             string commandString = string.Empty;
             Console.ForegroundColor = ConsoleColor.White;
@@ -129,9 +128,7 @@ namespace ConsoleClient
             {
                 if (!dataGenerator.IsRunning)
                 {
-                    if(enableShock == 1) mainTimer.Start();
                     rpsTimer.Start();
-
                     await dataGenerator.RunAsync();
                 }
             }
@@ -144,10 +141,7 @@ namespace ConsoleClient
             {
                 if (dataGenerator.IsRunning)
                 {
-                    if (enableShock == 1) mainTimer.Stop();
                     rpsTimer.Stop();
-                    if (enableShock == 1) shockTimer.Stop();
-
                     await dataGenerator.StopAsync();
                     dataGenerator.RpsReset();
                 }
@@ -177,46 +171,46 @@ namespace ConsoleClient
         {
             try
             {
+                int numberOfSqlConnections = ConfigurationManager.ConnectionStrings.Count;
+                connection = new string[numberOfSqlConnections];
                 // Read Config Settings
-                connection = ConfigurationManager.ConnectionStrings["Db"].ConnectionString;
+                for (int i = 0; i < numberOfSqlConnections; i++)
+                {
+                    connection[i] = ConfigurationManager.ConnectionStrings[i].ConnectionString;
+                }
+
                 spName = ConfigurationManager.AppSettings["insertSPName"];
                 logFileName = ConfigurationManager.AppSettings["logFileName"];
-                powerBIDesktopPath = ConfigurationManager.AppSettings["powerBIDesktopPath"];
-                tasks = int.Parse(ConfigurationManager.AppSettings["numberOfTasks"]);
-                meters = int.Parse(ConfigurationManager.AppSettings["numberOfMeters"]);
+                numberOfDataLoadTasks = int.Parse(ConfigurationManager.AppSettings["numberOfDataLoadTasks"]);
+                dataLoadCommandDelay = int.Parse(ConfigurationManager.AppSettings["dataLoadCommandDelay"]);
                 batchSize = int.Parse(ConfigurationManager.AppSettings["batchSize"]);
-                delay = int.Parse(ConfigurationManager.AppSettings["commandDelay"]);
+                deleteSPName = ConfigurationManager.AppSettings["deleteSPName"];
+                numberOfOffLoadTasks = int.Parse(ConfigurationManager.AppSettings["numberOfOffLoadTasks"]);
+                offLoadCommandDelay = int.Parse(ConfigurationManager.AppSettings["offLoadCommandDelay"]);
+                deleteBatchSize = int.Parse(ConfigurationManager.AppSettings["deleteBatchSize"]);
+                meters = int.Parse(ConfigurationManager.AppSettings["numberOfMeters"]);
                 commandTimeout = int.Parse(ConfigurationManager.AppSettings["commandTimeout"]);
-                shockFrequency = int.Parse(ConfigurationManager.AppSettings["shockFrequency"]);
-                shockDuration = int.Parse(ConfigurationManager.AppSettings["shockDuration"]);
-                enableShock = int.Parse(ConfigurationManager.AppSettings["enableShock"]);
-
+                delayStart = int.Parse(ConfigurationManager.AppSettings["delayStart"]);
+                appRunDuration = int.Parse(ConfigurationManager.AppSettings["appRunDuration"]);
                 rpsFrequency = int.Parse(ConfigurationManager.AppSettings["rpsFrequency"]);
+                numberOfRowsOfloadLimit = int.Parse(ConfigurationManager.AppSettings["numberOfRowsOfloadLimit"]);
+                powerBIDesktopPath = ConfigurationManager.AppSettings["powerBIDesktopPath"];
 
                 // Initialize Timers
-                mainTimer.Interval = shockFrequency;
-                shockTimer.Interval = shockDuration;
                 rpsTimer.Interval = rpsFrequency;
                 
                 if (batchSize <= 0) throw new SqlDataGeneratorException("The Batch Size cannot be less or equal to zero.");
 
-                if (tasks <= 0) throw new SqlDataGeneratorException("Number Of Tasks cannot be less or equal to zero.");
+                if (numberOfDataLoadTasks <= 0) throw new SqlDataGeneratorException("Number Of Tasks cannot be less or equal to zero.");
 
-                if (delay < 0) throw new SqlDataGeneratorException("Delay cannot be less than zero");
+                if (dataLoadCommandDelay < 0) throw new SqlDataGeneratorException("Delay cannot be less than zero");
 
                 if (meters <= 0) throw new SqlDataGeneratorException("Number Of Meters cannot be less than zero");
 
-                if (meters < batchSize * tasks) throw new SqlDataGeneratorException("Number Of Meters cannot be less than (Tasks * BatchSize).");
+                if (meters < batchSize * numberOfDataLoadTasks) throw new SqlDataGeneratorException("Number Of Meters cannot be less than (Tasks * BatchSize).");
+
             }
             catch (Exception exception) { HandleException(exception); }
-        }
-        static void mainTimer_Tick(object sender, ElapsedEventArgs e)
-        {
-            if (dataGenerator.IsRunning)
-            {
-                dataGenerator.Delay = 0;
-                shockTimer.Start();
-            }
         }
         static void rpsTimer_Tick(object sender, ElapsedEventArgs e)
         {
@@ -235,12 +229,6 @@ namespace ConsoleClient
                 }
             }
             catch (Exception exception) { HandleException(exception); }
-        }
-        static void shockTimer_Tick(object sender, ElapsedEventArgs e)
-        {
-            Random rand = new Random();
-            dataGenerator.Delay = rand.Next(1500, 3000);
-            shockTimer.Stop();
         }
     }
 }

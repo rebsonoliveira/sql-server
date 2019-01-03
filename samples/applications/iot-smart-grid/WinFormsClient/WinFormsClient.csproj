@@ -71,9 +71,7 @@
     </Compile>
     <None Include="..\App.config">
       <Link>App.config</Link>
-    </None>
-    <None Include="..\PowerDashboard.pbix">
-      <Link>Reports\PowerDashboard.pbix</Link>
+      <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Properties\Settings.settings">
@@ -89,8 +87,14 @@
   <ItemGroup>
     <ProjectReference Include="..\DataGenerator\DataGenerator.csproj">
       <Project>{d871b062-06a7-49e3-8bcd-8465b772fc52}</Project>
-      <Name>DataGenerator</Name>
+      <Name>EventMonitoring</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\setup-or-reset-demo.sql">
+      <Link>setup-or-reset-demo.sql</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

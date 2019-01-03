@@ -4,7 +4,7 @@ var TYPES = require('tedious').TYPES;
 /* GET task listing. */
 router.get('/', function (req, res) {
 
-    req.query("select * from todo for json path")
+    req.sql("select * from todo for json path")
         .into(res, '[]');
 
 });
@@ -12,7 +12,7 @@ router.get('/', function (req, res) {
 /* GET single task. */
 router.get('/:id', function (req, res) {
     
-    req.query("select * from todo where id = @id for json path, without_array_wrapper")
+    req.sql("select * from todo where id = @id for json path, without_array_wrapper")
         .param('id', req.params.id, TYPES.Int)
         .into(res, '{}');
 
@@ -21,7 +21,7 @@ router.get('/:id', function (req, res) {
 /* POST create task. */
 router.post('/', function (req, res) {
     
-    req.query("exec createTodo @todo")
+    req.sql("exec createTodo @todo")
         .param('todo', req.body, TYPES.NVarChar)
         .exec(res);
 
@@ -30,7 +30,7 @@ router.post('/', function (req, res) {
 /* PUT update task. */
 router.put('/:id', function (req, res) {
     
-    req.query("exec updateTodo @id, @todo")
+    req.sql("exec updateTodo @id, @todo")
         .param('id', req.params.id, TYPES.Int)
         .param('todo', req.body, TYPES.NVarChar)
         .exec(res);
@@ -40,7 +40,7 @@ router.put('/:id', function (req, res) {
 /* DELETE single task. */
 router.delete('/:id', function (req, res) {
     
-    req.query("delete from todo where id = @id")
+    req.sql("delete from todo where id = @id")
         .param('id', req.params.id, TYPES.Int)
         .exec(res);
 

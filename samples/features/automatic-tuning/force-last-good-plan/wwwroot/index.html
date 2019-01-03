@@ -37,16 +37,6 @@
         <div class="col-md-4">
             <h1>Automatic tuning</h1>
         </div>
-        <div class="col-md-3 hidden">
-            <div class="btn-group pull-right align-bottom" data-toggle="buttons">
-                <label class="btn btn-default">
-                    <input type="radio" name="options" id="off" autocomplete="off"> OFF
-                </label>
-                <label class="btn btn-default active">
-                    <input type="radio" name="options" id="on" autocomplete="off" checked> ON
-                </label>
-            </div>
-        </div>
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -68,6 +58,16 @@ WHERE PackageTypeID = @packagetypeid;</pre>
 ALTER DATABASE current
 SET AUTOMATIC_TUNING ( FORCE_LAST_GOOD_PLAN = ON);</pre>
         </div>
+        <div class="col-md-6">
+            <div class="btn-group pull-right align-bottom" data-toggle="buttons">
+                <label class="btn btn-default active">
+                    <input type="radio" name="options" id="off" autocomplete="off" checked> OFF
+                </label>
+                <label class="btn btn-default">
+                    <input type="radio" name="options" id="on" autocomplete="off"> ON
+                </label>
+            </div>
+        </div>
     </div>
         <script src="media/d3.v3.min.js"></script>
         <script src="media/viz.v1.0.0.min.js"></script>
@@ -76,17 +76,25 @@ SET AUTOMATIC_TUNING ( FORCE_LAST_GOOD_PLAN = ON);</pre>
         <script src="media/GraphVizGauge.js"></script>
         <script src="/api/demo/init"></script>
         <script>
-            var gauge = new GraphVizGauge("svg", { to: 250 });
+            var gauge = new GraphVizGauge("svg", { to: 100 });
             var perfData = [];
             setInterval(function () {
                 $.ajax({
                     url: "/api/demo",
                     success: function (result) {
+                        if (result.y == 0) {
+                            console.log("No response");
+                            return;
+                        }
                         (perfData.length == 10) && perfData.shift();
-                        perfData.push(result.y);
+                        if(result.y>0)
+                            perfData.push(result.y);
+                        console.log(perfData);
                         var total = 0;
-                        for (i=0; i<perfData.length; i++) { total += perfData[i]; }
-                        var perf = Math.round(10000 / (total / 10.0)) / 10.0;
+                        for (i = 0; i < perfData.length; i++) { total += perfData[i]; }
+                        var avgDurationMS = total / perfData.length;
+                        var perf = Math.round(1000 / (avgDurationMS));
+                        console.log(perf);
                         gauge.Data(perf);
                         $("#speed").text(perf);
                     }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data.Entity;
 
 namespace SqlServerEFSample
@@ -7,7 +7,7 @@ namespace SqlServerEFSample
     {
         public EFSampleContext(string connectionString)
         {
-            Database.SetInitializer(new DropCreateDatabaseAlways<EFSampleContext>());
+            Database.SetInitializer<EFSampleContext>(new DropCreateDatabaseAlways<EFSampleContext>());
             this.Database.Connection.ConnectionString = connectionString;
         }
         public DbSet<User> Users { get; set; }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Dapper;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,6 +26,10 @@ namespace ProductCatalog
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Map sting[] and object properties in model to JSON column in database.
+            SqlMapper.AddTypeHandler(typeof(string[]), new StringArrayJsonMapper());
+            SqlMapper.AddTypeHandler(typeof(object), new ObjectJsonMapper());
+
             string ConnString = Configuration["ConnectionStrings:ProductCatalog"];
             services.AddTransient<IDbConnection>(_ => new SqlConnection(ConnString));
 

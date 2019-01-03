@@ -22,7 +22,7 @@ namespace ProductCatalog.Controllers
         [HttpGet]
         public async Task Get()
         {
-            await sqlQuery.Stream("select CompanyID as [value], Name as [text] from Company FOR JSON PATH", Response.Body);
+            await sqlQuery.Sql("select CompanyID as [value], Name as [text] from Company FOR JSON PATH").Stream(Response.Body);
         }
 
         [HttpGet("login")]
