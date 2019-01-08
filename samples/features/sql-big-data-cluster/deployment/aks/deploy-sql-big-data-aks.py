@@ -81,7 +81,7 @@ executeCmd (command)
 print("")
 print("SQL Server big data cluster connection endpoints: ")
 print("SQL Server master instance:")
-command="kubectl get service service-master-pool-lb -o=custom-columns=""IP:.status.loadBalancer.ingress[0].ip,PORT:.spec.ports[0].port"" -n "+CLUSTER_NAME
+command="kubectl get service endpoint-master-pool -o=custom-columns=""IP:.status.loadBalancer.ingress[0].ip,PORT:.spec.ports[0].port"" -n "+CLUSTER_NAME
 executeCmd(command)
 print("")
 print("HDFS/KNOX:")
