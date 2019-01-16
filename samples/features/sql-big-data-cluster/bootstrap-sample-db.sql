@@ -70,3 +70,14 @@ AS
 	INNER JOIN customer as c ON q.wcs_user_sk = c.c_customer_sk
 	INNER JOIN customer_demographics as cd ON c.c_current_cdemo_sk = cd.cd_demo_sk;
 GO
+
+-- Create table for storing the ML models
+DROP TABLE IF EXISTS sales_models;
+CREATE TABLE sales_models (
+	model_name varchar(100) PRIMARY KEY,
+	model varbinary(max) NOT NULL,
+	model_native varbinary(max) NULL,
+	created_by nvarchar(500) NOT NULL DEFAULT(SYSTEM_USER),
+	create_time datetime2 NOT NULL DEFAULT(SYSDATETIME())
+);
+GO
