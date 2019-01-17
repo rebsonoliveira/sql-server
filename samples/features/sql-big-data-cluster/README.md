@@ -1,23 +1,10 @@
 # SQL Server big data clusters
 
-## Pre-requisites
-1. Kubernetes cluster configuration & Kubectl command-line utility
-2. Curl utility
-3. Sqlcmd and bcp utility (Installation instructions [here for Linux](https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-setup-tools?view=sql-server-ver15) and [here for Windows](https://www.microsoft.com/en-us/download/details.aspx?id=53591))
-4. Azure Data Studio or SQL Server Management Studio
-5. SQL Server 2019 big data cluster
-
-Installation instructions for SQL Server 2019 big data cluster can be found [here](https://docs.microsoft.com/en-us/sql/big-data-cluster/deployment-guidance?view=sql-server-2017).
+Installation instructions for SQL Server 2019 big data clusters can be found [here](https://docs.microsoft.com/en-us/sql/big-data-cluster/deployment-guidance?view=sql-server-ver15).
 
 ## Samples Setup
 
-**Before you begin**, run the CMD script called [bootstrap-sample-db.cmd](bootstrap-sample-db.cmd) or the shell script [bootstrap-sample-db.sh](bootstrap-sample-db.sh) depending on your platform. This script does the following operations:
-
-1. Downloads the tpcx-bb 1GB sample database
-1. Restores the database on the SQL Master instance
-1. Executes the bootstrap-sample-db.SQL script
-1. Exports the web_clickstreams, inventory, customer & product_reviews tables to files
-1. Uploads the web_clickstreams CSV file to the HDFS inside the SQL Server 2019 big data cluster
+**Before you begin**, load the sample data into your big data cluster. For instructions, see https://docs.microsoft.com/en-us/sql/big-data-cluster/tutorial-load-sample-data.
 
 __[data-pool](data-pool/)__
 
