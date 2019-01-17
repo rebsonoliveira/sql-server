@@ -6,7 +6,7 @@ Installation instructions for SQL Server 2019 big data clusters can be found [he
 
 **Before you begin**, load the sample data into your big data cluster. For instructions, see [Load sample data into a SQL Server 2019 big data cluster](https://docs.microsoft.com/en-us/sql/big-data-cluster/tutorial-load-sample-data).
 
-__[data-pool](data-pool/)__
+## __[data-pool](data-pool/)__
 
 SQL Server 2019 big data cluster contains a data pool which consists of many SQL Server instances to store data & query in a scale-out manner.
 
@@ -16,7 +16,7 @@ The sample script [data-pool/data-ingestion-spark.sql](data-pool/data-ingestion-
 ### Data ingestion using sql
 The sample script [data-pool/data-ingestion-sql.sql](data-pool/data-ingestion-sql.sql) shows how to perform data ingestion from T-SQL into data pool table(s).
 
-__[data-virtualization](data-virtualization/)__
+## __[data-virtualization](data-virtualization/)__
 
 SQL Server 2019 or SQL Server 2019 big data cluster can use PolyBase external tables to connect to other data sources.
 
@@ -28,11 +28,11 @@ SQL Server 2019 uses new ODBC connectors to enable connectivity to SQL Server, O
 
 The [data-virtualization/oracle](data-virtualization/oracle) folder contains samples that demonstrate how to query data in Oracle using external tables.
 
-__[deployment](deployment/)__
+## __[deployment](deployment/)__
 
 The [deployment](deployment) folder contains the scripts for deploying a Kubernetes cluster for SQL Server 2019 big data cluster.
 
-__[machine-learning](machine-learning/)__
+## __[machine-learning](machine-learning/)__
 
 SQL Server 2016 added support executing R scripts from T-SQL. SQL Server 2017 added support for executing Python scripts from T-SQL. SQL Server 2019 adds support for executing Java code from T-SQL. SQL Server 2019 big data cluster adds support for executing Spark code inside the big data cluster.
 
