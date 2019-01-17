@@ -4,7 +4,7 @@ Installation instructions for SQL Server 2019 big data clusters can be found [he
 
 ## Samples Setup
 
-**Before you begin**, load the sample data into your big data cluster. For instructions, see https://docs.microsoft.com/en-us/sql/big-data-cluster/tutorial-load-sample-data.
+**Before you begin**, load the sample data into your big data cluster. For instructions, see [Load sample data into a SQL Server 2019 big data cluster](https://docs.microsoft.com/en-us/sql/big-data-cluster/tutorial-load-sample-data).
 
 __[data-pool](data-pool/)__
 
