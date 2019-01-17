@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 set -o pipefail
-STARTUP_PATH=$(dirname $0)
+STARTUP_PATH=$(pwd)
 TMP_DIR_NAME=$(basename $0)
 USAGE_MESSAGE="USAGE: $0 <CLUSTER_NAMESPACE> <SQL_MASTER_IP> <SQL_MASTER_SA_PASSWORD> <KNOX_IP> [<KNOX_PASSWORD>]"
 ERROR_MESSAGE="Bootstrap of the sample database failed. Output and error files are in directory [/tmp/$TMP_DIR_NAME]."
@@ -32,7 +32,7 @@ done
 
 # Copy the backup file, restore the database, create necessary objects and data file
 pushd "/tmp"
-$DEBUG mkdir "$TMP_DIR_NAME"
+$DEBUG mkdir --parents "$TMP_DIR_NAME"
 $DEBUG cd "$TMP_DIR_NAME"
 
 echo Downloading sample database backup file...
@@ -44,7 +44,7 @@ $DEBUG rm tpcxbb_1gb.bak
 
 echo Configuring sample database...
 # WSL ex: "/mnt/c/Program Files/Microsoft SQL Server/Client SDK/ODBC/130/Tools/Binn/SQLCMD.EXE"
-$DEBUG sqlcmd -S $SQL_MASTER_INSTANCE -Usa -P$SQL_MASTER_SA_PASSWORD -i "$STARTUP_PATH\bootstrap-sample-db.sql" -o "bootstrap.out" -I -b || (echo $ERROR_MESSAGE && exit 2)
+$DEBUG sqlcmd -S $SQL_MASTER_INSTANCE -Usa -P$SQL_MASTER_SA_PASSWORD -i "$STARTUP_PATH/bootstrap-sample-db.sql" -o "bootstrap.out" -I -b || (echo $ERROR_MESSAGE && exit 2)
 
 for table in web_clickstreams inventory customer
     do
