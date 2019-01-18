@@ -8,6 +8,7 @@ Using this sample Python script, you will deploy a Kubernetes cluster in Azure u
 
 1. Install latest version of [az cli](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 1. Running the script will require: [python minimum version 3.0](https://www.python.org/downloads)
+1. Install the latest version of [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 1. Ensure you have installed `mssqlctl` CLI and its prerequisites:
     - Install [pip3](https://pip.pypa.io/en/stable/installing/).
     - Install/update requests package. Run the command below using elevated priviledges (sudo or admin cmd window):
