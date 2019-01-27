@@ -53,9 +53,9 @@ To run this sample, you need the following prerequisites.
 
 Steps below show how to deploy pre-build package. Alternatively you could deploy Function App using Visual Studio and source code provided with this sample.
 
-1. Create Function App by following [Create your first function in the Azure portal].(https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-first-azure-function) quickstart
+1. Create Function App by following [Create your first function in the Azure portal](https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-first-azure-function) quickstart
 2. Download [package](./zip-deploy/ManagedInstanceAutomationDemo.zip?raw=true).
-3. Publish package using [Azure CLI](https://docs.microsoft.com/en-us/azure/azure-functions/deployment-zip-push#cli), with [cURL](https://docs.microsoft.com/en-us/azure/azure-functions/deployment-zip-push#with-curl) or with [PowerShell].(https://docs.microsoft.com/en-us/azure/azure-functions/deployment-zip-push#with-powershell)
+3. Publish package using [Azure CLI](https://docs.microsoft.com/en-us/azure/azure-functions/deployment-zip-push#cli), with [cURL](https://docs.microsoft.com/en-us/azure/azure-functions/deployment-zip-push#with-curl) or with [PowerShell](https://docs.microsoft.com/en-us/azure/azure-functions/deployment-zip-push#with-powershell)
 4. Grant access to Function App by following [Grant access](https://docs.microsoft.com/en-us/azure/role-based-access-control/quickstart-assign-role-user-portal#grant-access). For easier selection, choose `Function App` in `Assign access to` dropbox. In some situations this might take up to an hour to propagate.
 5. Add system-assigned identity by following [Adding a system-assigned identity](https://docs.microsoft.com/en-us/azure/app-service/overview-managed-identity?toc=%2fazure%2fazure-functions%2ftoc.json#adding-a-system-assigned-identity) and note generated `Object ID`.
 6. Run PowerShell below to provide Function App required Azure AD permissions.
@@ -66,7 +66,7 @@ Connect-AzureAD
 
 $managedInstanceAutomationObjectId = '<function-app-object-id>'
 
-# Get Azure AD role "Directory Users" and create if it doesn't exist
+# Get Azure AD role "Privileged Role Administrator" and create if it doesn't exist
 $roleName = "Privileged Role Administrator"
 $role = Get-AzureADDirectoryRole | Where-Object {$_.displayName -eq $roleName}
 if ($role -eq $null) {
