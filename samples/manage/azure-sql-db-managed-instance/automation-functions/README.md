@@ -1,4 +1,4 @@
-# Function App that help automate Managed Instance related tasks
+# Function App that helps automate Managed Instance related tasks
 
 ### Contents
 
@@ -23,7 +23,9 @@
 
 This sample shows one approach to Managed Instance management automation using Function App and system-assigned identity.
 
-With system-assigned identity, Function App could be assigned permissions to invoke proper actions in a safe way. Instead of granting excessive permissions to users admins could grant permission to Function App that exposes very restrained set of functionalities through API. Code running on Function App doesn't have any secrets configured or hardcoded. 
+With system-assigned identity, Function App could be assigned permissions to invoke proper actions in a safe way. 
+
+Instead of granting excessive permissions to users, admins could grant required permissions to Function App that exposes very restrained set of functionalities through API. Code running on Function App doesn't have any secrets configured or hardcoded. 
 
 Currently available functions:
 - Assign Azure AD Directory Readers permissions to Managed Instance principal
@@ -42,20 +44,20 @@ To run this sample, you need the following prerequisites.
 
 **Azure prerequisites:**
 
-1. Azure AD Privileged Role Administrator role
-2. Permissions to add principal with Readers permission on any of the following levels Managed Instance, Resource group, Subscription
+1. Azure AD `Privileged Role Administrator` role
+2. Permissions to add `Readers` permission for Function App principal on any of the following resource levels: Managed Instance, Resource group, Subscription
 
 <a name=deploy-configure-this-sample></a>
 
 ## Deploy and configure this sample
 
-Steps below show how to deploy pre-build package, alternatively you could do that using Visual Studio and source code provided with this sample.
+Steps below show how to deploy pre-build package. Alternatively you could deploy Function App using Visual Studio and source code provided with this sample.
 
-1. Create Function App following [Create your first function in the Azure portal](https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-first-azure-function) quickstart
-2. Download [package](./zip-deploy/ManagedInstanceAutomationDemo.zip?raw=true) 
-3. Publish package using [Azure CLI](https://docs.microsoft.com/en-us/azure/azure-functions/deployment-zip-push#cli), with [cURL](https://docs.microsoft.com/en-us/azure/azure-functions/deployment-zip-push#with-curl) or with [PowerShell](https://docs.microsoft.com/en-us/azure/azure-functions/deployment-zip-push#with-powershell)
-4. Grant access to Azure Function following [Grant access](https://docs.microsoft.com/en-us/azure/role-based-access-control/quickstart-assign-role-user-portal#grant-access). Choose `Function App` as option on `Assign access to prompt`
-5. Add system-assigned identity and note generated Object ID following [Adding a system-assigned identity](https://docs.microsoft.com/en-us/azure/app-service/overview-managed-identity?toc=%2fazure%2fazure-functions%2ftoc.json#adding-a-system-assigned-identity)
+1. Create Function App by following [Create your first function in the Azure portal].(https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-first-azure-function) quickstart
+2. Download [package](./zip-deploy/ManagedInstanceAutomationDemo.zip?raw=true).
+3. Publish package using [Azure CLI](https://docs.microsoft.com/en-us/azure/azure-functions/deployment-zip-push#cli), with [cURL](https://docs.microsoft.com/en-us/azure/azure-functions/deployment-zip-push#with-curl) or with [PowerShell].(https://docs.microsoft.com/en-us/azure/azure-functions/deployment-zip-push#with-powershell)
+4. Grant access to Function App by following [Grant access](https://docs.microsoft.com/en-us/azure/role-based-access-control/quickstart-assign-role-user-portal#grant-access). For easier selection, choose `Function App` in `Assign access to` dropbox. In some situations this might take up to an hour to propagate.
+5. Add system-assigned identity by following [Adding a system-assigned identity](https://docs.microsoft.com/en-us/azure/app-service/overview-managed-identity?toc=%2fazure%2fazure-functions%2ftoc.json#adding-a-system-assigned-identity) and note generated `Object ID`.
 6. Run PowerShell below to provide Function App required Azure AD permissions.
 
 ```powershell
@@ -73,7 +75,6 @@ if ($role -eq $null) {
     Enable-AzureADDirectoryRole -RoleTemplateId $roleTemplate.ObjectId
     $role = Get-AzureADDirectoryRole | Where-Object {$_.displayName -eq $roleName}
 }
-$role
 
 # Check if service principal is already member of readers role
 $allDirReaders = Get-AzureADDirectoryRoleMember -ObjectId $role.ObjectId
@@ -95,13 +96,13 @@ else
 
 ### Note 
 
-In Step 3. use `Get publish profile` do download file with user name and password. If using PowerShell to upload package you will need to escape $ character in password.
+In step 3. use `Get publish profile` to get user name and password. If you are using PowerShell to upload package, you will need to escape character `$` wherever it appears in user name or password.
 
 <a name=run-this-sample></a>
 
 ## Run this sample
 
-Function App exposes functionality through REST API. Sample below shows how you could call function using PowerShell. [Here](https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-first-azure-function#test-the-function) you can find how to get Function App key.
+Function App exposes functionality through REST API. Sample below shows how you could invoke function using PowerShell. [Here](https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-first-azure-function#test-the-function) you can find how to get Function App key.
 
 This [article](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/utility/azure-function?view=azdevops) shows how you can invoke Function App from Azure Pipeline | TFS 2018 | TFS 2017.
 
@@ -127,29 +128,29 @@ Invoke-RestMethod $apiUrl -Method POST -ContentType "application/json" -Body $bo
 
 ## Troubleshoot
 
-If Function App is not configured or run properly you will get HTTP 400 error with error message in plain text.
+If Function App is not configured or doesn't run properly you will get HTTP 400 error with error message in plain text.
 
 Below is list of errors with actions to resolve them.
 
-### Managed Service Identity (MSI) is not assigned.
+#### Managed Service Identity (MSI) is not assigned.
 
-Add system-asigned identity as described in step 5 of [deploy and configure this sample](#deploy-configure-this-sample) section.
+Add system-asigned identity as described at step 5. in [deploy and configure this sample](#deploy-configure-this-sample) section.
 
-### [Forbidden]: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/managedInstances/{name}'.
+#### [Forbidden]: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/managedInstances/{name}'.
 
-Function App doesn't have permissions to read Managed Instance properties. Add permission as described in step 4 of [deploy and configure this sample](#deploy-configure-this-sample) section.
+Function App doesn't have permissions to read Managed Instance properties. Add permission as described at step 4. in [deploy and configure this sample](#deploy-configure-this-sample) section.
 
-### [Not Found]: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/managedInstances/{name}'.
+#### [Not Found]: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/managedInstances/{name}'.
 
-Function App doesn't have permissions to read Managed Instance properties. Add permission as described in step 4 of [deploy and configure this sample](#deploy-configure-this-sample) section.
+Function App doesn't have permissions to read Managed Instance properties. Add permission as described at step 4. in [deploy and configure this sample](#deploy-configure-this-sample) section.
 
 #### [MSI Not Assigned]: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/managedInstances/{name}'.
 
-Managed Instance you want to enable for Azure AD authentication doesn't have it's own system-asigned identity (this is different from first error in this section where Function App doesn't have identity assigned).
+Managed Instance you want to enable for Azure AD authentication doesn't have it's own system-asigned identity (this is different from first error in this section where Function App doesn't have identity assigned). 
 
-### [Forbidden]: '/{tenantId}/directoryRoles'.
+#### [Forbidden]: '/{tenantId}/directoryRoles'.
 
-Function App doesn't have permissions to read Azure AD. Add permission as described in step 6 of [deploy and configure this sample](#deploy-configure-this-sample) section.
+Function App doesn't have permissions to read Azure AD. Add permission as described at step 6. in [deploy and configure this sample](#deploy-configure-this-sample) section.
 
 <a name=disclaimers></a>
 
