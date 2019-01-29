@@ -38,14 +38,16 @@ To run this sample, you need the following prerequisites.
 
 **Software prerequisites:**
 
-1. PowerShell 5.1
+1. PowerShell 5.1 or higher
 2. Azure PowerShell 5.4.2 or higher
 3. Visual Studio 2017
 
 **Azure prerequisites:**
 
+Person who does the setup needs to have following rights:
+
 1. Azure AD `Privileged Role Administrator` role
-2. Permissions to add `Readers` permission for Function App principal on any of the following resource levels: Managed Instance, Resource group, Subscription
+2. Permissions to add `Readers` permission for Function App principal on any of the following scopes: Managed Instance, Resource group, Subscription. Associated scope depends on deployment and security policies.
 
 <a name=deploy-configure-this-sample></a>
 
@@ -56,7 +58,7 @@ Steps below show how to deploy pre-build package. Alternatively you could deploy
 1. Create Function App by following [Create your first function in the Azure portal](https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-first-azure-function) quickstart
 2. Download [package](./zip-deploy/ManagedInstanceAutomationDemo.zip?raw=true).
 3. Publish package using [Azure CLI](https://docs.microsoft.com/en-us/azure/azure-functions/deployment-zip-push#cli), with [cURL](https://docs.microsoft.com/en-us/azure/azure-functions/deployment-zip-push#with-curl) or with [PowerShell](https://docs.microsoft.com/en-us/azure/azure-functions/deployment-zip-push#with-powershell)
-4. Grant access to Function App by following [Grant access](https://docs.microsoft.com/en-us/azure/role-based-access-control/quickstart-assign-role-user-portal#grant-access). For easier selection, choose `Function App` in `Assign access to` dropbox. In some situations this might take up to an hour to propagate.
+4. Grant access to Function App by following [Grant access](https://docs.microsoft.com/en-us/azure/role-based-access-control/quickstart-assign-role-user-portal#grant-access). For easier selection, choose `Function App` in `Assign access to` dropbox. It might take up to an hour for this permission grant to become effective.
 5. Add system-assigned identity by following [Adding a system-assigned identity](https://docs.microsoft.com/en-us/azure/app-service/overview-managed-identity?toc=%2fazure%2fazure-functions%2ftoc.json#adding-a-system-assigned-identity) and note generated `Object ID`.
 6. Run PowerShell below to provide Function App required Azure AD permissions.
 
@@ -76,13 +78,13 @@ if ($role -eq $null) {
     $role = Get-AzureADDirectoryRole | Where-Object {$_.displayName -eq $roleName}
 }
 
-# Check if service principal is already member of readers role
-$allDirReaders = Get-AzureADDirectoryRoleMember -ObjectId $role.ObjectId
-$selDirReader = $allDirReaders | where{$_.ObjectId -match $managedInstanceAutomationObjectId}
+# Check if service principal is already member of "Privileged Role Administrator" role
+$allRoleMembers = Get-AzureADDirectoryRoleMember -ObjectId $role.ObjectId
+$selectedRoleMember = $allRoleMembers | where{$_.ObjectId -match $managedInstanceAutomationObjectId}
 
-if ($selDirReader -eq $null)
+if ($selectedRoleMember -eq $null)
 {
-    # Add principal to privileged role admins role
+    # Add principal to "Privileged Role Administrator" role
     Write-Output "Adding service principal to 'Privileged Role Administrator' role..."
     Add-AzureADDirectoryRoleMember -ObjectId $role.ObjectId -RefObjectId $managedInstanceAutomationObjectId
     Write-Output "Service principal added to 'Privileged Role Administrator' role'."
@@ -96,7 +98,7 @@ else
 
 ### Note 
 
-In step 3. use `Get publish profile` to get user name and password. If you are using PowerShell to upload package, you will need to escape character `$` wherever it appears in user name or password.
+In step 3. use `Get publish profile` to get user name and password. If you are using PowerShell to upload package, put user name and password under single quotes as with double quotes character `$` has special meaning.
 
 <a name=run-this-sample></a>
 
@@ -146,7 +148,7 @@ Function App doesn't have permissions to read Managed Instance properties. Add p
 
 #### [MSI Not Assigned]: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/managedInstances/{name}'.
 
-Managed Instance you want to enable for Azure AD authentication doesn't have it's own system-asigned identity (this is different from first error in this section where Function App doesn't have identity assigned). 
+Managed Instance you want to enable for Azure AD authentication doesn't have it's own system-asigned identity (this is different from first error in this section where Function App doesn't have identity assigned).
 
 #### [Forbidden]: '/{tenantId}/directoryRoles'.
 
