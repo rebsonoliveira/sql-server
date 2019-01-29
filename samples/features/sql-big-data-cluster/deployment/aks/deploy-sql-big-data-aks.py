@@ -8,6 +8,7 @@
 
 from subprocess import check_output, CalledProcessError, STDOUT, Popen, PIPE
 import os
+import getpass
 
 def executeCmd (cmd):
     if os.name=="nt":
@@ -24,7 +25,7 @@ def executeCmd (cmd):
 SUBSCRIPTION_ID = input("Provide your Azure subscription ID:")
 GROUP_NAME = input("Provide Azure resource group name to be created:")
 DOCKER_USERNAME = input("Provide your Docker username:")
-DOCKER_PASSWORD = input("Provide your Docker password:")
+DOCKER_PASSWORD  = getpass.getpass("Provide your Docker password:")
 
 #
 # Optionally change these configuration settings
