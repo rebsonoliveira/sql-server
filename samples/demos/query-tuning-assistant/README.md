@@ -1,5 +1,5 @@
 This is a repro package to demonstrate how to upgrade a database compatibility level using Query Tuning Assistant. 
-This feature is using telemtry from the Query Store feature we launched with Azure SQL Database and SQL Server 2016 to detect upgrade-related regressions.
+This feature is using telemetry from the Query Store feature we launched with Azure SQL Database and SQL Server 2016 to detect upgrade-related regressions.
 
 This repro assumes the following:
 
