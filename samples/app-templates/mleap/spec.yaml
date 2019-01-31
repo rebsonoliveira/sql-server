@@ -1,0 +1,4 @@
+name: hello-mleap
+version: v1
+runtime: Mleap
+bundleFileName: airbnb.model.lr.zip
