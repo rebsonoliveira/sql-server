@@ -27,12 +27,12 @@ KNOX_ENDPOINT=$KNOX_IP:30443
 
 for util in sqlcmd bcp kubectl curl
     do
-    echo Verifying $util is in path & which $util 1>/dev/nul 2>/dev/nul || (echo Unable to locate $util && exit 1)
+    echo Verifying $util is in path & which $util 1>/dev/null 2>/dev/null || (echo Unable to locate $util && exit 1)
 done
 
 # Copy the backup file, restore the database, create necessary objects and data file
 pushd "/tmp"
-$DEBUG mkdir --parents "$TMP_DIR_NAME"
+$DEBUG mkdir -p "$TMP_DIR_NAME"
 $DEBUG cd "$TMP_DIR_NAME"
 
 echo Downloading sample database backup file...
