@@ -1,13 +1,5 @@
 # Sample Categories
 
-__[app-deploy](app-deploy/)__
-
-Samples on app deployment that illustruate how to use CLI (mssqlctl) to deploy apps in SQL Server BDC.
-
-
-
-__[applications](applications/)__
-
 End-to-end sample applications that illustrate the use of SQL Server for specific application scenarios.
 
 __[databases](databases/)__
