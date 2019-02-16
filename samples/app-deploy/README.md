@@ -31,4 +31,4 @@ This sample demonstrates how you use a MLeap bundle ( a Spark model serialized i
 ## Sql Server Integration Services 
 __[SSIS](SSIS/)__
 
-This sample demonstrates how you run SSIS application as a containerized application levering the cron capability in Kubernets. This example takes Data Transformation Services Package File Format (DTSX) developed using Visual Studio that takes a database backup and copies it over to the SQL Server instance for restoring. This will run as a cron job pushing the backups every minute. Please follow the README.md for detailed instructions. 
+This sample demonstrates SSIS application can be run as a containerized application and use the cron capability in Kubernets as a scheduler. This example takes Data Transformation Services Package File Format (DTSX) developed using Visual Studio that takes a database backup and copies it over to the SQL Server instance for restoring. This will run as a cron job pushing the backups every minute. Please follow the README.md for detailed instructions. 
