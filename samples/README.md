@@ -2,6 +2,10 @@
 
 End-to-end sample applications that illustrate the use of SQL Server for specific application scenarios.
 
+__[App-Deploy](app-deploy/)__
+
+Samples on how to deploy apps on SQL Server Big Data Cluster.
+
 __[databases](databases/)__
 
 Sample databases for SQL Server, Azure SQL Database, and Azure SQL Data Warehouse.
