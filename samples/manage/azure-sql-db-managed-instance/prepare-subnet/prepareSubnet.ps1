@@ -485,7 +485,7 @@ function VerifyNSG {
         $result = @{ 
             nsgSecurityRules = New-Object "$NScollections.List``1[$NSnetworkModels.PSSecurityRule]"
             failedSecurityRules = New-Object "$NScollections.List``1[$NSnetworkModels.PSSecurityRule]"
-            success = $true 
+            success = $false 
         }
         Write-Host("Verifying Network security group for subnet '{0}'."-f $subnet.Name)
         $nsg = LoadNetworkSecurityGroup $subnet

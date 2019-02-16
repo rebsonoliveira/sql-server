@@ -1,10 +1,5 @@
 # Sample Categories
 
-__[App Deployment in SQL Server Big Data Cluster](app-deploy/)__
-
-These samples demonstrate how you can take your R, Python or an app and deploy these in SQL Server Big Data Cluster
-
-
 End-to-end sample applications that illustrate the use of SQL Server for specific application scenarios.
 
 __[databases](databases/)__
@@ -25,7 +20,7 @@ Samples that help with the management of SQL Server and Azure SQL Database.
 
 __[tutorials](tutorials/)__
 
-Samples showing how to connect to SQL databases using various programming languages, including Python, C#, Java, Ruby, Node.js, and PHP.
+Samples showing how to connect to SQL databases using various programming languages, including Python, C#, F#, Java, Ruby, Node.js, and PHP.
 
 __[containers](containers/)__
 

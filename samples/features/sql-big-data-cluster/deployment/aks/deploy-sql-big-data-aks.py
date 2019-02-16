@@ -8,6 +8,7 @@
 
 from subprocess import check_output, CalledProcessError, STDOUT, Popen, PIPE
 import os
+import getpass
 
 def executeCmd (cmd):
     if os.name=="nt":
@@ -24,13 +25,13 @@ def executeCmd (cmd):
 SUBSCRIPTION_ID = input("Provide your Azure subscription ID:")
 GROUP_NAME = input("Provide Azure resource group name to be created:")
 DOCKER_USERNAME = input("Provide your Docker username:")
-DOCKER_PASSWORD = input("Provide your Docker password:")
+DOCKER_PASSWORD  = getpass.getpass("Provide your Docker password:")
 
 #
 # Optionally change these configuration settings
 #
 AZURE_REGION=input("Provide Azure region - Press ENTER for using `westus`:") or "westus"
-VM_SIZE=input("Provide VM size for the AKS cluster - Press ENTER for using  `Standard_E4s_v3`:") or "Standard_E4s_v3"
+VM_SIZE=input("Provide VM size for the AKS cluster - Press ENTER for using  `Standard_L4s`:") or "Standard_L4s"
 AKS_NODE_COUNT=input("Provide number of worker nodes for AKS cluster - Press ENTER for using  `3`:") or "3"
 #This is both Kubernetes cluster name and SQL Big Data cluster name
 CLUSTER_NAME=input("Provide name of AKS cluster and SQL big data cluster - Press ENTER for using  `sqlbigdata`:") or "sqlbigdata"
@@ -68,7 +69,7 @@ command="az group create --name "+GROUP_NAME+" --location "+AZURE_REGION
 executeCmd (command)
 
 print("Creating AKS cluster: "+CLUSTER_NAME)
-command = "az aks create --name "+CLUSTER_NAME+" --resource-group "+GROUP_NAME+" --generate-ssh-keys --node-vm-size "+VM_SIZE+" --node-count "+AKS_NODE_COUNT+" --kubernetes-version 1.10.8"
+command = "az aks create --name "+CLUSTER_NAME+" --resource-group "+GROUP_NAME+" --generate-ssh-keys --node-vm-size "+VM_SIZE+" --node-count "+AKS_NODE_COUNT+" --kubernetes-version 1.10.9"
 executeCmd (command)
 
 command = "az aks get-credentials --name "+CLUSTER_NAME+" --resource-group "+GROUP_NAME+" --admin"
@@ -81,7 +82,7 @@ executeCmd (command)
 print("")
 print("SQL Server big data cluster connection endpoints: ")
 print("SQL Server master instance:")
-command="kubectl get service service-master-pool-lb -o=custom-columns=""IP:.status.loadBalancer.ingress[0].ip,PORT:.spec.ports[0].port"" -n "+CLUSTER_NAME
+command="kubectl get service endpoint-master-pool -o=custom-columns=""IP:.status.loadBalancer.ingress[0].ip,PORT:.spec.ports[0].port"" -n "+CLUSTER_NAME
 executeCmd(command)
 print("")
 print("HDFS/KNOX:")

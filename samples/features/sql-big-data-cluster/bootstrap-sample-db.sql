@@ -15,6 +15,10 @@ GO
 
 USE sales;
 GO
+-- Create database master key (required for database scoped credentials used in the samples)
+IF NOT EXISTS(SELECT * FROM sys.databases WHERE name = DB_NAME() and is_master_key_encrypted_by_server = 1)
+	CREATE MASTER KEY ENCRYPTION BY PASSWORD = 'sql19bigdatacluster!';
+
 -- Create default data sources for SQL Big Data Cluster
 IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'SqlDataPool')
 	CREATE EXTERNAL DATA SOURCE SqlDataPool
@@ -65,4 +69,15 @@ AS
 	) AS q
 	INNER JOIN customer as c ON q.wcs_user_sk = c.c_customer_sk
 	INNER JOIN customer_demographics as cd ON c.c_current_cdemo_sk = cd.cd_demo_sk;
+GO
+
+-- Create table for storing the ML models
+DROP TABLE IF EXISTS sales_models;
+CREATE TABLE sales_models (
+	model_name varchar(100) PRIMARY KEY,
+	model varbinary(max) NOT NULL,
+	model_native varbinary(max) NULL,
+	created_by nvarchar(500) NOT NULL DEFAULT(SYSTEM_USER),
+	create_time datetime2 NOT NULL DEFAULT(SYSDATETIME())
+);
 GO
