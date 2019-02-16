@@ -1,6 +1,9 @@
 # Sample Categories
 
-__[applications](applications/)__
+__[App Deployment in SQL Server Big Data Cluster](app-deploy/)__
+
+These samples demonstrate how you can take your R, Python or an app and deploy these in SQL Server Big Data Cluster
+
 
 End-to-end sample applications that illustrate the use of SQL Server for specific application scenarios.
 
