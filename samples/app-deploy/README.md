@@ -1,4 +1,4 @@
-# Samples on how to deploy SQL Sever Big Data Cluster
+# Samples on how to deploy apps on SQL Sever Big Data Cluster
 
 
 ## Python 
