@@ -3,10 +3,16 @@
 
 
 ## Python 
-These sample demonstrates how you can deploy a simple Python app into SQL Server Big Data Cluster as container app as web service that is swagger compliant for building your application. 
+These sample demonstrates how you can deploy a simple Python app into SQL Server Big Data Cluster as container app as web service that is swagger compliant for building your application.
+
 __[addpy](addpy/)__
 
+This sample demonstrates how to deploy a Python script that takes integers as input and outputs an integer.
+
 __[magic8ball](magic8ball/)__
+
+This sample demonstrates how to deploy a Python script that takes a string as input and outputs a string.
+
 
 
 ## R 
