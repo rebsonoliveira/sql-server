@@ -1,5 +1,4 @@
-# App deploy Samples CTP 2.3
-## Samples on how to deploy SQL Sever Big Data Cluster
+# Samples on how to deploy SQL Sever Big Data Cluster
 
 
 ## Python 
