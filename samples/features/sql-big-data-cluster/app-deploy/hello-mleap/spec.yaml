@@ -1,0 +1,6 @@
+name: hello-mleap1
+version: v1
+runtime: Mleap
+bundleFileName: model.lr.zip
+replicas: 2
+poolsize: 2
