@@ -1,0 +1,6 @@
+name: back-up-db
+version: v1
+runtime: SSIS
+entrypoint: ./back-up-db.dtsx
+options: /REP V /De testing
+schedule: "*/1 * * * *"
