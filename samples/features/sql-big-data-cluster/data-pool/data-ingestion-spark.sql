@@ -26,7 +26,7 @@ IF NOT EXISTS(SELECT * FROM sys.external_tables WHERE name = 'web_clickstreams_s
 ---- Main class: "FileStreaming"
 ---- Path to jar: /jar/mssql-spark-lib-assembly-1.0.jar
 ---- Arguments:
----- mssql-master-pool-0.service-master-pool 1433 sa %PASSWORD% sales web_clickstreams_spark_results hdfs:///clickstream_data csv false 
+---- --server mssql-master-pool-0.service-master-pool --port 1433 --user sa --password !yourPassword! --database sales --table web_clickstreams_spark_results --source_dir hdfs:///clickstream_data --input_format csv --enable_checkpoint false --timeout 380000
 
 -- The arguments to jar file are
 -- 1: server name - sql server to connect to read the table schema
@@ -38,6 +38,7 @@ IF NOT EXISTS(SELECT * FROM sys.external_tables WHERE name = 'web_clickstreams_s
 -- 7: Source directory for streaming. This must be a full URI - such as "hdfs:///clickstream_data"
 -- 8: Input format. This can be "csv", "parquet", "json".
 -- 9: enable checkpoint: true or false
+-- 10: timeout - in milliseconds - how long to run for before stopping
 --
 
 -- After the Spark streaming job has been sucessfully submitted, you can run below query to view the results.

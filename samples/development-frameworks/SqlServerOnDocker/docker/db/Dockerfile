@@ -14,4 +14,6 @@ RUN apt-get install -y locales \
 
 ENV PATH="/opt/mssql-tools/bin:${PATH}"
 
-
+RUN mkdir -p /var/opt/mssql/backup
+WORKDIR /var/opt/mssql/backup
+RUN curl -L -o AdventureWorksDW2017.bak https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorksDW2017.bak
