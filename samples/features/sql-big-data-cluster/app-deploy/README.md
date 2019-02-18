@@ -1,4 +1,4 @@
-# App deploy Samples CTP 2.3
+# App Deploy Samples for SQL Server 2019 CTP 2.3
 ## Samples on how to deploy apps on a SQL Sever big data cluster
 
 
