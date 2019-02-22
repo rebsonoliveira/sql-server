@@ -1,5 +1,6 @@
-# App deploy Samples 
-## Samples on how to deploy SQL Sever Big Data Cluster
+# App deploy Samples
+
+# Samples on how to deploy SQL Sever Big Data Cluster
 
 ## Pre-requisites
 * CTP 2.3 or later
