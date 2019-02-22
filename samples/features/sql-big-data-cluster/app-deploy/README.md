@@ -6,7 +6,8 @@
 
 If you are unfamiilar with mssqlctl please refer to - [App Deployment in SQL Server Big Data Cluster](https://docs.microsoft.com/en-us/sql/big-data-cluster/big-data-cluster-create-apps?view=sqlallproducts-allversions). 
 
-* Tip For an interactive help try mssqlctl app -h for a list of commands and how to use them.
+* Tip 
+**mssqlctl app -h** will display the various commands to manage the app
 
 
 ## Python 
