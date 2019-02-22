@@ -2,8 +2,8 @@
 ## Samples on how to deploy SQL Sever Big Data Cluster
 
 ## Pre-requisites
-#CTP 2.3 or later
-#mssqlctl CLI familiarity
+**CTP 2.3 or later
+**mssqlctl CLI familiarity
 
 Getting started - [App Deployment in SQL Server Big Data Cluster](https://docs.microsoft.com/en-us/sql/big-data-cluster/big-data-cluster-create-apps?view=sqlallproducts-allversions). 
 **Tip** For an interactive help try mssqlctl app -h for a list of commands and how to use them.
