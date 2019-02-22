@@ -1,9 +1,18 @@
-# App deploy Samples CTP 2.3
+# App deploy Samples 
 ## Samples on how to deploy SQL Sever Big Data Cluster
+
+## Pre-requisites
+# CTP 2.3 or later
+# mssqlctl CLI familiarity
+
+Getting started - [App Deployment in SQL Server Big Data Cluster](https://docs.microsoft.com/en-us/sql/big-data-cluster/big-data-cluster-create-apps?view=sqlallproducts-allversions). 
+**Tip** For an interactive help try mssqlctl app -h for a list of commands and how to use them.
 
 
 ## Python 
-These sample demonstrates how you can deploy a simple Python app into SQL Server Big Data Cluster as container app as web service that is swagger compliant for building your application. 
+These samples demonstrates how you can deploy a simple Python app into SQL Server Big Data Cluster as container app as web service that is swagger compliant for building your application.
+
+
 __[addpy](addpy/)__
 
 __[magic8ball](magic8ball/)__
@@ -25,4 +34,4 @@ This sample demonstrates how you use a MLeap bundle ( a Spark model serialized i
 ## Sql Server Integration Services 
 __[SSIS](SSIS/)__
 
-This sample demonstrates how you run SSIS application as a containerized application levering the cron capability in Kubernets. This example takes Data Transformation Services Package File Format (DTSX) developed using Visual Studio that takes a database backup and copies it over to the SQL Server instance for restoring. This will run as a cron job pushing the backups every minute. Please follow the README.md for detailed instructions. 
+This sample demonstrates how you run SSIS application as a containerized application leveraging the cron capability in Kubernets. This example takes Data Transformation Services Package File Format (DTSX) picksa database backup and copies it over to the SQL Server instance for restoring. This will run as a cron job creating the backups every minute. Please follow the README.md for detailed instructions. 
