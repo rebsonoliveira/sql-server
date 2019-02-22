@@ -1,5 +1,3 @@
-# App deploy Samples
-
 # Samples on how to deploy SQL Sever Big Data Cluster
 
 ## Pre-requisites
