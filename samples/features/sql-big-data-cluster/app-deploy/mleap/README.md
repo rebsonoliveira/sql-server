@@ -13,7 +13,7 @@
 ```
 
 ## Consume Application
-# The following command will work if you use the sample
+# In order to run the app you will need to  provide the refernce to the mleap frame. 
 
 ```bash
 > mssqlctl app run --name mleap --version v1 --inputs mleap-frame=@frame.json
