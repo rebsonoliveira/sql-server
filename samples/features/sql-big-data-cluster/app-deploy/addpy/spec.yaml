@@ -1,5 +1,5 @@
 name: addpy
-version: v2
+version: v1
 runtime: Python
 src: ./add.py
 entrypoint: add
