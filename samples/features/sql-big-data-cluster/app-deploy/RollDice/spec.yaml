@@ -1,5 +1,5 @@
 name: roll-dice
-version: v2
+version: v1
 runtime: R
 src: ./roll-dice.R
 entrypoint: rollEm
