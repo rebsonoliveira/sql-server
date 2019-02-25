@@ -1,7 +1,7 @@
 ## About
 This is a sample SSIS app, which is a cronjob backing up the `DWConfiguration` database on the Master SQL Instance on disk every minute. 
 
-See [CLI.md](../CLI.md) for instructions on setting up the mssqlctl CLI and connecting to a Aris cluster.
+Refer to [installing mssqlctl](https://docs.microsoft.com/en-us/sql/big-data-cluster/deploy-install-mssqlctl?view=sqlallproducts-allversions) document on setting up the mssqlctl and connecting to a Aris cluster.
 
 To see the `back-up-db.dtsx` under the `back-up-db.sln`, Install Visual Studio 2017 if you don't have it already. Download and install [SSDT](https://docs.microsoft.com/en-us/sql/ssdt/download-sql-server-data-tools-ssdt?view=sql-server-2017#ssdt-for-vs-2017-standalone-installer). 
 When you open the `back-up-db.sln`, the decryption password can be found in the spec.yaml, i.e. the value after "/De ". 
