@@ -1,6 +1,4 @@
 #This is a sample Python Script for an implementation for magic8ball
-# how to run this -  mssqlctl-pre app create -n magic8 -v v2 --code magic8ball.py  --runtime Python --inputs quizme=str --outputs result=str 
-
 import sys
 import random
 def magic8ball(txt):
