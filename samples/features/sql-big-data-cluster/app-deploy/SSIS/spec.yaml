@@ -2,5 +2,5 @@ name: back-up-db
 version: v1
 runtime: SSIS
 entrypoint: ./back-up-db.dtsx
-options: /REP V /De testing
+options: /REP V /SET "\Package.Variables[User::SA_Password].Properties[Value];"[SA_PASSWORD]"
 schedule: "*/1 * * * *"

@@ -7,39 +7,45 @@
   DTS:CreatorName="DOMAIN\user"
   DTS:DTSID="{3A21CCD6-3D10-450F-8A17-D4AFE4A7EC93}"
   DTS:ExecutableType="Microsoft.Package"
-  DTS:LastModifiedProductVersion="15.0.0900.40"
+  DTS:LastModifiedProductVersion="15.0.1100.123"
   DTS:LocaleID="1033"
   DTS:ObjectName="back-up-db"
   DTS:PackageType="5"
-  DTS:ProtectionLevel="2"
-  DTS:VersionBuild="16"
-  DTS:VersionGUID="{CF860C75-D034-4DCF-BDBA-64DF44015B64}">
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="35"
+  DTS:VersionGUID="{639938A9-6810-466A-BD9A-CA4858C5A527}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
     <DTS:ConnectionManager
       DTS:refId="Package.ConnectionManagers[MasterSQL]"
       DTS:CreationName="ADO.NET:SQL"
-      DTS:DTSID="{B8154932-D688-4129-8CFA-17D9ED72CBAE}"
+      DTS:DTSID="{E56582A3-386A-40AE-AA16-CDE1FFF1E29B}"
       DTS:ObjectName="MasterSQL">
+      <DTS:PropertyExpression
+        DTS:Name="Password">@[User::SA_Password]</DTS:PropertyExpression>
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=service-master-pool;User ID=sa;Initial Catalog=master;Connect Timeout=30;Application Name=SSIS-back-up-db-{B8154932-D688-4129-8CFA-17D9ED72CBAE}MasterSQL;">
-          <EncryptedData
-            Type="http://www.w3.org/2001/04/xmlenc#Element"
-            Salt="VsvTFYgUnBE="
-            IV="JehPjO2CpRYmMlmsO3zauw==" xmlns="http://www.w3.org/2001/04/xmlenc#">
-            <EncryptionMethod
-              Algorithm="http://www.w3.org/2001/04/xmlenc#aes256-cbc" />
-            <CipherData>
-              <CipherValue>JehPjO2CpRYmMlmsO3zauyEGuMWFLjkOYrRfKQu0WpM8Mk2QzgPdOTKbAr3SGg4HN5djflNMUnktgqJgMwk5ri2eVyJ+L1sI18fxwibB3ZjyWOf9CWlLkFbBBegedxT+81UkdEDvsiCty3JK5jfI3mqcAXOxeTekTB9XuUZx5//tCUSJA9zCg29hNOtb4cGF</CipherValue>
-            </CipherData>
-          </EncryptedData>
+          DTS:ConnectionString="Data Source=104.209.179.83,31433;User ID=sa;Connect Timeout=30;">
+          <DTS:Password
+            DTS:Name="Password"
+            Sensitive="1"></DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
   </DTS:ConnectionManagers>
-  <DTS:Variables />
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{B90434A3-13EF-442E-AABB-F7E9DD54DB7B}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="SA_Password">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
   <DTS:Executables>
     <DTS:Executable
       DTS:refId="Package\Back Up Database DWConfiguration"
@@ -53,8 +59,6 @@
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{B8154932-D688-4129-8CFA-17D9ED72CBAE}"
-          SQLTask:DatabaseSelectionType="4"
           SQLTask:ServerVersion="15"
           SQLTask:ExtendedLogging="True"
           SQLTask:LocalConnectionForLogging=""
@@ -71,7 +75,7 @@
           SQLTask:BackupCreateSubFolder="False"
           SQLTask:BackupFileExtension="bak"
           SQLTask:BackupVerifyIntegrity="False"
-          SQLTask:ExpireDate="2019-02-11T00:00:00"
+          SQLTask:ExpireDate="2019-03-12T00:00:00"
           SQLTask:RetainDays="14"
           SQLTask:InDays="True"
           SQLTask:UseExpiration="False"
@@ -88,13 +92,49 @@
           SQLTask:Checksum="False"
           SQLTask:ContinueOnError="False"
           SQLTask:IsBlockSizeUsed="False"
-          SQLTask:IsMaxTransferSizeUsed="False" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
-          <SQLTask:SelectedDatabases
-            SQLTask:DatabaseName="DWConfiguration" />
-        </SQLTask:SqlTaskData>
+          SQLTask:IsMaxTransferSizeUsed="False" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Delete backups older than 1 hour"
+      DTS:CreationName="Microsoft.DbMaintenanceFileCleanupTask"
+      DTS:Description="Maintenance Cleanup Task"
+      DTS:DTSID="{1F945A8B-F71D-4B2B-B253-897B04FAAA61}"
+      DTS:ExecutableType="Microsoft.DbMaintenanceFileCleanupTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Delete backups older than 1 hour"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{E56582A3-386A-40AE-AA16-CDE1FFF1E29B}"
+          SQLTask:ServerVersion="9"
+          SQLTask:ExtendedLogging="True"
+          SQLTask:LocalConnectionForLogging=""
+          SQLTask:TaskName=""
+          SQLTask:IgnoreDatabasesInNotOnlineState="False"
+          SQLTask:FileTypeSelected="0"
+          SQLTask:FilePath=""
+          SQLTask:FolderPath="/var/opt/mssql/data"
+          SQLTask:CleanSubFolders="False"
+          SQLTask:FileExtension="bak"
+          SQLTask:AgeBased="True"
+          SQLTask:DeleteSpecificFile="False"
+          SQLTask:RemoveOlderThan="1"
+          SQLTask:TimeUnitsType="5" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{752E223F-85BA-4AF5-AC2D-684B7EF6FF52}"
+      DTS:From="Package\Back Up Database DWConfiguration"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Delete backups older than 1 hour" />
+  </DTS:PrecedenceConstraints>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
 <!--If you manually edit this section and make a mistake, you can delete it. -->
@@ -106,11 +146,49 @@
     design-time-name="Package">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="266,42"
           Id="Package\Back Up Database DWConfiguration"
-          TopLeft="465,275" />
+          TopLeft="604,256" />
+        <NodeLayout
+          Size="236,42"
+          Id="Package\Delete backups older than 1 hour"
+          TopLeft="501,386" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="737,298">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-118,88"
+              Start="0,0"
+              End="-118,80.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,40" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,40"
+                    Point2="0,44"
+                    Point3="-4,44" />
+                  <mssgle:LineSegment
+                    End="-114,44" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-114,44"
+                    Point2="-118,44"
+                    Point3="-118,48" />
+                  <mssgle:LineSegment
+                    End="-118,80.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </Package>

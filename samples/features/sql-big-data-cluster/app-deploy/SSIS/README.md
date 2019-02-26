@@ -7,14 +7,14 @@ Refer to [installing mssqlctl](https://docs.microsoft.com/en-us/sql/big-data-clu
 To see the `back-up-db.dtsx` under the `back-up-db.sln`, Install Visual Studio 2017 if you don't have it already. Download and install [SSDT](https://docs.microsoft.com/en-us/sql/ssdt/download-sql-server-data-tools-ssdt?view=sql-server-2017#ssdt-for-vs-2017-standalone-installer). 
 When you open the `back-up-db.sln`, the decryption password can be found in the spec.yaml, i.e. the value after "/De ". 
 
-Install [SSMS](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-2017) if not already.
+Install [SSMS](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-2017) if not already done.
 
 ## How to run
 
 Create the app:
 ```bash
 # drop back-up-db.dtsx and spec.yaml in a folder, e.g. name back-up-db
-# edit back-up-db.dtsx, replace the value after "Data Source" in the connection string to "service-master-pool;" if not alread. Then deploy it by:
+# edit back-up-db.dtsx, replace the value after "Data Source" in the connection string to "service-master-pool;" if not already. Then deploy it by:
 mssqlctl app create --spec ./back-up-db
 ```
 
