@@ -1,5 +1,5 @@
 
-# The README will walk you though how to use the MLeap runtime
+# How to deploy an MLeap app
 
 This sample assumes you are familar with MLeap. MLeap is a model serialization format available to Spark users. You can read about this [here](http://mleap-docs.combust.ml/). When you build a model in Spark, typically for training and need score this outside of Spark environment you can serialize the model as an MLeap bundle and score this outside of Spark. This allows model portability. This example  will demonstrate how a trained model serialized as MLeap bundle can be deployed as a RESTful webservice with a single line of code in SQL Server BDC 2019 and use as sample input in leap frame format to test it.
 
@@ -50,4 +50,3 @@ Note that the input paramter has a special character '@' to indicate that a json
 > mssqlctl app run --name mleap --version v1 --inputs mleap-frame=@frame.json
 ```
 The result will be a json output that includes the prediction along with additional data. 
-
