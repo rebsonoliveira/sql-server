@@ -35,7 +35,7 @@ mssqlctl app list
 Once the app is listed as `Ready` the job should run within a minute.
 You can check if the backup is created by running:
 ```bash
-kubectl -n test exec -it mssql-master-pool-0 -c mssql-server -- /bin/bash -c "ls /var/opt/mssql/data/*.DWConfigbak"
+kubectl -n [your namespace] exec -it mssql-master-pool-0 -c mssql-server -- /bin/bash -c "ls /var/opt/mssql/data/*.DWConfigbak"
 ```
 You should see a backup being created for every run of the job, with a maximum of 60 backups since the SSIS package cleans up backups older than one hour.
 You can use any of the `.DWConfigbak` files to restore the database.
@@ -45,5 +45,5 @@ You can use any of the `.DWConfigbak` files to restore the database.
 # delete app
 mssqlctl app delete --name back-up-db --version v1
 # delete backup files
-kubectl -n test exec -it mssql-master-pool-0 -c mssql-server -- /bin/bash -c "rm /var/opt/mssql/data/*.DWConfigbak"
+kubectl -n [your namespace] exec -it mssql-master-pool-0 -c mssql-server -- /bin/bash -c "rm /var/opt/mssql/data/*.DWConfigbak"
 ```
