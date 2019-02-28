@@ -1,4 +1,5 @@
-## About
+## How to use the SSIS runtime in SQL Server Big Data Cluster
+
 This is a sample SSIS app, which is a cronjob backing up the `DWConfiguration` database on the Master SQL Instance on disk every minute. 
 
 Refer to [installing mssqlctl](https://docs.microsoft.com/en-us/sql/big-data-cluster/deploy-install-mssqlctl?view=sqlallproducts-allversions) document on setting up the mssqlctl and connecting to a Aris cluster.

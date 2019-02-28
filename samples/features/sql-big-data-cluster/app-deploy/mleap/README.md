@@ -1,9 +1,9 @@
 
 # How to deploy an MLeap app
 
-This sample assumes you are familar with MLeap. MLeap is a model serialization format available to Spark users. You can read about this [here](http://mleap-docs.combust.ml/). When you build a model in Spark, typically for training and need score this outside of Spark environment you can serialize the model as an MLeap bundle and score this outside of Spark. This allows model portability. This example  will demonstrate how a trained model serialized as MLeap bundle can be deployed as a RESTful webservice with a single line of code in SQL Server BDC 2019 and use as sample input in leap frame format to test it.
+This sample assumes you are familar with MLeap. MLeap provides simple interfaces to execute entire ML pipelines. You can get additional information about MLeap [here](http://mleap-docs.combust.ml/). When you build a model in Spark, typically for training and need score this outside of Spark environment you can serialize the model as an MLeap bundle and score this outside of Spark. This allows model portability. This example  will demonstrate how a trained model serialized as MLeap bundle can be deployed as a RESTful webservice with a single line of code in SQL Server BDC 2019 and use as sample input in leap frame format to test it.
 
-# Prerequisites
+# Pre-requisites
 SQL Server Big Data Cluster - CTP 2.3 or later
 Clone or download this sample on your computer to a folder called mleap (note if you have downloaded it to a different folder then you'l have to modify the folder location appropriately in the sample below)
 
@@ -50,3 +50,7 @@ Note that the input paramter has a special character '@' to indicate that a json
 > mssqlctl app run --name mleap --version v1 --inputs mleap-frame=@frame.json
 ```
 The result will be a json output that includes the prediction along with additional data. 
+
+# Next Steps
+You can learn how to train your model in Spark within SQL Server BDC and export to MLeap [here] (https://docs.microsoft.com/en-us/sql/big-data-cluster/train-and-create-machinelearning-models-with-spark?view=sqlallproducts-allversions)
+
