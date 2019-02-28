@@ -35,3 +35,10 @@ These samples demonstrates how you can deploy a simple R app into SQL Server big
 |Sample|Description|
 |-|-|
 |__[SSIS](SSIS/)__|This sample demonstrates how you can run SSIS applications as a containerized application leveraging the cron capability in Kubernetes. This example uses a Data Transformation Services Package File Format (DTSX) file developed using Visual Studio that, when executed, takes a database backup. This will run as a cron job which creates the backups every minute. Please follow the `README.md` for detailed instructions.|
+
+<a name=related-links></a>
+
+## Related Links
+For more information, see these articles:
+
+[How to deploy and app on SQL Server 2019 big data cluster (preview)](https://docs.microsoft.com/en-us/sql/big-data-cluster/big-data-cluster-create-apps?view=sqlallproducts-allversions)
