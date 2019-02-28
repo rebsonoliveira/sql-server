@@ -1,5 +1,5 @@
 ## About
-This is a sample SQL Server Integration Services (SSIS) app, which shows how to run a SSIS package as a scheduled service. This sample creates an app that is called each minute that executes an SSIS package. The SSIS package creates a backup of the `DWConfiguration` database on the master SQL instance to disk. Also, the package cleans any backup files for the `DWConfiguration` database that are older than one hour, making sure that maximum 60 backup files will be on disk at any moment.
+This is a sample [SQL Server Integration Services (SSIS)](https://docs.microsoft.com/en-us/sql/integration-services/sql-server-integration-services?view=sql-server-2017) app, which shows how to run a SSIS package as a scheduled service. This sample creates an app that is called each minute that executes an SSIS package. The SSIS package creates a backup of the `DWConfiguration` database on the master SQL instance to disk. Also, the package cleans any backup files for the `DWConfiguration` database that are older than one hour, making sure that maximum 60 backup files will be on disk at any moment.
 
 Refer to [installing mssqlctl](https://docs.microsoft.com/en-us/sql/big-data-cluster/deploy-install-mssqlctl?view=sqlallproducts-allversions) document on setting up the mssqlctl and connecting to a Aris cluster.
 
@@ -16,34 +16,45 @@ Apart from regular settings, the `spec.yaml` file in this example specifies `opt
 |options|Specifies any command line parameters passed to the execution of the SSIS package|
 |schedule|Specifies when the job should run. This follows cron expressions. A value of '*/1 * * * *' means the job runs *every minute*.|
 
-## How to run
+# Pre-requisites
+SQL Server big data cluster - CTP 2.3 or later
+Clone or download this sample on your computer to a folder called `mleap` (note if you have downloaded it to a different folder then you'll have to modify the folder location appropriately in the information below).
 
-### Change the `spec.yaml`
+## Running the sample
+
+### Connecting to SQL Server big data cluster
+Log in to the SQL Server big data cluster using the command below using the IP address of the `endpoint-service-proxy` in your cluster. If you are not familiar with `mssqltctl` you can refer to the [documentation](https://docs.microsoft.com/en-us/sql/big-data-cluster/big-data-cluster-create-apps?view=sqlallproducts-allversions) and then return to this sample.
+
+```bash
+mssqlctl login -e https://<ip-address-of-endpoint-service-proxy>:30777 -u <user-name> -p <password>
+```
+
+### Changing the `spec.yaml`
 Replace `[SA_PASSWORD]` in the `spec.yaml` file with the password for SQL user `sa`.
 
-### Create the app:
+### Deploying the application
 ```bash
 # drop back-up-db.dtsx and spec.yaml in a folder, e.g. name back-up-db
 # edit back-up-db.dtsx, replace the value after "Data Source" in the connection string to "service-master-pool;" if not alread. Then deploy it by:
 mssqlctl app create --spec ./back-up-db
 ```
 
-### Check the job:
+### Testing the deployment
 ```bash
 mssqlctl app list
 ```
 Once the app is listed as `Ready` the job should run within a minute.
 You can check if the backup is created by running:
 ```bash
-kubectl -n test exec -it mssql-master-pool-0 -c mssql-server -- /bin/bash -c "ls /var/opt/mssql/data/*.DWConfigbak"
+kubectl -n [your namespace] exec -it mssql-master-pool-0 -c mssql-server -- /bin/bash -c "ls /var/opt/mssql/data/*.DWConfigbak"
 ```
 You should see a backup being created for every run of the job, with a maximum of 60 backups since the SSIS package cleans up backups older than one hour.
 You can use any of the `.DWConfigbak` files to restore the database.
 
-### Clean up:
+### Clean up
 ```bash
 # delete app
 mssqlctl app delete --name back-up-db --version v1
 # delete backup files
-kubectl -n test exec -it mssql-master-pool-0 -c mssql-server -- /bin/bash -c "rm /var/opt/mssql/data/*.DWConfigbak"
+kubectl -n [your namespace] exec -it mssql-master-pool-0 -c mssql-server -- /bin/bash -c "rm /var/opt/mssql/data/*.DWConfigbak"
 ```

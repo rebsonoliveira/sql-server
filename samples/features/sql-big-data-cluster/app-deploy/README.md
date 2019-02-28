@@ -27,9 +27,9 @@ __[RollDice](RollDice/)__
 This sample demonstrates the use of data frames
 
 ## MLeap 
-__[hello-mleap](hello-mleap/)__
+__[mleap](mleap/)__
 
-This sample demonstrates how you use a MLeap bundle ( a Spark model serialized in this format) and run it outside of Spark. The sample is based on the MLeap sample available here http://mleap-docs.combust.ml/mleap-serving/. We are using the MLeap Serving container that is published in Docker Hub. The MLeap Serving is deployed as container in SQL Server big data cluster as a container app with a web service that takes the Leap Frame as the input.  
+This sample demonstrates how you use a MLeap bundle (a Spark model serialized in this format) and run it outside of Spark. The sample is based on the MLeap sample available here http://mleap-docs.combust.ml/mleap-serving/. We are using the MLeap Serving container that is published in Docker Hub. The MLeap Serving is deployed as container in SQL Server big data cluster as a container app with a web service that takes the Leap Frame as the input.  
 
 
 ## Sql Server Integration Services 
