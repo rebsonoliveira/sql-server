@@ -14,7 +14,7 @@ These samples demonstrates how you can deploy a simple Python app into SQL Serve
 |Sample|Description|
 |-|-|
 |__[addpy](addpy/)__|This sample takes two numbers and returns the sum|
-|__[magic8ball](magic8ball/)__|Runs a (Magic 8-Ball)[https://en.wikipedia.org/wiki/Magic_8-Ball]|
+|__[magic8ball](magic8ball/)__|Runs a [Magic 8-Ball](https://en.wikipedia.org/wiki/Magic_8-Ball)|
 
 ### R 
 These samples demonstrates how you can deploy a simple R app into SQL Server big data cluster as container app as web service that is swagger compliant for building your application. 
