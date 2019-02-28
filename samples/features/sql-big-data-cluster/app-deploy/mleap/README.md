@@ -15,7 +15,7 @@ Login to the SQL Server Big Data Cluster using the command below by replacing th
 mssqlctl login -e https://<ip-address-of-service-proxy-lb>:30777 -u <user-name> -p <password>
 ```
 
-This example uses a Machine Learning Model that predicts the price per sq. ft given the location along wiht addtional paramters such as the type of dwelling. You can refer to the details and the example (here) [http://mleap-docs.combust.ml/mleap-serving/#load-model]
+This example uses a Machine Learning Model that predicts the price per sq. ft given the location along wiht addtional paramters such as the type of dwelling. You can refer to the details and the example [here] (http://mleap-docs.combust.ml/mleap-serving/#load-model)
 Deploy the app using the create command and pass the location of the spec file. Here the specification file is expected to be in the mleap folder. The specification file serves as the data required for deploying that app and it contains basic information about the app such as the name, version, inputs, outputs , replicas and poolsize you need for this app.
 
 Here is the spec file for this application
