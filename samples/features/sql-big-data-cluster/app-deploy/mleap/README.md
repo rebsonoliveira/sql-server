@@ -52,5 +52,5 @@ Note that the input paramter has a special character '@' to indicate that a json
 The result will be a json output that includes the prediction along with additional data. 
 
 # Next Steps
-You can learn how to train your model in Spark within SQL Server BDC and export to MLeap.(here) [https://docs.microsoft.com/en-us/sql/big-data-cluster/train-and-create-machinelearning-models-with-spark?view=sqlallproducts-allversions]
+You can learn how to train your model in Spark within SQL Server BDC and export to MLeap.[here] (https://docs.microsoft.com/en-us/sql/big-data-cluster/train-and-create-machinelearning-models-with-spark?view=sqlallproducts-allversions)
 
