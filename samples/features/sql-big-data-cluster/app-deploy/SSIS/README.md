@@ -24,7 +24,7 @@ To run this sample, you need the following prerequisites.
 
 **Software prerequisites:**
 
-1.SQL Server big data cluster - CTP 2.3 or later.
+1.SQL Server big data cluster CTP 2.3 or later.
 2. Optional: to see the SSIS package itself, install Visual Studio 2017 if you don't have it already. After that download and install [SSDT](https://docs.microsoft.com/en-us/sql/ssdt/download-sql-server-data-tools-ssdt?view=sql-server-2017#ssdt-for-vs-2017-standalone-installer). 
 3. Optional: install [SSMS](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-2017) if it is not already installed.
 
