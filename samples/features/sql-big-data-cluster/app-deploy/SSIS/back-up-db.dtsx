@@ -7,13 +7,13 @@
   DTS:CreatorName="DOMAIN\user"
   DTS:DTSID="{3A21CCD6-3D10-450F-8A17-D4AFE4A7EC93}"
   DTS:ExecutableType="Microsoft.Package"
-  DTS:LastModifiedProductVersion="15.0.0900.40"
+  DTS:LastModifiedProductVersion="15.0.1100.123"
   DTS:LocaleID="1033"
   DTS:ObjectName="back-up-db"
   DTS:PackageType="5"
-  DTS:ProtectionLevel="2"
-  DTS:VersionBuild="16"
-  DTS:VersionGUID="{CF860C75-D034-4DCF-BDBA-64DF44015B64}">
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="23"
+  DTS:VersionGUID="{13F306BB-940C-4D66-9364-D0E72E75858D}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -24,18 +24,7 @@
       DTS:ObjectName="MasterSQL">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=service-master-pool;User ID=sa;Initial Catalog=master;Connect Timeout=30;Application Name=SSIS-back-up-db-{B8154932-D688-4129-8CFA-17D9ED72CBAE}MasterSQL;">
-          <EncryptedData
-            Type="http://www.w3.org/2001/04/xmlenc#Element"
-            Salt="VsvTFYgUnBE="
-            IV="JehPjO2CpRYmMlmsO3zauw==" xmlns="http://www.w3.org/2001/04/xmlenc#">
-            <EncryptionMethod
-              Algorithm="http://www.w3.org/2001/04/xmlenc#aes256-cbc" />
-            <CipherData>
-              <CipherValue>JehPjO2CpRYmMlmsO3zauyEGuMWFLjkOYrRfKQu0WpM8Mk2QzgPdOTKbAr3SGg4HN5djflNMUnktgqJgMwk5ri2eVyJ+L1sI18fxwibB3ZjyWOf9CWlLkFbBBegedxT+81UkdEDvsiCty3JK5jfI3mqcAXOxeTekTB9XuUZx5//tCUSJA9zCg29hNOtb4cGF</CipherValue>
-            </CipherData>
-          </EncryptedData>
-        </DTS:ConnectionManager>
+          DTS:ConnectionString="Data Source=service-master-pool;User ID=sa;Initial Catalog=master;Connect Timeout=30;Application Name=SSIS-back-up-db-{B8154932-D688-4129-8CFA-17D9ED72CBAE}MasterSQL;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
   </DTS:ConnectionManagers>
@@ -69,9 +58,9 @@
           SQLTask:BackupDestinationAutoFolderPath="/var/opt/mssql/data"
           SQLTask:BackupActionForExistingBackups="0"
           SQLTask:BackupCreateSubFolder="False"
-          SQLTask:BackupFileExtension="bak"
+          SQLTask:BackupFileExtension="DWConfigbak"
           SQLTask:BackupVerifyIntegrity="False"
-          SQLTask:ExpireDate="2019-02-11T00:00:00"
+          SQLTask:ExpireDate="2019-03-13T00:00:00"
           SQLTask:RetainDays="14"
           SQLTask:InDays="True"
           SQLTask:UseExpiration="False"
@@ -94,7 +83,46 @@
         </SQLTask:SqlTaskData>
       </DTS:ObjectData>
     </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Maintenance Cleanup Task"
+      DTS:CreationName="Microsoft.DbMaintenanceFileCleanupTask"
+      DTS:Description="Maintenance Cleanup Task"
+      DTS:DTSID="{6FF924B1-0830-4154-AD70-7873E115BFBD}"
+      DTS:ExecutableType="Microsoft.DbMaintenanceFileCleanupTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Maintenance Cleanup Task"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{B8154932-D688-4129-8CFA-17D9ED72CBAE}"
+          SQLTask:ServerVersion="9"
+          SQLTask:ExtendedLogging="True"
+          SQLTask:LocalConnectionForLogging=""
+          SQLTask:TaskName=""
+          SQLTask:IgnoreDatabasesInNotOnlineState="False"
+          SQLTask:FileTypeSelected="0"
+          SQLTask:FilePath=""
+          SQLTask:FolderPath="/var/opt/mssql/data"
+          SQLTask:CleanSubFolders="False"
+          SQLTask:FileExtension="DWConfigbak"
+          SQLTask:AgeBased="True"
+          SQLTask:DeleteSpecificFile="False"
+          SQLTask:RemoveOlderThan="1"
+          SQLTask:TimeUnitsType="5" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
   </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{60D18D48-84F4-4CE2-8DD1-287839AA89A5}"
+      DTS:From="Package\Back Up Database DWConfiguration"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Maintenance Cleanup Task" />
+  </DTS:PrecedenceConstraints>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
 <!--If you manually edit this section and make a mistake, you can delete it. -->
@@ -106,11 +134,49 @@
     design-time-name="Package">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="266,42"
           Id="Package\Back Up Database DWConfiguration"
           TopLeft="465,275" />
+        <NodeLayout
+          Size="205,42"
+          Id="Package\Maintenance Cleanup Task"
+          TopLeft="505,356" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="598,317">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="9.5,39"
+              Start="0,0"
+              End="9.5,31.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,15.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,15.5"
+                    Point2="0,19.5"
+                    Point3="4,19.5" />
+                  <mssgle:LineSegment
+                    End="5.5,19.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="5.5,19.5"
+                    Point2="9.5,19.5"
+                    Point3="9.5,23.5" />
+                  <mssgle:LineSegment
+                    End="9.5,31.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </Package>
