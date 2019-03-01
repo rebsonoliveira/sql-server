@@ -12,7 +12,7 @@
 
 ## About this sample
 
-This is a sample [Python](https://www.python.org/) app, which shows how to run a Python script in SQL Server big data cluster. This sample creates an app that adds two whole numbers and returns the result. The code for this sample is in [add.py](add.py) The inputs and outputs are shown below.
+This is a sample [Python](https://www.python.org/) app, which shows how to run a Python script in SQL Server big data cluster. This sample creates an app that adds two whole numbers and returns the result. The code for this sample is in [add.py](add.py). The inputs and outputs are shown below.
 
 ### Inputs
 |Parameter|Description|

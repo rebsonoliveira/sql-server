@@ -12,7 +12,7 @@
 
 ## About this sample
 
-This is a sample [R](https://www.r-project.org/) app, which shows how to run a R script in SQL Server big data cluster. This sample creates an app that simulates the rolling of dice. The code for this sample is in [roll-dice.R](roll-dice.R) The inputs and outputs are shown below.
+This is a sample [R](https://www.r-project.org/) app, which shows how to run a R script in SQL Server big data cluster. This sample creates an app that simulates the rolling of dice. The code for this sample is in [roll-dice.R](roll-dice.R). The inputs and outputs are shown below.
 
 ### Inputs
 |Parameter|Description|

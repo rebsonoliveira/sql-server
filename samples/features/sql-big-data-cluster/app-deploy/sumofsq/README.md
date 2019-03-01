@@ -12,7 +12,7 @@
 
 ## About this sample
 
-This is a sample [R](https://www.r-project.org/) app, which takes two whole numbers as input and returns the sum of squares (a^2 + b^2). The code for this sample is in [sum_of_squares.R](sum_of_squares.R) The inputs and outputs are shown below.
+This is a sample [R](https://www.r-project.org/) app, which takes two whole numbers as input and returns the sum of squares (a^2 + b^2). The code for this sample is in [sum_of_squares.R](sum_of_squares.R). The inputs and outputs are shown below.
 
 ### Inputs
 |Parameter|Description|

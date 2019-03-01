@@ -12,7 +12,7 @@
 
 ## About this sample
 
-This is a sample [Python](https://www.python.org/) app, which runs a [Magic 8-Ball](https://en.wikipedia.org/wiki/Magic_8-Ball). This sample creates an app that adds requires a question as input and returns an answer to the question. The code for this sample is in [magic8ball.py](magic8ball.py) The inputs and outputs are shown below.
+This is a sample [Python](https://www.python.org/) app, which runs a [Magic 8-Ball](https://en.wikipedia.org/wiki/Magic_8-Ball). This sample creates an app that adds requires a question as input and returns an answer to the question. The code for this sample is in [magic8ball.py](magic8ball.py). The inputs and outputs are shown below.
 
 ### Inputs
 |Parameter|Description|
