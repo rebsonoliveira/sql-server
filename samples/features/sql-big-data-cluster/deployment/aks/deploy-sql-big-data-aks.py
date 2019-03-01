@@ -1,7 +1,7 @@
 #
 # Prerequisites: 
 # 
-# Azure CLI (https://docs.microsoft.com/en-us/cli/azure/install-azure-cli), python3 (https://www.python.org/downloads), mssqlctl CLI (pip3 install --index-url https://private-repo.microsoft.com/python/ctp-2.0 mssqlctl )
+# Azure CLI (https://docs.microsoft.com/en-us/cli/azure/install-azure-cli), python3 (https://www.python.org/downloads), mssqlctl CLI (pip3 install -r  https://private-repo.microsoft.com/python/ctp-2.3/mssqlctl/requirements.txt )
 #
 # Run `az login` at least once BEFORE running this script
 #
@@ -58,7 +58,7 @@ os.environ['DOCKER_IMAGE_TAG']=DOCKER_IMAGE_TAG
 os.environ['DOCKER_IMAGE_POLICY']="IfNotPresent"
 os.environ['DOCKER_PRIVATE_REGISTRY']="1"
 os.environ['CLUSTER_PLATFORM']="aks"
-os.environ['ACCEPT_EULA']="Y"
+os.environ['ACCEPT_EULA']="yes"
 
 print ("Set azure context to subcription: "+SUBSCRIPTION_ID)
 command = "az account set -s "+ SUBSCRIPTION_ID
@@ -72,11 +72,11 @@ print("Creating AKS cluster: "+CLUSTER_NAME)
 command = "az aks create --name "+CLUSTER_NAME+" --resource-group "+GROUP_NAME+" --generate-ssh-keys --node-vm-size "+VM_SIZE+" --node-count "+AKS_NODE_COUNT+" --kubernetes-version 1.10.9"
 executeCmd (command)
 
-command = "az aks get-credentials --name "+CLUSTER_NAME+" --resource-group "+GROUP_NAME+" --admin"
+command = "az aks get-credentials --overwrite-existing --name "+CLUSTER_NAME+" --resource-group "+GROUP_NAME+" --admin"
 executeCmd (command)
 
 print("Creating SQL Big Data cluster:" +CLUSTER_NAME)
-command="mssqlctl create cluster "+CLUSTER_NAME
+command="mssqlctl cluster create --name "+CLUSTER_NAME
 executeCmd (command)
 
 print("")
@@ -86,10 +86,10 @@ command="kubectl get service endpoint-master-pool -o=custom-columns=""IP:.status
 executeCmd(command)
 print("")
 print("HDFS/KNOX:")
-command="kubectl get service service-security-lb -o=custom-columns=""IP:status.loadBalancer.ingress[0].ip,PORT:.spec.ports[0].port"" -n "+CLUSTER_NAME
+command="kubectl get service endpoint-security -o=custom-columns=""IP:status.loadBalancer.ingress[0].ip,PORT:.spec.ports[0].port"" -n "+CLUSTER_NAME
 executeCmd(command)
 print("")
 print("Cluster administration portal (https://<ip>:<port>):")
-command="kubectl get service service-proxy-lb -o=custom-columns=""IP:status.loadBalancer.ingress[0].ip,PORT:.spec.ports[0].port"" -n "+CLUSTER_NAME
+command="kubectl get service endpoint-service-proxy -o=custom-columns=""IP:status.loadBalancer.ingress[0].ip,PORT:.spec.ports[0].port"" -n "+CLUSTER_NAME
 executeCmd(command)
 print("")
