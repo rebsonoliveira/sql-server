@@ -1,4 +1,4 @@
-# Running a basic Python script in SQL Server big data cluster
+# Running a Magic 8-ball Python script in SQL Server big data cluster
 
 ### Contents
 
@@ -12,18 +12,17 @@
 
 ## About this sample
 
-This is a sample [Python](https://www.python.org/) app, which shows how to run a Python script in SQL Server big data cluster. This sample creates an app that adds two whole numbers and returns the result. The code for this sample is in [add.py](add.py) The inputs and outputs are shown below.
+This is a sample [Python](https://www.python.org/) app, which runs a [Magic 8-Ball](https://en.wikipedia.org/wiki/Magic_8-Ball). This sample creates an app that adds requires a question as input and returns an answer to the question. The code for this sample is in [magic8ball.py](magic8ball.py) The inputs and outputs are shown below.
 
 ### Inputs
 |Parameter|Description|
 |-|-|
-|`x`|The first whole number to add|
-|`y`|The second whole number to add|
+|`txt`|The input question on which you would like answered|
 
 ### Outputs
 |Parameter|Description|
 |-|-|
-|`result`|The result of adding `x` and `y`|
+|`result`|The answer of the Magic 8-ball|
 
 
 <a name=before-you-begin></a>
@@ -47,20 +46,20 @@ To run this sample, you need the following prerequisites.
     ```bash
     mssqlctl login -e https://<ip-address-of-endpoint-service-proxy>:30777 -u <user-name> -p <password>
     ```
-3. Deploy the application by running the following command, specifying the folder where your `spec.yaml` and `add.py` files are located:
+3. Deploy the application by running the following command, specifying the folder where your `spec.yaml` and `magic8ball.py` files are located:
     ```bash
-    mssqlctl app create --spec ./addpy
+    mssqlctl app create --spec ./magic8ball
     ```
 4. Check the deployment by running the following command:
     ```bash
-    mssqlctl app list -n addpy -v [version]
+    mssqlctl app list -n magic8ball -v [version]
     ```
     Once the app is listed as `Ready` you can continue to the next step.
 5. Test the app by running the following command:
     ```bash
-    mssqlctl app run -n addpy -v [version] --input x=3,y=5
+    mssqlctl app run -n magic8ball -v [version] --input txt="Will it rain tomorrow?"
     ```
-    You should get output like the example below. The result of adding 3+5 are returned as `result`.
+    You should get output like the example below. The answer to your question are returned as `result`.
     ```json
     {
       "changedFiles": [],
@@ -68,7 +67,7 @@ To run this sample, you need the following prerequisites.
       "errorMessage": "",
       "outputFiles": {},
       "outputParameters": {
-        "result": 8
+        "result": "You may rely on it"
       },
       "success": true
     }
@@ -76,31 +75,30 @@ To run this sample, you need the following prerequisites.
 6. You can clean up the sample by running the following commands:
     ```bash
     # delete app
-    mssqlctl app delete --name addpy --version [version]
+    mssqlctl app delete --name magic8ball --version [version]
     ```
 
 <a name=sample-details></a>
 
 ## Sample details
 
-Please refer to [add.py](add.py) for the code for this sample.
+Please refer to [magic8ball.py](magic8ball.py) for the code for this sample.
 
 ### Spec file
-Here is the spec file for this application. As you can see the sample uses the `Python` runtime and calls the `add` method in the `add.py` file, accepting two integer inputs named `x` and `y` and returning an integer output named `result`.
+Here is the spec file for this application. As you can see the sample uses the `Python` runtime and calls the `magic8ball` method in the `magic8ball.py` file, accepting a `str` input called `txt` (the question that you ask the Magic 8-ball) and returning a `str` output named `result`.
 
 ```yaml
-name: addpy
-version: v1
+name: magic8ball
+version: v2
 runtime: Python
-src: ./add.py
-entrypoint: add
+src: ./magic8ball.py
+entrypoint: magic8ball
 replicas: 1
 poolsize: 1
 inputs:
-  x: int
-  y: int
+  txt: str
 output:
-  result: int
+  result: str
 ```
 
 <a name=related-links></a>
