@@ -1,5 +1,0 @@
-name: addpy
-version: v1
-inputs:
-  x: 10
-  y: 10

@@ -1,4 +1,4 @@
-# Running a R script that returns a data frame in SQL Server big data cluster
+# Running a Python script in SQL Server big data cluster
 
 ### Contents
 
@@ -12,17 +12,18 @@
 
 ## About this sample
 
-This is a sample [R](https://www.r-project.org/) app, which shows how to run a R script in SQL Server big data cluster. This sample creates an app that simulates the rolling of dice. The code for this sample is in [roll-dice.R](roll-dice.R) The inputs and outputs are shown below.
+This is a sample [Python](https://www.python.org/) app, which shows how to run a Python script in SQL Server big data cluster. This sample creates an app that adds two whole numbers and returns the result. The code for this sample is in [add.py](add.py) The inputs and outputs are shown below.
 
 ### Inputs
 |Parameter|Description|
 |-|-|
-|`x`|The number of dice to roll|
+|`x`|The first whole number to add|
+|`y`|The second whole number to add|
 
 ### Outputs
 |Parameter|Description|
 |-|-|
-|`result`|Data frame containing the results of the dice rolls: `"Blue": [2], "Green": [6], "Red": [1]`|
+|`result`|The result of adding `x` and `y`|
 
 
 <a name=before-you-begin></a>
@@ -46,20 +47,20 @@ To run this sample, you need the following prerequisites.
     ```bash
     mssqlctl login -e https://<ip-address-of-endpoint-service-proxy>:30777 -u <user-name> -p <password>
     ```
-3. Deploy the application by running the following command, specifying the folder where your `spec.yaml` and `roll-dice.R` files are located:
+3. Deploy the application by running the following command, specifying the folder where your `spec.yaml` and `add.py` files are located:
     ```bash
-    mssqlctl app create --spec ./RollDice
+    mssqlctl app create --spec ./addpy
     ```
 4. Check the deployment by running the following command:
     ```bash
-    mssqlctl app list -n roll-dice -v [version]
+    mssqlctl app list -n addpy -v [version]
     ```
     Once the app is listed as `Ready` you can continue to the next step.
 5. Test the app by running the following command:
     ```bash
-    mssqlctl app run -n roll-dice -v [version] --input x=3
+    mssqlctl app run -n addpy -v [version] --input x=3,y=5
     ```
-    You should get output like the example for three dice below. The results of the dice rolled are in the `result` data frame:
+    You should get output like the example below. The result of adding 3+5 are returned as `result`.
     ```json
     {
       "changedFiles": [],
@@ -67,17 +68,7 @@ To run this sample, you need the following prerequisites.
       "errorMessage": "",
       "outputFiles": {},
       "outputParameters": {
-        "result": {
-          "Blue": [
-            2
-          ],
-          "Green": [
-            6
-          ],
-          "Red": [
-            1
-          ]
-        }
+        "result": 8
       },
       "success": true
     }
@@ -85,30 +76,31 @@ To run this sample, you need the following prerequisites.
 6. You can clean up the sample by running the following commands:
     ```bash
     # delete app
-    mssqlctl app delete --name roll-dice --version [version]
+    mssqlctl app delete --name addpy --version [version]
     ```
 
 <a name=sample-details></a>
 
 ## Sample details
 
-Please refer to [roll-dice.R](roll-dice.R) for the code for this sample.
+Please refer to [add.py](add.py) for the code for this sample.
 
 ### Spec file
-Here is the spec file for this application. As you can see the sample uses the `R` runtime and calls the `rollEm` method in the `roll-dice.R` file, accepting an integer input named `x` for the number of dice and providing an data frame named `result` as the output.
+Here is the spec file for this application. As you can see the sample uses the `Python` runtime and calls the `add` method in the `add.py` file, accepting two integer inputs named `x` and `y` and returning an integer output named `result`.
 
 ```yaml
-name: roll-dice
+name: addpy
 version: v1
-runtime: R
-src: ./roll-dice.R
-entrypoint: rollEm
+runtime: Python
+src: ./add.py
+entrypoint: add
 replicas: 1
 poolsize: 1
 inputs:
-  x: integer
+  x: int
+  y: int
 output:
-  result: data.frame
+  result: int
 ```
 
 <a name=related-links></a>
