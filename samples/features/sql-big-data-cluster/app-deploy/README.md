@@ -22,7 +22,9 @@ These samples demonstrates how you can deploy a simple R app into SQL Server big
 |Sample|Description|
 |-|-|
 |__[RollDice](RollDice/)__|This sample demonstrates the use of data frames by rolling dices|
+|__[sentiment-analysis](sentiment-analysis)__|Demonstrates how to run a sentiment analysis on a pre-trained model|
 |__[sumofsq](sumofsq/)__|Returns the sum of squares of two input numbers|
+
 
 ### MLeap 
 
