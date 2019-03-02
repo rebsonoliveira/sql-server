@@ -3,7 +3,7 @@
 ## Build more intelligent apps
 Application deployment allows you to deploy applications into SQL Server big data cluster as containers. These apps are hosted for you and exposed as Swagger compliant web services for usage in your application. The apps you deploy have access to the data stored in the big data cluster and can be monitored easily. For more information, see [How to deploy and app on SQL Server 2019 big data cluster (preview)](https://docs.microsoft.com/en-us/sql/big-data-cluster/big-data-cluster-create-apps?view=sqlallproducts-allversions). This page provides a number of samples for different technology stacks.
 
-![Appdeploy.png]
+![Appdeploy](Appdeploy.png)
 
 ## Pre-requisites
 * SQL Server big data cluster CTP 2.3 or later
