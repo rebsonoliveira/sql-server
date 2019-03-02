@@ -6,7 +6,6 @@
 ##
 #####################################################
 #####################################################
-#install.packages("TeachingDemos")
 # Note if you choose > 10 as the number of dice the app fails as it is not able to handle Null or N/A which are the default lables for the colors
 rollEm <- function(numDice = 2) 
 
@@ -22,7 +21,3 @@ rollEm <- function(numDice = 2)
   }
   else {"Oops we have not quite figued this out... number of dice need to be less than or equal to 10!"}
 }
-
-
-result<-rollEm(x)
-

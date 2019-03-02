@@ -34,6 +34,3 @@ def magic8ball(txt):
         msg="My sources say no"
 
     return msg
-#quizme="SQL Server Big Data Cluster is awesome"
-
-result =magic8ball(txt)
