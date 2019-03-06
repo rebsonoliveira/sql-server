@@ -1,5 +1,14 @@
 USE master;  
-GO  
+GO
+-- Create login root that is part of sysadmin. You can then login as root to get the integrated
+-- login experience in Azure Data Studio
+IF SUSER_SID('root') IS NULL
+BEGIN
+	CREATE LOGIN root WITH PASSWORD = '$(SA_PASSWORD)';
+	ALTER SERVER ROLE sysadmin ADD MEMBER root;
+END;
+GO
+
 -- Enable external scripts execution for R/Python/Java:
 exec sp_configure 'external scripts enabled', 1;
 RECONFIGURE WITH OVERRIDE;

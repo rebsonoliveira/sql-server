@@ -64,5 +64,8 @@ SELECT TOP (100)
 GROUP BY w.wcs_user_sk;
 GO
 
+-- Cleanup
+/*
 DROP EXTERNAL TABLE [dbo].[web_clickstream_clicks_data_pool];
 GO
+*/

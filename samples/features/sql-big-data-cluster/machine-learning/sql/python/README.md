@@ -14,6 +14,12 @@ In this example, we are building a machine learning model using Python. The scri
 
 In this example, we are leveraging the new partitioning support (SQL Server 2019) in sp_execute_external_script to partition the input data and run the Python script per partition. So we will modify the training script to train model per group of users based on credit rating. The Python script will produce N models for the same input data set.
 
+[book-click-prediction-mml-py.sql](book-click-prediction-mml-py.sql/)
+
+**Applies to:** SQL Server 2017+, SQL Server 2019 big data cluster
+
+In this example, we are building a machine learning model using Python. The script uses a logistic regression algorithm from microsoftml package to train and score the model.
+
 [book-click-prediction-sklearn-py.sql](book-click-prediction-sklearn-py.sql/)
 
 **Applies to:** SQL Server 2017+, SQL Server 2019 big data cluster

@@ -6,6 +6,16 @@ Installation instructions for SQL Server 2019 big data clusters can be found [he
 
 **Before you begin**, load the sample data into your big data cluster. For instructions, see [Load sample data into a SQL Server 2019 big data cluster](https://docs.microsoft.com/en-us/sql/big-data-cluster/tutorial-load-sample-data).
 
+## Executing the sample scripts
+The scripts should be executed in a specific order to test the various features. Execute the scripts from each folder in below order:
+
+1. __[spark](spark/)__
+1. __[data-virtualization/storage-pool](data-virtualization/storage-pool)__
+1. __[data-virtualization/oracle](data-virtualization/oracle)__
+1. __[data-pool](data-pool/)__
+1. __[machine-learning/r](machine-learning/r)__
+1. __[machine-learning/python](machine-learning/python)__
+
 ## __[data-pool](data-pool/)__
 
 SQL Server 2019 big data cluster contains a data pool which consists of many SQL Server instances to store data & query in a scale-out manner.

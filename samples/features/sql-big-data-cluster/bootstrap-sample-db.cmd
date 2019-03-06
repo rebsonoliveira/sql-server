@@ -36,7 +36,7 @@ echo Copying database backup file...
 del tpcxbb_1gb.bak >NUL
 
 echo Configuring sample database...
-%DEBUG% sqlcmd -S %SQL_MASTER_INSTANCE% -Usa -P%SQL_MASTER_SA_PASSWORD% -i "%STARTUP_PATH%bootstrap-sample-db.sql" -o "bootstrap.out" -I -b || goto exit
+%DEBUG% sqlcmd -S %SQL_MASTER_INSTANCE% -Usa -P%SQL_MASTER_SA_PASSWORD% -i "%STARTUP_PATH%bootstrap-sample-db.sql" -o "bootstrap.out" -I -b -v SA_PASSWORD="%KNOX_PASSWORD%" || goto exit
 
 for %%F in (web_clickstreams inventory customer) do (
     echo Exporting %%F data...
@@ -61,6 +61,7 @@ del /q product_reviews.*
 
 REM %DEBUG% del /q *.out *.err *.csv
 echo Bootstrap of the sample database completed successfully.
+echo You can now login using "root" and Knox password to get the unified experience in Azure Data Studio.
 echo Data files for Oracle setup are located at [%TMP%\%TMP_DIR_NAME%].
 
 popd
