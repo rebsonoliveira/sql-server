@@ -1,4 +1,4 @@
-# Scheduling a SQL Server Integration Services package in SQL Server big data cluster
+# Running or scheduling a SQL Server Integration Services package in SQL Server big data cluster
 
 ### Contents
 
@@ -12,7 +12,7 @@
 
 ## About this sample
 
-This is a sample [SQL Server Integration Services (SSIS)](https://docs.microsoft.com/en-us/sql/integration-services/sql-server-integration-services?view=sql-server-2017) app, which shows how to run a SSIS package as a scheduled service. This sample creates an app that is called each minute that executes an SSIS package. The SSIS package creates a backup of the `DWConfiguration` database on the master SQL instance to disk. Also, the package cleans any backup files for the `DWConfiguration` database that are older than one hour, making sure that maximum 60 backup files will be on disk at any moment.
+This is a sample [SQL Server Integration Services (SSIS)](https://docs.microsoft.com/en-us/sql/integration-services/sql-server-integration-services?view=sql-server-2017) app, which shows how to run a SSIS package as a scheduled service. This sample creates an app that is called each minute that executes an SSIS package. It also shows you how to run the SSIS package on demand. The SSIS package creates a backup of the `DWConfiguration` database on the master SQL instance to disk. Also, the package cleans any backup files for the `DWConfiguration` database that are older than one hour, making sure that maximum 60 backup files will be on disk at any moment.
 
 <a name=before-you-begin></a>
 
@@ -73,7 +73,7 @@ Here is the spec file for this application. This sample uses the `SSIS` runtime 
 |Setting|Description|
 |-|-|
 |options|Specifies any command line parameters passed to the execution of the SSIS package|
-|schedule|Specifies when the job should run. This follows cron expressions. A value of '*/1 * * * *' means the job runs *every minute*.|
+|schedule|Specifies when the job should run. This follows cron expressions. A value of '*/1 * * * *' means the job runs *every minute*. If omitted the package will not run automatically and you can run the package on demand using `mssqlctl run -n back-up-db -v [version]` or making a call to the API.|
 
 ```yaml
 name: back-up-db
