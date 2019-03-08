@@ -64,6 +64,8 @@ To run this sample, you need the following prerequisites.
 
    The result will be a json output that includes the prediction along with additional data, including the predicted price per square feet.
 
+    > **RESTful web service**. Note that any app you create is also accessible using a RESTful web service that is [Swagger](swagger.io) compliant. See step 6 in the [Addpy sample](../addpy/README.md#restapi) for detailed instructions on how to call the web service.
+
 6. You can clean up the sample by running the following commands:
    ```bash
    # delete app
