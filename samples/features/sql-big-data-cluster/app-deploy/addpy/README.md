@@ -73,7 +73,7 @@ To run this sample, you need the following prerequisites.
       "success": true
     }
     ```
-6. Any app you create is also accessible using a RESTful web service that is [Swagger](swagger.io) compliant. You can get the endpoint for the web service by running:
+6. <a name=restapi></a>Any app you create is also accessible using a RESTful web service that is [Swagger](swagger.io) compliant. You can get the endpoint for the web service by running:
    ```bash
    mssqlctl app describe --name addpy --version [version]
    ```
