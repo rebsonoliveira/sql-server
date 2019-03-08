@@ -43,23 +43,23 @@ To run this sample, you need the following prerequisites.
    ```bash
    mssqlctl login -e https://<ip-address-of-endpoint-service-proxy>:30777 -u <user-name> -p <password>
    ```
-3. This example uses a Machine Learning Model that predicts the price per square foot of an Airbnb property based on various parameters such as the location and type of dwelling. [More details and information on the example are here](http://mleap-docs.combust.ml/mleap-serving/#load-model). The application you will be deploying as part of this sample is a Random Forest Model that was built in Spark and has been serialized as an MLeap bundle. 
+3. This example uses a TensorFlow Machine Learning Model that uses public US Census data predict income. [More details and information on the example are here](https://docs.microsoft.com/en-us/sql/big-data-cluster/train-and-create-machinelearning-models-with-spark?view=sqlallproducts-allversions). The application you will be deploying as part of this sample is a Random Forest Model that was built in Spark and has been [serialized as an MLeap bundle](https://docs.microsoft.com/en-us/sql/big-data-cluster/export-model-with-spark-mleap?view=sqlallproducts-allversions).
 
    Deploy the app using the `create` command and pass the location of the spec file. In the example below, the spec file is expected to be in the `mleap` folder: 
    ```bash
-   mssqlctl app create --spec ./mleap
+   mssqlctl app create --spec ./mleap/
    ```
-4. Check the deployment by running the following command:
+1. Check the deployment by running the following command:
    ```bash
-   mssqlctl app list -n mleap -v [version]
+   mssqlctl app list -n mleap-census -v [version]
    ```
    Once the app is listed as `Ready` you can continue to the next step.
-5. Now that the app has been deployed you can test if the app works correctly by passing in a sample input that is available in the mleap folder. The deployed app is a RESTful webservice that is [Swagger](swagger.io) compliant. For this sample we will show you how you can test this using the CLI.
+2. Now that the app has been deployed you can test if the app works correctly by passing in a sample input that is available in the `mleap` folder. The deployed app is a RESTful webservice that is [Swagger](swagger.io) compliant. For this sample we will show you how you can test this using the CLI.
 
-   To test the app, run the command below. The input parameter is a `LeapFrame`, a `json` file that describes the parameters and the values provided to the model for predicting the cost per square feet. Note that the input parameter has a special character '@' to indicate that a `json` file is being passed. This command needs to be run within the `mleap` folder. 
+   To test the app, run the command below. The input parameter is a `MLeapFrame`, a `json` file that describes the parameters and the values provided to the model for predicting the cost per square feet. Note that the input parameter has a special character '@' to indicate that a `json` file is being passed. This command needs to be run within the `mleap` folder. 
 
    ```bash
-   mssqlctl app run --name mleap --version [version] --input mleap-frame=@frame.json
+   mssqlctl app run --name mleap-census --version [version] --input schema=@census_frame.json
    ```
 
    The result will be a json output that includes the prediction along with additional data, including the predicted price per square feet.
@@ -69,7 +69,7 @@ To run this sample, you need the following prerequisites.
 6. You can clean up the sample by running the following commands:
    ```bash
    # delete app
-   mssqlctl app delete --name mleap --version [version]
+   mssqlctl app delete --name mleap-census --version [version]
    ```
 
 <a name=sample-details></a>
@@ -82,10 +82,10 @@ The spec file serves as the data required for deploying the app and it contains 
 Here is the spec file for this application:
 
 ```yaml
-name: mleap
+name: mleap-census
 version: v1
 runtime: Mleap
-bundleFileName: model.lr.zip
+bundleFileName: census_bundle.zip
 replicas: 2
 poolsize: 2
 ```
