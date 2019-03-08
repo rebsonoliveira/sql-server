@@ -77,7 +77,7 @@ To run this sample, you need the following prerequisites.
     # delete app
     mssqlctl app delete --name magic8ball --version [version]
     ```
-    Note that any app you create is also accessible using a RESTful web service that is [Swagger](swagger.io) compliant. See step 6 in the [Addpy sample](../addpy/readme.md) for detailed instructions on how to call the web service.
+    Note that any app you create is also accessible using a RESTful web service that is [Swagger](swagger.io) compliant. See step 6 in the [Addpy sample](../addpy/) for detailed instructions on how to call the web service.
 
 <a name=sample-details></a>
 
