@@ -12,6 +12,10 @@ Application deployment allows you to deploy applications into SQL Server big dat
 * Tip 
 **mssqlctl app -h** will display the various commands to manage the app
 
+## Templates
+Templates are used by our [App Deploy add-ins](https://docs.microsoft.com/en-us/sql/big-data-cluster/app-deployment-extension?view=sqlallproducts-allversions) and can be used to quickly deploy applications.
+> Looking for our templates? See [the SQLBDC-AppDeploy repo](https://github.com/Microsoft/SQLBDC-AppDeploy).
+
 ## Available samples
 ### Python 
 These samples demonstrates how you can deploy a simple Python app into SQL Server big data cluster as container app as web service that is swagger compliant for building your application.
