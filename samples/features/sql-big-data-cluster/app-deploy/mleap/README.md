@@ -59,7 +59,7 @@ To run this sample, you need the following prerequisites.
    To test the app, run the command below. The input parameter is a `LeapFrame`, a `json` file that describes the parameters and the values provided to the model for predicting the cost per square feet. Note that the input parameter has a special character '@' to indicate that a `json` file is being passed. This command needs to be run within the `mleap` folder. 
 
    ```bash
-   mssqlctl app run --name mleap --version [version] --inputs mleap-frame=@frame.json
+   mssqlctl app run --name mleap --version [version] --input mleap-frame=@frame.json
    ```
 
    The result will be a json output that includes the prediction along with additional data, including the predicted price per square feet.
