@@ -1,4 +1,0 @@
-name: hello-python
-version: v1
-inputs:
-   msg: hello
