@@ -1,4 +1,4 @@
 name: hello-mleap
-version: v0
+version: v1
 runtime: Mleap
 bundleFileName: model.lr.zip
