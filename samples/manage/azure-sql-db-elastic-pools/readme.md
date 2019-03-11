@@ -204,3 +204,4 @@ For more information, see these articles:
 - [Monitor and manage an elastic database pool with Transact-SQL](https://azure.microsoft.com/documentation/articles/sql-database-elastic-pool-manage-tsql/)
 
 - [Monitor and manage an elastic database pool with the Azure portal](https://azure.microsoft.com/documentation/articles/sql-database-elastic-pool-manage-portal/)
+- 
