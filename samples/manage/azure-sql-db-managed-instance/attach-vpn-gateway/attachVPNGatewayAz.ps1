@@ -24,7 +24,7 @@ function VerifyPSVersion
 
 function Ensure-Login () 
 {
-    $context = Get-AzureRmContext
+    $context = Get-AzContext
     If($context.Subscription -eq $null)
     {
         Write-Host "Loging in ..."
