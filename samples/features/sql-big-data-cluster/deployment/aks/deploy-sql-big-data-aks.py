@@ -59,6 +59,7 @@ os.environ['DOCKER_IMAGE_POLICY']="IfNotPresent"
 os.environ['DOCKER_PRIVATE_REGISTRY']="1"
 os.environ['CLUSTER_PLATFORM']="aks"
 os.environ['ACCEPT_EULA']="yes"
+os.environ['STORAGE_SIZE']="10Gi"
 
 print ("Set azure context to subcription: "+SUBSCRIPTION_ID)
 command = "az account set -s "+ SUBSCRIPTION_ID
