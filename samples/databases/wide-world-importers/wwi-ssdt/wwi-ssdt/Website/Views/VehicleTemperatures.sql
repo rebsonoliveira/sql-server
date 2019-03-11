@@ -1,5 +1,4 @@
-﻿
-CREATE VIEW Website.VehicleTemperatures
+﻿CREATE VIEW Website.VehicleTemperatures
 AS
 SELECT vt.VehicleTemperatureID,
        vt.VehicleRegistration,

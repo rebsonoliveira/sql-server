@@ -1,5 +1,4 @@
-﻿
-CREATE VIEW Website.Suppliers
+﻿CREATE VIEW [Website].[Suppliers]
 AS
 SELECT s.SupplierID,
        s.SupplierName,
@@ -24,3 +23,6 @@ LEFT OUTER JOIN [Application].DeliveryMethods AS dm
 ON s.DeliveryMethodID = dm.DeliveryMethodID
 LEFT OUTER JOIN [Application].Cities AS c
 ON s.DeliveryCityID = c.CityID
+GO
+
+

@@ -65,6 +65,10 @@ The sample scripts are available as Transact-SQL. The workload drivers are sampl
 
 The source code for the sample is further structured as follows:
 
+__[power-bi-dashboards](power-bi-dashboards/)__
+
+Sample Power BI dashboards that leverage the WideWorldImporters and WideWorldImportersDW databases.
+
 __[sample-scripts](sample-scripts/)__
 
 Sample scripts that illustrate the use of various SQL Server features with the WideWorldImporters sample database.

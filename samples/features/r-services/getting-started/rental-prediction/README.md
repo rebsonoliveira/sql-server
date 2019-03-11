@@ -36,7 +36,7 @@ Follow the step by step tutorial [here](http://aka.ms/sqldev/R) to walk through 
 
 To run this sample, you need the following prerequisites.
 Section 1 in the [tutorial](http://aka.ms/sqldev/R) covers the prerequisites.
-After that, you can download a DB backup file and restore it using Setup.sql. [Download DB](https://deve2e.azureedge.net/sqlchoice/static/TutorialDB.bak)
+After that, you can download a DB backup file and restore it using Setup.sql. [Download DB](https://sqlchoice.blob.core.windows.net/sqlchoice/TutorialDB.bak)
 
 **Software prerequisites:**
 

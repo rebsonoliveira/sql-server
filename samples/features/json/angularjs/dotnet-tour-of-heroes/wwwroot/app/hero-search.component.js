@@ -8,12 +8,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var router_1 = require('@angular/router');
-var Observable_1 = require('rxjs/Observable');
-var Subject_1 = require('rxjs/Subject');
-var hero_search_service_1 = require('./hero-search.service');
-var HeroSearchComponent = (function () {
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@angular/core");
+var router_1 = require("@angular/router");
+var Observable_1 = require("rxjs/Observable");
+var Subject_1 = require("rxjs/Subject");
+var hero_search_service_1 = require("./hero-search.service");
+var HeroSearchComponent = /** @class */ (function () {
     function HeroSearchComponent(heroSearchService, router) {
         this.heroSearchService = heroSearchService;
         this.router = router;
@@ -29,7 +30,9 @@ var HeroSearchComponent = (function () {
             .debounceTime(300) // wait for 300ms pause in events
             .distinctUntilChanged() // ignore if next search term is same as previous
             .switchMap(function (term) { return term // switch to new observable each time
+            // return the http search observable
             ? _this.heroSearchService.search(term)
+            // or the observable of empty heroes if no search term
             : Observable_1.Observable.of([]); })
             .catch(function (error) {
             // TODO: real error handling
@@ -48,8 +51,9 @@ var HeroSearchComponent = (function () {
             templateUrl: 'hero-search.component.html',
             styleUrls: ['hero-search.component.css'],
             providers: [hero_search_service_1.HeroSearchService]
-        }), 
-        __metadata('design:paramtypes', [hero_search_service_1.HeroSearchService, router_1.Router])
+        }),
+        __metadata("design:paramtypes", [hero_search_service_1.HeroSearchService,
+            router_1.Router])
     ], HeroSearchComponent);
     return HeroSearchComponent;
 }());

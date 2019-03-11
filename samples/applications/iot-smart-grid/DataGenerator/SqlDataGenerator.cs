@@ -12,17 +12,14 @@
 // places, or events is intended or should be inferred.  
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Data.SqlClient;
-using System.Data.Sql;
-using System.Data;
-using System.Diagnostics;
-using System.Collections.Concurrent;
-using Microsoft.SqlServer.Server;
 
 namespace DataGenerator
 {
@@ -37,18 +34,29 @@ namespace DataGenerator
         private Action<int, Exception> onException;
         private ConcurrentDictionary<int, CancellableTask> tasks;
 
-        private string sqlConnectionString;
+        private string[] sqlConnectionStrings;
         private string sqlInsertMeterMeasurementSPName;
         private int sqlCommandTimeout;
         private int batchSize;
-        private int initialNumberOfTasks;
+        private int numberOfDataLoadTasks;
+        private int dataLoadCommandDelay;
+
+        private string sqlDeleteMeterMeasurementSPName;
+        private int numberOfOffLoadTasks;
+        private int offLoadCommandDelay;
+        private int deleteBatchSize;
+
         private int numberOfMetersPerTask;
         private int numberOfBatchesPerTask;
-        private int delay;
+
         private int numberOfMeters;
+        private int numberOfSqlConnections;
 
         private Stopwatch timer;
         private int numberOfRowsInserted = 0;
+        private int numberOfRowsDeleted = 0;
+        private int numberOfRowsOfloadLimit;
+
 
         protected ThreadLocal<Random> randomValue;
         private bool running = false;
@@ -57,11 +65,11 @@ namespace DataGenerator
         /// <returns>Integer</returns>
         public int Delay
         {
-            get { return delay; }
+            get { return dataLoadCommandDelay; }
             set
             {
-                Validate(this.batchSize, this.initialNumberOfTasks, value, this.numberOfMeters);
-                delay = value;
+                Validate(this.batchSize, this.numberOfDataLoadTasks, value, this.numberOfMeters);
+                dataLoadCommandDelay = value;
             }
         }
 
@@ -72,7 +80,7 @@ namespace DataGenerator
             get { return batchSize; }
             set
             {
-                Validate(value, this.initialNumberOfTasks, this.delay, this.numberOfMeters);
+                Validate(value, this.numberOfDataLoadTasks, this.dataLoadCommandDelay, this.numberOfMeters);
                 batchSize = value;
             }
         }
@@ -80,6 +88,8 @@ namespace DataGenerator
         /// <summary>Rows (inserted or updated) per second.</summary>
         /// <returns>Double</returns>
         public double Rps => (double)this.numberOfRowsInserted / this.timer.Elapsed.TotalSeconds;
+
+        public double Drps => (double)this.numberOfRowsDeleted / this.timer.Elapsed.TotalSeconds;
 
         /// <summary>The number of current active tasks.</summary>
         /// <returns>Integer</returns>
@@ -90,39 +100,54 @@ namespace DataGenerator
         public bool IsRunning => this.running;
 
         /// <summary>Creates a new instance of the SqlDataGenerator Class.</summary>
-        /// <param name="sqlConnectionString">The sqlserver connectionString. Example: "Data Source=.;Initial Catalog=DbName;Integrated Security=True"</param>
+        /// <param name="sqlConnectionStrings">The sqlserver connectionString. Example: "Data Source=.;Initial Catalog=DbName;Integrated Security=True"</param>
         /// <param name="sqlInsertSPName">The Insert Meter Measurement sqlserver stored procedure. Example: "InsertMeterMeasurement". Note that the sql stored procedure needs to accept exactly two parameters: @Batch AS (Your User Defined Table Type) and @BatchSize INT</param>        
         /// <param name="sqlCommandTimeout">The sqlserver command timeout. Example: 600</param>
         /// <param name="numberOfMeters">The total number of Meters. Example: 1000</param>
-        /// <param name="initialNumberOfTasks">The number of concurrent tasks. Example: 5. Note that every task 1.Creates and opens a new sql connection 2.Creates a batch of BatchSize sample data and 3.Executes the sql stored procedure passed in sqlStoredProcedureName endless times until stopped by the user.</param>
-        /// <param name="delayInMilliseconds">Delay in Millisecods betweeen Sql Commands. Example. 100</param>
+        /// <param name="numbeOfDataLoadTasks">The number of concurrent tasks. Example: 5. Note that every task 1.Creates and opens a new sql connection 2.Creates a batch of BatchSize sample data and 3.Executes the sql stored procedure passed in sqlStoredProcedureName endless times until stopped by the user.</param>
+        /// <param name="dataLoadCommandDelay">Delay in Millisecods betweeen Sql Commands. Example. 100</param>
         /// <param name="batchSize">The row count of the batch size to be used by every task. Example: 200</param>
         /// <param name="batchDataTypes">The pipe seperated column types of the batch table. Example. identity:1:1|string|datetime|double|int|guid</param>
         /// <param name="onException">Exception call back method with TaskId(int) and exception(Exception). Example: ExceptionCallback</param>
         public SqlDataGenerator(
-            string sqlConnectionString, 
+            string[] sqlConnectionStrings,
             string sqlInsertSPName,
-            int sqlCommandTimeout, 
+            int sqlCommandTimeout,
             int numberOfMeters,
-            int initialNumberOfTasks, 
-            int delayInMilliseconds, 
-            int batchSize, 
+            int numbeOfDataLoadTasks,
+            int dataLoadCommandDelay,
+            int batchSize,
+            string sqlDeleteSPName,
+            int numberOfOffLoadTasks,
+            int offLoadCommandDelay,
+            int deleteBatchSize,
+            int numberOfRowsOfloadLimit,
             Action<int, Exception> onException)
         {
 
-            this.sqlConnectionString = sqlConnectionString;
+            this.sqlConnectionStrings = sqlConnectionStrings;
+            this.numberOfSqlConnections = sqlConnectionStrings.Count();
             this.sqlInsertMeterMeasurementSPName = sqlInsertSPName;
+            this.sqlDeleteMeterMeasurementSPName = sqlDeleteSPName;
+
             this.sqlCommandTimeout = sqlCommandTimeout;
             this.numberOfMeters = numberOfMeters;
             this.onException = onException;
             this.tasks = new ConcurrentDictionary<int, CancellableTask>();
             this.randomValue = new ThreadLocal<Random>(() => new Random(Guid.NewGuid().GetHashCode()));
-            this.initialNumberOfTasks = initialNumberOfTasks;
-            this.delay = delayInMilliseconds;
-            this.batchSize = batchSize;
-            
-            Validate(this.batchSize, this.initialNumberOfTasks, this.delay, this.numberOfMeters);
 
+            this.numberOfDataLoadTasks = numbeOfDataLoadTasks * this.numberOfSqlConnections;
+            this.dataLoadCommandDelay = dataLoadCommandDelay;
+
+            this.numberOfOffLoadTasks = numberOfOffLoadTasks * this.numberOfSqlConnections;
+            this.offLoadCommandDelay = offLoadCommandDelay;
+            this.deleteBatchSize = deleteBatchSize;
+
+            this.batchSize = batchSize;
+            this.numberOfRowsOfloadLimit = numberOfRowsOfloadLimit;
+
+
+            Validate(this.batchSize, this.numberOfDataLoadTasks, this.dataLoadCommandDelay, this.numberOfMeters);
         }
 
         /// <summary>Creates and Starts all the tasks asynchronously. Note that every task 1.Creates and opens a new sql connection 2.Creates a batch of BatchSize sample data and 3.Executes the sql stored procedure passed in sqlStoredProcedureName endless times until stopped by the user.</summary>
@@ -134,7 +159,7 @@ namespace DataGenerator
                 return;
             }
             timer = Stopwatch.StartNew();
-            await this.RunAsync(this.initialNumberOfTasks);
+            await this.RunAsync(this.sqlConnectionStrings, this.numberOfDataLoadTasks, this.numberOfOffLoadTasks);
         }
 
         /// <summary>Stops all tasks asynchronously.</summary>
@@ -142,6 +167,8 @@ namespace DataGenerator
         public async Task StopAsync()
         {
             await this.StopAsync(this.RunningTasks);
+            this.timer.Stop();
+            this.numberOfRowsInserted = 0;
         }
 
         /// <summary>Restarts the Rows/Second Counter. This is called internally every time the input is changed.</summary>
@@ -155,46 +182,24 @@ namespace DataGenerator
             }
         }
 
-        /// <summary>Updates the number of tasks that the DataGenerator is using.</summary>
-        /// <returns>Task</returns>
-        /// <remarks></remarks>
-        /// <param name="numberOfTasks">The number of Tasks to start/stop depending of the number of tasks currently running.</param>
-        public async Task UpdateTasksAsync(int numberOfTasks)
-        {
-            int diff = numberOfTasks - this.RunningTasks;
-
-            if (!running || diff == 0)
-            {
-                this.initialNumberOfTasks = numberOfTasks;
-                return;
-            }
-
-            if (diff < 0)
-            {
-                await this.StopAsync(-diff);
-            }
-            else
-            {
-                await this.RunAsync(diff);
-            }
-        }
-
         /// <summary>InsertMeterMeasurementAsync(int taskId, CancellationToken token)</summary>
         /// <returns>Task</returns>
         /// <remarks>Every Task creates a new sql connection, creates a new sqlcommand, create a batch of random numbers, and executes indefinetely until stopped by the user.</remarks>
         /// <param name="taskId">The taskId</param>
         /// <param name="token">The task's CancellationToken</param>
-        private async Task InsertMeterMeasurementAsync(int taskId, CancellationToken token)
+        private async Task InsertAsync(int taskId, string sqlConnectionString, CancellationToken token)
         {
+
+
             int batchId = 0;
             int size = this.BatchSize;
-            
-            using (SqlConnection connection = new SqlConnection(this.sqlConnectionString))
+
+            using (SqlConnection connection = new SqlConnection(sqlConnectionString))
             {
                 await connection.OpenAsync(token);
-
+                
                 using (SqlCommand command = new SqlCommand())
-                {                    
+                {
                     command.Connection = connection;
                     command.CommandType = CommandType.StoredProcedure;
                     command.CommandTimeout = this.sqlCommandTimeout;
@@ -202,45 +207,58 @@ namespace DataGenerator
                     command.Parameters.Add("@Batch", SqlDbType.Structured);
                     command.Parameters.Add("@BatchSize", SqlDbType.Int).Value = this.BatchSize;
 
-                    while (!token.IsCancellationRequested)
-                    {
-                        DataTable dataTable = CreateBatch(taskId, batchId++);                        
-                        command.Parameters[0].Value = dataTable;
+                    DataTable dataTable = CreateBatch(taskId, batchId++);
+                    command.Parameters[0].Value = dataTable;
 
-                        await command.ExecuteNonQueryAsync(token);
-                        Interlocked.Add(ref this.numberOfRowsInserted, size);
-                        await Task.Delay(this.Delay, token);
+                    using (SqlCommand deleteCommand = new SqlCommand())
+                    {
+                        deleteCommand.Connection = connection;
+                        deleteCommand.CommandType = CommandType.StoredProcedure;
+                        deleteCommand.CommandTimeout = this.sqlCommandTimeout;
+                        deleteCommand.CommandText = this.sqlDeleteMeterMeasurementSPName;
+                        deleteCommand.Parameters.Add("@MeterID", SqlDbType.Int).Value = taskId;
+
+                        while (!token.IsCancellationRequested)
+                        {
+                            await command.ExecuteNonQueryAsync(token);
+                            Interlocked.Add(ref this.numberOfRowsInserted, size);
+                            await Task.Delay(this.Delay, token);
+
+                            if (Rps > this.numberOfRowsOfloadLimit)
+                            {
+                                await deleteCommand.ExecuteNonQueryAsync(token);
+                            }
+                        }
                     }
                 }
             }
         }
-
+        
         /// <summary>CreateMeterMeasurementBatch(int taskId)</summary>
         /// <returns>DataTable</returns>
         /// <param name="taskId">Task Id</param>
         private DataTable CreateBatch(int taskId, int batchId)
-        {            
+        {
             DataTable table = new DataTable();
             table.Columns.Add("RowID", typeof(int));
             table.Columns.Add("MeterID", typeof(int));
             table.Columns.Add("MeasurementInkWh", typeof(double));
             table.Columns.Add("PostalCode", typeof(string));
             table.Columns.Add("MeasurementDate", typeof(DateTime));
-            
+
             batchId = (batchId % this.numberOfBatchesPerTask);
             for (int i = 1; i <= this.batchSize; i++)
             {
-                int randomPostalCode = randomValue.Value.Next(0, this.postalCodes.Length);   
-                int meterId = taskId * this.numberOfMetersPerTask + batchId * this.BatchSize + i;
+                int randomPostalCode = randomValue.Value.Next(0, this.postalCodes.Length);
+                int meterId = taskId;
+
                 double value = randomValue.Value.NextDouble();
                 DateTime date = DateTime.Now;
                 string postalCode = this.postalCodes[randomPostalCode].ToString();
 
-                // Data Shock - Produces 10X values
-                value = this.Delay == 0 ? value * 10 : value; 
-
-                table.Rows.Add(i, meterId, value, postalCode, date);                
+                table.Rows.Add(i, meterId, value, postalCode, date);
             }
+
             return table;
         }
 
@@ -265,22 +283,33 @@ namespace DataGenerator
 
         /// <summary>RunAsync(int numberOfTasks)</summary>
         /// <returns>Task</returns>
-        /// <param name="numberOfTasks">The number of Tasks to start/stop depending of the number of tasks currently running.</param>
-        private async Task RunAsync(int numberOfTasks)
-        {            
-            for (int i = 0; i < numberOfTasks; i++)
-            {
-                CancellationTokenSource tokenSource = new CancellationTokenSource();
-                int taskId = i;
-                Task task = Task.Factory.StartNew(
-                    async () => await this.InsertMeterMeasurementAsync(taskId, tokenSource.Token).ContinueWith(t => CleanupTask(taskId, t)),
-                    tokenSource.Token,
-                    TaskCreationOptions.LongRunning,
-                    TaskScheduler.Default).Unwrap();
+        /// <param name="numberOfDataLoadTasks">The number of Tasks to start/stop depending of the number of tasks currently running.</param>
+        private async Task RunAsync(string[] connectionStrings, int numberOfDataLoadTasks, int numberOfOffLoadTasks)
+        {
+            int dataLoadTasksPerSqlConnection = numberOfDataLoadTasks / this.numberOfSqlConnections;
+            int offLoadTasksPerSqlConnection = numberOfOffLoadTasks / this.numberOfSqlConnections;
 
-                tasks.TryAdd(taskId, new CancellableTask(taskId, task, tokenSource));
+            string con;
+            
+            for (int j = 0; j < this.numberOfSqlConnections; j++)
+            {
+                con = connectionStrings[j]; // set connection string
+
+                // Start Data Load Tasks
+                for (int i = j * dataLoadTasksPerSqlConnection; i < (j + 1) * dataLoadTasksPerSqlConnection; i++)
+                {
+                    CancellationTokenSource tokenSource = new CancellationTokenSource();
+                    int taskId = i;
+                    Task task = Task.Factory.StartNew(
+                        async () => await this.InsertAsync(taskId, con, tokenSource.Token).ContinueWith(t => CleanupTask(taskId, t)),
+                        tokenSource.Token,
+                        TaskCreationOptions.LongRunning,
+                        TaskScheduler.Default).Unwrap();
+
+                    tasks.TryAdd(taskId, new CancellableTask(taskId, task, tokenSource));
+                }
             }
- 
+
             this.running = true;
 
             await Task.WhenAll(this.tasks.Values.Select(t => t.Task));
@@ -302,7 +331,7 @@ namespace DataGenerator
             }
         }
 
-        /// <summary>Validate(int batchSize, int tasks, int delay)</summary>
+        /// <summary>Validate(int batchSize, int tasks, int dataLoadCommandDelay)</summary>
         /// <param name="batchSize">The Batch Size</param>
         /// <param name="tasks">The number Of Tasks</param>
         /// <param name="delay">Teh Delay</param>
@@ -333,7 +362,7 @@ namespace DataGenerator
             RpsReset();
 
             // Set Number Of Meters Per Tasks
-            this.numberOfMetersPerTask = this.numberOfMeters / this.initialNumberOfTasks;
+            this.numberOfMetersPerTask = this.numberOfMeters / this.numberOfDataLoadTasks;
             this.numberOfBatchesPerTask = this.numberOfMetersPerTask / this.BatchSize;
         }
     }

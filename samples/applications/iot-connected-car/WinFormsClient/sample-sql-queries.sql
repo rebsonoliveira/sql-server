@@ -34,7 +34,7 @@
 			AVG(EngineOil) AS AvgEngineOil,
 			AVG(TirePressure) AS AvgTirePressure,
 			MIN(TransmissionGearPosition) AS MinGearPosition,
-			MAX(TransmissionGearPosition) AS MinGearPosition,
+			MAX(TransmissionGearPosition) AS MaxGearPosition,
 			AVG(TransmissionGearPosition) AS AvgGearPosition
 	FROM	EventsHistory
 	WHERE	AutoID = 50

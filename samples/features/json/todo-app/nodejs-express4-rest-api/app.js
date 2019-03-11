@@ -5,7 +5,7 @@ var tediousExpress = require('express4-tedious');
 
 var app = express();
 app.use(function (req, res, next) {
-    req.query = tediousExpress(req, config.get('connection'));
+    req.sql = tediousExpress(config.get('connection'));
     next();
 });
 
