@@ -26,6 +26,7 @@ This readme applies to the PowerShell scripts: PoolTelemetryJobRunner.ps1 and Po
 [Disclaimers](#disclaimers)<br/>
 [Related links](#related-links)<br/>
 
+
 <a name=what-do-the-powershell-scripts-do?></a>
 
 ## What do the PowerShell scripts do?
@@ -34,7 +35,7 @@ The scripts are used to extract telemetry data associated with SQL Database elas
 
 There is a runner script, PoolTelemetryRunner.ps1, which needs to be modified for your environment to identify one or more servers on which elastic pools and databases are hosted and a telemetry database in which telemetry data is to be gathered.  The runner script executes a function in the data collection script, PoolTelemetry.ps1 as a PowerShell job for each server.  
 
-Each data collection job executes in the background on a pre-determined schedule and will on first execution create the required schema in the telemetry database.  It then connects to the master database on the server and retrieves elastic pool telemetry data and loads that to the telemetry database.   It can optionally look back 14 days on first execution to get all available telemetry.
+Each data collection job executes in the background on a pre-determined schedule and will on first execution create the required schema in the telemetry database.  It then connects to the master database on the server and retrieves elastic pool telemetry data and loads that to the telemetry database.   It can optionally look back 14 days on first execution to get all available telemetry.   
 
 It then optionally queries the master database to determine the current elastic databases on the server, resident in each of the pools identified in the prior step.  It then connects to each database in turn and retrieves and loads telemetry data for that database.  It then sleeps for a period before waking up and repeating the data collection cycle.  
 
