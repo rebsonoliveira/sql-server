@@ -22,13 +22,9 @@ This readme applies to the PowerShell scripts: PoolTelemetryJobRunner.ps1 and Po
 [Customizing the PoolTelemetryJobRunner script](#customizing-the-pooltelemetryjobrunner-script)<br/>
 [Executing the runner script](#executing-the-runner-script)<br/>
 [Inspecting the telemetry that is collected](#inspecting-the-telemetry-that-is-collected)<br/>
-<<<<<<< HEAD
-=======
 [Power BI](#power-bi)<br/>
->>>>>>> decdc4e2faa3ac0192d70adb7d1673755bfb7768
 [Disclaimers](#disclaimers)<br/>
 [Related links](#related-links)<br/>
-
 
 <a name=what-do-the-powershell-scripts-do?></a>
 
@@ -38,7 +34,7 @@ The scripts are used to extract telemetry data associated with SQL Database elas
 
 There is a runner script, PoolTelemetryRunner.ps1, which needs to be modified for your environment to identify one or more servers on which elastic pools and databases are hosted and a telemetry database in which telemetry data is to be gathered.  The runner script executes a function in the data collection script, PoolTelemetry.ps1 as a PowerShell job for each server.  
 
-Each data collection job executes in the background on a pre-determined schedule and will on first execution create the required schema in the telemetry database.  It then connects to the master database on the server and retrieves elastic pool telemetry data and loads that to the telemetry database.   It can optionally look back 14 days on first execution to get all available telemetry.   
+Each data collection job executes in the background on a pre-determined schedule and will on first execution create the required schema in the telemetry database.  It then connects to the master database on the server and retrieves elastic pool telemetry data and loads that to the telemetry database.   It can optionally look back 14 days on first execution to get all available telemetry.
 
 It then optionally queries the master database to determine the current elastic databases on the server, resident in each of the pools identified in the prior step.  It then connects to each database in turn and retrieves and loads telemetry data for that database.  It then sleeps for a period before waking up and repeating the data collection cycle.  
 
@@ -87,7 +83,6 @@ Provide the server name if data is to be gathered from all a specific server.
 ### Telemetry server and database
 
 It is assumed that telemetry is to be loaded to an Azure SQL Database.   
-<<<<<<< HEAD
 
 Provide the telemetry database server name.  
 
@@ -129,49 +124,6 @@ The script allows either a single server to be specified or multiple.  Several s
 
 The runner script PoolTelemetryRunner.ps1 should be executed from within an Azure PowerShell context.
 
-=======
-
-Provide the telemetry database server name.  
-
-``` $outputServerName = '<telemetry server name>’ ``` 
-
-Provide the telemetry database name.  
-
-``` $outputDatabaseName = '<telemetry database name>' ``` 
-
-### Define if the server to be monitored will change during the monitoring period
-
-If the set of servers being monitored may change during the overall monitoring period then set $staticServerList to $false to cause server evaluation to be repeated periodically.  If this is set to false, the runner script will run for the same duration as the job scripts, and will start additional jobs if new servers are added and stop jobs if servers are removed from the query scope.  Otherwise if set to $true, the runner script will complete as soon as the jobs have been spawned.
-
-``` $staticServerList = $true ```       
-
-### Collection interval, lag-time and job duration
-
-Provide the interval in minutes.  This defines both how far back the data collection will look on each execution and the interval between executions.  A value between 15-30 minutes is probably most appropriate.  Note that fine-grained database telemetry (15 second averages) is only retained in each database for 60 minutes, beyond that it based on 5 minute averages.  Pool telemetry in the master database is always based on 5 minute averages.  Pool telemetry is not available immediately.  A lag time of 30 minutes is programmed in the collection script.  It is not recommended to change this lag setting.  The effect of this is that the look-back window for pool data is pushed back, by this lag time so if gathering data for 15 interval the query window is -45 minutes to -30 minutes on each execution.  Note that the lag time setting does not affect gathering 15s averaged telemetry from each database, which is available immediately.  5 minute averaged data is retained for 14 days. 
-
-``` $intervalMinutes = 15 ``` 
-
-Provide the job duration in minutes.  This defines how long the job will execute for in the background.  A value of zero will cause the job to execute once only.  The value is best 
-
-``` $durationMinutes = 600 ```  
- 
-### Load all available pool telemetry
-
-In normal execution the spawned jobs look back 'window' is based on the interval and lag settings.  For pool telemetry which is available for 14 days, the data collection script can be configured to look back 15 days on its first execution to ensue it gathers all available telemetry for each pool.  Be careful if you stop the runner script and restart it on the same servers within this 15 day period as it may gather and load duplicate data entries.  Using this option with many pools may load a large amount of data.
-
-``` $loadAllAvailablePoolTelemetry = $true ```
-
-### Specify the source server(s) to use
-
-The script allows either a single server to be specified or multiple.  Several sample PowerShell scripted queries are provided but in general only one should be used, the others should be commented out.  The script requires that the $servers variable is populated as input to the job execution.  Either uncomment and use one of the queries that populates $servers or use one of the queries that populates $resourceList and then uncomment the section in the script that uses the $resourceList to populate $servers.  If not using $resourceList leave this translation section commented out.  
-
-<a name=executing-the-runner-script></a>
-
-## Executing the runner script
-
-The runner script PoolTelemetryRunner.ps1 should be executed from within an Azure PowerShell context.
-
->>>>>>> decdc4e2faa3ac0192d70adb7d1673755bfb7768
 The script will prompt for Azure login and the user name and password for the source servers and the user name and password for the telemetry server.  It will then spawn a PowerShell job for each server that has been identified within the script.  Each job will run in the background for the time specified in $durationMinutes.  
 
 It will gather data for the most recent period defined by the interval value and load this, then sleep until the next data gathering point, wake up, gather and load more data and then sleep again, etc.  
@@ -219,8 +171,6 @@ For example, once the telemetry is being collected, this TVF can be called with 
 Data can be queried while data collection is in progress.  
 
 > [AZURE.NOTE] If the scripts are stopped and started again within a short period they may add duplicate rows to the telemetry tables.
-<<<<<<< HEAD
-=======
 
 <a name=power-bi></a>
 
@@ -233,7 +183,6 @@ A sample Power BI designer (PBIX) file is also provided in this location (which 
 - Refresh the report to get current data.
 - The report will show the busiest top 5 elastic pools over the last 6 hours, 24 hours and 7 days.
 - This report can also be published as a dashboard to your organization’s PowerBI site for use by others in your organization.  
->>>>>>> decdc4e2faa3ac0192d70adb7d1673755bfb7768
 
 <a name=disclaimers></a>
 
@@ -254,4 +203,3 @@ For more information, see these articles:
 - [Monitor and manage an elastic database pool with Transact-SQL](https://azure.microsoft.com/documentation/articles/sql-database-elastic-pool-manage-tsql/)
 
 - [Monitor and manage an elastic database pool with the Azure portal](https://azure.microsoft.com/documentation/articles/sql-database-elastic-pool-manage-portal/)
-
