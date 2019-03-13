@@ -44,7 +44,8 @@ $DEBUG rm tpcxbb_1gb.bak
 
 echo Configuring sample database...
 # WSL ex: "/mnt/c/Program Files/Microsoft SQL Server/Client SDK/ODBC/130/Tools/Binn/SQLCMD.EXE"
-$DEBUG sqlcmd -S $SQL_MASTER_INSTANCE -Usa -P$SQL_MASTER_SA_PASSWORD -I -b -v SA_PASSWORD="$KNOX_PASSWORD" < "$STARTUP_PATH/bootstrap-sample-db.sql" > "bootstrap.out" || (echo $ERROR_MESSAGE && exit 2)
+export SA_PASSWORD=$KNOX_PASSWORD
+$DEBUG sqlcmd -S $SQL_MASTER_INSTANCE -Usa -P$SQL_MASTER_SA_PASSWORD -I -b < "$STARTUP_PATH/bootstrap-sample-db.sql" > "bootstrap.out" || (echo $ERROR_MESSAGE && exit 2)
 
 for table in web_clickstreams inventory customer
     do
