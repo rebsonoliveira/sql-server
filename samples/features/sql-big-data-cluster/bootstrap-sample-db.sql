@@ -10,8 +10,12 @@ END;
 GO
 
 -- Enable external scripts execution for R/Python/Java:
-exec sp_configure 'external scripts enabled', 1;
-RECONFIGURE WITH OVERRIDE;
+DECLARE @config_option nvarchar(100) = 'external scripts enabled';
+IF NOT EXISTS(SELECT * FROM sys.configurations WHERE name = @config_option)
+BEGIN
+	exec sp_configure @config_option, 1;
+	RECONFIGURE WITH OVERRIDE;
+END;
 GO
 
 IF DB_ID('sales') IS NULL
