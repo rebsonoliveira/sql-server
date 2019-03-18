@@ -107,7 +107,7 @@ To run this sample, you need the following prerequisites.
    ```
    Note the IP address and the port number in this output. Open the following URL in your browser:
    `https://[IP]:[PORT]/api/docs/swagger.json`. You will have to log in with the same credentials you used for `mssqlctl login`. The contents of the `swagger.json` you can paste into [Swagger Editor](https://editor.swagger.io) to understand what methods are available:
-   ![API swagger](api_swagger.png)
+   ![API Swagger](api_swagger.png)
 
    Notice the `app` GET method as well as the `token` POST method. Since the authentication for apps uses JWT tokens you will need to get a token my using your favorite tool to make a POST call to the `token` method. Here is an example of how to do just that in [Postman](https://www.getpostman.com/):
    ![Postman Token](postman_token.png)
