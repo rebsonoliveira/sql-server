@@ -56,13 +56,13 @@ To run this sample, you need the following prerequisites.
    Once the app is listed as `Ready` you can continue to the next step.
 2. Now that the app has been deployed you can test if the app works correctly by passing in a sample input that is available in the `mleap` folder. The deployed app is a RESTful webservice that is [Swagger](swagger.io) compliant. For this sample we will show you how you can test this using the CLI.
 
-   To test the app, run the command below. The input parameter is a `MLeapFrame`, a `json` file that describes the parameters and the values provided to the model for predicting the cost per square feet. Note that the input parameter has a special character '@' to indicate that a `json` file is being passed. This command needs to be run within the `mleap` folder. 
+   To test the app, run the command below. The input parameter is a `MLeapFrame`, a `json` file that describes the parameters and the values provided to the model for predicting income. Note that the input parameter has a special character '@' to indicate that a `json` file is being passed. This command needs to be run within the `mleap` folder. 
 
    ```bash
    mssqlctl app run --name mleap-census --version [version] --input schema=@census_frame.json
    ```
 
-   The result will be a json output that includes the prediction along with additional data, including the predicted price per square feet.
+   The result will be a json output that includes the predicted income along with additional data.
 
     > **RESTful web service**. Note that any app you create is also accessible using a RESTful web service that is [Swagger](swagger.io) compliant. See step 6 in the [Addpy sample](../addpy/README.md#restapi) for detailed instructions on how to call the web service.
 
