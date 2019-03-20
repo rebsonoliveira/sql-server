@@ -18,28 +18,106 @@ BEGIN
 END;
 GO
 
-IF DB_ID('sales') IS NULL
-	RESTORE DATABASE sales  
-		FROM DISK=N'/var/opt/mssql/data/tpcxbb_1gb.bak'
-		WITH 
-		MOVE N'tpcxbb_1gb' TO N'/var/opt/mssql/data/sales.mdf',   
-		MOVE N'tpcxbb_1gb_log' TO N'/var/opt/mssql/data/sales.ldf';  
+CREATE OR ALTER PROCEDURE #restore_database (@backup_file nvarchar(255))
+AS
+BEGIN
+	DECLARE @restore_filelist_tmpl nvarchar(1000) = N'restore filelistonly FROM  DISK = N''/var/opt/mssql/data/%F''';
+	DECLARE @restore_database_tmpl nvarchar(1000) = N'RESTORE DATABASE [%D] FROM  DISK = N''/var/opt/mssql/data/%F'' WITH FILE = 1';
+	DECLARE @move_tmpl nvarchar(1000) = N', MOVE N''%L'' TO N''/var/opt/mssql/data/%F''';
+	DECLARE @restore_cmd nvarchar(4000), @logical_name nvarchar(128), @filename nvarchar(260), @restore_cur CURSOR;
+	DECLARE @files TABLE (
+		[LogicalName]           NVARCHAR(128),
+		[PhysicalName]          NVARCHAR(260),
+		[Type]                  CHAR(1),
+		[FileGroupName]         NVARCHAR(128),
+		[Size]                  NUMERIC(20,0),
+		[MaxSize]               NUMERIC(20,0),
+		[FileID]                BIGINT,
+		[CreateLSN]             NUMERIC(25,0),
+		[DropLSN]               NUMERIC(25,0),
+		[UniqueID]              UNIQUEIDENTIFIER,
+		[ReadOnlyLSN]           NUMERIC(25,0),
+		[ReadWriteLSN]          NUMERIC(25,0),
+		[BackupSizeInBytes]     BIGINT,
+		[SourceBlockSize]       INT,
+		[FileGroupID]           INT,
+		[LogGroupGUID]          UNIQUEIDENTIFIER,
+		[DifferentialBaseLSN]   NUMERIC(25,0),
+		[DifferentialBaseGUID]  UNIQUEIDENTIFIER,
+		[IsReadOnly]            BIT,
+		[IsPresent]             BIT,
+		[TDEThumbprint]         VARBINARY(32),
+		[SnapshotUrl]			NVARCHAR(260)
+	)
+	SET @restore_cmd = REPLACE(@restore_filelist_tmpl, '%F', @backup_file);
+	INSERT INTO @files
+	EXECUTE(@restore_cmd);
+
+	SET @restore_cmd = REPLACE(REPLACE(@restore_database_tmpl, '%F', @backup_file), '%D', LEFT(@backup_file, CHARINDEX('.', @backup_file)-1));
+	SET @restore_cur = CURSOR FAST_FORWARD FOR SELECT LogicalName, REVERSE(LEFT(REVERSE(PhysicalName), CHARINDEX('\', REVERSE(PhysicalName))-1)) FROM @files;
+	OPEN @restore_cur;
+	WHILE(1=1)
+	BEGIN
+		FETCH FROM @restore_cur INTO @logical_name, @filename;
+		IF @@FETCH_STATUS < 0 BREAK;
+
+		SET @restore_cmd += REPLACE(REPLACE(@move_tmpl, '%L', @logical_name), '%F', @filename);
+	END;
+	EXECUTE(@restore_cmd);
+END;
+GO
+
+CREATE OR ALTER PROCEDURE #create_data_sources
+AS
+BEGIN
+		-- Create database master key (required for database scoped credentials used in the samples)
+	IF NOT EXISTS(SELECT * FROM sys.databases WHERE name = DB_NAME() and is_master_key_encrypted_by_server = 1)
+		CREATE MASTER KEY ENCRYPTION BY PASSWORD = 'sql19bigdatacluster!';
+
+	-- Create default data sources for SQL Big Data Cluster
+	IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'SqlDataPool')
+		CREATE EXTERNAL DATA SOURCE SqlDataPool
+		WITH (LOCATION = 'sqldatapool://service-mssql-controller:8080/datapools/default');
+
+	IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'SqlStoragePool')
+		CREATE EXTERNAL DATA SOURCE SqlStoragePool
+		WITH (LOCATION = 'sqlhdfs://service-mssql-controller:8080');
+
+	IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'HadoopData')
+		CREATE EXTERNAL DATA SOURCE HadoopData
+		WITH(
+				TYPE=HADOOP,
+				LOCATION='hdfs://mssql-master-pool-0.service-master-pool:9000/',
+				RESOURCE_MANAGER_LOCATION='mssql-master-pool-0.service-master-pool:8032'
+		);
+END;
+GO
+
+--- Sample dbs:
+DECLARE @sample_dbs CURSOR, @proc nvarchar(255);
+SET @sample_dbs = CURSOR FAST_FORWARD FOR
+									SELECT file_or_directory_name
+									FROM sys.dm_os_enumerate_filesystem('/var/opt/mssql/data', '*.bak')
+									WHERE DB_ID(REPLACE(REPLACE(file_or_directory_name, 'tpcxbb_1gb', 'sales'), '.bak', '')) IS NULL;
+DECLARE @file nvarchar(260);														
+OPEN @sample_dbs;
+WHILE(1=1)
+BEGIN
+	FETCH @sample_dbs INTO @file;
+	IF @@FETCH_STATUS < 0 BREAK;
+
+	EXECUTE #restore_database @file;
+	SET @proc = CONCAT(QUOTENAME(LEFT(@file, CHARINDEX('.', @file)-1)), N'.sys.sp_executesql');
+
+	EXECUTE @proc N'#create_data_sources';
+
+	-- Rename TPCx-BB database:
+	IF DB_ID('tpcxbb_1gb') IS NOT NULL
+		ALTER DATABASE tpcxbb_1gb MODIFY NAME = sales;
+END;
 GO
 
 USE sales;
-GO
--- Create database master key (required for database scoped credentials used in the samples)
-IF NOT EXISTS(SELECT * FROM sys.databases WHERE name = DB_NAME() and is_master_key_encrypted_by_server = 1)
-	CREATE MASTER KEY ENCRYPTION BY PASSWORD = 'sql19bigdatacluster!';
-
--- Create default data sources for SQL Big Data Cluster
-IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'SqlDataPool')
-	CREATE EXTERNAL DATA SOURCE SqlDataPool
-	WITH (LOCATION = 'sqldatapool://service-mssql-controller:8080/datapools/default');
-
-IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'SqlStoragePool')
-	CREATE EXTERNAL DATA SOURCE SqlStoragePool
-	WITH (LOCATION = 'sqlhdfs://service-mssql-controller:8080');
 GO
 
 -- Create view used for ML services training and scoring stored procedures
