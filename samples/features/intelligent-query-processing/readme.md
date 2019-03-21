@@ -12,5 +12,6 @@ Demos (with more on the way!):
 - [Batch mode on rowstore](Intelligent%20QP%20Demos%20WideWorldImportersDW%20Public%20Preview%20-%20Batch%20Mode%20on%20Rowstore.sql) 
 - [APPROX_COUNT_DISTINCT](Intelligent%20QP%20Demos%20WideWorldImportersDW%20Public%20Preview%20-%20APPROX_COUNT_DISTINCT.sql) 
 - [Table variable deferred compilation](Intelligent%20QP%20Demos%20WideWorldImportersDW%20Public%20Preview%20-%20TVDC.sql) 
+- [Scalar UDF Inlining](Intelligent%20QP%20Demos%20WideWorldImportersDW%20Public%20Preview%20-%20Scalar%20UDF%20Inlining.sql)
 
 Email IntelligentQP@microsoft.com if questions in the meantime.
