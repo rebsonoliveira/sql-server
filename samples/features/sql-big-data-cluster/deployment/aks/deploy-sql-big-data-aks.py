@@ -1,7 +1,7 @@
 #
 # Prerequisites: 
 # 
-# Azure CLI (https://docs.microsoft.com/en-us/cli/azure/install-azure-cli), python3 (https://www.python.org/downloads), mssqlctl CLI (pip3 install -r  https://private-repo.microsoft.com/python/ctp-2.3/mssqlctl/requirements.txt )
+# Azure CLI (https://docs.microsoft.com/en-us/cli/azure/install-azure-cli), python3 (https://www.python.org/downloads), mssqlctl CLI (pip3 install -r  https://private-repo.microsoft.com/python/ctp-2.4/mssqlctl/requirements.txt )
 #
 # Run `az login` at least once BEFORE running this script
 #
@@ -42,7 +42,7 @@ CONTROLLER_USERNAME=input("Provide username to be used for Controller user - Pre
 #
 DOCKER_REGISTRY="private-repo.microsoft.com"
 DOCKER_REPOSITORY="mssql-private-preview"
-DOCKER_IMAGE_TAG="latest"
+DOCKER_IMAGE_TAG="ctp2.4"
 
 print ('Setting environment variables')
 os.environ['MSSQL_SA_PASSWORD'] = PASSWORD
