@@ -38,7 +38,7 @@ REM Copy the backup file, restore the database, create necessary objects and dat
 echo Copying sales database backup file to SQL Master instance...
 %DEBUG% kubectl cp tpcxbb_1gb.bak mssql-master-pool-0:/var/opt/mssql/data -c mssql-server -n %CLUSTER_NAMESPACE% || goto exit
 
-if /i %AW_WWI_SAMPLES% EQU install_extra_samples (
+if /i %AW_WWI_SAMPLES% EQU --install-extra-samples (
     if NOT EXIST AdventureWorks2016_EXT.bak (
         echo Downloading AdventureWorks2016_EXT sample database backup file...
         %DEBUG% curl -L -G "https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2016_EXT.bak" -o AdventureWorks2016_EXT.bak
@@ -113,6 +113,6 @@ goto :eof
     exit /b 1
 
 :usage
-    echo USAGE: %0 ^<CLUSTER_NAMESPACE^> ^<SQL_MASTER_IP^> ^<SQL_MASTER_SA_PASSWORD^> ^<KNOX_IP^> [^<KNOX_PASSWORD^>]
+    echo USAGE: %0 ^<CLUSTER_NAMESPACE^> ^<SQL_MASTER_IP^> ^<SQL_MASTER_SA_PASSWORD^> ^<KNOX_IP^> [^<KNOX_PASSWORD^>] [--install-extra-samples]
     echo Default ports are assumed for SQL Master instance ^& Knox gateway.
     exit /b 0

@@ -11,9 +11,9 @@ GO
 
 -- Enable external scripts execution for R/Python/Java:
 DECLARE @config_option nvarchar(100) = 'external scripts enabled';
-IF NOT EXISTS(SELECT * FROM sys.configurations WHERE name = @config_option)
+IF NOT EXISTS(SELECT * FROM sys.configurations WHERE name = @config_option and value_in_use = 1)
 BEGIN
-	exec sp_configure @config_option, 1;
+	EXECUTE sp_configure @config_option, 1;
 	RECONFIGURE WITH OVERRIDE;
 END;
 GO
@@ -21,7 +21,7 @@ GO
 CREATE OR ALTER PROCEDURE #restore_database (@backup_file nvarchar(255))
 AS
 BEGIN
-	DECLARE @restore_filelist_tmpl nvarchar(1000) = N'restore filelistonly FROM  DISK = N''/var/opt/mssql/data/%F''';
+	DECLARE @restore_filelist_tmpl nvarchar(1000) = N'RESTORE FILELISTONLY FROM  DISK = N''/var/opt/mssql/data/%F''';
 	DECLARE @restore_database_tmpl nvarchar(1000) = N'RESTORE DATABASE [%D] FROM  DISK = N''/var/opt/mssql/data/%F'' WITH FILE = 1';
 	DECLARE @move_tmpl nvarchar(1000) = N', MOVE N''%L'' TO N''/var/opt/mssql/data/%F''';
 	DECLARE @restore_cmd nvarchar(4000), @logical_name nvarchar(128), @filename nvarchar(260), @restore_cur CURSOR;

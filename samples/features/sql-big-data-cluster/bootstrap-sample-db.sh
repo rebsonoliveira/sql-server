@@ -3,7 +3,7 @@ set -e
 set -o pipefail
 STARTUP_PATH=$(pwd)
 TMP_DIR_NAME=$(basename $0)
-USAGE_MESSAGE="USAGE: $0 <CLUSTER_NAMESPACE> <SQL_MASTER_IP> <SQL_MASTER_SA_PASSWORD> <KNOX_IP> [<KNOX_PASSWORD>]"
+USAGE_MESSAGE="USAGE: $0 <CLUSTER_NAMESPACE> <SQL_MASTER_IP> <SQL_MASTER_SA_PASSWORD> <KNOX_IP> [<KNOX_PASSWORD>] [--install-extra-samples]"
 ERROR_MESSAGE="Bootstrap of the sample database failed. Output and error files are in directory [/tmp/$TMP_DIR_NAME]."
 
 # Print usage if mandatory parameters are missing
@@ -19,6 +19,8 @@ SQL_MASTER_IP=$2
 SQL_MASTER_SA_PASSWORD=$3
 KNOX_IP=$4
 KNOX_PASSWORD=$5
+AW_WWI_SAMPLES=$6
+
 # If Knox password is not supplied then default to SQL Master password
 KNOX_PASSWORD=${KNOX_PASSWORD:=$SQL_MASTER_SA_PASSWORD}
 
@@ -35,12 +37,41 @@ pushd "/tmp"
 $DEBUG mkdir -p "$TMP_DIR_NAME"
 $DEBUG cd "$TMP_DIR_NAME"
 
-echo Downloading sample database backup file...
-$DEBUG curl -G "https://sqlchoice.blob.core.windows.net/sqlchoice/static/tpcxbb_1gb.bak" -o tpcxbb_1gb.bak
+if [ ! -f tpcxbb_1gb.bak ]
+then
+    echo Downloading sample database backup file...
+    $DEBUG curl -G "https://sqlchoice.blob.core.windows.net/sqlchoice/static/tpcxbb_1gb.bak" -o tpcxbb_1gb.bak
+fi
 
 echo Copying database backup file...
 $DEBUG kubectl cp tpcxbb_1gb.bak mssql-master-pool-0:/var/opt/mssql/data -c mssql-server -n $CLUSTER_NAMESPACE || (echo $ERROR_MESSAGE && exit 1)
-$DEBUG rm tpcxbb_1gb.bak
+# $DEBUG rm tpcxbb_1gb.bak
+
+if [ $AW_WWI_SAMPLES == --install-extra-samples ]
+then
+    for file in AdventureWorks2016_EXT.bak AdventureWorksDW2016_EXT.bak
+    do
+        if [ ! -f $file ]
+        then
+            echo Downloading $file sample database backup file...
+            $DEBUG curl -L -G "https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/$file" -o $file
+        fi
+        echo Copying $file database backup file to SQL Master instance...
+        $DEBUG kubectl cp $file mssql-master-pool-0:/var/opt/mssql/data -c mssql-server -n $CLUSTER_NAMESPACE || (echo $ERROR_MESSAGE && exit 1)
+    done
+
+
+    for file in WideWorldImporters-Full.bak WideWorldImportersDW-Full.bak
+    do
+        if [ ! -f $file ]
+        then
+            echo Downloading $file sample database backup file...
+            $DEBUG curl -L -G "https://github.com/Microsoft/sql-server-samples/releases/download/wide-world-importers-v1.0/$file" -o $file
+        fi
+        echo Copying $file database backup file to SQL Master instance...
+        $DEBUG kubectl cp $file mssql-master-pool-0:/var/opt/mssql/data -c mssql-server -n $CLUSTER_NAMESPACE || (echo $ERROR_MESSAGE && exit 1)
+    done
+fi
 
 echo Configuring sample database...
 # WSL ex: "/mnt/c/Program Files/Microsoft SQL Server/Client SDK/ODBC/130/Tools/Binn/SQLCMD.EXE"
@@ -57,23 +88,29 @@ for table in web_clickstreams inventory customer
         DELIMITER="|"
     fi
     # WSL ex: "/mnt/c/Program Files/Microsoft SQL Server/Client SDK/ODBC/130/Tools/Binn/bcp.exe"
-    $DEBUG bcp sales.dbo.$table out "$table.csv" -S $SQL_MASTER_INSTANCE -Usa -P$SQL_MASTER_SA_PASSWORD -c -t"$DELIMITER" -e "$table.err" || (echo $ERROR_MESSAGE && exit 3)
+    if [ ! -f $table.csv ]
+    then
+        $DEBUG bcp sales.dbo.$table out "$table.csv" -S $SQL_MASTER_INSTANCE -Usa -P$SQL_MASTER_SA_PASSWORD -c -t"$DELIMITER" -e "$table.err" || (echo $ERROR_MESSAGE && exit 3)
+    fi
 done
 
-echo Exporting product_reviews data...
-$DEBUG bcp "select pr_review_sk, replace(replace(pr_review_content, ',', ';'), char(34), '') as pr_review_content from sales.dbo.product_reviews" queryout "product_reviews.csv" -S $SQL_MASTER_INSTANCE -Usa -P$SQL_MASTER_SA_PASSWORD -c -t, -e "product_reviews.err" || (echo $ERROR_MESSAGE && exit 3)
+if [ ! -f product_reviews.csv ]
+then
+    echo Exporting product_reviews data...
+    $DEBUG bcp "select pr_review_sk, replace(replace(pr_review_content, ',', ';'), char(34), '') as pr_review_content from sales.dbo.product_reviews" queryout "product_reviews.csv" -S $SQL_MASTER_INSTANCE -Usa -P$SQL_MASTER_SA_PASSWORD -c -t, -e "product_reviews.err" || (echo $ERROR_MESSAGE && exit 3)
+fi
 
 # Copy the data file to HDFS
 echo Uploading web_clickstreams data to HDFS...
 $DEBUG curl -i -L -k -u root:$KNOX_PASSWORD -X PUT "https://$KNOX_ENDPOINT/gateway/default/webhdfs/v1/clickstream_data?op=MKDIRS" || (echo $ERROR_MESSAGE && exit 4)
 $DEBUG curl -i -L -k -u root:$KNOX_PASSWORD -X PUT "https://$KNOX_ENDPOINT/gateway/default/webhdfs/v1/clickstream_data/web_clickstreams.csv?op=create&overwrite=true" -H 'Content-Type: application/octet-stream' -T "web_clickstreams.csv" || (echo $ERROR_MESSAGE && exit 5)
-$DEBUG rm -f web_clickstreams.*
+#$DEBUG rm -f web_clickstreams.*
 
 echo
 echo Uploading product_reviews data to HDFS...
 $DEBUG curl -i -L -k -u root:$KNOX_PASSWORD -X PUT "https://$KNOX_ENDPOINT/gateway/default/webhdfs/v1/product_review_data?op=MKDIRS" || (echo $ERROR_MESSAGE && exit 6)
 $DEBUG curl -i -L -k -u root:$KNOX_PASSWORD -X PUT "https://$KNOX_ENDPOINT/gateway/default/webhdfs/v1/product_review_data/product_reviews.csv?op=create&overwrite=true" -H "Content-Type: application/octet-stream" -T "product_reviews.csv" || (echo $ERROR_MESSAGE && exit 7)
-$DEBUG rm -f product_reviews.*
+#$DEBUG rm -f product_reviews.*
 
 echo
 echo Bootstrap of the sample database completed successfully.
