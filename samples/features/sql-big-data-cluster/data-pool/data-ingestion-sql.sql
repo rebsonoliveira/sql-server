@@ -25,21 +25,33 @@ GO
 -- Insert results of a SELECT statement into the external table created on the data pool.
 -- Store summary results for quick access instead of going to the source tables always.
 --
-DECLARE @db_name SYSNAME = 'sales'
-DECLARE @schema_name SYSNAME = 'dbo'
-DECLARE @table_name SYSNAME = 'web_clickstream_clicks_data_pool'
-DECLARE @query NVARCHAR(MAX) = '
-SELECT wcs_user_sk, i_category_id, COUNT_BIG(*) as clicks
-  FROM sales.dbo.web_clickstreams
- INNER JOIN sales.dbo.item it ON (wcs_item_sk = i_item_sk
-                        AND wcs_user_sk IS NOT NULL)
- GROUP BY wcs_user_sk, i_category_id
-HAVING COUNT_BIG(*) > 100;
-'
-EXEC model..sp_data_pool_table_insert_data @db_name, @schema_name, @table_name, @query
+IF SERVERPROPERTY('ProductLevel') = 'CTP2.3'
+BEGIN
+  DECLARE @db_name SYSNAME = 'sales'
+  DECLARE @schema_name SYSNAME = 'dbo'
+  DECLARE @table_name SYSNAME = 'web_clickstream_clicks_data_pool'
+  DECLARE @query NVARCHAR(MAX) = '
+  SELECT wcs_user_sk, i_category_id, COUNT_BIG(*) as clicks
+    FROM sales.dbo.web_clickstreams
+  INNER JOIN sales.dbo.item it ON (wcs_item_sk = i_item_sk
+                          AND wcs_user_sk IS NOT NULL)
+  GROUP BY wcs_user_sk, i_category_id
+  HAVING COUNT_BIG(*) > 100;
+  '
+  EXEC model..sp_data_pool_table_insert_data @db_name, @schema_name, @table_name, @query
+END;
+
+IF SERVERPROPERTY('ProductLevel') = 'CTP2.4'
+  INSERT INTO web_clickstream_clicks_data_pool
+  SELECT wcs_user_sk, i_category_id, COUNT_BIG(*) as clicks
+    FROM sales.dbo.web_clickstreams_hdfs_parquet
+  INNER JOIN sales.dbo.item it ON (wcs_item_sk = i_item_sk
+                          AND wcs_user_sk IS NOT NULL)
+  GROUP BY wcs_user_sk, i_category_id
+  HAVING COUNT_BIG(*) > 100;
 GO
 
--- Query data inserted from sp_data_pool_table_insert_data
+-- Query data inserted into the data pool table
 --
 SELECT count(*) FROM [dbo].[web_clickstream_clicks_data_pool]
 SELECT TOP 10 * FROM [dbo].[web_clickstream_clicks_data_pool]

@@ -1,8 +1,12 @@
 USE sales
 GO
 
-exec sp_configure 'allow polybase export', 1;
-RECONFIGURE WITH OVERRIDE;
+DECLARE @config_option nvarchar(100) = 'allow polybase export';
+IF NOT EXISTS(SELECT * FROM sys.configurations WHERE name = @config_option and value_in_use = 1)
+BEGIN
+	EXECUTE sp_configure @config_option, 1;
+	RECONFIGURE WITH OVERRIDE;
+END;
 GO
 
 -- Create file format for RCFILE with appropriate properties.
