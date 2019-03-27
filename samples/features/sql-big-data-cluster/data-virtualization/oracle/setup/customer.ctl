@@ -1,6 +1,6 @@
 options (readsize=2048000,bindsize=1600000, rows=100000, silent=(header, feedback) )
 load data 
-infile '..\..\..\customer.csv' "str '\r\n'"
+infile 'customer.csv' "str '\r\n'"
 append
 into table SALES.CUSTOMER
 fields terminated by '|'
