@@ -78,6 +78,10 @@ echo Configuring sample database...
 export SA_PASSWORD=$KNOX_PASSWORD
 $DEBUG sqlcmd -S $SQL_MASTER_INSTANCE -Usa -P$SQL_MASTER_SA_PASSWORD -I -b < "$STARTUP_PATH/bootstrap-sample-db.sql" > "bootstrap.out" || (echo $ERROR_MESSAGE && exit 2)
 
+# remove files copied into the pod:
+echo Removing database backup files...
+kubectl exec mssql-master-pool-0 -c mssql-server -i -t -- bash -c "rm -rvf /var/opt/mssql/data/*.bak"
+
 for table in web_clickstreams inventory customer
     do
     echo Exporting $table data...
