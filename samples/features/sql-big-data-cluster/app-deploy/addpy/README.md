@@ -116,7 +116,7 @@ To run this sample, you need the following prerequisites.
    
    > *Optional*: If you want, you can open the URL for the `swagger` that was returned when you ran `mssqlctl app describe --name addpy --version [version]` in your browser. You will have to log in with the same credentials you used for `mssqlctl login`. The contents of the `swagger.json` you can paste into [Swagger Editor](https://editor.swagger.io). You will see that the web service exposes the `run` method.
 
-   You can use your favorite tool to call the `run` method (`https://[IP]:[PORT]/api/app/addpy/[version]/run`), passing in the parameters in the body of your POST request as json. In this example we will use [Postman](https://www.getpostman.com/). Before making the call, you will need to set the `Authorization` to `Bearer Token` and paste in the token you retrieved earlier. This will set a header on your request. See the screenshot below.
+   You can use your favorite tool to call the `run` method (`https://[IP]:30778/api/app/addpy/[version]/run`), passing in the parameters in the body of your POST request as json. In this example we will use [Postman](https://www.getpostman.com/). Before making the call, you will need to set the `Authorization` to `Bearer Token` and paste in the token you retrieved earlier. This will set a header on your request. See the screenshot below.
    ![Postman Run Headers](postman_run_1.png)
    Next, in the requests body, pass in the parameters to the app you are calling and set the `content-type` to `application/json`:
    ![Postman Run Body](postman_run_2.png)
