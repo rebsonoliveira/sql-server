@@ -2,9 +2,15 @@
 
 The new built-in notebooks in Azure Data Studio enables data scientists and data engineers to run Python, R, or Scala code against the cluster.
 
+## __[dataloading](dataloading/)__
+
+This folder contains samples that show how to load data using Spark.
+
+[dataloading/transform-csv-files.ipynb](dataloading/transform-csv-files.ipynb/)
+
 ## Instructions
 
-1. Download and save the notebook file [spark-sql.ipynb](spark-sql.ipynb/) locally.
+1. Download and save the notebook file [dataloading/transform-csv-files.ipynb](dataloading/transform-csv-files.ipynb/) locally.
 
 1. Open the notebook file in Azure Data Studio (right click on the SQL Server big data cluster  server name-> **Manage**-> Open Notebook.
 
