@@ -13,8 +13,8 @@ The scripts should be executed in a specific order to test the various features.
 1. __[data-virtualization/storage-pool](data-virtualization/storage-pool)__
 1. __[data-virtualization/oracle](data-virtualization/oracle)__
 1. __[data-pool](data-pool/)__
-1. __[machine-learning/r](machine-learning/r)__
-1. __[machine-learning/python](machine-learning/python)__
+1. __[machine-learning/sql/r](machine-learning/sql/r)__
+1. __[machine-learning/sql/python](machine-learning/sql/python)__
 
 ## __[data-pool](data-pool/)__
 
