@@ -1,6 +1,8 @@
 USE sales
 GO
 
+-- Enable option to allow INSERT against external table defined on HADOOP data source
+--
 DECLARE @config_option nvarchar(100) = 'allow polybase export';
 IF NOT EXISTS(SELECT * FROM sys.configurations WHERE name = @config_option and value_in_use = 1)
 BEGIN
@@ -8,6 +10,19 @@ BEGIN
 	RECONFIGURE WITH OVERRIDE;
 END;
 GO
+
+-- Create data source for HDFS inside SQL big data cluster using the HADOOP type.
+-- The HADOOP data source type was introduced in SQL Server 2016 to query data in
+-- Hadoop clusters and relies on Java Hadoop client libraries and Map/Reduce for query
+-- execution.
+--
+IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'HadoopData')
+    CREATE EXTERNAL DATA SOURCE HadoopData
+    WITH(
+            TYPE=HADOOP,
+            LOCATION='hdfs://mssql-master-pool-0.service-master-pool:9000/',
+            RESOURCE_MANAGER_LOCATION='mssql-master-pool-0.service-master-pool:8032'
+    );
 
 -- Create file format for RCFILE with appropriate properties.
 --
