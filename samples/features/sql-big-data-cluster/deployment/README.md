@@ -10,3 +10,7 @@ Use the scripts in the **kubeadm** folder to deploy Kubernetes over multiple Lin
 ## Deploy a SQL Server big data cluster on Azure Kubernetes Service (AKS) 
 
 Using the sample Python script in **aks** folder, you will deploy a Kubernetes cluster in Azure using AKS and a SQL Server big data cluster using on top of it. 
+
+## Push SQL Server big data cluster images to your own private Docker repository
+
+Using the sample Python script in **offline** folder, you will push the necessary images required for the deployment to your own repository.
