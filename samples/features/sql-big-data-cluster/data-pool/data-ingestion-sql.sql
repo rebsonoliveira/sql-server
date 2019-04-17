@@ -1,6 +1,12 @@
 USE sales
 GO
 
+-- Create external data source for Data Pool inside a SQL big data cluster
+--
+IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'SqlDataPool')
+	CREATE EXTERNAL DATA SOURCE SqlDataPool
+	WITH (LOCATION = 'sqldatapool://service-mssql-controller:8080/datapools/default');
+
 -- Create external table in a data pool in SQL Server 2019 big data cluster.
 -- The SqlDataPool data source is a special data source that is available in 
 -- any new database in SQL Master instance. This is used to reference the
@@ -25,30 +31,13 @@ GO
 -- Insert results of a SELECT statement into the external table created on the data pool.
 -- Store summary results for quick access instead of going to the source tables always.
 --
-IF SERVERPROPERTY('ProductLevel') = 'CTP2.3'
-BEGIN
-  DECLARE @db_name SYSNAME = 'sales'
-  DECLARE @schema_name SYSNAME = 'dbo'
-  DECLARE @table_name SYSNAME = 'web_clickstream_clicks_data_pool'
-  DECLARE @query NVARCHAR(MAX) = '
-  SELECT wcs_user_sk, i_category_id, COUNT_BIG(*) as clicks
-    FROM sales.dbo.web_clickstreams
-  INNER JOIN sales.dbo.item it ON (wcs_item_sk = i_item_sk
-                          AND wcs_user_sk IS NOT NULL)
-  GROUP BY wcs_user_sk, i_category_id
-  HAVING COUNT_BIG(*) > 100;
-  '
-  EXEC model..sp_data_pool_table_insert_data @db_name, @schema_name, @table_name, @query
-END;
-
-IF SERVERPROPERTY('ProductLevel') = 'CTP2.4'
-  INSERT INTO web_clickstream_clicks_data_pool
-  SELECT wcs_user_sk, i_category_id, COUNT_BIG(*) as clicks
-    FROM sales.dbo.web_clickstreams_hdfs_parquet
-  INNER JOIN sales.dbo.item it ON (wcs_item_sk = i_item_sk
-                          AND wcs_user_sk IS NOT NULL)
-  GROUP BY wcs_user_sk, i_category_id
-  HAVING COUNT_BIG(*) > 100;
+INSERT INTO web_clickstream_clicks_data_pool
+SELECT wcs_user_sk, i_category_id, COUNT_BIG(*) as clicks
+  FROM sales.dbo.web_clickstreams_hdfs_parquet
+ INNER JOIN sales.dbo.item it ON (wcs_item_sk = i_item_sk
+                        AND wcs_user_sk IS NOT NULL)
+ GROUP BY wcs_user_sk, i_category_id
+HAVING COUNT_BIG(*) > 100;
 GO
 
 -- Query data inserted into the data pool table

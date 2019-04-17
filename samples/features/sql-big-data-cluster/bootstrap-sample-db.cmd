@@ -36,7 +36,7 @@ if NOT EXIST tpcxbb_1gb.bak (
 
 REM Copy the backup file, restore the database, create necessary objects and data file
 echo Copying sales database backup file to SQL Master instance...
-%DEBUG% kubectl cp tpcxbb_1gb.bak mssql-master-pool-0:/var/opt/mssql/data -c mssql-server -n %CLUSTER_NAMESPACE% || goto exit
+%DEBUG% kubectl cp tpcxbb_1gb.bak %CLUSTER_NAMESPACE%/mssql-master-pool-0:/var/opt/mssql/data -c mssql-server || goto exit
 
 REM Download and copy the sample backup files
 if /i %AW_WWI_SAMPLES% EQU --install-extra-samples (
@@ -45,28 +45,28 @@ if /i %AW_WWI_SAMPLES% EQU --install-extra-samples (
         %DEBUG% curl -L -G "https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2016_EXT.bak" -o AdventureWorks2016_EXT.bak
     )
     echo Copying AdventureWorks2016_EXT database backup file to SQL Master instance...
-    %DEBUG% kubectl cp AdventureWorks2016_EXT.bak mssql-master-pool-0:/var/opt/mssql/data -c mssql-server -n %CLUSTER_NAMESPACE% || goto exit
+    %DEBUG% kubectl cp AdventureWorks2016_EXT.bak %CLUSTER_NAMESPACE%/mssql-master-pool-0:/var/opt/mssql/data -c mssql-server || goto exit
 
     if NOT EXIST AdventureWorksDW2016_EXT.bak (
         echo Downloading AdventureWorksDW2016_EXT sample database backup file...
         %DEBUG% curl -L -G "https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorksDW2016_EXT.bak" -o AdventureWorksDW2016_EXT.bak
     )
     echo Copying AdventureWorksDW2016_EXT database backup file to SQL Master instance...
-    %DEBUG% kubectl cp AdventureWorksDW2016_EXT.bak mssql-master-pool-0:/var/opt/mssql/data -c mssql-server -n %CLUSTER_NAMESPACE% || goto exit
+    %DEBUG% kubectl cp AdventureWorksDW2016_EXT.bak %CLUSTER_NAMESPACE%/mssql-master-pool-0:/var/opt/mssql/data -c mssql-server || goto exit
 
     if NOT EXIST WideWorldImporters-Full.bak (
         echo Downloading WideWorldImporters sample database backup file...
         %DEBUG% curl -L -G "https://github.com/Microsoft/sql-server-samples/releases/download/wide-world-importers-v1.0/WideWorldImporters-Full.bak" -o WideWorldImporters-Full.bak
     )
     echo Copying WideWorldImporters-Full database backup file to SQL Master instance...
-    %DEBUG% kubectl cp WideWorldImporters-Full.bak mssql-master-pool-0:/var/opt/mssql/data -c mssql-server -n %CLUSTER_NAMESPACE% || goto exit
+    %DEBUG% kubectl cp WideWorldImporters-Full.bak %CLUSTER_NAMESPACE%/mssql-master-pool-0:/var/opt/mssql/data -c mssql-server || goto exit
 
     if NOT EXIST WideWorldImportersDW-Full.bak (
         echo Downloading WideWorldImportersDW sample database backup file...
         %DEBUG% curl -L -G "https://github.com/Microsoft/sql-server-samples/releases/download/wide-world-importers-v1.0/WideWorldImportersDW-Full.bak" -o WideWorldImportersDW-Full.bak
     )
     echo Copying WideWorldImportersDW-Full database backup file to SQL Master instance...
-    %DEBUG% kubectl cp WideWorldImportersDW-Full.bak mssql-master-pool-0:/var/opt/mssql/data -c mssql-server -n %CLUSTER_NAMESPACE% || goto exit
+    %DEBUG% kubectl cp WideWorldImportersDW-Full.bak %CLUSTER_NAMESPACE%/mssql-master-pool-0:/var/opt/mssql/data -c mssql-server || goto exit
 )
 
 echo Configuring sample database(s)...
@@ -74,7 +74,7 @@ echo Configuring sample database(s)...
 
 REM remove files copied into the pod:
 echo Removing database backup files...
-kubectl exec mssql-master-pool-0 -c mssql-server -i -t -- bash -c "rm -rvf /var/opt/mssql/data/*.bak"
+kubectl exec mssql-master-pool-0 -n %CLUSTER_NAMESPACE% -c mssql-server -i -t -- bash -c "rm -rvf /var/opt/mssql/data/*.bak"
 
 for %%F in (web_clickstreams inventory customer) do (
     if NOT EXIST %%F.csv (

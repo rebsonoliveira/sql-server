@@ -1,6 +1,12 @@
 USE sales
 GO
 
+-- Create external data source for HDFS inside SQ: big data cluster.
+--
+IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'SqlStoragePool')
+    CREATE EXTERNAL DATA SOURCE SqlStoragePool
+    WITH (LOCATION = 'sqlhdfs://service-master-pool:50070');
+
 -- Create file format for CSV file with appropriate properties.
 --
 IF NOT EXISTS(SELECT * FROM sys.external_file_formats WHERE name = 'csv_file')
