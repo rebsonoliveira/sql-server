@@ -8,6 +8,8 @@ set SQL_MASTER_SA_PASSWORD=%3
 set KNOX_IP=%4
 set KNOX_PASSWORD=%5
 set AW_WWI_SAMPLES=%6
+set SQL_MASTER_PORT=%7
+set KNOX_PORT=%8
 set STARTUP_PATH=%~dp0
 set TMP_DIR_NAME=%~nx0
 
@@ -17,16 +19,18 @@ if NOT DEFINED SQL_MASTER_SA_PASSWORD goto :usage
 if NOT DEFINED KNOX_IP goto :usage
 if NOT DEFINED KNOX_PASSWORD set KNOX_PASSWORD=%SQL_MASTER_SA_PASSWORD%
 if NOT DEFINED AW_WWI_SAMPLES set AW_WWI_SAMPLES=no
+if NOT DEFINED SQL_MASTER_PORT set SQL_MASTER_PORT=31433
+if NOT DEFINED KNOX_PORT set KNOX_PORT=30443
 
-set SQL_MASTER_INSTANCE=%SQL_MASTER_IP%,31433
-set KNOX_ENDPOINT=%KNOX_IP%:30443
+set SQL_MASTER_INSTANCE=%SQL_MASTER_IP%,%SQL_MASTER_PORT%
+set KNOX_ENDPOINT=%KNOX_IP%:%KNOX_PORT%
 
 for %%F in (sqlcmd.exe bcp.exe kubectl.exe curl.exe) do (
     echo Verifying %%F is in path & CALL WHERE /Q %%F || GOTO exit
 )
 
 pushd "%tmp%"
-md %TMP_DIR_NAME%
+md %TMP_DIR_NAME% >NUL
 cd %TMP_DIR_NAME%
 
 if NOT EXIST tpcxbb_1gb.bak (
@@ -34,47 +38,45 @@ if NOT EXIST tpcxbb_1gb.bak (
     %DEBUG% curl -G "https://sqlchoice.blob.core.windows.net/sqlchoice/static/tpcxbb_1gb.bak" -o tpcxbb_1gb.bak
 )
 
+set SQLCMDSERVER=%SQL_MASTER_INSTANCE%
+set SQLCMDUSER=sa
+set SQLCMDPASSWORD=%SQL_MASTER_SA_PASSWORD%
+for /F "usebackq" %%v in (`sqlcmd -I -b -h-1 -Q "print RTRIM((CAST(SERVERPROPERTY('ProductLevel') as nvarchar(128))));"`) do SET CTP_VERSION=%%v
+if /i "%CTP_VERSION%" EQU "CTP2.4" (set MASTER_POD_NAME=mssql-master-pool-0) else (set MASTER_POD_NAME=master-0)
+
 REM Copy the backup file, restore the database, create necessary objects and data file
 echo Copying sales database backup file to SQL Master instance...
-%DEBUG% kubectl cp tpcxbb_1gb.bak %CLUSTER_NAMESPACE%/mssql-master-pool-0:/var/opt/mssql/data -c mssql-server || goto exit
+%DEBUG% kubectl cp tpcxbb_1gb.bak %CLUSTER_NAMESPACE%/%MASTER_POD_NAME%:/var/opt/mssql/data -c mssql-server || goto exit
 
 REM Download and copy the sample backup files
-if /i %AW_WWI_SAMPLES% EQU --install-extra-samples (
-    if NOT EXIST AdventureWorks2016_EXT.bak (
-        echo Downloading AdventureWorks2016_EXT sample database backup file...
-        %DEBUG% curl -L -G "https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2016_EXT.bak" -o AdventureWorks2016_EXT.bak
+if /i "%AW_WWI_SAMPLES%" EQU "--install-extra-samples" (
+    set FILES=AdventureWorks2016_EXT.bak AdventureWorksDW2016_EXT.bak
+    for %%f in (!FILES!) do (
+        if NOT EXIST %%f (
+                echo Downloading %%f sample database backup file...
+                %DEBUG% curl -L -G "https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/%%f" -o %%f
+        )
+        echo Copying %%f database backup file to SQL Master instance...
+        %DEBUG% kubectl cp %%f %CLUSTER_NAMESPACE%/%MASTER_POD_NAME%:/var/opt/mssql/data -c mssql-server || goto exit
     )
-    echo Copying AdventureWorks2016_EXT database backup file to SQL Master instance...
-    %DEBUG% kubectl cp AdventureWorks2016_EXT.bak %CLUSTER_NAMESPACE%/mssql-master-pool-0:/var/opt/mssql/data -c mssql-server || goto exit
 
-    if NOT EXIST AdventureWorksDW2016_EXT.bak (
-        echo Downloading AdventureWorksDW2016_EXT sample database backup file...
-        %DEBUG% curl -L -G "https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorksDW2016_EXT.bak" -o AdventureWorksDW2016_EXT.bak
+    set FILES=WideWorldImporters-Full.bak WideWorldImportersDW-Full.bak
+    for %%f in (!FILES!) do (
+        if NOT EXIST %%f (
+            echo Downloading %%f sample database backup file...
+            %DEBUG% curl -L -G "https://github.com/Microsoft/sql-server-samples/releases/download/wide-world-importers-v1.0/%%f" -o %%f
+        )
+        echo Copying %%f database backup file to SQL Master instance...
+        %DEBUG% kubectl cp %%f %CLUSTER_NAMESPACE%/%MASTER_POD_NAME%:/var/opt/mssql/data -c mssql-server || goto exit
     )
-    echo Copying AdventureWorksDW2016_EXT database backup file to SQL Master instance...
-    %DEBUG% kubectl cp AdventureWorksDW2016_EXT.bak %CLUSTER_NAMESPACE%/mssql-master-pool-0:/var/opt/mssql/data -c mssql-server || goto exit
-
-    if NOT EXIST WideWorldImporters-Full.bak (
-        echo Downloading WideWorldImporters sample database backup file...
-        %DEBUG% curl -L -G "https://github.com/Microsoft/sql-server-samples/releases/download/wide-world-importers-v1.0/WideWorldImporters-Full.bak" -o WideWorldImporters-Full.bak
-    )
-    echo Copying WideWorldImporters-Full database backup file to SQL Master instance...
-    %DEBUG% kubectl cp WideWorldImporters-Full.bak %CLUSTER_NAMESPACE%/mssql-master-pool-0:/var/opt/mssql/data -c mssql-server || goto exit
-
-    if NOT EXIST WideWorldImportersDW-Full.bak (
-        echo Downloading WideWorldImportersDW sample database backup file...
-        %DEBUG% curl -L -G "https://github.com/Microsoft/sql-server-samples/releases/download/wide-world-importers-v1.0/WideWorldImportersDW-Full.bak" -o WideWorldImportersDW-Full.bak
-    )
-    echo Copying WideWorldImportersDW-Full database backup file to SQL Master instance...
-    %DEBUG% kubectl cp WideWorldImportersDW-Full.bak %CLUSTER_NAMESPACE%/mssql-master-pool-0:/var/opt/mssql/data -c mssql-server || goto exit
 )
 
 echo Configuring sample database(s)...
-%DEBUG% sqlcmd -S %SQL_MASTER_INSTANCE% -Usa -P%SQL_MASTER_SA_PASSWORD% -i "%STARTUP_PATH%bootstrap-sample-db.sql" -o "bootstrap.out" -I -b -v SA_PASSWORD="%KNOX_PASSWORD%" || goto exit
+%DEBUG% sqlcmd -i "%STARTUP_PATH%bootstrap-sample-db.sql" -o "bootstrap.out" -I -b -v SA_PASSWORD="%KNOX_PASSWORD%" || goto exit
 
 REM remove files copied into the pod:
 echo Removing database backup files...
-kubectl exec mssql-master-pool-0 -n %CLUSTER_NAMESPACE% -c mssql-server -i -t -- bash -c "rm -rvf /var/opt/mssql/data/*.bak"
+%DEBUG% kubectl exec %MASTER_POD_NAME% -n %CLUSTER_NAMESPACE% -c mssql-server -i -t -- bash -c "rm -rvf /var/opt/mssql/data/*.bak"
 
 for %%F in (web_clickstreams inventory customer) do (
     if NOT EXIST %%F.csv (
@@ -83,7 +85,6 @@ for %%F in (web_clickstreams inventory customer) do (
         %DEBUG% bcp sales.dbo.%%F out "%%F.csv" -S %SQL_MASTER_INSTANCE% -Usa -P%SQL_MASTER_SA_PASSWORD% -c -t"!DELIMITER!" -o "%%F.out" -e "%%F.err" || goto exit
     )
 )
-
 
 if NOT EXIST product_reviews.csv (
     echo Exporting product_reviews data...
@@ -103,6 +104,7 @@ echo Uploading product_reviews data to HDFS...
 :: del /q product_reviews.*
 
 REM %DEBUG% del /q *.out *.err *.csv
+echo .
 echo Bootstrap of the sample database completed successfully.
 echo You can now login using "root" and Knox password to get the unified experience in Azure Data Studio.
 echo Data files for Oracle setup are located at [%TMP%\%TMP_DIR_NAME%].
@@ -118,6 +120,6 @@ goto :eof
     exit /b 1
 
 :usage
-    echo USAGE: %0 ^<CLUSTER_NAMESPACE^> ^<SQL_MASTER_IP^> ^<SQL_MASTER_SA_PASSWORD^> ^<KNOX_IP^> [^<KNOX_PASSWORD^>] [--install-extra-samples]
-    echo Default ports are assumed for SQL Master instance ^& Knox gateway.
+    echo USAGE: %0 ^<CLUSTER_NAMESPACE^> ^<SQL_MASTER_IP^> ^<SQL_MASTER_SA_PASSWORD^> ^<KNOX_IP^> [^<KNOX_PASSWORD^>] [--install-extra-samples] [SQL_MASTER_PORT] [KNOX_PORT]
+    echo Default ports are assumed for SQL Master instance ^& Knox gateway unless specified.
     exit /b 0

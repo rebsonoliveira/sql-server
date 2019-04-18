@@ -80,16 +80,28 @@ BEGIN
 		WITH (LOCATION = 'sqldatapool://service-mssql-controller:8080/datapools/default');
 
 	IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'SqlStoragePool')
+		IF SERVERPROPERTY('ProductLevel') = 'CTP2.4'
 			CREATE EXTERNAL DATA SOURCE SqlStoragePool
 			WITH (LOCATION = 'sqlhdfs://service-master-pool:50070');
+		ELSE IF SERVERPROPERTY('ProductLevel') = 'CTP2.5'
+			CREATE EXTERNAL DATA SOURCE SqlStoragePool
+			WITH (LOCATION = 'sqlhdfs://nmnode-0-0.nmnode-0-svc:50070');
 
 	IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'HadoopData')
-		CREATE EXTERNAL DATA SOURCE HadoopData
-		WITH(
-				TYPE=HADOOP,
-				LOCATION='hdfs://mssql-master-pool-0.service-master-pool:9000/',
-				RESOURCE_MANAGER_LOCATION='mssql-master-pool-0.service-master-pool:8032'
-		);
+		IF SERVERPROPERTY('ProductLevel') = 'CTP2.4'
+			CREATE EXTERNAL DATA SOURCE HadoopData
+			WITH(
+					TYPE=HADOOP,
+					LOCATION='hdfs://mssql-master-pool-0.service-master-pool:9000/',
+					RESOURCE_MANAGER_LOCATION='mssql-master-pool-0.service-master-pool:8032'
+			);
+		ELSE IF SERVERPROPERTY('ProductLevel') = 'CTP2.5'
+			CREATE EXTERNAL DATA SOURCE HadoopData
+			WITH(
+					TYPE=HADOOP,
+					LOCATION='hdfs://nmnode-0-0.nmnode-0-svc:9000/',
+					RESOURCE_MANAGER_LOCATION='master-0.master-svc:8032'
+			);
 END;
 GO
 

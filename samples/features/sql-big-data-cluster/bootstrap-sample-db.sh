@@ -3,7 +3,7 @@ set -e
 set -o pipefail
 STARTUP_PATH=$(pwd)
 TMP_DIR_NAME=$(basename $0)
-USAGE_MESSAGE="USAGE: $0 <CLUSTER_NAMESPACE> <SQL_MASTER_IP> <SQL_MASTER_SA_PASSWORD> <KNOX_IP> [<KNOX_PASSWORD>] [--install-extra-samples]"
+USAGE_MESSAGE="USAGE: $0 <CLUSTER_NAMESPACE> <SQL_MASTER_IP> <SQL_MASTER_SA_PASSWORD> <KNOX_IP> [<KNOX_PASSWORD>] [--install-extra-samples] [SQL_MASTER_PORT] [KNOX_PORT]"
 ERROR_MESSAGE="Bootstrap of the sample database failed. Output and error files are in directory [/tmp/$TMP_DIR_NAME]."
 
 # Print usage if mandatory parameters are missing
@@ -20,12 +20,20 @@ SQL_MASTER_SA_PASSWORD=$3
 KNOX_IP=$4
 KNOX_PASSWORD=$5
 AW_WWI_SAMPLES=$6
+SQL_MASTER_PORT=$7
+KNOX_PORT=$8
 
 # If Knox password is not supplied then default to SQL Master password
 KNOX_PASSWORD=${KNOX_PASSWORD:=$SQL_MASTER_SA_PASSWORD}
 
-SQL_MASTER_INSTANCE=$SQL_MASTER_IP,31433
-KNOX_ENDPOINT=$KNOX_IP:30443
+# Skip if extra samples doesn't need to be installed
+AW_WWI_SAMPLES=${AW_WWI_SAMPLES:=no}
+
+# Use default ports if not specified
+SQL_MASTER_PORT=${SQL_MASTER_PORT:=31433}
+KNOX_PORT=${KNOX_PORT:=30433}
+SQL_MASTER_INSTANCE=$SQL_MASTER_IP,$SQL_MASTER_PORT
+KNOX_ENDPOINT=$KNOX_IP:$KNOX_PORT
 
 for util in sqlcmd bcp kubectl curl
     do
@@ -43,11 +51,20 @@ then
     $DEBUG curl -G "https://sqlchoice.blob.core.windows.net/sqlchoice/static/tpcxbb_1gb.bak" -o tpcxbb_1gb.bak
 fi
 
+CTP_VERSION=$(sqlcmd -S $SQL_MASTER_INSTANCE -Usa -P$SQL_MASTER_SA_PASSWORD -I -b -h-1 -Q "print RTRIM((CAST(SERVERPROPERTY('ProductLevel') as nvarchar(128))));")
+
+if [ "$CTP_VERSION" == "CTP2.4" ]
+then
+    MASTER_POD_NAME=mssql-master-pool-0
+else
+    MASTER_POD_NAME=master-0
+fi
+
 echo Copying database backup file...
-$DEBUG kubectl cp tpcxbb_1gb.bak $CLUSTER_NAMESPACE/mssql-master-pool-0:/var/opt/mssql/data -c mssql-server || (echo $ERROR_MESSAGE && exit 1)
+$DEBUG kubectl cp tpcxbb_1gb.bak $CLUSTER_NAMESPACE/$MASTER_POD_NAME:/var/opt/mssql/data -c mssql-server || (echo $ERROR_MESSAGE && exit 1)
 # $DEBUG rm tpcxbb_1gb.bak
 
-if [ $AW_WWI_SAMPLES == --install-extra-samples ]
+if [ "$AW_WWI_SAMPLES" == "--install-extra-samples" ]
 then
     for file in AdventureWorks2016_EXT.bak AdventureWorksDW2016_EXT.bak
     do
@@ -57,7 +74,7 @@ then
             $DEBUG curl -L -G "https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/$file" -o $file
         fi
         echo Copying $file database backup file to SQL Master instance...
-        $DEBUG kubectl cp $file $CLUSTER_NAMESPACE/mssql-master-pool-0:/var/opt/mssql/data -c mssql-server || (echo $ERROR_MESSAGE && exit 1)
+        $DEBUG kubectl cp $file $CLUSTER_NAMESPACE/$MASTER_POD_NAME:/var/opt/mssql/data -c mssql-server || (echo $ERROR_MESSAGE && exit 1)
     done
 
 
@@ -69,7 +86,7 @@ then
             $DEBUG curl -L -G "https://github.com/Microsoft/sql-server-samples/releases/download/wide-world-importers-v1.0/$file" -o $file
         fi
         echo Copying $file database backup file to SQL Master instance...
-        $DEBUG kubectl cp $file $CLUSTER_NAMESPACE/mssql-master-pool-0:/var/opt/mssql/data -c mssql-server || (echo $ERROR_MESSAGE && exit 1)
+        $DEBUG kubectl cp $file $CLUSTER_NAMESPACE/$MASTER_POD_NAME:/var/opt/mssql/data -c mssql-server || (echo $ERROR_MESSAGE && exit 1)
     done
 fi
 
@@ -80,7 +97,7 @@ $DEBUG sqlcmd -S $SQL_MASTER_INSTANCE -Usa -P$SQL_MASTER_SA_PASSWORD -I -b < "$S
 
 # remove files copied into the pod:
 echo Removing database backup files...
-kubectl exec mssql-master-pool-0 -n $CLUSTER_NAMESPACE -c mssql-server -i -t -- bash -c "rm -rvf /var/opt/mssql/data/*.bak"
+kubectl exec $MASTER_POD_NAME -n $CLUSTER_NAMESPACE -c mssql-server -i -t -- bash -c "rm -rvf /var/opt/mssql/data/*.bak"
 
 for table in web_clickstreams inventory customer
     do
