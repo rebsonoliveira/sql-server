@@ -6,7 +6,8 @@ In **SQL Server 2019 big data clusters**, the SQL Server engine has gained the a
 
 **Applies to: SQL Server 2019 big data cluster**
 
-In SQL Server 2019 big data cluster, the storage pool consists of HDFS data node with SQL Server & Spark endpoints. The [storage-pool](storage-pool) folder contains SQL scripts that demonstrate how to query data residing in HDFS data inside a big data cluster.
+In SQL Server 2019 big data cluster, the storage pool consists of HDFS data node with SQL Server & Spark endpoints. The [storage-pool](storage-pool) folder contains SQL scripts that demonstrate how to query data residing in HDFS data inside a big data cluster. The [hadoop](hadoop) folder contains SQL scripts that demonstrate how to query data residing in HDFS data using the HADOOP data source for
+operations that are not yet supported with storage pool (ex: export data to HDFS).
 
 ## Query data in Oracle from SQL Server master
 

@@ -1,6 +1,16 @@
 USE sales
 GO
 
+-- Create external data source for HDFS inside SQL big data cluster.
+--
+IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'SqlStoragePool')
+	IF SERVERPROPERTY('ProductLevel') = 'CTP2.4'
+		CREATE EXTERNAL DATA SOURCE SqlStoragePool
+		WITH (LOCATION = 'sqlhdfs://service-master-pool:50070');
+	ELSE IF SERVERPROPERTY('ProductLevel') = 'CTP2.5'
+		CREATE EXTERNAL DATA SOURCE SqlStoragePool
+		WITH (LOCATION = 'sqlhdfs://nmnode-0-0.nmnode-0-svc:50070');
+
 -- Create file format for tab separated file with appropriate properties.
 --
 CREATE EXTERNAL FILE FORMAT tsv_file

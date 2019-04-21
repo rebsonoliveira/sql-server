@@ -32,10 +32,10 @@ To run this sample, you need the following prerequisites.
 ## Run this sample
 
 1. Clone or download this sample on your computer.
-2. Log in to the SQL Server big data cluster using the command below using the IP address of the `endpoint-service-proxy` in your cluster. If you are not familiar with `mssqltctl` you can refer to the [documentation](https://docs.microsoft.com/en-us/sql/big-data-cluster/big-data-cluster-create-apps?view=sqlallproducts-allversions) and then return to this sample.
+2. Log in to the SQL Server big data cluster using the command below using the IP address of the `mgmtproxy-svc-external` in your cluster. If you are not familiar with `mssqltctl` you can refer to the [documentation](https://docs.microsoft.com/en-us/sql/big-data-cluster/big-data-cluster-create-apps?view=sqlallproducts-allversions) and then return to this sample.
 
     ```bash
-    mssqlctl login -e https://<ip-address-of-endpoint-service-proxy>:30777 -u <user-name> -p <password>
+    mssqlctl login -e https://<ip-address-of-mgmtproxy-svc-external>:30777 -u <user-name> -p <password>
     ```
 3. Replace `[SA_PASSWORD]` in the `spec.yaml` file with the password for SQL user `sa`.
 4. Deploy the application by running the following command, specifying the folder where your `spec.yaml` and `back-up-db.dtsx` files are located:

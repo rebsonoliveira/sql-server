@@ -1,7 +1,7 @@
 #
 # Prerequisites: 
 # 
-# Azure CLI (https://docs.microsoft.com/en-us/cli/azure/install-azure-cli), python3 (https://www.python.org/downloads), mssqlctl CLI (pip3 install -r  https://private-repo.microsoft.com/python/ctp-2.3/mssqlctl/requirements.txt )
+# Azure CLI (https://docs.microsoft.com/en-us/cli/azure/install-azure-cli), python3 (https://www.python.org/downloads), mssqlctl CLI (pip3 install -r  https://private-repo.microsoft.com/python/ctp-2.4/mssqlctl/requirements.txt )
 #
 # Run `az login` at least once BEFORE running this script
 #
@@ -31,8 +31,8 @@ DOCKER_PASSWORD  = getpass.getpass("Provide your Docker password:")
 # Optionally change these configuration settings
 #
 AZURE_REGION=input("Provide Azure region - Press ENTER for using `westus`:") or "westus"
-VM_SIZE=input("Provide VM size for the AKS cluster - Press ENTER for using  `Standard_L4s`:") or "Standard_L4s"
-AKS_NODE_COUNT=input("Provide number of worker nodes for AKS cluster - Press ENTER for using  `3`:") or "3"
+VM_SIZE=input("Provide VM size for the AKS cluster - Press ENTER for using  `Standard_L8s`:") or "Standard_L8s"
+AKS_NODE_COUNT=input("Provide number of worker nodes for AKS cluster - Press ENTER for using  `1`:") or "1"
 #This is both Kubernetes cluster name and SQL Big Data cluster name
 CLUSTER_NAME=input("Provide name of AKS cluster and SQL big data cluster - Press ENTER for using  `sqlbigdata`:") or "sqlbigdata"
 #This password will be use for Controller user, Knox user and SQL Server Master SA accounts
@@ -42,7 +42,7 @@ CONTROLLER_USERNAME=input("Provide username to be used for Controller user - Pre
 #
 DOCKER_REGISTRY="private-repo.microsoft.com"
 DOCKER_REPOSITORY="mssql-private-preview"
-DOCKER_IMAGE_TAG="latest"
+DOCKER_IMAGE_TAG="ctp2.4"
 
 print ('Setting environment variables')
 os.environ['MSSQL_SA_PASSWORD'] = PASSWORD
@@ -70,7 +70,7 @@ command="az group create --name "+GROUP_NAME+" --location "+AZURE_REGION
 executeCmd (command)
 
 print("Creating AKS cluster: "+CLUSTER_NAME)
-command = "az aks create --name "+CLUSTER_NAME+" --resource-group "+GROUP_NAME+" --generate-ssh-keys --node-vm-size "+VM_SIZE+" --node-count "+AKS_NODE_COUNT+" --kubernetes-version 1.10.12"
+command = "az aks create --name "+CLUSTER_NAME+" --resource-group "+GROUP_NAME+" --generate-ssh-keys --node-vm-size "+VM_SIZE+" --node-count "+AKS_NODE_COUNT+" --kubernetes-version 1.12.6"
 executeCmd (command)
 
 command = "az aks get-credentials --overwrite-existing --name "+CLUSTER_NAME+" --resource-group "+GROUP_NAME+" --admin"

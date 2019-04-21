@@ -10,7 +10,7 @@ cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
 deb http://apt.kubernetes.io/ kubernetes-xenial main
 EOF
 
-KUBE_DPKG_VERSION=1.13.0-00
+KUBE_DPKG_VERSION=1.14.0-00
 apt-get update
 apt-get install -y ebtables ethtool
 apt-get install -y docker.io

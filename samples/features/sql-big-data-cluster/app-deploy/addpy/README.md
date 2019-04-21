@@ -42,10 +42,10 @@ To run this sample, you need the following prerequisites.
 ## Run this sample
 
 1. Clone or download this sample on your computer.
-2. Log in to the SQL Server big data cluster using the command below using the IP address of the `endpoint-service-proxy` in your cluster. If you are not familiar with `mssqltctl` you can refer to the [documentation](https://docs.microsoft.com/en-us/sql/big-data-cluster/big-data-cluster-create-apps?view=sqlallproducts-allversions) and then return to this sample.
+2. Log in to the SQL Server big data cluster using the command below using the IP address of the `mgmtproxy-svc-external` in your cluster. If you are not familiar with `mssqltctl` you can refer to the [documentation](https://docs.microsoft.com/en-us/sql/big-data-cluster/big-data-cluster-create-apps?view=sqlallproducts-allversions) and then return to this sample.
 
     ```bash
-    mssqlctl login -e https://<ip-address-of-endpoint-service-proxy>:30777 -u <user-name> -p <password>
+    mssqlctl login -e https://<ip-address-of-mgmtproxy-svc-external>:30777 -u <user-name> -p <password>
     ```
 3. Deploy the application by running the following command, specifying the folder where your `spec.yaml` and `add.py` files are located:
     ```bash
@@ -107,7 +107,7 @@ To run this sample, you need the following prerequisites.
    ```
    Note the IP address and the port number in this output. Open the following URL in your browser:
    `https://[IP]:[PORT]/api/docs/swagger.json`. You will have to log in with the same credentials you used for `mssqlctl login`. The contents of the `swagger.json` you can paste into [Swagger Editor](https://editor.swagger.io) to understand what methods are available:
-   ![API swagger](api_swagger.png)
+   ![API Swagger](api_swagger.png)
 
    Notice the `app` GET method as well as the `token` POST method. Since the authentication for apps uses JWT tokens you will need to get a token my using your favorite tool to make a POST call to the `token` method. Here is an example of how to do just that in [Postman](https://www.getpostman.com/):
    ![Postman Token](postman_token.png)
@@ -116,7 +116,7 @@ To run this sample, you need the following prerequisites.
    
    > *Optional*: If you want, you can open the URL for the `swagger` that was returned when you ran `mssqlctl app describe --name addpy --version [version]` in your browser. You will have to log in with the same credentials you used for `mssqlctl login`. The contents of the `swagger.json` you can paste into [Swagger Editor](https://editor.swagger.io). You will see that the web service exposes the `run` method.
 
-   You can use your favorite tool to call the `run` method (`https://[IP]:[PORT]/api/app/addpy/[version]/run`), passing in the parameters in the body of your POST request as json. In this example we will use [Postman](https://www.getpostman.com/). Before making the call, you will need to set the `Authorization` to `Bearer Token` and paste in the token you retrieved earlier. This will set a header on your request. See the screenshot below.
+   You can use your favorite tool to call the `run` method (`https://[IP]:30778/api/app/addpy/[version]/run`), passing in the parameters in the body of your POST request as json. In this example we will use [Postman](https://www.getpostman.com/). Before making the call, you will need to set the `Authorization` to `Bearer Token` and paste in the token you retrieved earlier. This will set a header on your request. See the screenshot below.
    ![Postman Run Headers](postman_run_1.png)
    Next, in the requests body, pass in the parameters to the app you are calling and set the `content-type` to `application/json`:
    ![Postman Run Body](postman_run_2.png)

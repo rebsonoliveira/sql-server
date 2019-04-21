@@ -10,11 +10,9 @@ In SQL Server 2019 big data cluster, the storage pool consists of HDFS data node
 
 ### Instructions
 
-1. Connect to HDFS/Knox gateway from Azure Data Studio using SQL Server big data cluster connection type.
-
-1. Run the [../../spark/spark-sql.ipynb](../../spark/spark-sql.ipynb/) notebook to generate the sample parquet file(s).
-
 1. Connect to SQL Server Master instance.
+
+1. Run the [../../spark/dataloading/transform-csv-files.ipynb](../../spark/dataloading/transform-csv-files.ipynb/) notebook to generate the sample parquet file(s).
 
 1. Execute the [web-clickstreams-hdfs-csv.sql](web-clickstreams-hdfs-csv.sql). This script demonstrates how to read CSV file(s) stored in HDFS.
 
