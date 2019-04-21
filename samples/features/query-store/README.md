@@ -14,7 +14,7 @@ Turn ON and Configure Query Store
 
 After restoring the database, go to Properties / Query Store tab.
 
-![Query Store in SSMS](../QS_SSMS.png)
+![Query Store in SSMS](./QS_SSMS.png)
  
 Use docs content to walk through main config settings: https://docs.microsoft.com//sql/relational-databases/performance/best-practice-with-the-query-store#Configure 
 
