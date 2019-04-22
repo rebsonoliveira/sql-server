@@ -1,4 +1,4 @@
-**Query Store demo**
+## Query Store demo
 
 This demo shows capabilities of Query Store. Usually we demo 3-4 scenarios:
 1.	How to turn on and initially configure Query Store
@@ -6,19 +6,17 @@ This demo shows capabilities of Query Store. Usually we demo 3-4 scenarios:
 3.	Detecting and fixing query with plan choice regression
 4.	Detecting and fixing workload that is candidate for auto-parametrization
 
-**Prerequisites**
+## Prerequisites
 
 Restore AdventureWorks2016_EXT database from the provided BAK at https://github.com/Microsoft/sql-server-samples/releases/tag/adventureworks.
 
-Turn ON and Configure Query Store
-
-After restoring the database, go to Properties / Query Store tab.
+After restoring the database AdventureWorks2016_EXT, go to Properties / Query Store tab, turn ON Query Store, and configure it according to best practices in https://docs.microsoft.com/sql/relational-databases/performance/best-practice-with-the-query-store.
 
 ![Query Store in SSMS](./QS_SSMS.png)
  
 Use docs content to walk through main config settings: https://docs.microsoft.com//sql/relational-databases/performance/best-practice-with-the-query-store#Configure 
 
-**How Query Store Works**
+### How Query Store Works
 Open ShowBasics.sql script and execute queries individually:
 -	Run simple `SELECT * FROM` Part
 -	Show where query ends in sys.query_store_query_text, sys.query_store_query, sys.query_store_plan, sys.query_store_runtime_stats
@@ -27,12 +25,13 @@ Open ShowBasics.sql script and execute queries individually:
 -	Show what happens with query that gets auto-parametrized. It cannot be searched using the original query text because QDS stores query as parametrized. Hopefully, sys.fn_stmt_sql_handle_from_sql_stmt can be used to track down query using original query text
 -	Run `vw_QueryStoreRuntimeInfo` (again custom view) to show main runtime stats combined with query/plan info
 
-**Query with plan regression**
+### Query with plan regression
 1.	Run QueryStoreSimpleDemo.exe with option R or option S
 2.	Open SSMS, analyze and explain - two execution plans that SQL Server use alternately (switches between 2 plan almost randomly). This is known as Parameter Sniffing problem - plan gets generated based on parameter available at the compilation time. When compilation happens frequently and randomly and data is skewed (not all parameter values are uniformly distributed PSP is likely to occur and degradations are common)
 3.	Force better plan, explain what happens (SSMS)
 4.	Summarize benefits for DBA – fixing performance quickly without knowing details about the query. Fully transparent to running apps
-Detect and fix ad hoc workload that is candidate for parametrization
+
+### Detect and fix ad hoc workload that is candidate for parametrization
 1.	Run QueryStoreSimpleDemo.exe with option P and let it work for some time (15-20 sec)
 2.	Open “Auto-Param Analysis.sql” and run queries from groups (1) and (2). What we see is:
 a.	Large number of queries / plan entries, small number of different query/plan hashes indicates queries that are not parametrized although they are good candidates
@@ -45,6 +44,3 @@ b.	Relatively big compile time shows that system wastes resources on compilation
 8.	Open Open SSMS Top Resource Consuming queries: you’ll see dozen of different queries to tune
 9.	(6) show alternative solution – applying forced parametrization for the entire DB. Just mention, as a possible solution
 10.	Run (7) to reset DB to  initial state.
-
-
-
