@@ -12,7 +12,9 @@ SQL Server Big Data cluster bundles Spark and HDFS together with SQL server. Azu
 
 [DataLoading   - Transforming CSV to Parquet](dataloading/transform-csv-files.ipynb/)
 
-[Data Transfer - Spark to SQL using JDBC ](spark_to_sql/spark_to_sql_jdbc.ipynb/)
+[Data Transfer - Spark to SQL using Spark JDBC connector](data-virtualization/spark_to_sql_jdbc.ipynb/)
+
+[Data Transfer - Spark to SQL using MSSQL Spark connector](spark_to_sql/mssql_spark_connector.ipynb/)
 
 ## Instructions on how to run in Azure Data Studio
 
