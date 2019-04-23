@@ -16,7 +16,7 @@ SQL Server Big Data cluster bundles Spark and HDFS together with SQL server. Azu
 
 ## Instructions on how to run in Azure Data Studio
 
-1. Download and save the notebook file [dataloading/transnform-csv-files.ipynb](dataloading/transform-csv-files.ipynb/) locally.
+[data-loading/transform-csv-files.ipynb](dataloading/transform-csv-files.ipynb/)
 
 2. From Azure Data Studio Connect to the SQL Server Master instance in a big data cluster. 
 

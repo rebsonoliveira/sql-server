@@ -13,7 +13,7 @@ IF NOT EXISTS(SELECT * FROM sys.database_scoped_credentials WHERE name = 'MySQL8
 IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'MySQL80')
     CREATE EXTERNAL DATA SOURCE MySQL80
     WITH (LOCATION = 'odbc://uc-win19-vm.redmond.corp.microsoft.com'
-    , CONNECTION_OPTIONS = 'Driver={MySQL 8.0 ODBC Driver Unicode Driver};User name=%u;Passwword=%p'
+    , CONNECTION_OPTIONS = 'Driver={MySQL ODBC 8.0 Unicode Driver};User name=%u;Passwword=%p;IGNORE_SPACE=1'
     , CREDENTIAL = [MySQL80-user]);
 
 -- Create external table over inventory table on MySQL server
@@ -60,6 +60,7 @@ SELECT * FROM mysql_tables;
 */
 -- Cleanup
 /*
+DROP EXTERNAL TABLE mysql_version
 DROP EXTERNAL TABLE mysql_tables
 DROP EXTERNAL DATA SOURCE MySQL80
 DROP DATABASE SCOPED CREDENTIAL [MySQL80-user]
