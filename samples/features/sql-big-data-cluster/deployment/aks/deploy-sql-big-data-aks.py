@@ -1,7 +1,7 @@
 #
 # Prerequisites: 
 # 
-# Azure CLI (https://docs.microsoft.com/en-us/cli/azure/install-azure-cli), python3 (https://www.python.org/downloads), mssqlctl CLI (pip3 install -r  https://private-repo.microsoft.com/python/ctp-2.4/mssqlctl/requirements.txt )
+# Azure CLI (https://docs.microsoft.com/en-us/cli/azure/install-azure-cli), python3 (https://www.python.org/downloads), mssqlctl CLI (pip3 install -r  https://private-repo.microsoft.com/python/ctp-2.5/mssqlctl/requirements.txt )
 #
 # Run `az login` at least once BEFORE running this script
 #
@@ -33,8 +33,10 @@ DOCKER_PASSWORD  = getpass.getpass("Provide your Docker password:")
 AZURE_REGION=input("Provide Azure region - Press ENTER for using `westus`:") or "westus"
 VM_SIZE=input("Provide VM size for the AKS cluster - Press ENTER for using  `Standard_L8s`:") or "Standard_L8s"
 AKS_NODE_COUNT=input("Provide number of worker nodes for AKS cluster - Press ENTER for using  `1`:") or "1"
+
 #This is both Kubernetes cluster name and SQL Big Data cluster name
 CLUSTER_NAME=input("Provide name of AKS cluster and SQL big data cluster - Press ENTER for using  `sqlbigdata`:") or "sqlbigdata"
+
 #This password will be use for Controller user, Knox user and SQL Server Master SA accounts
 PASSWORD=input("Provide password to be used for Controller user, Knox user and SQL Server Master SA accounts - Press ENTER for using  `MySQLBigData2019`:") or "MySQLBigData2019"
 CONTROLLER_USERNAME=input("Provide username to be used for Controller user - Press ENTER for using  `admin`:") or "admin"
@@ -42,7 +44,7 @@ CONTROLLER_USERNAME=input("Provide username to be used for Controller user - Pre
 #
 DOCKER_REGISTRY="private-repo.microsoft.com"
 DOCKER_REPOSITORY="mssql-private-preview"
-DOCKER_IMAGE_TAG="ctp2.4"
+DOCKER_IMAGE_TAG="ctp2.5"
 
 print ('Setting environment variables')
 os.environ['MSSQL_SA_PASSWORD'] = PASSWORD
@@ -53,13 +55,8 @@ os.environ['DOCKER_REGISTRY'] = DOCKER_REGISTRY
 os.environ['DOCKER_REPOSITORY'] = DOCKER_REPOSITORY
 os.environ['DOCKER_USERNAME']=DOCKER_USERNAME
 os.environ['DOCKER_PASSWORD']=DOCKER_PASSWORD
-os.environ['DOCKER_EMAIL']=DOCKER_USERNAME
 os.environ['DOCKER_IMAGE_TAG']=DOCKER_IMAGE_TAG
 os.environ['DOCKER_IMAGE_POLICY']="IfNotPresent"
-os.environ['DOCKER_PRIVATE_REGISTRY']="1"
-os.environ['CLUSTER_PLATFORM']="aks"
-os.environ['ACCEPT_EULA']="yes"
-os.environ['STORAGE_SIZE']="10Gi"
 
 print ("Set azure context to subcription: "+SUBSCRIPTION_ID)
 command = "az account set -s "+ SUBSCRIPTION_ID
@@ -77,20 +74,30 @@ command = "az aks get-credentials --overwrite-existing --name "+CLUSTER_NAME+" -
 executeCmd (command)
 
 print("Creating SQL Big Data cluster:" +CLUSTER_NAME)
-command="mssqlctl cluster create --name "+CLUSTER_NAME
+command="mssqlctl cluster config init --src aks-dev-test.json --target custom.json"
+executeCmd (command)
+
+command="mssqlctl cluster config section set --config-file custom.json --json-values ""metadata.name=" + CLUSTER_NAME + ""
+executeCmd (command)
+
+command="mssqlctl cluster create --config-file custom.json --accept-eula yes"
 executeCmd (command)
 
 print("")
 print("SQL Server big data cluster connection endpoints: ")
+
 print("SQL Server master instance:")
-command="kubectl get service endpoint-master-pool -o=custom-columns=""IP:.status.loadBalancer.ingress[0].ip,PORT:.spec.ports[0].port"" -n "+CLUSTER_NAME
+command="kubectl get service master-svc-external -o=custom-columns=""IP:.status.loadBalancer.ingress[0].ip,PORT:.spec.ports[0].port"" -n "+CLUSTER_NAME
 executeCmd(command)
+
 print("")
 print("HDFS/KNOX:")
-command="kubectl get service endpoint-security -o=custom-columns=""IP:status.loadBalancer.ingress[0].ip,PORT:.spec.ports[0].port"" -n "+CLUSTER_NAME
+command="kubectl get service gateway-svc-external -o=custom-columns=""IP:status.loadBalancer.ingress[0].ip,PORT:.spec.ports[0].port"" -n "+CLUSTER_NAME
 executeCmd(command)
+
 print("")
 print("Cluster administration portal (https://<ip>:<port>):")
-command="kubectl get service endpoint-service-proxy -o=custom-columns=""IP:status.loadBalancer.ingress[0].ip,PORT:.spec.ports[0].port"" -n "+CLUSTER_NAME
+command="kubectl get service mgmtproxy-svc-external -o=custom-columns=""IP:status.loadBalancer.ingress[0].ip,PORT:.spec.ports[0].port"" -n "+CLUSTER_NAME
 executeCmd(command)
+
 print("")
