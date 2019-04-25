@@ -1,29 +1,27 @@
 # SQL Server big data clusters
 
-The new built-in notebooks in Azure Data Studio enables data scientists and data engineers to run Python, R, Scala, or Spark SQL code against the cluster.
+SQL Server Big Data cluster bundles Spark and HDFS together with SQL server. Azure Data Studio IDE provides built in notebooks that enables data scientists and data engineers to run Spark notebooks and job in Python, R, or Scala code against the Big Data Cluster. This folder contains spark sample notebook on using Spark in SQL server Big data cluster
 
-## Instructions to open a notebook from Azure Data Studio and execute the commands
+## Folder contents
 
-1. Connect to the SQL Server Master instance in a big data cluster
+[PySpark Hello World](dataloading/hello_PySpark.ipynb)
 
-1. Right-click on the server name, select **Manage**, switch to **SQL Server Big Data Cluster** tab, and use open Notebook.
+[Scala Hello World ](dataloading/hello_Scala.ipynb)
 
-1. Open the notebook in Azure Data Studio, wait for the “Kernel” and the target context (“Attach to”) to be populated.
+[SparkR Hello World ](dataloading/hello_sparkR.ipynb)
 
-1. Run each cell in the Notebook sequentially.
+[DataLoading   - Transforming CSV to Parquet](dataloading/transform-csv-files.ipynb/)
 
-## __[data-loading](data-loading/)__
+[Data Transfer - Spark to SQL using Spark JDBC connector](data-virtualization/spark_to_sql_jdbc.ipynb/)
 
-This folder contains samples that show how to load data using Spark and query them using SQL statements.
+[Data Transfer - Spark to SQL using MSSQL Spark connector](spark_to_sql/mssql_spark_connector.ipynb/)
+
+## Instructions on how to run in Azure Data Studio
 
 [data-loading/transform-csv-files.ipynb](dataloading/transform-csv-files.ipynb/)
 
-This samnple notebook shows how to transform CSV files in HDFS to parquet files.
+2. From Azure Data Studio Connect to the SQL Server Master instance in a big data cluster. 
 
-[dataloading/spark-sql.ipynb](dataloading/spark-sql.ipynb/)
+3. Right-click on the server name, select **Manage**, switch to **SQL Server Big Data Cluster** tab, and open the notebook in Azure Data Studio.  Wait for the “Kernel” and the target context (“Attach to”) to be populated. If required set the relevant “Kernel” ( e.g **PySpark3** )  and **Attach to** needs to be the IP address of your big data cluster endpoint.
 
-This samnple notebook shows how to query hive tables created from Spark.
-
-## __[data-virtualization](data-virtualization/)__
-
-This folder contains samples that show how to integrate Spark with other data sources.
+4. Run each cell in the Notebook sequentially.
