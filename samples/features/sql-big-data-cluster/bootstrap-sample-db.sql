@@ -85,7 +85,7 @@ BEGIN
 			WITH (LOCATION = 'sqlhdfs://service-master-pool:50070');
 		ELSE IF SERVERPROPERTY('ProductLevel') = 'CTP2.5'
 			CREATE EXTERNAL DATA SOURCE SqlStoragePool
-			WITH (LOCATION = 'sqlhdfs://nmnode-0-0.nmnode-0-svc:50070');
+			WITH (LOCATION = 'sqlhdfs://nmnode-0-svc:50070');
 
 	IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'HadoopData')
 		IF SERVERPROPERTY('ProductLevel') = 'CTP2.4'
@@ -99,8 +99,8 @@ BEGIN
 			CREATE EXTERNAL DATA SOURCE HadoopData
 			WITH(
 					TYPE=HADOOP,
-					LOCATION='hdfs://nmnode-0-0.nmnode-0-svc:9000/',
-					RESOURCE_MANAGER_LOCATION='master-0.master-svc:8032'
+					LOCATION='hdfs://nmnode-0-svc:9000/',
+					RESOURCE_MANAGER_LOCATION='master-svc:8032'
 			);
 END;
 GO
@@ -118,10 +118,16 @@ BEGIN
 	FETCH @sample_dbs INTO @file;
 	IF @@FETCH_STATUS < 0 BREAK;
 
+	-- Restore the sample databases:
 	EXECUTE #restore_database @file;
+
+	-- Get database name used in restore:
 	SET @proc = CONCAT(QUOTENAME(LEFT(@file, CHARINDEX('.', @file)-1)), N'.sys.sp_executesql');
 
 	EXECUTE @proc N'#create_data_sources';
+
+	-- Set compatibility level to 150:
+	EXECUTE @proc N'ALTER DATABASE CURRENT SET COMPATIBILITY_LEVEL = 150';
 
 	-- Rename TPCx-BB database:
 	IF DB_ID('tpcxbb_1gb') IS NOT NULL

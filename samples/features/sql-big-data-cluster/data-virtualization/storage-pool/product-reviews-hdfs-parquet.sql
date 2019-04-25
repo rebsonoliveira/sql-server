@@ -9,7 +9,7 @@ IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'SqlStoragePo
 		WITH (LOCATION = 'sqlhdfs://service-master-pool:50070');
 	ELSE IF SERVERPROPERTY('ProductLevel') = 'CTP2.5'
 		CREATE EXTERNAL DATA SOURCE SqlStoragePool
-		WITH (LOCATION = 'sqlhdfs://nmnode-0-0.nmnode-0-svc:50070');
+		WITH (LOCATION = 'sqlhdfs://nmnode-0-svc:50070');
 
 -- Create file format for parquet file with appropriate properties.
 --
