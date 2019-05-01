@@ -62,7 +62,7 @@ To run this sample, you need the following prerequisites.
 
 ## Sample details
 
-Please visit the [C# on macOS tutorial](https://www.microsoft.com/en-us/sql-server/developer-get-started/csharp-mac) to run through the sample in full with more detail.
+Please visit the [C# on macOS tutorial](https://www.microsoft.com/en-us/sql-server/developer-get-started/csharp/macos/) to run through the sample in full with more detail.
 
 <a name=disclaimers></a>
 

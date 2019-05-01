@@ -818,6 +818,7 @@ CREATE TABLE [cso].[FactOnlineSales]       WITH (DISTRIBUTION = HASH([ProductKey
 CREATE TABLE [cso].[FactSales]             WITH (DISTRIBUTION = HASH([ProductKey]  ) ) AS SELECT * FROM [asb].[FactSales]              OPTION (LABEL = 'CTAS : Load [cso].[FactSales]              ');
 CREATE TABLE [cso].[FactSalesQuota]        WITH (DISTRIBUTION = HASH([ProductKey]  ) ) AS SELECT * FROM [asb].[FactSalesQuota]         OPTION (LABEL = 'CTAS : Load [cso].[FactSalesQuota]         ');
 CREATE TABLE [cso].[FactStrategyPlan]      WITH (DISTRIBUTION = HASH([EntityKey])  )   AS SELECT * FROM [asb].[FactStrategyPlan]       OPTION (LABEL = 'CTAS : Load [cso].[FactStrategyPlan]       ');
+CREATE TABLE [cso].[FactExchangeRate]      WITH (DISTRIBUTION = HASH([ExchangeRateKey])  ) AS SELECT * FROM [asb].[FactExchangeRate]    OPTION (LABEL = 'CTAS : Load [cso].[FactExchangeRate]       ');
 
 
 -- Track the load progress
@@ -864,6 +865,7 @@ ALTER INDEX ALL ON [cso].[FactInventory]            REBUILD;
 ALTER INDEX ALL ON [cso].[FactOnlineSales]          REBUILD;
 ALTER INDEX ALL ON [cso].[FactSales]                REBUILD;
 ALTER INDEX ALL ON [cso].[FactSalesQuota]           REBUILD;
+ALTER INDEX ALL ON [cso].[FactExchangeRate]         REBUILD;
 
 
 -- Optimize statistics
@@ -1193,7 +1195,6 @@ CREATE STATISTICS [stat_cso_FactOnlineSales_OnlineSalesKey] ON [cso].[FactOnline
 CREATE STATISTICS [stat_cso_FactOnlineSales_ProductKey] ON [cso].[FactOnlineSales]([ProductKey]);
 CREATE STATISTICS [stat_cso_FactOnlineSales_PromotionKey] ON [cso].[FactOnlineSales]([PromotionKey]);
 CREATE STATISTICS [stat_cso_FactOnlineSales_StoreKey] ON [cso].[FactOnlineSales]([StoreKey]);
-```
 
 -- Achievement unlocked!
 --

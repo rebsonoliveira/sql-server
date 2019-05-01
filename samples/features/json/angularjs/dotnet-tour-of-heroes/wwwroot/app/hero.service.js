@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var http_1 = require("@angular/http");
 require("rxjs/add/operator/toPromise");
-var HeroService = (function () {
+var HeroService = /** @class */ (function () {
     function HeroService(http) {
         this.http = http;
         this.heroesUrl = 'app/heroes'; // URL to web api
@@ -72,11 +72,11 @@ var HeroService = (function () {
         console.error('An error occurred', error);
         return Promise.reject(error.message || error);
     };
+    HeroService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [http_1.Http])
+    ], HeroService);
     return HeroService;
 }());
-HeroService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [http_1.Http])
-], HeroService);
 exports.HeroService = HeroService;
 //# sourceMappingURL=hero.service.js.map

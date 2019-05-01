@@ -11,7 +11,7 @@ services:
       SA_PASSWORD: "Alaska2017"
       ACCEPT_EULA: "Y"
     healthcheck:
-      test: sqlcmd -S db1.internal.prod.example.com -U SA -P 'Alaska2017' -Q 'select 1'
+      test: sqlcmd -S db1.internal.prod.example.com -U SA -P 'Alaska2017' -Q 'select distinct 1 from AdventureWorksDW2017.dbo.DimDate'
     networks:
       mynetwork:
         aliases:
