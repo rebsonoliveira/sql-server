@@ -28,8 +28,15 @@ Built-in temporal functions enable you to easily track history of changes in a t
 
 Graph tables enable you to add a non-relational capability to your database.
 
+[SQL Management Objects (SMO)](sql-management-objects)
+
+The SQL Server Management Objects (SMO) Framework is a set of objects designed for programmatic management of Microsoft SQL Server and Microsoft Azure SQL Database. These code snippets demonstrate features of SMO and illustrate how to use SMO properties and collections without sacrificing performance.
+
 ## Samples for Business Intelligence features within SQL Server
 
 [Reporting Services (SSRS)](reporting-services)
 
 Reporting Services provides reporting capabilities for your organziation. Reporting Services can be integrated with SharePoint Server or used as a standalone service.
+
+
+
