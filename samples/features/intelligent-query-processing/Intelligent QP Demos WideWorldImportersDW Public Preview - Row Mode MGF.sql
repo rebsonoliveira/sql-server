@@ -10,13 +10,16 @@
 -- Email IntelligentQP@microsoft.com for questions\feedback
 -- ******************************************************** --
 
-ALTER DATABASE WideWorldImportersDW SET COMPATIBILITY_LEVEL = 150;
+USE [master];
+GO
+
+ALTER DATABASE [WideWorldImportersDW] SET COMPATIBILITY_LEVEL = 150;
 GO
 
 ALTER DATABASE SCOPED CONFIGURATION CLEAR PROCEDURE_CACHE;
 GO
 
-USE WideWorldImportersDW;
+USE [WideWorldImportersDW];
 GO
 
 -- Simulate out-of-date stats
@@ -30,10 +33,10 @@ GO
 SELECT   
 	fo.[Order Key], fo.Description,
 	si.[Lead Time Days]
-FROM    Fact.OrderHistory AS fo
+FROM Fact.OrderHistory AS fo
 INNER HASH JOIN Dimension.[Stock Item] AS si 
 	ON fo.[Stock Item Key] = si.[Stock Item Key]
-WHERE   fo.[Lineage Key] = 9
+WHERE fo.[Lineage Key] = 9
 	AND si.[Lead Time Days] > 19;
 
 -- Cleanup
