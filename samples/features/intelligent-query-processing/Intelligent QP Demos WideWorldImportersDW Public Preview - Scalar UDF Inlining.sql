@@ -9,19 +9,21 @@
 
 -- Email IntelligentQP@microsoft.com for questions\feedback
 -- ******************************************************** --
-USE WideWorldImportersDW;
+USE [master];
 GO
 
-ALTER DATABASE WideWorldImportersDW 
-SET COMPATIBILITY_LEVEL = 150;
+ALTER DATABASE [WideWorldImportersDW] SET COMPATIBILITY_LEVEL = 150;
 GO
 
-ALTER DATABASE SCOPED CONFIGURATION 
-CLEAR PROCEDURE_CACHE;
+ALTER DATABASE SCOPED CONFIGURATION CLEAR PROCEDURE_CACHE;
 GO
+
+USE [WideWorldImportersDW];
+GO
+
 /*
 Adapted from SQL Server Books Online
-https://docs.microsoft.com/en-us/sql/relational-databases/user-defined-functions/scalar-udf-inlining?view=sqlallproducts-allversions 
+https://docs.microsoft.com/sql/relational-databases/user-defined-functions/scalar-udf-inlining?view=sqlallproducts-allversions 
 */
 CREATE OR ALTER FUNCTION 
 	dbo.customer_category(@CustomerKey INT) 
