@@ -7,13 +7,12 @@ IF NOT EXISTS(SELECT * FROM sys.database_scoped_credentials WHERE name = 'Postgr
   WITH IDENTITY = '<postgres_user,nvarchar(100),mssql-user>'
   , SECRET = '<postgres_user_password,nvarchar(100),sql19tw0postgresql>';
 
--- Create external data source that points to PostgreSQL server
--- The tokens '%u' and '%p' is used to reference the credential information.
+-- Create external data source that points to PostgreSQL server.
 --
 IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'PostgreSQL11')
     CREATE EXTERNAL DATA SOURCE PostgreSQL11
     WITH (LOCATION = 'odbc://<postgres_server,nvarchar(100),postgres-server-name>'
-    , CONNECTION_OPTIONS = 'Driver={PostgreSQL ODBC Driver(UNICODE)};User name=%u;Passwword=%p'
+    , CONNECTION_OPTIONS = 'Driver={PostgreSQL ODBC Driver(UNICODE)}'
     , CREDENTIAL = [PostgreSQL11-user]);
 
 -- Create external table over inventory table on PostgreSQL server
