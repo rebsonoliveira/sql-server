@@ -1,56 +1,82 @@
 $parameters = $args[0]
+$scriptUrlBase = $args[1]
 
 $subscriptionId = $parameters['subscriptionId']
 $resourceGroupName = $parameters['resourceGroupName']
 $virtualNetworkName = $parameters['virtualNetworkName']
 $certificateNamePrefix = $parameters['certificateNamePrefix']
-$force =  $parameters['force']
+$clientCertificatePassword = $parameters['clientCertificatePassword']
 
-$scriptUrlBase = $args[1]
+if ($clientCertificatePassword -eq '' -or ($null -eq $clientCertificatePassword)) {
+    $clientCertificatePassword = 'S0m3Str0nGP@ssw0rd'
+}
 
-function VerifyPSVersion
-{
-    Write-Host "Verifying PowerShell version, must be 5.0 or higher."
-    if($PSVersionTable.PSVersion.Major -ge 5)
-    {
-        Write-Host "PowerShell version verified." -ForegroundColor Green
+function VerifyPSVersion {
+    Write-Host "Verifying PowerShell version."
+    if ($PSVersionTable.PSEdition -eq "Desktop") {
+        if (($PSVersionTable.PSVersion.Major -ge 6) -or 
+            (($PSVersionTable.PSVersion.Major -eq 5) -and ($PSVersionTable.PSVersion.Minor -ge 1))) {
+            Write-Host "PowerShell version verified." -ForegroundColor Green
+        }
+        else {
+            Write-Host "You need to install PowerShell version 5.1 or heigher." -ForegroundColor Red
+            Break;
+        }
     }
-    else
-    {
-        Write-Host "You need to install PowerShell version 5.0 or heigher." -ForegroundColor Red
-        Break;
+    else {
+        if ($PSVersionTable.PSVersion.Major -ge 6) {
+            Write-Host "PowerShell version verified." -ForegroundColor Green
+        }
+        else {
+            Write-Host "You need to install PowerShell version 6.0 or heigher." -ForegroundColor Red
+            Break;
+        }        
     }
 }
 
-function Ensure-Login () 
-{
-    $context = Get-AzureRmContext
-    If($context.Subscription -eq $null)
-    {
-        Write-Host "Loging in ..."
-        If((Login-AzureRmAccount -ErrorAction SilentlyContinue -ErrorVariable Errors) -eq $null)
-        {
-            Write-Host ("Login failed: {0}" -f $Errors[0].Exception.Message) -ForegroundColor Red
+function EnsureAzModule {
+    Write-Host "Checking if Az module is imported."
+    $module = Get-Module Az
+    If ($null -eq $module) {
+        try {
+            Import-Module Az -ErrorAction Stop
+            Write-Host "Module Az imported." -ForegroundColor Green
+        }
+        catch {
+            Install-Module Az -AllowClobber
+            Write-Host "Module Az installed." -ForegroundColor Green
+        }
+    }
+    else {
+        Write-Host "Module Az imported." -ForegroundColor Green        
+    }
+}
+
+function EnsureLogin () {
+    $context = Get-AzContext
+    If ($null -eq $context.Subscription) {
+        Write-Host "Sign-in..."
+        If ($null -eq (Connect-AzAccount -ErrorAction SilentlyContinue -ErrorVariable Errors)) {
+            Write-Host ("Sign-in failed: {0}" -f $Errors[0].Exception.Message) -ForegroundColor Red
             Break
         }
     }
-    Write-Host "User logedin." -ForegroundColor Green
+    Write-Host "Sign-in successful." -ForegroundColor Green
 }
 
-function Select-SubscriptionId {
+function SelectSubscriptionId {
     param (
         $subscriptionId
     )
-    Write-Host "Selecting subscription '$subscriptionId'."
-    $context = Get-AzureRmContext
-    If($context.Subscription.Id -ne $subscriptionId)
-    {
-        Try
-        {
-            Select-AzureRmSubscription -SubscriptionId $subscriptionId -ErrorAction Stop | Out-null
+    Write-Host "Selecting subscription '$subscriptionId'..."
+    $context = Get-AzContext
+    If ($context.Subscription.Id -ne $subscriptionId) {
+        Try {
+            $currentSubscriptionId = $context.Subscription.Id
+            Write-Host "Switching subscription $currentSubscriptionId to '$subscriptionId'." -ForegroundColor Green
+            Select-AzSubscription -SubscriptionId $subscriptionId -ErrorAction Stop | Out-null
         }
-        Catch
-        {
+        Catch {
             Write-Host "Subscription selection failed: $_" -ForegroundColor Red
             Break
         }
@@ -58,78 +84,57 @@ function Select-SubscriptionId {
     Write-Host "Subscription selected." -ForegroundColor Green
 }
 
-function Load-VirtualNetwork {
+function LoadVirtualNetwork {
     param (
         $resourceGroupName,
         $virtualNetworkName
     )
-        Write-Host("Loading virtual network '{0}' in resource group '{1}'." -f $virtualNetworkName, $resourceGroupName)
-        $virtualNetwork = Get-AzureRmVirtualNetwork -ResourceGroupName $resourceGroupName -Name $virtualNetworkName -ErrorAction SilentlyContinue
-        If($virtualNetwork.Id -ne $null)
-        {
-            Write-Host "Virtual network loaded." -ForegroundColor Green
-            return $virtualNetwork
+    Write-Host("Loading virtual network '{0}' in resource group '{1}'." -f $virtualNetworkName, $resourceGroupName)
+    $virtualNetwork = Get-AzVirtualNetwork -ResourceGroupName $resourceGroupName -Name $virtualNetworkName -ErrorAction SilentlyContinue
+    $id = $virtualNetwork.Id
+    If ($null -ne $id) {
+        Write-Host "Virtual network with id $id is loaded." -ForegroundColor Green
+        If ($virtualNetwork.VirtualNetworkPeerings.Count -gt 0) {
+            Write-Host "Virtual network is loaded, but it should not have peerings." -ForegroundColor Red
         }
-        else
-        {
-            Write-Host "Virtual network not found." -ForegroundColor Red
-            Break
-        }
-}
-
-function Load-ResourceGroup {
-    param (
-        $resourceGroupName
-    )
-    Write-Host("Loading resource group '{0}'." -f $resourceGroupName)
-    $resourceGroup = Get-AzureRmResourceGroup -Name $resourceGroupName
-    If($resourceGroup.ResourceId -ne $null)
-    {
-        Write-Host "Resource group loaded." -ForegroundColor Green
-        return $resourceGroup
+        return $virtualNetwork
     }
-    else
-    {
-        Write-Host "Resource group not found." -ForegroundColor Red
+    else {
+        Write-Host "Virtual network $virtualNetworkName cannot be found." -ForegroundColor Red
         Break
     }
 }
 
-function Set-VirtualNetwork
-{
+function SetVirtualNetwork {
     param($virtualNetwork)
 
     Write-Host "Applying changes to the virtual network."
-    Try
-    {
-        Set-AzureRmVirtualNetwork -VirtualNetwork $virtualNetwork -ErrorAction Stop | Out-Null
+    Try {
+        Set-AzVirtualNetwork -VirtualNetwork $virtualNetwork -ErrorAction Stop | Out-Null
     }
-    Catch
-    {
-        Write-Host "Failed: $_" -ForegroundColor Red
+    Catch {
+        Write-Host "Failed to configure Virtual Network: $_" -ForegroundColor Red
     }
-
 }
 
-function ConvertCidrToUint32Array
-{
+function ConvertCidrToUint32Array {
     param($cidrRange)
-    $cidrRangeParts = $cidrRange.Split(@(".","/"))
-    $ipnum = ([Convert]::ToUInt32($cidrRangeParts[0]) -shl 24) -bor `
-             ([Convert]::ToUInt32($cidrRangeParts[1]) -shl 16) -bor `
-             ([Convert]::ToUInt32($cidrRangeParts[2]) -shl 8) -bor `
-             [Convert]::ToUInt32($cidrRangeParts[3])
+    $cidrRangeParts = $cidrRange.Split("/")
+    $ipParts = $cidrRangeParts[0].Split(".")
+    $ipnum = ([Convert]::ToUInt32($ipParts[0]) -shl 24) -bor `
+    ([Convert]::ToUInt32($ipParts[1]) -shl 16) -bor `
+    ([Convert]::ToUInt32($ipParts[2]) -shl 8) -bor `
+        [Convert]::ToUInt32($ipParts[3])
 
-    $maskbits = [System.Convert]::ToInt32($cidrRangeParts[4])
+    $maskbits = [System.Convert]::ToInt32($cidrRangeParts[1])
     $mask = 0xffffffff
-    $mask = $mask -shl (32 -$maskbits)
+    $mask = $mask -shl (32 - $maskbits)
     $ipstart = $ipnum -band $mask
     $ipend = $ipnum -bor ($mask -bxor 0xffffffff)
     return @($ipstart, $ipend)
 }
 
-function ConvertUInt32ToIPAddress
-{
+function ConvertUInt32ToIPAddress {
     param($uint32IP)
     $v1 = $uint32IP -band 0xff
     $v2 = ($uint32IP -shr 8) -band 0xff
@@ -138,80 +143,121 @@ function ConvertUInt32ToIPAddress
     return "$v4.$v3.$v2.$v1"
 }
 
-function CalculateNextAddressPrefix
-{
+function CalculateNextAddressPrefix {
     param($virtualNetwork, $prefixLength)
-    Write-Host "Calculating address prefix."
+    Write-Host "Calculating address prefix with length $prefixLength..."
     $startIPAddress = 0
-    ForEach($addressPrefix in $virtualNetwork.AddressSpace.AddressPrefixes)
-    {
+    ForEach ($addressPrefix in $virtualNetwork.AddressSpace.AddressPrefixes) {
         $endIPAddress = (ConvertCidrToUint32Array $addressPrefix)[1]
-        If($endIPAddress -gt $startIPAddress)
-        {
+        If ($endIPAddress -gt $startIPAddress) {
             $startIPAddress = $endIPAddress
         }
     }
     $startIPAddress += 1
-    return (ConvertUInt32ToIPAddress $startIPAddress) + "/" + $prefixLength
+    $addressPrefixResult = (ConvertUInt32ToIPAddress $startIPAddress) + "/" + $prefixLength
+    Write-Host "Using address prefix $addressPrefixResult." -ForegroundColor Green
+    return $addressPrefixResult
 }
 
-function CalculateVpnClientAddressPoolPrefix
-{
+function CalculateVpnClientAddressPoolPrefix {
     param($gatewaySubnetPrefix)
     Write-Host "Calculating VPN client address pool prefix."
-    If($gatewaySubnetPrefix.StartsWith("10."))
-    {
+    If ($gatewaySubnetPrefix.StartsWith("10.")) {
         return "192.168.0.0/24"
     }
-    else
-    {
+    else {
         return "172.16.0.0/24"
     }
 
 }
 
+function CreateCerificateWindows() {
+    $certificate = New-SelfSignedCertificate -Type Custom -KeySpec Signature `
+        -Subject ("CN=$certificateNamePrefix" + "P2SRoot") -KeyExportPolicy Exportable `
+        -HashAlgorithm sha256 -KeyLength 2048 `
+        -CertStoreLocation "Cert:\CurrentUser\My" -KeyUsageProperty Sign -KeyUsage CertSign
+
+    $certificateThumbprint = $certificate.Thumbprint
+
+    New-SelfSignedCertificate -Type Custom -DnsName ($certificateNamePrefix + "P2SChild") -KeySpec Signature `
+        -Subject ("CN=$certificateNamePrefix" + "P2SChild") -KeyExportPolicy Exportable `
+        -HashAlgorithm sha256 -KeyLength 2048 `
+        -CertStoreLocation "Cert:\CurrentUser\My" `
+        -Signer $certificate -TextExtension @("2.5.29.37={text}1.3.6.1.5.5.7.3.2") | Out-null
+    
+    [Convert]::ToBase64String((Get-Item cert:\currentuser\my\$certificateThumbprint).RawData)
+}
+
+function CreateCerificateOpenSsl() {   
+    $dn = "CN=$certificateNamePrefix" + "P2SRoot"
+    ipsec pki --gen --outform pem > caKey.pem
+    ipsec pki --self --in caKey.pem --dn $dn --ca --outform pem > caCert.pem
+
+    $dn = $certificateNamePrefix + "P2SChild"
+    ipsec pki --gen --outform pem > "$($dn)Key.pem"
+    ipsec pki --pub --in "$($dn)Key.pem" --outform pem > "$($dn)PubKey.pem"
+    ipsec pki --issue --in "$($dn)PubKey.pem" --cacert caCert.pem --cakey caKey.pem --dn "CN=$($dn)" --san $dn --flag clientAuth --outform pem > "$($dn)Cert.pem"
+    openssl pkcs12 -in "$($dn)Cert.pem" -inkey "$($dn)Key.pem" -certfile caCert.pem -export -out "$($dn).p12" -password "pass:$($clientCertificatePassword)"
+
+    $publicRootCertData = openssl x509 -in caCert.pem -outform pem 
+    $publicRootCertData = $publicRootCertData -replace "-----BEGIN CERTIFICATE-----", ""
+    $publicRootCertData = $publicRootCertData -replace "-----END CERTIFICATE-----", ""
+    [string]::Join("", $publicRootCertData.Split())
+}
+
+function CreateCertificate() {
+    Write-Host "Creating certificate."
+    if ($PSVersionTable.PSEdition -eq "Desktop") {
+        return CreateCerificateWindows
+    }
+    else {
+        return CreateCerificateOpenSsl
+    }
+}
+
 VerifyPSVersion
-Ensure-Login
-Select-SubscriptionId -subscriptionId $subscriptionId
+EnsureAzModule
+EnsureLogin
+SelectSubscriptionId -subscriptionId $subscriptionId
 
-$virtualNetwork = Load-VirtualNetwork -resourceGroupName $resourceGroupName -virtualNetworkName $virtualNetworkName
+$virtualNetwork = LoadVirtualNetwork -resourceGroupName $resourceGroupName -virtualNetworkName $virtualNetworkName
 
-$resourceGroup = Get-AzureRmResourceGroup -Name $resourceGroupName
+$subnets = $virtualNetwork.Subnets.Name
 
-$certificate = New-SelfSignedCertificate -Type Custom -KeySpec Signature `
-    -Subject ("CN=$certificateNamePrefix"+"P2SRoot") -KeyExportPolicy Exportable `
-    -HashAlgorithm sha256 -KeyLength 2048 `
-    -CertStoreLocation "Cert:\CurrentUser\My" -KeyUsageProperty Sign -KeyUsage CertSign
+$gatewaySubnetName = "GatewaySubnet"
 
-$certificateThumbprint = $certificate.Thumbprint
+If ($false -eq $subnets.Contains($gatewaySubnetName)) {
+    Write-Host "$gatewaySubnetName is not one of the subnets in $subnets" -ForegroundColor Yellow
+    $gatewaySubnetPrefix = CalculateNextAddressPrefix $virtualNetwork 28
+    Write-Host "Creating subnet $gatewaySubnetName ($gatewaySubnetPrefix) in the virtual network ..." -ForegroundColor Green
 
-New-SelfSignedCertificate -Type Custom -DnsName ($certificateNamePrefix+"P2SChild") -KeySpec Signature `
-    -Subject ("CN=$certificateNamePrefix"+"P2SChild") -KeyExportPolicy Exportable `
-    -HashAlgorithm sha256 -KeyLength 2048 `
-    -CertStoreLocation "Cert:\CurrentUser\My" `
-    -Signer $certificate -TextExtension @("2.5.29.37={text}1.3.6.1.5.5.7.3.2") | Out-null
+    $virtualNetwork.AddressSpace.AddressPrefixes.Add($gatewaySubnetPrefix)
+    Add-AzVirtualNetworkSubnetConfig -Name $gatewaySubnetName -VirtualNetwork $virtualNetwork -AddressPrefix $gatewaySubnetPrefix | Out-Null
 
-$publicRootCertData = [Convert]::ToBase64String((Get-Item cert:\currentuser\my\$certificateThumbprint).RawData)
-
-$gatewaySubnetPrefix = CalculateNextAddressPrefix $virtualNetwork 28
+    SetVirtualNetwork $virtualNetwork
+    Write-Host "Added subnet $gatewaySubnetName into virtual network." -ForegroundColor Green
+}
+else {
+    Write-Host "The subnet $gatewaySubnetName exists in the virtual network." -ForegroundColor Green
+}
 
 $vpnClientAddressPoolPrefix = CalculateVpnClientAddressPoolPrefix $gatewaySubnetPrefix
-
-$virtualNetwork.AddressSpace.AddressPrefixes.Add($gatewaySubnetPrefix)
-Add-AzureRmVirtualNetworkSubnetConfig -Name GatewaySubnet -VirtualNetwork $virtualNetwork -AddressPrefix $gatewaySubnetPrefix | Out-Null
-
-Set-VirtualNetwork $virtualNetwork
+$publicRootCertData = CreateCertificate
 
 Write-Host
 
 # Start the deployment
 Write-Host "Starting deployment..."
+Write-Host "Deployment will take about 1h." -ForegroundColor Yellow
 
 $templateParameters = @{
-    virtualNetworkName = $virtualNetworkName
-    gatewaySubnetPrefix  = $gatewaySubnetPrefix
-    vpnClientAddressPoolPrefix  = $vpnClientAddressPoolPrefix
-    publicRootCertData  = $publicRootCertData
-    }
+    location                   = $virtualNetwork.Location    
+    virtualNetworkName         = $virtualNetworkName
+    gatewaySubnetPrefix        = $gatewaySubnetPrefix
+    vpnClientAddressPoolPrefix = $vpnClientAddressPoolPrefix
+    publicRootCertData         = $publicRootCertData
+}
 
-New-AzureRmResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateUri ($scriptUrlBase+'/azuredeploy.json?t='+ [DateTime]::Now.Ticks) -TemplateParameterObject $templateParameters
+New-AzResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateUri ($scriptUrlBase + '/azuredeploy.json?t=' + [DateTime]::Now.Ticks) -TemplateParameterObject $templateParameters
+
+Write-Host "Deployment completed."

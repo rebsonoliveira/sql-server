@@ -55,7 +55,7 @@
             "apiVersion": "2017-10-01",
             "type": "Microsoft.Network/virtualNetworkGateways",
             "name": "[variables('gatewayName')]",
-            "location": "[resourceGroup().location]",
+            "location": "[parameters('location')]",
             "dependsOn": [
                 "[concat('Microsoft.Network/publicIPAddresses/', variables('gatewayPublicIpAddressName'))]"
             ],
