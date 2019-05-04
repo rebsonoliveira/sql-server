@@ -1,6 +1,15 @@
 $parameters = $args[0]
 $scriptUrlBase = $args[1]
 
+$scriptUrlBase = 'https://raw.githubusercontent.com/srdan-bozovic-msft/sql-server-samples/master/samples/manage/azure-sql-db-managed-instance/attach-vpn-gateway'
+
+$parameters = @{
+    subscriptionId        = 'a8c9a924-06c0-4bde-9788-e7b1370969e1'
+    resourceGroupName     = 'srki_test'
+    virtualNetworkName    = 'vnet-testlinuxps'
+    certificateNamePrefix = 'cert4testlinuxps'
+}
+
 $subscriptionId = $parameters['subscriptionId']
 $resourceGroupName = $parameters['resourceGroupName']
 $virtualNetworkName = $parameters['virtualNetworkName']
