@@ -37,7 +37,6 @@
     "variables": {
         "gatewayPublicIpAddressName": "[concat('GatewayIP-', uniqueString(resourceGroup().id))]",
         "gatewayName": "[concat('Gateway-', uniqueString(resourceGroup().id))]",
-        "gatewaySku": "Basic",
         "gatewaySubnetName": "GatewaySubnet",
         "clientRootCertName": "RootCert"
     },
@@ -75,9 +74,13 @@
                     }
                 ],
                 "sku": {
-                    "name": "[variables('gatewaySku')]",
-                    "tier": "[variables('gatewaySku')]"
+                    "name": "Standard",
+                    "tier": "Standard"
                 },
+                "vpnClientProtocols": [
+                    "IkeV2",
+                    "SSTP"
+                  ],
                 "gatewayType": "Vpn",
                 "vpnType": "RouteBased",
                 "enableBgp": "false",
