@@ -5,7 +5,7 @@ $subscriptionId = $parameters['subscriptionId']
 $resourceGroupName = $parameters['resourceGroupName']
 $virtualNetworkName = $parameters['virtualNetworkName']
 $certificateNamePrefix = $parameters['certificateNamePrefix']
-$clientCertificatePassword = $parameters['clientCertificatePassword']
+$clientCertificatePassword = $parameters['clientCertificatePassword'] #used only when certificates are created using openssl
 
 if ($clientCertificatePassword -eq '' -or ($null -eq $clientCertificatePassword)) {
     $clientCertificatePassword = 'S0m3Str0nGP@ssw0rd'
@@ -197,7 +197,10 @@ function CreateCerificateOpenSsl() {
     ipsec pki --gen --outform pem > "$($dn)Key.pem"
     ipsec pki --pub --in "$($dn)Key.pem" --outform pem > "$($dn)PubKey.pem"
     ipsec pki --issue --in "$($dn)PubKey.pem" --cacert caCert.pem --cakey caKey.pem --dn "CN=$($dn)" --san $dn --flag clientAuth --outform pem > "$($dn)Cert.pem"
+    
     openssl pkcs12 -in "$($dn)Cert.pem" -inkey "$($dn)Key.pem" -certfile caCert.pem -export -out "$($dn).p12" -password "pass:$($clientCertificatePassword)"
+    #openssl pkcs12 -in "$($dn).p12" -password "pass:$($clientCertificatePassword)" -nocerts -out "$($dn)PrivateKey.pem" -nodes
+    #openssl pkcs12 -in "$($dn).p12" -password "pass:$($clientCertificatePassword)" -nokeys -out "$($dn)PublicCert.pem" -nodes
 
     $publicRootCertData = openssl x509 -in caCert.pem -outform pem 
     $publicRootCertData = $publicRootCertData -replace "-----BEGIN CERTIFICATE-----", ""
@@ -239,6 +242,8 @@ If ($false -eq $subnets.Contains($gatewaySubnetName)) {
 }
 else {
     Write-Host "The subnet $gatewaySubnetName exists in the virtual network." -ForegroundColor Green
+    $gatewaySubnet = Get-AzVirtualNetworkSubnetConfig -Name $gatewaySubnetName -VirtualNetwork $virtualNetwork
+    $gatewaySubnetPrefix = $gatewaySubnet.AddressPrefix[0]
 }
 
 $vpnClientAddressPoolPrefix = CalculateVpnClientAddressPoolPrefix $gatewaySubnetPrefix
