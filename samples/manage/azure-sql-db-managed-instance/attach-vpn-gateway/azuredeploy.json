@@ -77,10 +77,6 @@
                     "name": "Standard",
                     "tier": "Standard"
                 },
-                "vpnClientProtocols": [
-                    "IkeV2",
-                    "SSTP"
-                  ],
                 "gatewayType": "Vpn",
                 "vpnType": "RouteBased",
                 "enableBgp": "false",
@@ -90,6 +86,10 @@
                             "[parameters('vpnClientAddressPoolPrefix')]"
                         ]
                     },
+                    "vpnClientProtocols": [
+                        "IkeV2",
+                        "SSTP"
+                    ],                    
                     "vpnClientRootCertificates": [
                         {
                             "name": "[variables('clientRootCertName')]",
