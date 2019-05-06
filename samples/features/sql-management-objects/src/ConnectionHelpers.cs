@@ -11,10 +11,15 @@ using System.Text;
 using Assert = NUnit.Framework.Assert;
 namespace Microsoft.SqlServer.SmoSamples
 {
-    // Used by test classes to initialize and retrieve a ServerConnection for use in the tests themselves
+    /// <summary>
+    /// Used by test classes to initialize and retrieve a ServerConnection for use in the tests themselves
+    /// </summary>
     static class ConnectionHelpers
     {
 
+        /// <summary>
+        /// Returns a ServerConnection based on the connectionString parameter defined in the runsettings file
+        /// </summary>
         public static ServerConnection GetTestConnection(this VisualStudio.TestTools.UnitTesting.TestContext context, ConnectionType connectionType = ConnectionType.Default)
         {
             var connectionString = context.GetConnectionString();
@@ -45,6 +50,14 @@ namespace Microsoft.SqlServer.SmoSamples
             return new ServerConnection(instanceName, sqlServerLogin, password);
         }
 
+        /// <summary>
+        /// Returns a connection string based on the connectionString parameter defined in the runsettings file
+        /// Placeholders may be included in the connection string if the caller has set corresponding environment variables.
+        /// [hostname] -> TEST_HOSTNAME environment variable
+        /// [username] -> TEST_USERNAME
+        /// [password] -> TEST_PASSWORD
+        /// [database] -> TEST_DATABASE
+        /// </summary>
         public static string GetConnectionString(this VisualStudio.TestTools.UnitTesting.TestContext context)
         {
             var connectionString = context.Properties["connectionString"].ToString();
@@ -59,6 +72,8 @@ namespace Microsoft.SqlServer.SmoSamples
 
         /// <summary>
         /// Returns the name of the database to use for the tests
+        /// If TEST_DATABASE environment variable is set, that value is used, otherwise the
+        /// testDatabase parameter from runsettings is used.
         /// </summary>
         /// <returns></returns>
         public static string GetTestDatabaseName(this VisualStudio.TestTools.UnitTesting.TestContext context)

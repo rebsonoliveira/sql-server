@@ -1,12 +1,10 @@
-﻿
-using System.Diagnostics;
-using Microsoft.SqlServer.Management.Smo;
-
-namespace Microsoft.SqlServer.SmoSamples
+﻿namespace Microsoft.SqlServer.SmoSamples
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Text;
+    using Microsoft.SqlServer.Management.Smo;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NUnit.Framework;
     using Assert = NUnit.Framework.Assert;
@@ -16,6 +14,12 @@ namespace Microsoft.SqlServer.SmoSamples
     {
         public VisualStudio.TestTools.UnitTesting.TestContext TestContext { get; set; }
 
+        /// <summary>
+        /// SetDefaultInitFields tells the Server object which properties to include in the initial query
+        /// to populate of a given object type when initialized a collection of that type.
+        /// The test demonstrates the effect of using this call to enumerate Tables when accessing the FileGroup
+        /// property of each Table object
+        /// </summary>
         [TestMethod]
         public void Collection_iteration_is_faster_with_SetDefaultInitFields()
         {
@@ -26,11 +30,14 @@ namespace Microsoft.SqlServer.SmoSamples
                 connectionMetrics.Reset();
                 foreach (Table table in database.Tables)
                 {
+                    // Accessing FileGroup triggers a query to fetch it
                     Trace.TraceInformation(
                         $"Unoptimized table Name: {table.Name}\tSchema:{table.Schema}\tFileGroup:{table.FileGroup}");
                 }
 
-                var unoptimizedMetrics = (connectionMetrics.QueryCount, connectionMetrics.BytesSent, connectionMetrics.BytesRead, connectionMetrics.ConnectionCount);
+                var unoptimizedMetrics = (QueryCount: connectionMetrics.QueryCount,
+                    BytesSent: connectionMetrics.BytesSent, BytesRead: connectionMetrics.BytesRead,
+                    ConnectionCount: connectionMetrics.ConnectionCount);
                 Trace.TraceInformation(string.Join($"{Environment.NewLine}\t", new[]
                 {
                     "Unoptimized metrics:",
@@ -43,11 +50,14 @@ namespace Microsoft.SqlServer.SmoSamples
                 database.Tables.Refresh();
                 foreach (Table table in database.Tables)
                 {
+                    // The FileGroup property is already populated, so no extra query is needed
                     Trace.TraceInformation(
                         $"Optimized table Name: {table.Name}\tSchema:{table.Schema}\tFileGroup:{table.FileGroup}");
                 }
 
-                var optimizedMetrics = (connectionMetrics.QueryCount, connectionMetrics.BytesSent, connectionMetrics.BytesRead, connectionMetrics.ConnectionCount);
+                var optimizedMetrics = (QueryCount: connectionMetrics.QueryCount,
+                    BytesSent: connectionMetrics.BytesSent, BytesRead: connectionMetrics.BytesRead,
+                    ConnectionCount: connectionMetrics.ConnectionCount);
                 Trace.TraceInformation(string.Join($"{Environment.NewLine}\t", new[]
                 {
                     "Optimized Metrics:",

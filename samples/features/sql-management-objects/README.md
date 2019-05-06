@@ -39,7 +39,7 @@ To run this sample, you need the following prerequisites.
 <a name=run-this-sample></a>
 
 ## Run this sample
-
+If using Docker, use runtests.sh or runtests.cmd as appropriate. If using a separate instance of SQL Server or Azure SQL Database, create a .runsettings file and run the unit tests using Visual Studio or "dotnet vstest". 
 
 <a name=sample-details></a>
 
@@ -58,5 +58,5 @@ Feature areas tested include:
 
 ## Related Links
 The SMO NuGet package is at https://www.nuget.org/packages/Microsoft.SqlServer.SqlManagementObjects/ <br/>
-Documentation for the APIs is at https://docs.microsoft.com/en-us/sql/relational-databases/server-management-objects-smo/overview-smo<br/>
+Documentation for the APIs is at https://docs.microsoft.com/sql/relational-databases/server-management-objects-smo/overview-smo<br/>
 The WideWorldImporters sample database can be found at https://github.com/Microsoft/sql-server-samples/releases/download/wide-world-importers-v1.0/WideWorldImporters-Full.bak <br/>
