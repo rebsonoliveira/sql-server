@@ -10,7 +10,8 @@ where name = @db_name
 for xml raw('db'), elements);
 set @result += (select compatibility_level, snapshot_isolation_state_desc, is_read_committed_snapshot_on, 
 					is_auto_update_stats_on, is_auto_update_stats_async_on, delayed_durability_desc,
-					is_encrypted, is_auto_create_stats_incremental_on, is_arithabort_on, is_ansi_warnings_on, is_parameterization_forced
+					is_encrypted, is_auto_create_stats_incremental_on, is_arithabort_on, is_ansi_warnings_on, is_parameterization_forced,
+					number_of_files = (select count(*) from master.sys.master_files where database_id = db_id('tempdb'))
 from sys.databases
 where name = 'tempdb' 
 for xml raw('tempdb'), elements);
