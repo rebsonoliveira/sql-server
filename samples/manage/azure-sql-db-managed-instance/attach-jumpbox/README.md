@@ -29,8 +29,8 @@ To run this sample, you need the following prerequisites.
 
 **Software prerequisites:**
 
-1. PowerShell 5.1
-2. Azure PowerShell 5.4.2 or higher
+1. PowerShell 5.1 or PowerShell Core 6.0
+2. Azure PowerShell Az module
 
 **Azure prerequisites:**
 
@@ -40,7 +40,7 @@ To run this sample, you need the following prerequisites.
 
 ## Run this sample
 
-Run the script below from Windows PowerShell or Azure Cloud Shell
+Run the script below from PowerShell or Azure Cloud Shell
 
 ```powershell
 
