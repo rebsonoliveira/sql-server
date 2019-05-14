@@ -21,6 +21,7 @@ build/
 bld/
 [Bb]in/
 [Oo]bj/
+out/
 
 # Visual Studio 2015 cache/options directory
 .vs/
@@ -435,8 +436,8 @@ samples/databases/wide-world-importers/workload-drivers/order-insert/Multithread
 /samples/features/epm-framework/5.0/2Reporting/PolicyReports/bin/Debug
 /samples/features/epm-framework/5.0/2Reporting/PolicyReports/PolicyDashboard - Backup.rdl
 /samples/features/epm-framework/5.0/2Reporting/PolicyReports/PolicyDashboardFiltered.rdl.data
+samples/features/sql-management-objects/src/out/CodeCoverage/CodeCoverage.config
 
 # Certificates
 *.pem
 *.p12
-
