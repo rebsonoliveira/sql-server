@@ -70,8 +70,8 @@ GO
 CREATE OR ALTER PROCEDURE #create_data_sources
 AS
 BEGIN
-		-- Create database master key (required for database scoped credentials used in the samples)
-	IF NOT EXISTS(SELECT * FROM sys.databases WHERE name = DB_NAME() and is_master_key_encrypted_by_server = 1)
+	-- Create database master key (required for database scoped credentials used in the samples)
+	IF NOT EXISTS(SELECT * FROM sys.symmetric_keys WHERE name = '##MS_DatabaseMasterKey##')
 		CREATE MASTER KEY ENCRYPTION BY PASSWORD = 'sql19bigdatacluster!';
 
 	-- Create default data sources for SQL Big Data Cluster
