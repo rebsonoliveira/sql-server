@@ -60,8 +60,8 @@ else
     MASTER_POD_NAME=master-0
 fi
 
-echo Copying database backup file...
-$DEBUG kubectl cp tpcxbb_1gb.bak $CLUSTER_NAMESPACE/$MASTER_POD_NAME:/var/opt/mssql/data -c mssql-server || (echo $ERROR_MESSAGE && exit 1)
+echo Copying sales database backup file...
+$DEBUG kubectl cp tpcxbb_1gb.bak $CLUSTER_NAMESPACE/$MASTER_POD_NAME:var/opt/mssql/data -c mssql-server || (echo $ERROR_MESSAGE && exit 1)
 # $DEBUG rm tpcxbb_1gb.bak
 
 if [ "$AW_WWI_SAMPLES" == "--install-extra-samples" ]
@@ -74,7 +74,7 @@ then
             $DEBUG curl -L -G "https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/$file" -o $file
         fi
         echo Copying $file database backup file to SQL Master instance...
-        $DEBUG kubectl cp $file $CLUSTER_NAMESPACE/$MASTER_POD_NAME:/var/opt/mssql/data -c mssql-server || (echo $ERROR_MESSAGE && exit 1)
+        $DEBUG kubectl cp $file $CLUSTER_NAMESPACE/$MASTER_POD_NAME:var/opt/mssql/data -c mssql-server || (echo $ERROR_MESSAGE && exit 1)
     done
 
 
@@ -86,7 +86,7 @@ then
             $DEBUG curl -L -G "https://github.com/Microsoft/sql-server-samples/releases/download/wide-world-importers-v1.0/$file" -o $file
         fi
         echo Copying $file database backup file to SQL Master instance...
-        $DEBUG kubectl cp $file $CLUSTER_NAMESPACE/$MASTER_POD_NAME:/var/opt/mssql/data -c mssql-server || (echo $ERROR_MESSAGE && exit 1)
+        $DEBUG kubectl cp $file $CLUSTER_NAMESPACE/$MASTER_POD_NAME:var/opt/mssql/data -c mssql-server || (echo $ERROR_MESSAGE && exit 1)
     done
 fi
 
@@ -97,7 +97,7 @@ $DEBUG sqlcmd -S $SQL_MASTER_INSTANCE -Usa -P$SQL_MASTER_SA_PASSWORD -I -b < "$S
 
 # remove files copied into the pod:
 echo Removing database backup files...
-kubectl exec $MASTER_POD_NAME -n $CLUSTER_NAMESPACE -c mssql-server -i -t -- bash -c "rm -rvf /var/opt/mssql/data/*.bak"
+$DEBUG kubectl exec $MASTER_POD_NAME -n $CLUSTER_NAMESPACE -c mssql-server -i -t -- bash -c "rm -rvf /var/opt/mssql/data/*.bak"
 
 for table in web_clickstreams inventory customer
     do
