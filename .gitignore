@@ -437,3 +437,7 @@ samples/databases/wide-world-importers/workload-drivers/order-insert/Multithread
 /samples/features/epm-framework/5.0/2Reporting/PolicyReports/PolicyDashboard - Backup.rdl
 /samples/features/epm-framework/5.0/2Reporting/PolicyReports/PolicyDashboardFiltered.rdl.data
 samples/features/sql-management-objects/src/out/CodeCoverage/CodeCoverage.config
+
+# Certificates
+*.pem
+*.p12

@@ -4,16 +4,15 @@
 -- the Query menu, and "Specify Values for Template Parameters" option.
 IF NOT EXISTS(SELECT * FROM sys.database_scoped_credentials WHERE name = 'MySQL80-user')
   CREATE DATABASE SCOPED CREDENTIAL [MySQL80-user]
-  WITH IDENTITY = 'mssql-user'
-  , SECRET = 'sql19tw0mysql';
+  WITH IDENTITY = '<mysql_user,nvarchar(100),mssql-user>'
+  , SECRET = '<mysql_user_password,nvarchar(100),sql19tw0mysql>';
 
--- Create external data source that points to MySQL server
--- The tokens '%u' and '%p' is used to reference the credential information.
+-- Create external data source that points to MySQL server.
 --
 IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'MySQL80')
     CREATE EXTERNAL DATA SOURCE MySQL80
-    WITH (LOCATION = 'odbc://uc-win19-vm.redmond.corp.microsoft.com'
-    , CONNECTION_OPTIONS = 'Driver={MySQL ODBC 8.0 Unicode Driver};User name=%u;Passwword=%p;IGNORE_SPACE=1'
+    WITH (LOCATION = 'odbc://<mysql_server,nvarchar(100),mysql-server-name>'
+    , CONNECTION_OPTIONS = 'Driver={MySQL ODBC 8.0 Unicode Driver};IGNORE_SPACE=1'
     , CREDENTIAL = [MySQL80-user]);
 
 -- Create external table over inventory table on MySQL server
