@@ -460,6 +460,9 @@ function VerifyNSG {
             }
             $result['success'] = $result['failedSecurityRules'].Count -eq 0
         }
+        Else {
+            $result['failedSecurityRules'] = DefineSecurityRules
+        }
         If($true -eq $result['success'])
         {
             Write-Host "Passed Validation - Network security group." -ForegroundColor Green
