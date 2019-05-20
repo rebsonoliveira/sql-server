@@ -93,7 +93,7 @@ fi
 echo Configuring sample database...
 # WSL ex: "/mnt/c/Program Files/Microsoft SQL Server/Client SDK/ODBC/130/Tools/Binn/SQLCMD.EXE"
 export SA_PASSWORD=$KNOX_PASSWORD
-$DEBUG sqlcmd -S $SQL_MASTER_INSTANCE -Usa -P$SQL_MASTER_SA_PASSWORD -I -b < "$STARTUP_PATH/bootstrap-sample-db.sql" > "bootstrap.out" || (echo $ERROR_MESSAGE && exit 2)
+$DEBUG sqlcmd -S $SQL_MASTER_INSTANCE -Usa -P$SQL_MASTER_SA_PASSWORD -I -b -i "$STARTUP_PATH/bootstrap-sample-db.sql" -o "bootstrap.out" || (echo $ERROR_MESSAGE && exit 2)
 
 # remove files copied into the pod:
 echo Removing database backup files...
