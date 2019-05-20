@@ -182,39 +182,11 @@ function DefineSecurityRules{
         $securityRules = New-Object "$NScollections.List``1[$NSnetworkModels.PSSecurityRule]"
         #begin NSG inbound rules
         $rule = New-AzureRmNetworkSecurityRuleConfig `
-            -Name prepare-allow-management-inbound-9000 `
-            -Description "Allow inbound TCP traffic on port 9000" `
+            -Name prepare-allow-management-inbound `
+            -Description "Allow inbound TCP traffic on ports 9000,9003,1438,1440,1452" `
             -Direction Inbound -Priority 110 -Access Allow -Protocol Tcp `
             -SourceAddressPrefix * -DestinationAddressPrefix * `
-            -SourcePortRange * -DestinationPortRange 9000
-        $securityRules.Add($rule)
-        $rule = New-AzureRmNetworkSecurityRuleConfig `
-            -Name prepare-allow-management-inbound-9003 `
-            -Description "Allow inbound TCP traffic on port 9003" `
-            -Direction Inbound -Priority 120 -Access Allow -Protocol Tcp `
-            -SourceAddressPrefix * -DestinationAddressPrefix * `
-            -SourcePortRange * -DestinationPortRange 9003
-        $securityRules.Add($rule)
-        $rule = New-AzureRmNetworkSecurityRuleConfig `
-            -Name prepare-allow-management-inbound-1438 `
-            -Description "Allow inbound TCP traffic on port 1438" `
-            -Direction Inbound -Priority 130 -Access Allow -Protocol Tcp `
-            -SourceAddressPrefix * -DestinationAddressPrefix * `
-            -SourcePortRange * -DestinationPortRange 1438
-        $securityRules.Add($rule)
-        $rule = New-AzureRmNetworkSecurityRuleConfig `
-            -Name prepare-allow-management-inbound-1440 `
-            -Description "Allow inbound TCP traffic on port 1440" `
-            -Direction Inbound -Priority 140 -Access Allow -Protocol Tcp `
-            -SourceAddressPrefix * -DestinationAddressPrefix * `
-            -SourcePortRange * -DestinationPortRange 1440
-        $securityRules.Add($rule)
-        $rule = New-AzureRmNetworkSecurityRuleConfig `
-            -Name prepare-allow-management-inbound-1452 `
-            -Description "Allow inbound TCP traffic on port 1452" `
-            -Direction Inbound -Priority 150 -Access Allow -Protocol Tcp `
-            -SourceAddressPrefix * -DestinationAddressPrefix * `
-            -SourcePortRange * -DestinationPortRange 1452
+            -SourcePortRange * -DestinationPortRange @(9000, 9003, 1438, 1440, 1452)
         $securityRules.Add($rule)
         $rule = New-AzureRmNetworkSecurityRuleConfig `
             -Name prepare-allow-mi_subnet-inbound `
@@ -225,7 +197,7 @@ function DefineSecurityRules{
         $securityRules.Add($rule)
         $rule = New-AzureRmNetworkSecurityRuleConfig `
             -Name prepare-allow-health_probe-inbound `
-            -Description "Allow healt probe inbound" `
+            -Description "Allow health probe inbound" `
             -Direction Inbound -Priority 170 -Access Allow -Protocol * `
             -SourceAddressPrefix AzureLoadBalancer -DestinationAddressPrefix * `
             -SourcePortRange * -DestinationPortRange *
@@ -233,25 +205,11 @@ function DefineSecurityRules{
         #end NSG inbound rules
         #begin NSG outbound rules
         $rule = New-AzureRmNetworkSecurityRuleConfig `
-            -Name prepare-allow-management-outbound-80 `
-            -Description "Allow outbound TCP traffic on port 80" `
+            -Name prepare-allow-management-outbound `
+            -Description "Allow outbound TCP traffic on port 80,443,12000" `
             -Direction Outbound -Priority 110 -Access Allow -Protocol Tcp `
             -SourceAddressPrefix * -DestinationAddressPrefix * `
-            -SourcePortRange * -DestinationPortRange 80
-        $securityRules.Add($rule)
-        $rule = New-AzureRmNetworkSecurityRuleConfig `
-            -Name prepare-allow-management-outbound-443 `
-            -Description "Allow outbound TCP traffic on port 443" `
-            -Direction Outbound -Priority 120 -Access Allow -Protocol Tcp `
-            -SourceAddressPrefix * -DestinationAddressPrefix * `
-            -SourcePortRange * -DestinationPortRange 443
-        $securityRules.Add($rule)
-        $rule = New-AzureRmNetworkSecurityRuleConfig `
-            -Name prepare-allow-management-outbound-12000 `
-            -Description "Allow outbound TCP traffic on port 12000" `
-            -Direction Outbound -Priority 130 -Access Allow -Protocol Tcp `
-            -SourceAddressPrefix * -DestinationAddressPrefix * `
-            -SourcePortRange * -DestinationPortRange 12000
+            -SourcePortRange * -DestinationPortRange @(80, 443, 12000)
         $securityRules.Add($rule)
         $rule = New-AzureRmNetworkSecurityRuleConfig `
             -Name prepare-allow-mi_subnet-outbound `
