@@ -76,32 +76,28 @@ BEGIN
 
 	-- Create default data sources for SQL Big Data Cluster
 	IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'SqlDataPool')
-		CREATE EXTERNAL DATA SOURCE SqlDataPool
-		WITH (LOCATION = 'sqldatapool://service-mssql-controller:8080/datapools/default');
+		IF SERVERPROPERTY('ProductLevel') = 'CTP2.5'
+			CREATE EXTERNAL DATA SOURCE SqlDataPool
+			WITH (LOCATION = 'sqldatapool://service-mssql-controller:8080/datapools/default');
+		ELSE IF SERVERPROPERTY('ProductLevel') = 'CTP3.0'
+			CREATE EXTERNAL DATA SOURCE SqlDataPool
+			WITH (LOCATION = 'sqldatapool://controller-svc:8080/datapools/default');
 
 	IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'SqlStoragePool')
-		IF SERVERPROPERTY('ProductLevel') = 'CTP2.4'
+		IF SERVERPROPERTY('ProductLevel') = 'CTP2.5'
 			CREATE EXTERNAL DATA SOURCE SqlStoragePool
-			WITH (LOCATION = 'sqlhdfs://service-master-pool:50070');
-		ELSE IF SERVERPROPERTY('ProductLevel') = 'CTP2.5'
+			WITH (LOCATION = 'sqlhdfs://nmnode-0-0.nmnode-0-svc:50070');
+		ELSE IF SERVERPROPERTY('ProductLevel') = 'CTP3.0'
 			CREATE EXTERNAL DATA SOURCE SqlStoragePool
-			WITH (LOCATION = 'sqlhdfs://nmnode-0-svc:50070');
+			WITH (LOCATION = 'sqlhdfs://controller-svc:8080/default');
 
 	IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'HadoopData')
-		IF SERVERPROPERTY('ProductLevel') = 'CTP2.4'
-			CREATE EXTERNAL DATA SOURCE HadoopData
-			WITH(
-					TYPE=HADOOP,
-					LOCATION='hdfs://mssql-master-pool-0.service-master-pool:9000/',
-					RESOURCE_MANAGER_LOCATION='mssql-master-pool-0.service-master-pool:8032'
-			);
-		ELSE IF SERVERPROPERTY('ProductLevel') = 'CTP2.5'
-			CREATE EXTERNAL DATA SOURCE HadoopData
-			WITH(
-					TYPE=HADOOP,
-					LOCATION='hdfs://nmnode-0-svc:9000/',
-					RESOURCE_MANAGER_LOCATION='master-svc:8032'
-			);
+		CREATE EXTERNAL DATA SOURCE HadoopData
+		WITH(
+				TYPE=HADOOP,
+				LOCATION='hdfs://nmnode-0-svc:9000/',
+				RESOURCE_MANAGER_LOCATION='master-svc:8032'
+		);
 END;
 GO
 
