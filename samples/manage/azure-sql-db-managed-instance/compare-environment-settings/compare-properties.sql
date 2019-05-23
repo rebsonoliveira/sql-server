@@ -1,3 +1,5 @@
+declare @verbose int = 0; -- change to 1 to get more verbose comparison;
+
 declare @source xml = '<place source XML result here>';
 declare @target xml = '<place target XML result here>';
 
@@ -43,6 +45,6 @@ or src.value is not null and tgt.value is null)
 )
 select *
 from diff
-where is_missing = 0 -- comment-out this line to compare missing properties.
+where is_missing = 0 or @verbose = 1 -- in the earlier versions you had to comment out this line. Now just set the value of the flag up
 order by property
 
