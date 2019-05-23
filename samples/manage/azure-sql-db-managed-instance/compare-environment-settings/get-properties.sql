@@ -15,17 +15,17 @@ set @result += (select compatibility_level, snapshot_isolation_state_desc, is_re
 from sys.databases
 where name = 'tempdb' 
 for xml raw('tempdb'), elements);
-set @result += (
+set @result += ISNULL((
 select name = CONCAT('DB-CONFIG:',name), value
 from sys.database_scoped_configurations
-for xml raw, elements );
+for xml raw, elements ),'');
 declare @tf table (TraceFlag smallint, status bit,global bit, session bit) 
 insert into @tf execute('DBCC TRACESTATUS(-1)');
-set @result += (
+set @result += ISNULL((
 select name=CONCAT('TF:',TraceFlag), value=status from @tf
 where global=1 and session=0
 for xml raw, elements
-);
+),'');
 set @result += (
 select name = CONCAT('CONFIG:',name), value from sys.configurations
 where name in ('cost threshold for parallelism','cursor threshold','fill factor (%)'
