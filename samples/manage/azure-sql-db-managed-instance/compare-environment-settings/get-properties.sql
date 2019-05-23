@@ -24,6 +24,21 @@ insert into @tf execute('DBCC TRACESTATUS(-1)');
 set @result += ISNULL((
 select name=CONCAT('TF:',TraceFlag), value=status from @tf
 where global=1 and session=0
+and (TraceFlag in (8690 -- https://blogs.msdn.microsoft.com/psssql/2015/12/15/spool-operator-and-trace-flag-8690/
+, 8744, 9347, 9349, 9471, 9476, 9488 -- Plan affecting TFs include others such as
+, 9453, 9495 -- Execution related TFs 
+, 4199, 9481 /*force legacy CE*/, 2312 /* force default CE */
+--https://kohera.be/blog/sql-server/trace-flags-sql-servers-transformer-like-tuning/
+, 1118, 2371, 610, 1117, 8048, 1236, 8015, 834, 1224, 2335, 
+	-- Taking care of Query-Hint-Hell 
+4136, 8602, 8722, 8755,
+-- random trace flags aka.ms/traceflags
+634, 3459, 3468, 3505, 9495,
+9347, 9349, 9389, 9398, 9453 -- batch mode related
+
+)
+or TraceFlag between 4100 and 4120
+)
 for xml raw, elements
 ),'');
 set @result += (
@@ -37,6 +52,7 @@ where name in ('cost threshold for parallelism','cursor threshold','fill factor 
 ,'set working set size','user connections')
 for xml raw, elements
 );
+set @result += (select name = 'version', value = @@VERSION for xml raw, elements)
 select cast(@result as xml);
 end;
 
