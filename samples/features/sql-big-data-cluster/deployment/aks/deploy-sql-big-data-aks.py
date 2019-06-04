@@ -54,6 +54,7 @@ os.environ['KNOX_PASSWORD'] = PASSWORD
 os.environ['DOCKER_USERNAME']=DOCKER_USERNAME
 os.environ['DOCKER_PASSWORD']=DOCKER_PASSWORD
 os.environ['DOCKER_IMAGE_POLICY']="IfNotPresent"
+os.environ['ACCEPT_EULA']="Yes"
 
 print ("Set azure context to subcription: "+SUBSCRIPTION_ID)
 command = "az account set -s "+ SUBSCRIPTION_ID
