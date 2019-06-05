@@ -1,6 +1,8 @@
 # MLeap on SQL Server Big Data cluster
 This folder shows how we can build a model with [Spark ML](https://spark.apache.org/docs/latest/ml-guide.html), export the model to [MLeap](mleap-docs.combust.ml/), and score the model in SQL Server with its [Java Language Extension](https://docs.microsoft.com/en-us/sql/language-extensions/language-extensions-overview?view=sqlallproducts-allversions)
 
+![Train_Score_Export_with_Spark.jpg](Train_Score_Export_with_Spark.jpg)
+
 ## Model training with Spark ML
 In this sample code, AdultCensusIncome.csv is used to build a Spark ML pipeline model.  We can [download the dataset from internet](mleap_sql_test/setup.sh#L11) and [put it on HDFS on a SQL BDC cluster](mleap_sql_test/setup.sh#L12) so that it can be accessed by Spark.
 
