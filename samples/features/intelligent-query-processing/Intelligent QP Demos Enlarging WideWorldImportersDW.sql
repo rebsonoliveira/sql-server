@@ -101,3 +101,8 @@ GO
 UPDATE Fact.OrderHistoryExtended
 SET [WWI Order ID] = [Order Key];
 GO
+
+CHECKPOINT
+GO
+DBCC SHRINKFILE (N'WWI_Log' , 0, TRUNCATEONLY)
+GO
