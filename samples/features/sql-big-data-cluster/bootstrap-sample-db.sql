@@ -70,38 +70,34 @@ GO
 CREATE OR ALTER PROCEDURE #create_data_sources
 AS
 BEGIN
-		-- Create database master key (required for database scoped credentials used in the samples)
-	IF NOT EXISTS(SELECT * FROM sys.databases WHERE name = DB_NAME() and is_master_key_encrypted_by_server = 1)
+	-- Create database master key (required for database scoped credentials used in the samples)
+	IF NOT EXISTS(SELECT * FROM sys.symmetric_keys WHERE name = '##MS_DatabaseMasterKey##')
 		CREATE MASTER KEY ENCRYPTION BY PASSWORD = 'sql19bigdatacluster!';
 
 	-- Create default data sources for SQL Big Data Cluster
 	IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'SqlDataPool')
-		CREATE EXTERNAL DATA SOURCE SqlDataPool
-		WITH (LOCATION = 'sqldatapool://service-mssql-controller:8080/datapools/default');
+		IF SERVERPROPERTY('ProductLevel') = 'CTP2.5'
+			CREATE EXTERNAL DATA SOURCE SqlDataPool
+			WITH (LOCATION = 'sqldatapool://service-mssql-controller:8080/datapools/default');
+		ELSE IF SERVERPROPERTY('ProductLevel') = 'CTP3.0'
+			CREATE EXTERNAL DATA SOURCE SqlDataPool
+			WITH (LOCATION = 'sqldatapool://controller-svc:8080/datapools/default');
 
 	IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'SqlStoragePool')
-		IF SERVERPROPERTY('ProductLevel') = 'CTP2.4'
-			CREATE EXTERNAL DATA SOURCE SqlStoragePool
-			WITH (LOCATION = 'sqlhdfs://service-master-pool:50070');
-		ELSE IF SERVERPROPERTY('ProductLevel') = 'CTP2.5'
+		IF SERVERPROPERTY('ProductLevel') = 'CTP2.5'
 			CREATE EXTERNAL DATA SOURCE SqlStoragePool
 			WITH (LOCATION = 'sqlhdfs://nmnode-0-0.nmnode-0-svc:50070');
+		ELSE IF SERVERPROPERTY('ProductLevel') = 'CTP3.0'
+			CREATE EXTERNAL DATA SOURCE SqlStoragePool
+			WITH (LOCATION = 'sqlhdfs://controller-svc:8080/default');
 
 	IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'HadoopData')
-		IF SERVERPROPERTY('ProductLevel') = 'CTP2.4'
-			CREATE EXTERNAL DATA SOURCE HadoopData
-			WITH(
-					TYPE=HADOOP,
-					LOCATION='hdfs://mssql-master-pool-0.service-master-pool:9000/',
-					RESOURCE_MANAGER_LOCATION='mssql-master-pool-0.service-master-pool:8032'
-			);
-		ELSE IF SERVERPROPERTY('ProductLevel') = 'CTP2.5'
-			CREATE EXTERNAL DATA SOURCE HadoopData
-			WITH(
-					TYPE=HADOOP,
-					LOCATION='hdfs://nmnode-0-0.nmnode-0-svc:9000/',
-					RESOURCE_MANAGER_LOCATION='master-0.master-svc:8032'
-			);
+		CREATE EXTERNAL DATA SOURCE HadoopData
+		WITH(
+				TYPE=HADOOP,
+				LOCATION='hdfs://nmnode-0-svc:9000/',
+				RESOURCE_MANAGER_LOCATION='master-svc:8032'
+		);
 END;
 GO
 
@@ -118,10 +114,16 @@ BEGIN
 	FETCH @sample_dbs INTO @file;
 	IF @@FETCH_STATUS < 0 BREAK;
 
+	-- Restore the sample databases:
 	EXECUTE #restore_database @file;
+
+	-- Get database name used in restore:
 	SET @proc = CONCAT(QUOTENAME(LEFT(@file, CHARINDEX('.', @file)-1)), N'.sys.sp_executesql');
 
 	EXECUTE @proc N'#create_data_sources';
+
+	-- Set compatibility level to 150:
+	EXECUTE @proc N'ALTER DATABASE CURRENT SET COMPATIBILITY_LEVEL = 150';
 
 	-- Rename TPCx-BB database:
 	IF DB_ID('tpcxbb_1gb') IS NOT NULL

@@ -3,7 +3,7 @@
 -- bigger - so you can see more impactful 
 -- Intelligent QP demonstrations (aka.ms/iqp)
 --
--- Script last updated 10/02/2018
+-- Script last updated 05/03/2019
 --
 -- Database backup source: aka.ms/wwibak
 -- 

@@ -46,7 +46,7 @@ if /i "%CTP_VERSION%" EQU "CTP2.4" (set MASTER_POD_NAME=mssql-master-pool-0) els
 
 REM Copy the backup file, restore the database, create necessary objects and data file
 echo Copying sales database backup file to SQL Master instance...
-%DEBUG% kubectl cp tpcxbb_1gb.bak %CLUSTER_NAMESPACE%/%MASTER_POD_NAME%:/var/opt/mssql/data -c mssql-server || goto exit
+%DEBUG% kubectl cp tpcxbb_1gb.bak %CLUSTER_NAMESPACE%/%MASTER_POD_NAME%:var/opt/mssql/data -c mssql-server || goto exit
 
 REM Download and copy the sample backup files
 if /i "%AW_WWI_SAMPLES%" EQU "--install-extra-samples" (
@@ -57,7 +57,7 @@ if /i "%AW_WWI_SAMPLES%" EQU "--install-extra-samples" (
                 %DEBUG% curl -L -G "https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/%%f" -o %%f
         )
         echo Copying %%f database backup file to SQL Master instance...
-        %DEBUG% kubectl cp %%f %CLUSTER_NAMESPACE%/%MASTER_POD_NAME%:/var/opt/mssql/data -c mssql-server || goto exit
+        %DEBUG% kubectl cp %%f %CLUSTER_NAMESPACE%/%MASTER_POD_NAME%:var/opt/mssql/data -c mssql-server || goto exit
     )
 
     set FILES=WideWorldImporters-Full.bak WideWorldImportersDW-Full.bak
@@ -67,7 +67,7 @@ if /i "%AW_WWI_SAMPLES%" EQU "--install-extra-samples" (
             %DEBUG% curl -L -G "https://github.com/Microsoft/sql-server-samples/releases/download/wide-world-importers-v1.0/%%f" -o %%f
         )
         echo Copying %%f database backup file to SQL Master instance...
-        %DEBUG% kubectl cp %%f %CLUSTER_NAMESPACE%/%MASTER_POD_NAME%:/var/opt/mssql/data -c mssql-server || goto exit
+        %DEBUG% kubectl cp %%f %CLUSTER_NAMESPACE%/%MASTER_POD_NAME%:var/opt/mssql/data -c mssql-server || goto exit
     )
 )
 

@@ -31,9 +31,16 @@ When prompted, provide your input for:
 
 To deploy from your private repository, use the steps described in the [deployment guide](deployment-guidance.md), but customize the following environment variables to match your private Docker repository.
 
-- **DOCKER_REGISTRY**  
-- **DOCKER_REPOSITORY**
 - **DOCKER_USERNAME**
 - **DOCKER_PASSWORD**  
-- **DOCKER_EMAIL**
-- **DOCKER_IMAGE_TAG**
+
+You must also customize the deployment configuration file to point to the correct docker repository:
+
+```
+  "docker": {
+    "registry": "<your_docker_registry>",
+    "repository": "<your_docker_repository>",
+    "imageTag": "<your_docker_tag>",
+    "imagePullPolicy": "Always"
+  }
+```

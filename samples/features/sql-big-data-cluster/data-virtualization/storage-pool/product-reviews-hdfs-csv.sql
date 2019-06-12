@@ -4,12 +4,12 @@ GO
 -- Create external data source for HDFS inside SQL big data cluster.
 --
 IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'SqlStoragePool')
-	IF SERVERPROPERTY('ProductLevel') = 'CTP2.4'
-		CREATE EXTERNAL DATA SOURCE SqlStoragePool
-		WITH (LOCATION = 'sqlhdfs://service-master-pool:50070');
-	ELSE IF SERVERPROPERTY('ProductLevel') = 'CTP2.5'
+	IF SERVERPROPERTY('ProductLevel') = 'CTP2.5'
 		CREATE EXTERNAL DATA SOURCE SqlStoragePool
 		WITH (LOCATION = 'sqlhdfs://nmnode-0-0.nmnode-0-svc:50070');
+	ELSE IF SERVERPROPERTY('ProductLevel') = 'CTP3.0'
+		CREATE EXTERNAL DATA SOURCE SqlStoragePool
+		WITH (LOCATION = 'sqlhdfs://controller-svc:8080/default');
 
 -- Create file format for CSV separated file with appropriate properties.
 --

@@ -10,10 +10,16 @@
 -- Email IntelligentQP@microsoft.com for questions\feedback
 -- ******************************************************** --
 
+USE [master];
+GO
+
 ALTER DATABASE [WideWorldImportersDW] SET COMPATIBILITY_LEVEL = 150;
 GO
 
 ALTER DATABASE SCOPED CONFIGURATION CLEAR PROCEDURE_CACHE;
+GO
+
+USE [WideWorldImportersDW];
 GO
 
 -- Row mode due to hint
