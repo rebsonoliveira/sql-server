@@ -13,7 +13,7 @@
 USE [master];
 GO
 
-ALTER DATABASE [WideWorldImportersDW] SET COMPATIBILITY_LEVEL = 150;
+ALTER DATABASE [WideWorldImportersDW] SET COMPATIBILITY_LEVEL = 140;
 GO
 
 ALTER DATABASE SCOPED CONFIGURATION CLEAR PROCEDURE_CACHE;
@@ -30,7 +30,7 @@ DECLARE @Order TABLE
 INSERT @Order
 SELECT [Order Key], [Quantity]
 FROM [Fact].[OrderHistory]
-WHERE  [Quantity] > 1;
+WHERE  [Quantity] > 99;
 
 -- Look at estimated rows, speed, join algorithm
 SELECT oh.[Order Key], oh.[Order Date Key],
