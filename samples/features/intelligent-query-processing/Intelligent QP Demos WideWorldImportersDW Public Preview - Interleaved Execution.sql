@@ -17,7 +17,7 @@
 USE [WideWorldImportersDW];
 GO
 
-CREATE FUNCTION [Fact].[WhatIfOutlierEventQuantity](@event VARCHAR(15), @beginOrderDateKey DATE, @endOrderDateKey DATE)
+CREATE OR ALTER FUNCTION [Fact].[ufn_WhatIfOutlierEventQuantity](@event VARCHAR(15), @beginOrderDateKey DATE, @endOrderDateKey DATE)
 RETURNS @OutlierEventQuantity TABLE (
 	[Order Key] [bigint],
 	[City Key] [int] NOT NULL,
@@ -122,10 +122,10 @@ GO
 USE [WideWorldImportersDW];
 GO
 
-SELECT  [fo].[Order Key], [fo].[Description], [fo].[Package],
+SELECT [fo].[Order Key], [fo].[Description], [fo].[Package],
 		[fo].[Quantity], [foo].[OutlierEventQuantity]
-FROM    [Fact].[Order] AS [fo]
-INNER JOIN [Fact].[WhatIfOutlierEventQuantity]('Mild Recession',
+FROM [Fact].[Order] AS [fo]
+INNER JOIN [Fact].[ufn_WhatIfOutlierEventQuantity]('Mild Recession',
                             '1-01-2013',
                             '10-15-2014') AS [foo] ON [fo].[Order Key] = [foo].[Order Key]
                             AND [fo].[City Key] = [foo].[City Key]
@@ -137,7 +137,7 @@ INNER JOIN [Fact].[WhatIfOutlierEventQuantity]('Mild Recession',
                             AND [fo].[Picker Key] = [foo].[Picker Key]
 INNER JOIN [Dimension].[Stock Item] AS [si] 
 	ON [fo].[Stock Item Key] = [si].[Stock Item Key]
-WHERE   [si].[Lead Time Days] > 0
+WHERE [si].[Lead Time Days] > 0
 		AND [fo].[Quantity] > 50;
 GO
 
@@ -153,10 +153,10 @@ GO
 USE [WideWorldImportersDW];
 GO
 
-SELECT  [fo].[Order Key], [fo].[Description], [fo].[Package],
+SELECT [fo].[Order Key], [fo].[Description], [fo].[Package],
 		[fo].[Quantity], [foo].[OutlierEventQuantity]
-FROM    [Fact].[Order] AS [fo]
-INNER JOIN [Fact].[WhatIfOutlierEventQuantity]('Mild Recession',
+FROM [Fact].[Order] AS [fo]
+INNER JOIN [Fact].[ufn_WhatIfOutlierEventQuantity]('Mild Recession',
                             '1-01-2013',
                             '10-15-2014') AS [foo] ON [fo].[Order Key] = [foo].[Order Key]
                             AND [fo].[City Key] = [foo].[City Key]
@@ -168,6 +168,6 @@ INNER JOIN [Fact].[WhatIfOutlierEventQuantity]('Mild Recession',
                             AND [fo].[Picker Key] = [foo].[Picker Key]
 INNER JOIN [Dimension].[Stock Item] AS [si] 
 	ON [fo].[Stock Item Key] = [si].[Stock Item Key]
-WHERE   [si].[Lead Time Days] > 0
+WHERE [si].[Lead Time Days] > 0
 		AND [fo].[Quantity] > 50;
 GO
