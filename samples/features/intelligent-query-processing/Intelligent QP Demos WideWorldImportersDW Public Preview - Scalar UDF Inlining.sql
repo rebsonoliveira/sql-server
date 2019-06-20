@@ -69,4 +69,3 @@ FROM [Dimension].[Customer]
 ORDER BY [Customer Key]
 OPTION (RECOMPILE);
 GO
-
