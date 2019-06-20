@@ -70,4 +70,3 @@ INNER JOIN @Order AS o
 WHERE oh.[Unit Price] > 0.10
 ORDER BY oh.[Unit Price] DESC;
 GO
-
