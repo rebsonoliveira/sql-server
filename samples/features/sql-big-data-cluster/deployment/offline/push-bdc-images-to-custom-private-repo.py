@@ -39,13 +39,13 @@ images = [  'mssql-appdeploy-init',
             'mssql-mlserver-r-runtime',
             'mssql-mlserver-py-runtime',
             'mssql-controller',
-            'mssql-portal',
+            'mssql-mleap-serving-runtime',
             'mssql-server-controller',
             'mssql-monitor-grafana',
             'mssql-monitor-kibana',
             'mssql-service-proxy',
-	        'mssql-app-service-proxy',
-	        'mssql-ssis-app-runtime',
+	    'mssql-app-service-proxy',
+	    'mssql-ssis-app-runtime',
             'mssql-monitor-telegraf']
 
 print("Execute docker login to source registry: " + SOURCE_DOCKER_REGISTRY)
