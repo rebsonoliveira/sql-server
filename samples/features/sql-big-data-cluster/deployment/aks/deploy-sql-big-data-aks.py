@@ -71,7 +71,7 @@ command = "az aks get-credentials --overwrite-existing --name "+CLUSTER_NAME+" -
 executeCmd (command)
 
 print("Creating SQL Big Data cluster:" +CLUSTER_NAME)
-command="mssqlctl bdc config init --src aks-dev-test --target custom --force"
+command="mssqlctl bdc config init --source aks-dev-test --target custom --force"
 executeCmd (command)
 
 command="mssqlctl bdc config section set -c custom -j ""metadata.name=" + CLUSTER_NAME + ""
