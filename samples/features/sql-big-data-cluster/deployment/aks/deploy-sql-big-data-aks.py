@@ -102,8 +102,3 @@ command="kubectl get service gateway-svc-external -o=custom-columns=""IP:status.
 executeCmd(command)
 
 print("")
-print("Cluster administration portal (https://<ip>:<port>):")
-command="kubectl get service mgmtproxy-svc-external -o=custom-columns=""IP:status.loadBalancer.ingress[0].ip,PORT:.spec.ports[0].port"" -n "+CLUSTER_NAME
-executeCmd(command)
-
-print("")
