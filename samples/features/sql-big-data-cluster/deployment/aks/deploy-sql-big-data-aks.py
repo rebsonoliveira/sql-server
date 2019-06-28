@@ -89,16 +89,11 @@ executeCmd (command)
 command="mssqlctl bdc create -c custom --accept-eula yes"
 executeCmd (command)
 
-print("")
-print("SQL Server big data cluster connection endpoints: ")
+command="mssqlctl login --cluster-name " + CLUSTER_NAME
+executeCmd (command)
 
-print("SQL Server master instance:")
-command="kubectl get service master-svc-external -o=custom-columns=""IP:.status.loadBalancer.ingress[0].ip,PORT:.spec.ports[0].port"" -n "+CLUSTER_NAME
+print("")
+print("SQL Server big data cluster endpoints: ")
+command="mssqlctl bdc endpoint list -o table"
 executeCmd(command)
 
-print("")
-print("HDFS/KNOX:")
-command="kubectl get service gateway-svc-external -o=custom-columns=""IP:status.loadBalancer.ingress[0].ip,PORT:.spec.ports[0].port"" -n "+CLUSTER_NAME
-executeCmd(command)
-
-print("")
