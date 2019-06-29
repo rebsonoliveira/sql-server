@@ -22,26 +22,26 @@ def executeCmd (cmd):
 #
 # MUST INPUT THESE VALUES!!!!!
 #
-SUBSCRIPTION_ID = input("Provide your Azure subscription ID:")
-GROUP_NAME = input("Provide Azure resource group name to be created:")
-DOCKER_USERNAME = input("Provide your Docker username:")
-DOCKER_PASSWORD  = getpass.getpass("Provide your Docker password:")
+SUBSCRIPTION_ID = input("Provide your Azure subscription ID:").strip()
+GROUP_NAME = input("Provide Azure resource group name to be created:").strip()
+DOCKER_USERNAME = input("Provide your Docker username:").strip()
+DOCKER_PASSWORD  = getpass.getpass("Provide your Docker password:").strip()
 
 #
 # Optionally change these configuration settings
 #
-AZURE_REGION=input("Provide Azure region - Press ENTER for using `westus`:") or "westus"
-VM_SIZE=input("Provide VM size for the AKS cluster - Press ENTER for using  `Standard_L8s`:") or "Standard_L8s"
-AKS_NODE_COUNT=input("Provide number of worker nodes for AKS cluster - Press ENTER for using  `1`:") or "1"
+AZURE_REGION=input("Provide Azure region - Press ENTER for using `westus`:").strip() or "westus"
+VM_SIZE=input("Provide VM size for the AKS cluster - Press ENTER for using  `Standard_L8s`:").strip() or "Standard_L8s"
+AKS_NODE_COUNT=input("Provide number of worker nodes for AKS cluster - Press ENTER for using  `1`:").strip() or "1"
 
 #This is both Kubernetes cluster name and SQL Big Data cluster name
-CLUSTER_NAME=input("Provide name of AKS cluster and SQL big data cluster - Press ENTER for using  `sqlbigdata`:") or "sqlbigdata"
+CLUSTER_NAME=input("Provide name of AKS cluster and SQL big data cluster - Press ENTER for using  `sqlbigdata`:").strip() or "sqlbigdata"
 
 #This password will be use for Controller user, Knox user and SQL Server Master SA accounts
-PASSWORD=input("Provide password to be used for Controller user, Knox user and SQL Server Master SA accounts - Press ENTER for using  `MySQLBigData2019`:") or "MySQLBigData2019"
-CONTROLLER_USERNAME=input("Provide username to be used for Controller user - Press ENTER for using  `admin`:") or "admin"
+CONTROLLER_USERNAME=input("Provide username to be used for Controller user - Press ENTER for using  `admin`:").strip() or "admin"
+PASSWORD = getpass.getpass("Provide password to be used for Controller user, Knox user and SQL Server Master SA accounts - Press ENTER for using  `MySQLBigData2019`").strip() or "MySQLBigData2019"
 
-#
+#docker registry details
 DOCKER_REGISTRY="private-repo.microsoft.com"
 DOCKER_REPOSITORY="mssql-private-preview"
 DOCKER_IMAGE_TAG="ctp3.1"
