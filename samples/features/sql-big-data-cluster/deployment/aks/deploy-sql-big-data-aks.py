@@ -1,7 +1,7 @@
 #
 # Prerequisites: 
 # 
-# Azure CLI (https://docs.microsoft.com/en-us/cli/azure/install-azure-cli), python3 (https://www.python.org/downloads), mssqlctl CLI (pip3 install -r  https://private-repo.microsoft.com/python/ctp3.0/mssqlctl/requirements.txt )
+# Azure CLI (https://docs.microsoft.com/en-us/cli/azure/install-azure-cli), python3 (https://www.python.org/downloads), mssqlctl CLI (pip3 install -r https://private-repo.microsoft.com/python/ctp3.1/mssqlctl/requirements.txt)
 #
 # Run `az login` at least once BEFORE running this script
 #
@@ -22,29 +22,29 @@ def executeCmd (cmd):
 #
 # MUST INPUT THESE VALUES!!!!!
 #
-SUBSCRIPTION_ID = input("Provide your Azure subscription ID:")
-GROUP_NAME = input("Provide Azure resource group name to be created:")
-DOCKER_USERNAME = input("Provide your Docker username:")
-DOCKER_PASSWORD  = getpass.getpass("Provide your Docker password:")
+SUBSCRIPTION_ID = input("Provide your Azure subscription ID:").strip()
+GROUP_NAME = input("Provide Azure resource group name to be created:").strip()
+DOCKER_USERNAME = input("Provide your Docker username:").strip()
+DOCKER_PASSWORD  = getpass.getpass("Provide your Docker password:").strip()
 
 #
 # Optionally change these configuration settings
 #
-AZURE_REGION=input("Provide Azure region - Press ENTER for using `westus`:") or "westus"
-VM_SIZE=input("Provide VM size for the AKS cluster - Press ENTER for using  `Standard_L8s`:") or "Standard_L8s"
-AKS_NODE_COUNT=input("Provide number of worker nodes for AKS cluster - Press ENTER for using  `1`:") or "1"
+AZURE_REGION=input("Provide Azure region - Press ENTER for using `westus`:").strip() or "westus"
+VM_SIZE=input("Provide VM size for the AKS cluster - Press ENTER for using  `Standard_L8s`:").strip() or "Standard_L8s"
+AKS_NODE_COUNT=input("Provide number of worker nodes for AKS cluster - Press ENTER for using  `1`:").strip() or "1"
 
 #This is both Kubernetes cluster name and SQL Big Data cluster name
-CLUSTER_NAME=input("Provide name of AKS cluster and SQL big data cluster - Press ENTER for using  `sqlbigdata`:") or "sqlbigdata"
+CLUSTER_NAME=input("Provide name of AKS cluster and SQL big data cluster - Press ENTER for using  `sqlbigdata`:").strip() or "sqlbigdata"
 
 #This password will be use for Controller user, Knox user and SQL Server Master SA accounts
-PASSWORD=input("Provide password to be used for Controller user, Knox user and SQL Server Master SA accounts - Press ENTER for using  `MySQLBigData2019`:") or "MySQLBigData2019"
-CONTROLLER_USERNAME=input("Provide username to be used for Controller user - Press ENTER for using  `admin`:") or "admin"
+CONTROLLER_USERNAME=input("Provide username to be used for Controller user - Press ENTER for using  `admin`:").strip() or "admin"
+PASSWORD = getpass.getpass("Provide password to be used for Controller user, Knox user and SQL Server Master SA accounts - Press ENTER for using  `MySQLBigData2019`").strip() or "MySQLBigData2019"
 
-#
+#docker registry details
 DOCKER_REGISTRY="private-repo.microsoft.com"
 DOCKER_REPOSITORY="mssql-private-preview"
-DOCKER_IMAGE_TAG="ctp3.0"
+DOCKER_IMAGE_TAG="ctp3.1"
 
 print ('Setting environment variables')
 os.environ['MSSQL_SA_PASSWORD'] = PASSWORD
@@ -53,7 +53,6 @@ os.environ['CONTROLLER_PASSWORD'] = PASSWORD
 os.environ['KNOX_PASSWORD'] = PASSWORD
 os.environ['DOCKER_USERNAME']=DOCKER_USERNAME
 os.environ['DOCKER_PASSWORD']=DOCKER_PASSWORD
-os.environ['DOCKER_IMAGE_POLICY']="IfNotPresent"
 os.environ['ACCEPT_EULA']="Yes"
 
 print ("Set azure context to subcription: "+SUBSCRIPTION_ID)
@@ -72,37 +71,29 @@ command = "az aks get-credentials --overwrite-existing --name "+CLUSTER_NAME+" -
 executeCmd (command)
 
 print("Creating SQL Big Data cluster:" +CLUSTER_NAME)
-command="mssqlctl cluster config init --src aks-dev-test.json --target custom.json --force"
+command="mssqlctl bdc config init --source aks-dev-test --target custom --force"
 executeCmd (command)
 
-command="mssqlctl cluster config section set -c custom.json -j ""metadata.name=" + CLUSTER_NAME + ""
+command="mssqlctl bdc config section set -c custom -j ""metadata.name=" + CLUSTER_NAME + ""
 executeCmd (command)
 
-command="mssqlctl cluster config section set -c custom.json -j ""$.spec.controlPlane.spec.docker.registry=" + DOCKER_REGISTRY + ""
-executeCmd (command)
-command="mssqlctl cluster config section set -c custom.json -j ""$.spec.controlPlane.spec.docker.repository=" + DOCKER_REPOSITORY + ""
-executeCmd (command)
-command="mssqlctl cluster config section set -c custom.json -j ""$.spec.controlPlane.spec.docker.imageTag=" + DOCKER_IMAGE_TAG + ""
+command="mssqlctl bdc config section set -c custom -j ""$.spec.controlPlane.spec.docker.registry=" + DOCKER_REGISTRY + ""
 executeCmd (command)
 
-command="mssqlctl cluster create -c custom.json --accept-eula yes"
+command="mssqlctl bdc config section set -c custom -j ""$.spec.controlPlane.spec.docker.repository=" + DOCKER_REPOSITORY + ""
+executeCmd (command)
+
+command="mssqlctl bdc config section set -c custom -j ""$.spec.controlPlane.spec.docker.imageTag=" + DOCKER_IMAGE_TAG + ""
+executeCmd (command)
+
+command="mssqlctl bdc create -c custom --accept-eula yes"
+executeCmd (command)
+
+command="mssqlctl login --cluster-name " + CLUSTER_NAME
 executeCmd (command)
 
 print("")
-print("SQL Server big data cluster connection endpoints: ")
-
-print("SQL Server master instance:")
-command="kubectl get service master-svc-external -o=custom-columns=""IP:.status.loadBalancer.ingress[0].ip,PORT:.spec.ports[0].port"" -n "+CLUSTER_NAME
+print("SQL Server big data cluster endpoints: ")
+command="mssqlctl bdc endpoint list -o table"
 executeCmd(command)
 
-print("")
-print("HDFS/KNOX:")
-command="kubectl get service gateway-svc-external -o=custom-columns=""IP:status.loadBalancer.ingress[0].ip,PORT:.spec.ports[0].port"" -n "+CLUSTER_NAME
-executeCmd(command)
-
-print("")
-print("Cluster administration portal (https://<ip>:<port>):")
-command="kubectl get service mgmtproxy-svc-external -o=custom-columns=""IP:status.loadBalancer.ingress[0].ip,PORT:.spec.ports[0].port"" -n "+CLUSTER_NAME
-executeCmd(command)
-
-print("")

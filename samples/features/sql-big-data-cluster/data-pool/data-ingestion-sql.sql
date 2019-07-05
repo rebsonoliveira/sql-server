@@ -4,12 +4,12 @@ GO
 -- Create external data source for Data Pool inside a SQL big data cluster
 --
 IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'SqlDataPool')
-	IF SERVERPROPERTY('ProductLevel') = 'CTP2.5'
-		CREATE EXTERNAL DATA SOURCE SqlDataPool
-		WITH (LOCATION = 'sqldatapool://service-mssql-controller:8080/datapools/default');
-	ELSE IF SERVERPROPERTY('ProductLevel') = 'CTP3.0'
-		CREATE EXTERNAL DATA SOURCE SqlDataPool
-		WITH (LOCATION = 'sqldatapool://controller-svc:8080/datapools/default');
+		IF SERVERPROPERTY('ProductLevel') = 'CTP3.0'
+			CREATE EXTERNAL DATA SOURCE SqlDataPool
+			WITH (LOCATION = 'sqldatapool://controller-svc:8080/datapools/default');
+		ELSE IF SERVERPROPERTY('ProductLevel') = 'CTP3.1'
+			CREATE EXTERNAL DATA SOURCE SqlDataPool
+			WITH (LOCATION = 'sqldatapool://controller-svc/default');
 
 -- Create external table in a data pool in SQL Server 2019 big data cluster.
 -- The SqlDataPool data source is a special data source that is available in 
@@ -24,12 +24,6 @@ IF NOT EXISTS(SELECT * FROM sys.external_tables WHERE name = 'web_clickstream_cl
         DATA_SOURCE = SqlDataPool,
         DISTRIBUTION = ROUND_ROBIN
     );
-GO
-
--- Currently the create external table operation is asynchronous and there is no
--- way to determine completion of the operation. To prevent failures of the insert
--- into the external table, wait for few minutes.
-WAITFOR DELAY '00:02:00';
 GO
 
 -- Insert results of a SELECT statement into the external table created on the data pool.
@@ -72,5 +66,6 @@ GO
 -- Cleanup
 /*
 DROP EXTERNAL TABLE [dbo].[web_clickstream_clicks_data_pool];
+DROP EXTERNAL DATA SOURCE SqlDataPool;
 GO
 */

@@ -9,7 +9,9 @@ Installation instructions for SQL Server 2019 big data clusters can be found [he
 ## Executing the sample scripts
 The scripts should be executed in a specific order to test the various features. Execute the scripts from each folder in below order:
 
-1. __[spark/dataloading/transform-csv-files.sql](spark/dataloading/transform-csv-files.sql)__
+1. __[spark/dataloading/transform-csv-files.ipynb](spark/dataloading/transform-csv-files.ipynb)__
+1. __[data-virtualization/generic-odbc](data-virtualization/generic-odbc)__
+1. __[data-virtualization/hadoop](data-virtualization/hadoop)__
 1. __[data-virtualization/storage-pool](data-virtualization/storage-pool)__
 1. __[data-virtualization/oracle](data-virtualization/oracle)__
 1. __[data-pool](data-pool/)__
@@ -28,15 +30,19 @@ The sample script [data-pool/data-ingestion-sql.sql](data-pool/data-ingestion-sq
 
 ## __[data-virtualization](data-virtualization/)__
 
-SQL Server 2019 or SQL Server 2019 big data cluster can use PolyBase external tables to connect to other data sources.
+SQL Server 2019 or SQL Server 2019 big data cluster can use PolyBase external tables to connect to other data sources. 
+
+### External table over Generic ODBC data source
+The [data-virtualization/generic-odbc](data-virtualization/generic-odbc) folder contains samples that demonstrate how to query data in MySQL & PostgreSQL using external tables and generic ODBC data source. The generic ODBC data soruce can be used only in SQL Server 2019 on Windows.
+
+### External table over Hadoop
+The [data-virtualization/hadoop](data-virtualization/hadoop) folder contains samples that demonstrate how to query data in HDFS using external tables. This demonstrates the functionality available from SQL Server 2016 using the HADOOP data source.
+
+### External table over Oracle
+The [data-virtualization/oracle](data-virtualization/oracle) folder contains samples that demonstrate how to query data in Oracle using external tables.
 
 ### External table over Storage Pool
 SQL Server 2019 big data cluster contains a storage pool consisting of HDFS, Spark and SQL Server instances. The [data-virtualization/storage-pool](data-virtualization/storage-pool) folder contains samples that demonstrate how to query data in HDFS inside SQL Server 2019 big data cluster.
-
-### External table over Oracle
-SQL Server 2019 uses new ODBC connectors to enable connectivity to SQL Server, Oracle, Teradata, MongoDB and generic ODBC data sources.
-
-The [data-virtualization/oracle](data-virtualization/oracle) folder contains samples that demonstrate how to query data in Oracle using external tables.
 
 ## __[deployment](deployment/)__
 
