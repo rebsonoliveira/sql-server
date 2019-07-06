@@ -74,9 +74,9 @@ To register your ESU-enabled SQL Server instances, see [Registering SQL Server i
 
 ## <a name="Download"></a> How to download Extended Security Updates
 
-1. To download a security update that is made available throughout the three years of the ESU subscription, click ***Security Updates***.
-   - All available ESU packages available per version will be listed
-   - A ***Download*** button will appear inline with each available update package, allowing customers to download, to later install in the eligible SQL Server instances.
+To download a security update that is made available throughout the three years of the ESU subscription, click on ***Security Updates*** located in the left menu pane.
+- All available ESU packages available per version will be listed
+- A ***Download*** button will appear inline with each available update package, allowing customers to download, to later install in the eligible SQL Server instances.
 
     ![Downloads](./media/Downloads.png "Downloads") 
 
