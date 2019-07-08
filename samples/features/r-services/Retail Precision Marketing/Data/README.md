@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 **List of data sets** 
 
 |  Data Set Name | Link to the Full Data Set   | Full Data Set Size (MB)  | Link to Report |

@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Connect to SQL using Ruby on Windows
 
 Ruby sample code that runs on a Windows computer to connect to an Azure SQL Database. 

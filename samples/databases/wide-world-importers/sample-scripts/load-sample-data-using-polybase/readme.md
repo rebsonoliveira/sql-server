@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Load World Wide Importers data into a data warehouse using Polybase and blob storage
 
 This script shows how to load data from Azure Blob storage to Azure SQL Data Warehouse using Polybase. It loads the Wide World Importers dataset into an existing empty SQL Data Warehouse. To follow the script step-by-step in tutorial format, see [Tutorial: Load data to Azure SQL Data Warehouse](https://docs.microsoft.com/azure/sql-data-warehouse/load-data-wideworldimportersdw)

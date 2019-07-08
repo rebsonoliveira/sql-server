@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # T-SQL scripts supporting SQL In-Memory Features
 
 Utility scripts, as well as scripts supporting several samples.

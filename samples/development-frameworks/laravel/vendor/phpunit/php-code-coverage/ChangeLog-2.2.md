@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Changes in PHP_CodeCoverage 2.2
 
 All notable changes of the PHP_CodeCoverage 2.2 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.

@@ -1,4 +1,5 @@
-﻿# Order Processing Benchmark using In-Memory OLTP
+﻿![](./media/solutions-microsoft-logo-small.png)
+# Order Processing Benchmark using In-Memory OLTP
 
 Sample order processing workload that can be used for benchmarking transactional processing with in-memory technologies. The scripts in this folder leverage the In-Memory OLTP feature in SQL Server 2016.
 

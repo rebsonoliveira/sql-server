@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Power BI Dashboards for WideWorldImporters
 
 Sample Power BI dashboards for use with the WideWorldImporters and WideWorldImportersDW sample databases.

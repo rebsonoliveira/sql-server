@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 ![Stringy](http://danielstjules.com/github/stringy-logo.png)
 
 A PHP string manipulation library with multibyte support. Offers both OO method

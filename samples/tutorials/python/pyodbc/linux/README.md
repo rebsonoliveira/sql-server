@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Connect to SQL using Python on Ubuntu Linux
 
 Python sample code that runs on an Ubuntu Linux client computer to connect to an Azure SQL Database using the **pyodbc** connector. 

@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Implementing Regular Expressions in SQL Server using CLR UDF 
 SQL Database don't have built-in support for regular expressions, so the only workaround is to use Regular Expressions that exist in .Net framework and expose them as T-SQL functions.
 This code sample demonstrates how to create CLR User-Defined functions that expose regular expression functionalities that exist in .Net framework.

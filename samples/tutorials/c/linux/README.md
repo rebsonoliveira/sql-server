@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Connect to MSSQL using the Microsoft ODBC Driver on Linux
 
 

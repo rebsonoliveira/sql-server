@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Overview
 Sample script for doing the following:
  - Some basic validation of input parameters (i.e. more than 5 sync replicas

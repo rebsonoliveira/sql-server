@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # An Invitation to Security Researchers
 
 Every company says they take security "very seriously." Rather than bore anyone 

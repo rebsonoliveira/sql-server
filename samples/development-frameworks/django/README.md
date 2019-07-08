@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Bootcamp
 
 [![Build Status](https://travis-ci.org/vitorfs/bootcamp.svg?branch=master)](https://travis-ci.org/vitorfs/bootcamp)

@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 1.6.0 / 2016-02-15
 ==================
 

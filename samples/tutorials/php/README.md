@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Developing applications with php and SQL Server 
 
 Pick a platform below to get started:

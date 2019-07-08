@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Sample for use of Row-Level Security in WideWorldImporters
 
 This script demonstrates the use of Row-Level Security to restrict access to certains rows in the table to certain users.

@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Carbon
 
 [![Latest Stable Version](https://poser.pugx.org/nesbot/carbon/v/stable.png)](https://packagist.org/packages/nesbot/carbon)

@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 ---
 services: azure automation
 platforms: azure

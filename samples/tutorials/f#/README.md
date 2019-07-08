@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Get started with SQL Server and F#
 
 Get started quickly with developing applications in F# on any OS with SQL Server

@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Sample Querying of External Data Source in WideWorldImportersDW
 
 This script demonstrates the use of PolyBase to query an external data source.

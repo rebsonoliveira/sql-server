@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Microsoft SQL Server Permissions Posters
 
 Useful link: http://social.technet.microsoft.com/wiki/contents/articles/11842.sql-server-database-engine-permission-posters.aspx

@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # SQL Server Reporting Services migration script
 
 This is a Microsoft SQL Server Reporting Services RSS script that migrates content from one Reporting Services server to another.

@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Database connection samples
 [Getting Started Tutorials](https://aka.ms/sqldev)
 

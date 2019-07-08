@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 <!-- vim:ts=4:sts=4:sw=4:et:tw=60 -->
 
 This library has the following policy about versions.

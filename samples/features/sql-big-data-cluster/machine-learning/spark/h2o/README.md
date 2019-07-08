@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Automated Machine Learning using H2O in SQL Server 2019 Big Data Cluster
 
 ## Machine Learning using Spark

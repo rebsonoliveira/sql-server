@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # License
 
 Everything in this repo is BSD style license unless otherwise specified.

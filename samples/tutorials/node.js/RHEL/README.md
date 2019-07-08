@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Get started with SQL Server and Node.js on RHEL
 
 Get started quickly with developing applications in Node.js on RHEL with SQL Server

@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # EPM Framework 4 Release Notes
 
 Over 4.12.1 below, EPM Framework 4.12.2 includes the following updates (as per received feedback): Fixed collation issues on views and reports

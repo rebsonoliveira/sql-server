@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Master Data Services Security Model Deployment API Sample
 
 This is a simple console application that demonstrates usage of a few of the common methods in the Model Deployment API.

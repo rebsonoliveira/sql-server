@@ -1,4 +1,5 @@
-﻿# Auto Tuning Performance Improvement Sample
+﻿![](./media/solutions-microsoft-logo-small.png)
+# Auto Tuning Performance Improvement Sample
 
 This Windows Forms sample application built on .NET Framework 4.6 demonstrates the benefits of using SQL Server Automatic Tuning. You can compare the performance difference between enabling Automatic Tuning or leaveing it disabled, while running a workload that introduces a parameter sniffing regression.
 

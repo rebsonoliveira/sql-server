@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Contoso Clinic Demo Application 
 
 Sample application with database that showcases security features of SQL Server 2016. 

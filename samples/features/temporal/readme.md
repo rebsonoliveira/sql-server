@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Samples that use Temporal functionalities that are available in SQL Server 2016 (or higher) and Azure SQL Database
 
 [Product catalog](product-catalog)

@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 Version 2.0.1-dev
 -----------------
 

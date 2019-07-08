@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Samples for SQL Server Machine Learning Services
 
 

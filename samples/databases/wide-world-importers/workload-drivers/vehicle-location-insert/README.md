@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Workload Driver for Vehicle Location Insertion in WideWorldImporters
 
 This application simulates an insertion workload for vehicle location in the WideWorldImporters sample database.

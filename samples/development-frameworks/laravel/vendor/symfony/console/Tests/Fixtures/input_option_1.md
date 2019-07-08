@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 **option_name:**
 
 * Name: `--option_name`

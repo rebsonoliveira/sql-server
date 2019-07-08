@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Prophecy
 
 [![Stable release](https://poser.pugx.org/phpspec/prophecy/version.svg)](https://packagist.org/packages/phpspec/prophecy)

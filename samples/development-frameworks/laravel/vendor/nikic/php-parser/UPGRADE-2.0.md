@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 Upgrading from PHP-Parser 1.x to 2.0
 ====================================
 

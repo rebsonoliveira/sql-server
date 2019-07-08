@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Handlers, Formatters and Processors
 
 - [Handlers](#handlers)

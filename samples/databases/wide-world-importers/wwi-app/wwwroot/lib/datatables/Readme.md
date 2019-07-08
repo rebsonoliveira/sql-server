@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # DataTables plug-in for jQuery
 
 DataTables is a table enhancing plug-in for the [jQuery](//jquery.com) Javascript library, adding sorting, paging and filtering abilities to plain HTML tables with minimal effort. The stated goal of DataTables is:

@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # SSAS Multidimensional Project for WideWorldImporters
 
 This is the SQL Services Analysis Services (SSASMD) project for the analytics database WideWorldImportersDW. It creates Analysis Services cubes based on the WideWorldImportersDW schema, and can be used to run MDX queries against the WideWorldImporters data.

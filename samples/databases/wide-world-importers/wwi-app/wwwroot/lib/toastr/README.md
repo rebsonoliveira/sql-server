@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # toastr
 **toastr** is a Javascript library for non-blocking notifications. jQuery is required. The goal is to create a simple core library that can be customized and extended.
 

@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # SHORTEST_PATH 
 SQL Server (starting with SQL Server 2017) and Azure SQL Database now let you create a graph database, to hold your entities and complex many to many relationships. There are several examples on github which demonstrate how the new graph features work. This example shows how you can use SHORTEST_PATH function to write a shortest path or arbitrary length traversal query. This feature is available for public preview with SQL Server 2019 CTP3.1
 

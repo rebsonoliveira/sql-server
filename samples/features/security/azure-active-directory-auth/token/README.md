@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Token Authentication sample for Azure Active Directory
 
 ### Contents

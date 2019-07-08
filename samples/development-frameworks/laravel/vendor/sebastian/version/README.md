@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Version
 
 **Version** is a library that helps with managing the version number of Git-hosted PHP projects.

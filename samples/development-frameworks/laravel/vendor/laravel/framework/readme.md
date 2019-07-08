@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 ## Laravel Framework (Kernel)
 
 [![StyleCI](https://styleci.io/repos/7548986/shield?style=flat)](https://styleci.io/repos/7548986)

@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Attaches VPN gateway to Managed Instance virtual network
 
 ### Contents

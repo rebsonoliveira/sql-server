@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Deploying a Spark model in SQL Server big data cluster using MLeap bundles
 
 ### Contents

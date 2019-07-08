@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Changes in PHPUnit 4.7
 
 All notable changes of the PHPUnit 4.7 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.

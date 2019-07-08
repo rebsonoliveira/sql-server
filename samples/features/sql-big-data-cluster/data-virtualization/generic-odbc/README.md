@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Data virtualization in SQL Server 2019
 
 ***Applies to:*** SQL Server 2019 on Windows only

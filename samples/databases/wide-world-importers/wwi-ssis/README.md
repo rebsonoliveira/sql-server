@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # ETL Process for WideWorldImporters
 
 This SSIS project performs ETL from the transactional database WideWorldImporters into the OLAP database WideWorldImportersDW for long-term storage and analytics.

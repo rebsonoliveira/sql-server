@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 **argument_name:**
 
 * Name: argument_name

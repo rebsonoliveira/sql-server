@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Samples that use JSON functionalities that are available in SQL Server 2016 (or higher) and Azure SQL Database
 
 [Todo REST API - ASP.NET Core](todo-app/dotnet-rest-api)

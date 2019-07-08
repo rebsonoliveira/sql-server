@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Support requests
 
 Please direct support requests to the [DataTables forums](https://datatables.net/forums), ensuring that you provide a link to a test page that shows the problem and a full description of the issue. If you require urgent help, [priority support](https://datatables.net/support) is available.

@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # SQL Server 2017 Graph Database
 
 SQL Server has always provided tools to manage hierarchies and relationships, facilitating query execution on hierarchical data, but sometimes relationships can become complex. Think about many-to-many relationships, relational databases don't have a native solution for many-to-many associations. A common approach to realize many-to-many associations is to introduce a table that holds such relationships.

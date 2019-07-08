@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 #SQL Security
 
 <!--placeholder for summary.--> 

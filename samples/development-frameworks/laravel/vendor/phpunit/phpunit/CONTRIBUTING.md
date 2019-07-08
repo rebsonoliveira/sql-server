@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Contributing to PHPUnit
 
 ## Contributor Code of Conduct

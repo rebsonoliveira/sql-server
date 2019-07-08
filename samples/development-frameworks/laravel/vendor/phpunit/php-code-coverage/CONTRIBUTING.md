@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 Pull Requests for bug fixes should be made against the current release branch (2.0).
 
 Pull Requests for new features should be made against master.

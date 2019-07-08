@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Build a predictive model with Python using SQL Server 2017 Machine Learning Services
 
 This sample shows how to create a predictive model in Python and operationalize it with SQL Server 2017

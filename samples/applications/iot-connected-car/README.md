@@ -1,4 +1,5 @@
-﻿# IoT Connected Car
+﻿![](./media/solutions-microsoft-logo-small.png)
+# IoT Connected Car
 This code sample demonstrates how a SQL Server 2016 (or higher) memory optimized database could be used to ingest a very high input data rate and ultimately help improve the performance of applications with this scenario. The code simulates an IoT Connected Car scenario where multiple cars are constantly sending telemetry data to an the Azure SQL database.
 
 ### Contents

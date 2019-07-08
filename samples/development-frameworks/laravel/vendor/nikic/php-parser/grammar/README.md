@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 What do all those files mean?
 =============================
 

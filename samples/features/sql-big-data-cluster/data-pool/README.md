@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Data pools in SQL Server 2019 big data cluster
 
 SQL Server Big Data clusters provide scale-out compute and storage to improve the performance of analyzing any data. Data from a variety of sources can be ingested and distributed across data pool instances for analysis. In this example, we will insert data from a SQL query into an external table stored in a data pool and query it.

@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Machine Learning in SQL Server 2019 big data cluster
 
 ## SQL Server Machine Learning Services

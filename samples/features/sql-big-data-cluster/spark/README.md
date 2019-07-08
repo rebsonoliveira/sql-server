@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # SQL Server big data clusters
 
 SQL Server Big Data cluster bundles Spark and HDFS together with SQL server. Azure Data Studio IDE provides built in notebooks that enables data scientists and data engineers to run Spark notebooks and job in Python, R, or Scala code against the Big Data Cluster. This folder contains spark sample notebook on using Spark in SQL server Big data cluster

@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 Symfony Polyfill / Php56
 ========================
 

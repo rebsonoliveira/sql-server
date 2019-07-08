@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Solution Quick Start: Elastic Pool Custom Dashboard for Saas
 
 The goal of this Solution Quick Start is to help developers get started using Elastic Pools in a SaaS scenario. Therefore, this quick start focuses on leveraging Elastic Pools to provide a cost-effective, scalable database back-end of a SaaS application, showing how the monitoring of Elastic Pool and constituent databases could be monitored via a custom dashboard that supplements the Azure Portal.

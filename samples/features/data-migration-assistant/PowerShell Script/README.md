@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # PowerShell Script for Importing Assessment Results
 
 This contains a PowerShell script for importing assessment results from JSON files into a SQL Server database. Assessments are generated using Data Migration Assistant, to evaluate moving data to SQL Server or to Azure SQL Database.

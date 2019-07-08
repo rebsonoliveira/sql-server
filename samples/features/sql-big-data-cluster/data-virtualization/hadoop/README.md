@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Data virtualization in SQL Server 2019 big data cluster
 
 In SQL Server 2019 big data clusters, the SQL Server engine has gained the ability to natively read HDFS files, such as CSV and parquet files, by using SQL Server instances collocated on each of the HDFS data nodes to filter and aggregate data locally in parallel across all of the HDFS data nodes. Using the PolyBase v1 HADOOP data source, you can manipulate ORC or RCFILE files inside the big data cluster.

@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Samples for High Availability solutions for SQL Server
 
 Go to the documentation tutorials to learn more about:

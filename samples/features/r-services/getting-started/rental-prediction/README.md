@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Build a predictive model with SQL Server R Services
 
 This sample shows how to create a predictive model in R and operationalize it with SQL Server 2016 or vNext.

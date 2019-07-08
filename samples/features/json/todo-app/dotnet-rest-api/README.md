@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # ASP.NET Core REST Web API that uses SQL/JSON functionalities 
 
 This project contains an example implementation of ASP.NET Core REST API with CRUD operations on a simple Todo table. You can learn how to build REST API on the existing database schema using new JSON functionalities that are available in SQL Server 2016 (or higher) and Azure SQL Database.

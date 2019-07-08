@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 :warning: Warning: The behavior described here is likely to be quickly
 obseleted by developments in standardization and implementation.  Tread with
 care.

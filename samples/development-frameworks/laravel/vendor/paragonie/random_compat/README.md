@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # random_compat
 
 [![Build Status](https://travis-ci.org/paragonie/random_compat.svg?branch=master)](https://travis-ci.org/paragonie/random_compat)

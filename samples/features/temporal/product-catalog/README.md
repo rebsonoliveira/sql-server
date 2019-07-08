@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # ASP.NET Core Product Catalog application that uses SQL/Temporal and JSON functionalities 
 
 This project contains an example of a simple ASP.NET Core product catalog web application that enables you to browse the current list of products, and also to see the state of products in any point in time in the history.

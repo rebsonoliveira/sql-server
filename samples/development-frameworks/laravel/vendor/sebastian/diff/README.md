@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Diff
 
 Diff implementation for PHP, factored out of PHPUnit into a stand-alone component.

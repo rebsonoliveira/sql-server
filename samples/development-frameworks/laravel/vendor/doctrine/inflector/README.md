@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Doctrine Inflector
 
 Doctrine Inflector is a small library that can perform string manipulations

@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Running a Magic 8-ball Python script in SQL Server big data cluster
 
 ### Contents

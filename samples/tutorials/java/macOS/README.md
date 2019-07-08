@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Get started with SQL Server and Java on macOS
 
 Get started quickly with developing applications in Java on macOS with SQL Server

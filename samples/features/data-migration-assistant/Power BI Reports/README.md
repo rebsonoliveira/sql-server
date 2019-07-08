@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Power BI Reports for Consolidated Migration Assessments
 
 This contains examples of Power BI reports for consolidated migration assessements. The assessments are generated using Data Migration Assistant, to evaluate moving data to SQL Server or to Azure SQL Database.

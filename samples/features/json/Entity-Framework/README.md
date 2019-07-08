@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Entity Framework Core 1.1. - Getting started with JSON fields in SQL Server
 
 This project contains an example implementation of ASP.NET MVC application that shows how to serialize/de-serialize complex fields in Entity Framework model as JSON fields in SQL database.

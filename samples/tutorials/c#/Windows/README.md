@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Get started with SQL Server and C# on Windows
 
 Get started quickly with developing applications in C# on Windows with SQL Server

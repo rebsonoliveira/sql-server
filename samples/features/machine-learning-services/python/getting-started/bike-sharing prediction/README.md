@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Build a predictive model with RevoScalePy using SQL Server 2017 Machine Learning Services
 
 This sample shows how to create a predictive model using RevoScalePy in conjunction with python machine learning stack.

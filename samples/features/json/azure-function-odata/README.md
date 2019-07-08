@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Rest API with Azure Functions and Azure SQL Database
 
 This sample shows how to create REST API using Azure Function that read data from Azure SQL Database using FOR JSON clause.

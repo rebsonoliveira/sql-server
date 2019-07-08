@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Prepare subnet for Managed Instance deployment
 
 Script that validates and prepares virtual network and subnet for Managed Instance creation to comply with [networking requirements](https://docs.microsoft.com/azure/sql-database/sql-database-managed-instance-vnet-configuration#requirements).

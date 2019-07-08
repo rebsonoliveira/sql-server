@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # [Start Bootstrap](http://startbootstrap.com/) - [Blog Post](http://startbootstrap.com/template-overviews/blog-post/)
 
 [Blog Post](http://startbootstrap.com/template-overviews/blog-post/) is a basic blog post HTML starter template for [Bootstrap](http://getbootstrap.com/) created by [Start Bootstrap](http://startbootstrap.com/).

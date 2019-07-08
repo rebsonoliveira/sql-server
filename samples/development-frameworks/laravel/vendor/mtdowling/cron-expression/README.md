@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 PHP Cron Expression Parser
 ==========================
 

@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 Symfony mechanism for exploring and dumping PHP variables
 =========================================================
 

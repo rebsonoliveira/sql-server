@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 The ReflectionDocBlock Component [![Build Status](https://secure.travis-ci.org/phpDocumentor/ReflectionDocBlock.png)](https://travis-ci.org/phpDocumentor/ReflectionDocBlock)
 ================================
 

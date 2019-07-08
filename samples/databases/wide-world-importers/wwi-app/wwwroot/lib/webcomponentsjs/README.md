@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 webcomponents.js (v1 spec polyfills)
 ================
 

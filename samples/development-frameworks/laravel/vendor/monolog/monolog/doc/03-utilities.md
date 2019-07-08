@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Utilities
 
 - _Registry_: The `Monolog\Registry` class lets you configure global loggers that you

@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # SSMS Custom Reports
 
 This sample provides custom reports for SQL Server R Services that can be viewed from SQL Server Management Studio. The reports can be used to view configuration information, resource usage, execution statistics, active sessions and other information about R Services.

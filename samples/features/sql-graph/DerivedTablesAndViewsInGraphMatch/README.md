@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Derived Tables and Views in Graph Match Queries
 SQL Server (starting with SQL Server 2017) and Azure SQL Database now let you create a graph database, to hold your entities and complex many to many relationships. There are several examples on github which demonstrate how the new graph features work. This example shows how you can use derived tables and views created on graph node or edge tables in graph match queries. This feature is in public preview on Azure SQL Database and SQL Server 2019 CTP2.1.
 

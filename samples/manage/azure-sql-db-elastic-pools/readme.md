@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Solution Quick Start: Elastic Pool Telemetry using PowerShell
 
 This Solution Quick Start sample provides a set of PowerShell scripts for off-loading elastic pool and elastic database telemetry data into a separate telemetry database.

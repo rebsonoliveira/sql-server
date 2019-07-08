@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Master Data Services Entity Based Staging API Sample
 
 This is a C# code sample to show how to process, clear, and get information about entity based staging data by using MDS APIs. This sample has the following scenarios.

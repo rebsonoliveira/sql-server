@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Intelligent Query Processing Demos
 
 Here are the instructions to prepare for demonstrating Intelligent QP's latest round of features:

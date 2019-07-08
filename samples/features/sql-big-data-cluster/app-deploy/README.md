@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Application deployment on SQL Server big data cluster
 
 ## Build more intelligent apps

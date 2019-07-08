@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 ## Illuminate Queue
 
 The Laravel Queue component provides a unified API across a variety of different queue services. Queues allow you to defer the processing of a time consuming task, such as sending an e-mail, until a later time, thus drastically speeding up the web requests to your application.

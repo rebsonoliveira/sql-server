@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # File_Iterator
 
 ## Installation

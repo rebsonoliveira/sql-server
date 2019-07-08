@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # SmoSamples
 
 This unit test project is meant to demonstrate features of the Sql Management Objects framework and to help developers optimize performance of their SMO-based applications.

@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # SQL Server In-memory
 
 In-Memory OLTP can significantly improve OLTP database application performance. It is a memory-optimized database engine integrated into the SQL Server engine, optimized for OLTP. With In-Memory OLTP you can increase the transaction throughput by up to 30 times, depending on the specifics of the workload. The performance gains come from:

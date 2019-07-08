@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Angular Heroes ASP.NET Core REST Web App
 
 This project contains an implementation of [AngularJS Heroes sample app](https://angular.io/docs/ts/latest/tutorial/) implemented using ASP.NET Core REST API backend that use SQL/JSON functionalities.

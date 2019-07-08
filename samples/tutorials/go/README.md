@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Set up instructions 
 
 1. `go get github.com/denisenkom/go-mssqldb`

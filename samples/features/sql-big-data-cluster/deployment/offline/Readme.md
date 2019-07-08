@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Push SQL Server big data cluster Docker images to your own private Docker repository
 
 Big data clusters must have access to a Docker repository from which to pull container images. If you need to deploy to an environment  that can't access the registry provided by Microsoft, you need to first push necessary images to your own private repository that the environment can access. This repository is then used as the target for a new deployment.

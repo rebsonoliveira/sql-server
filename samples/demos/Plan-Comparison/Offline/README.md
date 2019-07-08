@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 Simply open SSMS, open a query execution plan file (.sqlplan) using File -> Open File, or drag a plan file to SSMS window. 
 Once the file opens, right-click anywhere inside the tab (not necessarily on top of an operator) and select “Compare Showplan” to get the other .sqlplan file to compare. 
 This works with any .sqlplan files you have, even from older versions of SQL Server. 

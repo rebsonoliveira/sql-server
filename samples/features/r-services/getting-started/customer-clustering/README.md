@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Perform customer clustering with SQL Server R Services
 
 In this sample, we are going to get ourselves familiar with clustering. 

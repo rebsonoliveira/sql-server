@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Samples for specific SQL Server and Azure SQL features
 
 [In-Memory OLTP](in-memory)

@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 ### 1.10.0 (2015-07-22)
 
  * Added trimLeft, trimRight

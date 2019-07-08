@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # MIT License
 
 Copyright (c) 2010-2015 Jeremy Lindblom

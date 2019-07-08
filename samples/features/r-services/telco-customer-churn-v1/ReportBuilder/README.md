@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 **Instructions**
 
 - Open the file telcoChurn-reportBuilder.rdl in SQL Report Builder

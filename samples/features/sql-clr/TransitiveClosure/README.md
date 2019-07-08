@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Implementing Transitive Closure Clustering in SQL Server using CLR UDF 
 SQL Database don't have built-in support for transitive closure clustering, so the only workaround is to implement this algorithm in .Net framework and expose it as T-SQL function.
 A discussion on the problem, the algorithm and a pure T-SQL based solution can be found here: 

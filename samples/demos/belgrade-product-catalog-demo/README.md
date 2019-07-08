@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # ASP.NET Core Product Catalog application that uses new SQL Server/Azure SQL Db functionalities 
 
 This project contains an example implementation of ASP.NET Core application that shows how to implement product catalog SQL Server/Azure SQL Db functionalities.

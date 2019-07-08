@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Sentiment analysis R app using `MicrosoftML` in SQL Server big data cluster
 
 ### Contents

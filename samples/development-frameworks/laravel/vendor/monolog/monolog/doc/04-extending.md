@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Extending Monolog
 
 Monolog is fully extensible, allowing you to adapt your logger to your needs.

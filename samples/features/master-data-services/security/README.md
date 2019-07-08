@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Master Data Services Security API Sample
 
 This is a C# sample code to show how to export security information into the specified file and import security information from the file by using MDS APIs. 

@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # o.js
 
 _o.js beta v0.3.6_

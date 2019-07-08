@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # WideWorldImportersDW OLAP Database
 
 The Visual Studio SQL Server Data Tools project in this folder is used to construct the WideWorldImportersDW database from scratch on SQL Server or Azure SQL Database. It is possible to vary the data size.

@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # ASP.NET Core REST Web API that uses SQL/JSON functionalities 
 
 This project contains an implementation of ASP.NET Core REST API backend for [ReactJS Comments tutorial](https://facebook.github.io/react/docs/tutorial.html).

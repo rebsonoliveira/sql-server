@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Running or scheduling a SQL Server Integration Services package in SQL Server big data cluster
 
 ### Contents

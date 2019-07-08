@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Get started with SQL Server and C# on RHEL
 
 Get started quickly with developing applications in C# on RHEL with SQL Server

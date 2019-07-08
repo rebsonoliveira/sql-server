@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Sample Branding Packages
 
 This includes two sample branding packages for Reporting Services. You can use these to brand the web portal to fit your needs. These can be used as a starting place for you to further customize.

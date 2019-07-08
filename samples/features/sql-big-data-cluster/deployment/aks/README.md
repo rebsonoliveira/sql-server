@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 
 # Deploy a SQL Server big data cluster on Azure Kubernetes Service (AKS) 
 

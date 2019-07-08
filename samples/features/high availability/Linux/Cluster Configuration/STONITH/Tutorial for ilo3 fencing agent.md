@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Configure STONITH with ilo3 fencing agent
 ## Test all the Agents before configuring Stonith
 

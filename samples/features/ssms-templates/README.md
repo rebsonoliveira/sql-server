@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # SSMS Query Templates
 
 SQL Server Management Studio supports templatized queries for multiple languages, including T-SQL, DAX, and MDX. The templates contain variables of the form "<variable_name, [data type], [default value]>". SSMS users typically open the templates in one of the following ways:

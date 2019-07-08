@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 ### Version 1.2.0 - 2015-02-05
 
 * Whitespace and other cosmetic changes

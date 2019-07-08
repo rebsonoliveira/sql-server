@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Always Encrypted with secure enclaves 
 
 This sample/demo showcases the benefits of [Always Encrypted with secure enclaves](https://aka.ms/AlwaysEncryptedwithSecureEnclaves).

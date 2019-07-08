@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # WideWorldImporters Sample Database for SQL Server and Azure SQL Database
 
 WideWorldImporters is a sample for SQL Server and Azure SQL Database. It showcases database design, as well as how to best leverage SQL Server features in a database.

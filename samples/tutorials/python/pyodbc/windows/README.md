@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Connect to SQL using Python on Windows
 
 Python sample code that runs on an Windowsclient computer to connect to an Azure SQL Database using the **pyodbc** connector. 

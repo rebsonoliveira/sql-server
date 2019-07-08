@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 This is a sample Ansible playbook that shows how to install SQL Server, create a Pacemaker cluster, and create an AG managed by the cluster on a set of Linux nodes.
 
 

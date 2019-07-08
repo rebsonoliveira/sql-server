@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Connect to SQL using Ruby on macOS
 
 Ruby sample code that runs on a macOS computer to connect to an Azure SQL Database. 

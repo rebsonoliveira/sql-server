@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # GlobalState
 
 Snapshotting of global state, factored out of PHPUnit into a stand-alone component.

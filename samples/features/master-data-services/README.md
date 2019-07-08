@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Master Data Services
 
 Master Data Services (MDS) is the SQL Server solution for master data management. Master data management (MDM) enables you organization to discover and define non-transactional lists of data, and compile maintainable, reliable master lists. 

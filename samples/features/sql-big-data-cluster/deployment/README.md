@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 
 # Creating a Kubernetes cluster for SQL Server 2019 big data cluster
 

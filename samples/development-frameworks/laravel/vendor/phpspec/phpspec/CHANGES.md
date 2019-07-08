@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 2.4.1 / 2016/01/01
 ==================
 

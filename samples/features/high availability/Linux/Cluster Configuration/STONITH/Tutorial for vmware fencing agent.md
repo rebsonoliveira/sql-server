@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Configure STONITH With fence_vmare Fencing Agent
 
 >[!NOTE]

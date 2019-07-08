@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Northwind and pubs sample databases for Microsoft SQL Server
 
 This folder contains scripts to create and load the *Northwind* and *pubs* sample databases.

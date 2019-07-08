@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # IoT Smart Grid
 This code sample demonstrates how a SQL Server 2016 (or higher) memory optimized database could be used to ingest a very high input data rate and ultimately help improve the performance of applications with this scenario. The code simulates an IoT Smart Grid scenario where multiple IoT power meters are constantly sending electricity usage measurements to the database.
 

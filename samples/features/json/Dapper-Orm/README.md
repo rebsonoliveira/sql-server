@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Building Web Apps using Dapper ORM and SQL/JSON functionalities 
 
 This project contains an example implementation of ASP.NET REST Service/App that enables you to get or modify list of products in catalog and show reports.

@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Change Log
 
 ## 0.9.4 (XXXX-XX-XX)

@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Samples scripts for a SQL Server Always On Availability Group on SQL Server Containers, managed by Kubernetes
 
 Available with SQL Server 2019 (preview).

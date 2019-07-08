@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Upload certificate to Azure SQL Managed Instance using Azure PowerShell
 
 Script that takes path to .cer and .pvk files and uploads them to SQL MI. See [more](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-managed-instance-migrate-tde-certificate).

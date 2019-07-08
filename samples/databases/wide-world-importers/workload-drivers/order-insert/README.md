@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Workload Driver for Order Insertion in WideWorldImporters
 
 This application simulates an order insertion workload for the WideWorldImporters sample database.

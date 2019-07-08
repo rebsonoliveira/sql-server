@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # XDG Base Directory
 
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)

@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Running a R script that returns a data frame in SQL Server big data cluster
 
 ### Contents

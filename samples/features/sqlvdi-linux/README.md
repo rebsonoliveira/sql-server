@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # SQLVDI for Linux
 This folder contains the latest files and samples required to build a SQL Server VDI based backup/restore application for Linux. 
 

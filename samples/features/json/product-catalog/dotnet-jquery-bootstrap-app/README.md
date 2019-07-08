@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # ASP.NET Core Product Catalog application that uses SQL/JSON functionalities 
 
 This project contains an example implementation of ASP.NET Core application that shows how to display list of products, add, edit, or delete products in the list.

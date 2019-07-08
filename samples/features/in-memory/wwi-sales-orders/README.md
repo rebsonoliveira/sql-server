@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Wide World Importers - Sales Orders
 This Windows Forms sample application built on .NET Framework 4.6  demonstrates the performance benefits of using SQL Server memory optimized tables and native compiled stored procedures. You can compare the performance before and after enabling In-Memory OLTP by observing the transactions/sec as well as the current CPU Usage and latches/sec.
 

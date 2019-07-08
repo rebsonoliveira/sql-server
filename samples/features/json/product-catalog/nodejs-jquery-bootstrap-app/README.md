@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Node.js Product Catalog application that uses SQL/JSON functionalities 
 
 This project contains an example implementation of Node.js application that shows how to display list of products, add, edit, or delete products in the list.

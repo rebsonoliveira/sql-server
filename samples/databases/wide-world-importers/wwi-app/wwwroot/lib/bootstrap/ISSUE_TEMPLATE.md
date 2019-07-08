@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 Before opening an issue:
 
 - [Search for duplicate or closed issues](https://github.com/twbs/bootstrap/issues?utf8=%E2%9C%93&q=is%3Aissue)

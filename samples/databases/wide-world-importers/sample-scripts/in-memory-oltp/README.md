@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Sample performance with In-Memory OLTP in WideWorldImporters
 
 This script simulates an insertion workload for vehicle location in the WideWorldImporters sample database. Note that this script is single-threaded. For a multi-threaded variant, see the [vehicle-location-insert](../../workload-drivers/vehicle-location-insert) workload driver.

@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 The plan comparison tool is used inside Query Store UI to allow plan comparison.
 
 ###Prerequisites

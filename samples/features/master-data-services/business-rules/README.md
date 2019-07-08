@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Master Data Services Business Rule API Sample
 This is a C# code sample to show how to use MDS APIs to create, edit, validate, exclude, and delete business rules. The scenario in this sample is that the system creates a business rule (when "Code equals ABC", "Name must be equal to Test") and edits the business rule (change the condition to “Code starts with Test”). 
 The next step creates a member that causes a business rule validation error (add a member with Code = “Test12” and Name = “AA”), processes validation, and gets the validation issue information. To complete the example, the sample excludes and deletes the business rule.

@@ -1,4 +1,5 @@
-﻿# Japanese IVS text processing
+﻿![](./media/solutions-microsoft-logo-small.png)
+# Japanese IVS text processing
 
 This project contains an example implementation of ASP.NET Core. It shows how SQL Database handles complex text processing rules such as sorting and filtering Japanese IVS ideographs. 
 

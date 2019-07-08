@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Connect to SQL using Python on macOS
 
 Python sample code that runs on an macOS client computer to connect to an Azure SQL Database using the **pymssql** connector.  

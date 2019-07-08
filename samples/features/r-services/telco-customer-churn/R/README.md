@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 **TelcoChurn-Main.R**
 Use the R files provided in this folder, and is the “driver” program
 

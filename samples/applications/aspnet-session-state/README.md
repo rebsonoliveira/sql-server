@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # ASP.NET Session State with SQL Server In-Memory OLTP
 ASP.NET session state enables you to store and retrieve values for a user as the user navigates the different ASP.NET pages that make up a Web application. Currently, ASP.NET ships with three session state providers that provide the interface between Microsoft ASP.NET’s session state module and session state data sources:
 - InProcSessionStateStore, which stores session state in memory in the ASP.NET worker process

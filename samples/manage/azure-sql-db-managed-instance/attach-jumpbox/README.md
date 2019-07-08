@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Attaches VM with SQL Server Management Studio (SSMS) to Managed Instance virtual network
 
 ### Contents

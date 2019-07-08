@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Connect to SQL using Ruby on Ubuntu Linux
 
 Ruby sample code that runs on an Ubuntu Linux client computer to connect to an Azure SQL Database. 

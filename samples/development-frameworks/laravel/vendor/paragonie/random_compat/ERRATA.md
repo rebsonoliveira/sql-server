@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 ## Errata (Design Decisions)
 
 ### Reasoning Behind the Order of Preferred Random Data Sources

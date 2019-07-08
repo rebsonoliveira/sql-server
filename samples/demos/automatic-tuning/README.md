@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 This is a repro package to demonstrate the Automatic Tuning (Auto Plan Correction) in SQL Server 2017. 
 This feature is using telemtry from the Query Store feature we launched with Azure SQL Database and SQL Server 2016 to provide built-in intelligence.
 

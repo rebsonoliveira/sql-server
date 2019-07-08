@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 ## Query Store demo
 
 This demo shows capabilities of Query Store. Usually we demo 3-4 scenarios:

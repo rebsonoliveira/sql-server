@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Master Data Services Metadata API Sample
 This is a C# code sample to show how to use MDS APIs to create, read, update, and delete Metadata. 
 

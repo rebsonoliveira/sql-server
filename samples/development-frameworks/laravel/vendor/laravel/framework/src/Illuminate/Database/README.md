@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 ## Illuminate Database
 
 The Illuminate Database component is a full database toolkit for PHP, providing an expressive query builder, ActiveRecord style ORM, and schema builder. It currently supports MySQL, Postgres, SQL Server, and SQLite. It also serves as the database layer of the Laravel PHP framework.

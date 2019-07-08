@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Function App that helps automate Managed Instance related tasks
 
 ### Contents

@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Forms & HTML
 
 [![Build Status](https://travis-ci.org/LaravelCollective/html.svg)](https://travis-ci.org/LaravelCollective/html)

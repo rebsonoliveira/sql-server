@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Running a basic Python script in SQL Server big data cluster
 
 ### Contents

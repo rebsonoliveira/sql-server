@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 <properties
    pageTitle="Loading the Contoso Retail Data Warehouse into SQL Data Warehouse | Microsoft Azure"
    description="Learn how to load Contoso Retail Data Warehouse into SQL Data Warehouse using PolyBase for maximum performance"

@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # CURL in SQL Server using CLR 
 SQL Server Database Engine doesn't have built-in functions that would enable you to send information to some API using `http://` protocol. If you need to call some REST endpoint or a web hook from the T-SQL code, you will need to use `WebClient` or `WebRequest` classes from .Net framework and expose them as a T-SQL function or procedure.
 

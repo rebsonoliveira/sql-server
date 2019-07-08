@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Master Data Services Security API Sample
 
 A sample class that demonstrates how to implement a workflow type extender for SharePoint workflows. Once built, the assembly that contains this class should be put in the same folder as the workflow listener (Microsoft.MasterDataServices.Workflow.exe), and the

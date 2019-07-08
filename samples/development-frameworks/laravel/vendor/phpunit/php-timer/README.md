@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 [![Build Status](https://travis-ci.org/sebastianbergmann/php-timer.svg?branch=master)](https://travis-ci.org/sebastianbergmann/php-timer)
 
 # PHP_Timer

@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Samples for Data Migration Assistant
 
 [Power BI Reports for Consolidated Migration Assessments](Power BI Reports/README.md)

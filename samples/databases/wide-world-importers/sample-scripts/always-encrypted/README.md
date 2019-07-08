@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Sample for use of Always Encrypted in WideWorldImporters
 
 This script demonstrates the use of Always Encrypted to encrypt sensitive data in the database.

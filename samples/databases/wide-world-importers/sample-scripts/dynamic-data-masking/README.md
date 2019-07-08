@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Sample for use of Dynamic Data Masking in WideWorldImporters
 
 This script demonstrates the use of Dynamic Data Masking to mask sensitive data for certain users.

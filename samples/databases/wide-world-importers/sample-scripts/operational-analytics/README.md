@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Sample performance with Operational Analytics in WideWorldImporters
 
 This script shows the performance of analytics queries in the operational database. It relies on the [Order Insert](../../workload-drivers/vehicle-location-insert/) workload driver.

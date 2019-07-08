@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # T-SQL Procedures that generate T-SQL JSON CRUD procedures
 
 This project contains a set of T-SQL scripts that generate:

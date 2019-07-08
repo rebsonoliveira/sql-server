@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # Forcing last good plan
 This code sample demonstrates how [Automatic tuning in SQL Server 2017 CTP2.0+](https://docs.microsoft.com/sql/relational-databases/automatic-tuning/automatic-tuning) can identify and automatically fix performance problems in your workload.
 

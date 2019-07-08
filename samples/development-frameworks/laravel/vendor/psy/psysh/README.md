@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # PsySH
 
 [![Package version](http://img.shields.io/packagist/v/psy/psysh.svg?style=flat-square)](https://packagist.org/packages/psy/psysh)

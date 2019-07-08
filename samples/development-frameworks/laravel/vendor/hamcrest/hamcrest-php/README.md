@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 This is the PHP port of Hamcrest Matchers
 =========================================
 

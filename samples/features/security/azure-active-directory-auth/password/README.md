@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 ## Run this sample
 
 **Before building and running the Password project**:

@@ -1,3 +1,4 @@
+![](./media/solutions-microsoft-logo-small.png)
 # SQL Bulk Copy Sample
 This code sample demonstrates how to load an Azure SQL Data Warehouse using the .NET [SqlBulkCopy class](https://msdn.microsoft.com/library/system.data.sqlclient.sqlbulkcopy.aspx).
 

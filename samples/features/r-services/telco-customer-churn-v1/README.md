@@ -1,4 +1,5 @@
-﻿Data Science for Database Professionals
+﻿![](./media/solutions-microsoft-logo-small.png)
+Data Science for Database Professionals
 
 
 As a data professional, do you wonder how you can leverage data science for creating new value in your organization? In this sample, learn how you can leverage your familiar knowledge on working with databases, and learn how you can get started with doing data science with databases. 
