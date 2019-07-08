@@ -1,5 +1,5 @@
 <!-- Always leave the MS logo -->
-![](../media/solutions-microsoft-logo-small.png)
+![](./media/solutions-microsoft-logo-small.png)
 
 # Sample name
 
