@@ -577,7 +577,11 @@ SELECT PolicyHistoryID
 	, EvaluatedServer
 	, EvaluationDateTime
 	, EvaluatedPolicy
-	, RIGHT(EvaluatedObject, CHARINDEX('\', REVERSE(EvaluatedObject)) - 1)	
+	, CASE WHEN CHARINDEX('\', REVERSE(EvaluatedObject)) >0 
+		THEN RIGHT(EvaluatedObject,CHARINDEX('\', REVERSE(EvaluatedObject)) - 1) 
+		ELSE EvaluatedObject 
+		END 
+	AS EvaluatedObject
 	, ExceptionMessage
 	, policy_id
 	, CategoryName
