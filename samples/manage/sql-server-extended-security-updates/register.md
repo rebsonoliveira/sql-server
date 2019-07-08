@@ -9,8 +9,7 @@
 ## <a name="RegSingle"></a> Register a single SQL Server instance
 It's required that at least one SQL Server instance is registered in order to download an ESU package (if and when available). 
 
-> [!IMPORTANT]   
-> It's not required to register a SQL Server instance for ESUs when running an Azure Virtual Machine that is configured for Automatic Updates. For more information, see [Manage Windows updates by using Azure Automation](https://docs.microsoft.com/azure/automation/automation-tutorial-update-management).
+**Important**: It's not required to register a SQL Server instance for ESUs when running an Azure Virtual Machine that is configured for Automatic Updates. For more information, see [Manage Windows updates by using Azure Automation](https://docs.microsoft.com/azure/automation/automation-tutorial-update-management).
 
 ### Steps to register an instance
 1. To register a new SQL Server instance, click the ***+ Register*** button in the top bar.
@@ -62,8 +61,7 @@ It's required that at least one SQL Server instance is registered in order to do
 ## <a name="RegBulk"></a> Bulk register SQL Server instances 
 Bulk registering SQL Server instances to download an ESU package (if and when available) is done through uploading a CSV file. 
 
-> [!IMPORTANT]   
-> It's not required to register SQL Server instances for ESUs when running Azure Virtual Machines that are configured for Automatic Updates. For more information, see [Manage Windows updates by using Azure Automation](https://docs.microsoft.com/azure/automation/automation-tutorial-update-management).
+**Important**: It's not required to register SQL Server instances for ESUs when running Azure Virtual Machines that are configured for Automatic Updates. For more information, see [Manage Windows updates by using Azure Automation](https://docs.microsoft.com/azure/automation/automation-tutorial-update-management).
 
 Customers that already have an inventory application that holds the required registration information can generate a CSV file from that inventory, following the the [CSV formatting requirements](#csv) later in this page.
 
@@ -102,8 +100,7 @@ The CSV file **must** be generated with the following format:
 
 <sup>1</sup> Only for Azure Virtual Machine registrations
 
-> [!TIP]    
-> For example Powershell scripts that can generate the required SQL Server instance registration information into a CSV file, see [ESU registration script examples](scripts.md).
+**Tip**: For example Powershell scripts that can generate the required SQL Server instance registration information into a CSV file, see [ESU registration script examples](scripts.md).
 
 ### CSV Example 1 - on-premises
 
