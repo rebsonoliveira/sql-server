@@ -6,7 +6,7 @@ Before being able access the Extended Security Updates (ESU) download area in th
 **Important**: It's not required to register a SQL Server instance for ESUs when running an Azure Virtual Machine that is configured for Automatic Updates. For more information, see [Manage Windows updates by using Azure Automation](https://docs.microsoft.com/azure/automation/automation-tutorial-update-management).
 
 ## <a name="Reg"></a> Prepare to register SQL Server instances
-To register SQL Server instances, you must first create a SQL Server Registry in the [Azure portal](https://portal.azure.com). 
+To register SQL Server instances, you must first create a SQL Server Registry in the [Azure portal](https://portal.azure.com/#create/Microsoft.SqlServerRegistration). 
 
 **Note**: This operation only needs to be done once. After a SQL Server Registry is created, it can be used to register multiple SQL Server instances.
 
