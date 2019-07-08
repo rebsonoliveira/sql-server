@@ -45,8 +45,7 @@ ESUs will be distributed if and when available, and do not include:
 ### Support
 ESUs do not include technical support, but customers can use an active support contract such as Software Assurance or Premier/Unified Support on SQL Server 2008 / 2008 R2 to get technical support on workloads covered by ESUs if they choose to stay on-premises. Alternatively, if hosting on Azure, customers can use an Azure Support plan to get technical support.
 
-> [!NOTE]   
-> Microsoft cannot provide technical support for SQL Server 2008 / 2008 R2 instances (both on-premises and in hosting environments) that are not covered with an ESU subscription.
+**Note**: Microsoft cannot provide technical support for SQL Server 2008 / 2008 R2 instances (both on-premises and in hosting environments) that are not covered with an ESU subscription.
 
 ### ESU Availability
 **In Azure:** Customers who migrate workloads to Azure Virtual Machines (IaaS) will have access to Extended Security Updates for SQL Server 2008 and 2008 R2 for three years after the End of Support dates for **no additional charges** above the cost of running the virtual machine. Customers do not need Software Assurance to receive Extended Security Updates in Azure.
