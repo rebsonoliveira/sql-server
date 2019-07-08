@@ -1,6 +1,6 @@
 #  ESU registration script examples
 
-Microsoft shares example scripts in [T-SQL](#tsql) and [Powershell](#ps) that can generate the required SQL Server instance registration information.
+Microsoft shares example scripts in [T-SQL](#tsql) and [Powershell](#ps) that can generate the required SQL Server instance registration information. The Powershell samples create a CSV file that can be used to bulk register SQL Server instances covered by an ESU subscription.
 
 ## <a name="tsql"></a> T-SQL
 To collect registration information from a **single instance**, you can use the example T-SQL script [EOS_DataGenerator_SingleInstance.sql](./scripts/EOS_DataGenerator_SingleInstance.sql) below:
