@@ -9,7 +9,7 @@
 -  [Formatting requirements for a CSV file](#csv)
 
 ## <a name="RegSingle"></a> Register a single SQL Server instance
-It's required that at least one SQL Server instance is registered in order to download an ESU package (if and when available). 
+It's required that at least one SQL Server instance is registered in the scope of your SQL Server Registry, in order to download an ESU package (if and when available). 
 
 **Important**: It's not required to register a SQL Server instance for ESUs when running an Azure Virtual Machine that is configured for Automatic Updates. For more information, see [Manage Windows updates by using Azure Automation](https://docs.microsoft.com/azure/automation/automation-tutorial-update-management).
 
@@ -61,16 +61,16 @@ It's required that at least one SQL Server instance is registered in order to do
 ---
 
 ## <a name="RegBulk"></a> Bulk register SQL Server instances 
-Bulk registering SQL Server instances in the scope of your SQL Server Registry to download an ESU package (if and when available) is done through uploading a CSV file. 
+It's required that at least one SQL Server instance is registered in the scope of your SQL Server Registry, in order to download an ESU package (if and when available). If you need to register multiple SQL Server instances, bulk registration is done by uploading a CSV file with the required information. 
 
-**Important**: It's not required to register SQL Server instances for ESUs when running Azure Virtual Machines that are configured for Automatic Updates. For more information, see [Manage Windows updates by using Azure Automation](https://docs.microsoft.com/azure/automation/automation-tutorial-update-management).
+**Important**: It's not required to register SQL Server instances for ESUs when running Azure Virtual Machines that are configured for Automatic Updates. For more information about configuring Automatic Updates, see [Manage Windows updates by using Azure Automation](https://docs.microsoft.com/azure/automation/automation-tutorial-update-management).
 
 Customers that already have an inventory application that holds the required registration information can generate a CSV file from that inventory, following the the [CSV formatting requirements](#csv) later in this page.
 
 Several as-is example scripts are provided, that generate the required registration information into a CSV file. For more information, see [ESU registration script examples](scripts.md).
 
 ### Steps to bulk register
-1. To bulk register new SQL Server instances, click the ***↑ Bulk Register*** button in the top bar.
+1. To bulk register new SQL Server instances in the scope of your SQL Server Registry, click the ***↑ Bulk Register*** button in the top bar.
 
     ![New Bulk Instance Registration Step 1](./media/NewBulkRegistration-Step1.png "New Bulk Instance Registration Step 1")
 
