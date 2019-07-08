@@ -30,7 +30,7 @@ Microsoft recommends applying Extended Security Update patches as soon as they a
 - [Microsoft Security Response Center (MSRC)](https://portal.msrc.microsoft.com/security-guidance/summary)
 - [Manage Windows updates by using Azure Automation](https://docs.microsoft.com/azure/automation/automation-tutorial-update-management)
 - [Microsoft Data Migration Guide](https://datamigration.microsoft.com/)
-
+- [Azure Migrate - lift-and-shift options to move your current SQL 2008 / 2008 R2 into an Azure VM](https://azure.microsoft.com/services/azure-migrate/)
 
 ---
 
