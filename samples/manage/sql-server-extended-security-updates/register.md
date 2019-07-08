@@ -14,7 +14,7 @@ It's required that at least one SQL Server instance is registered in order to do
 **Important**: It's not required to register a SQL Server instance for ESUs when running an Azure Virtual Machine that is configured for Automatic Updates. For more information, see [Manage Windows updates by using Azure Automation](https://docs.microsoft.com/azure/automation/automation-tutorial-update-management).
 
 ### Steps to register an instance
-1. To register a new SQL Server instance, click the ***+ Register*** button in the top bar.
+1. To register a new SQL Server instance in the scope of your SQL Server Registry, click the ***+ Register*** button in the top bar.
 
     ![New Single Instance Registration Step 1](./media/NewSingleRegistration-Step1.png "New Single Instance Registration Step 1") 
 
@@ -61,7 +61,7 @@ It's required that at least one SQL Server instance is registered in order to do
 ---
 
 ## <a name="RegBulk"></a> Bulk register SQL Server instances 
-Bulk registering SQL Server instances to download an ESU package (if and when available) is done through uploading a CSV file. 
+Bulk registering SQL Server instances in the scope of your SQL Server Registry to download an ESU package (if and when available) is done through uploading a CSV file. 
 
 **Important**: It's not required to register SQL Server instances for ESUs when running Azure Virtual Machines that are configured for Automatic Updates. For more information, see [Manage Windows updates by using Azure Automation](https://docs.microsoft.com/azure/automation/automation-tutorial-update-management).
 
