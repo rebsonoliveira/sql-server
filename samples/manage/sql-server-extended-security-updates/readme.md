@@ -1,3 +1,5 @@
+![](./media/solutions-microsoft-logo-small.png)
+
 # SQL Server 2008/2008 R2 Extended Security Updates (ESUs)
 SQL Server 2008 and SQL Server 2008 R2 have reached the end of their support lifecycle on July 9, 2019. 
 Each version is backed by a minimum of 10 years of support (5 years for Mainstream Support and 5 years for Extended Support) including regular security updates. 

@@ -1,3 +1,5 @@
+![](./media/solutions-microsoft-logo-small.png)
+
 # Create the SQL Server Registry
 Before being able access the Extended Security Updates (ESU) download area in the Azure portal, the SQL Server instances covered by ESUs must be registered. This ensures that you are able to download an ESU package if and when available.
 

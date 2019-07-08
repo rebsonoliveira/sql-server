@@ -1,3 +1,5 @@
+![](./media/solutions-microsoft-logo-small.png)
+
 # Registering SQL Server instances for ESUs
 
 ## Table of Contents

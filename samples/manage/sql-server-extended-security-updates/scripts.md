@@ -1,3 +1,5 @@
+![](./media/solutions-microsoft-logo-small.png)
+
 #  ESU registration script examples
 
 Microsoft shares example scripts in [T-SQL](#tsql) and [Powershell](#ps) that can generate the required SQL Server instance registration information. The Powershell samples create a CSV file that can be used to bulk register SQL Server instances covered by an ESU subscription.
@@ -34,8 +36,7 @@ SELECT SERVERPROPERTY('ServerName') AS [name],
 	@Cores AS cores,
 	@HostType AS hostType;
 ```
-> [!NOTE]    
-> Verify if the **Host Type** is correct for your SQL Server instance.
+**Note**: Verify if the **Host Type** is correct for your SQL Server instance.
 
 ## <a name="ps"></a> Powershell
 
@@ -46,5 +47,4 @@ To collect registration information from **all instances in a single machine**, 
 
 To collect registration information from **all instances listed in a text file**, you can use the example Powershell script [EOS_DataGenerator_InputList.ps1](./scripts/EOS_DataGenerator_InputList.ps1). Refer to [ServerInstances.txt](./scripts/ServerInstances.txt) for an input text file example.
 
-> [!NOTE]    
-> Verify if the **Host Type** is correct for your SQL Server instance before uploading the CSV file.
+**Note**: Verify if the **Host Type** is correct for your SQL Server instance before uploading the CSV file.
