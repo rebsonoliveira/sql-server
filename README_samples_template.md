@@ -1,3 +1,6 @@
+<!-- Always leave the MS logo -->
+![](../media/solutions-microsoft-logo-small.png)
+
 # Sample name
 
 Briefly describe what the sample does. Describe the benefit of running this sample.

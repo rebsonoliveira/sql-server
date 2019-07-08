@@ -1,3 +1,5 @@
+![](../media/solutions-microsoft-logo-small.png)
+
 # Sample Categories
 
 End-to-end sample applications that illustrate the use of SQL Server for specific application scenarios.
