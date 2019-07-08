@@ -42,8 +42,7 @@ SELECT SERVERPROPERTY('ServerName') AS [name],
 
 To collect registration information from **all instances in a single machine**, you can use the example Powershell script [EOS_DataGenerator_LocalDiscovery.ps1](./scripts/EOS_DataGenerator_LocalDiscovery.ps1). Can be used in an Azure VM, on-premises physical server or on-premises VM. 
 
-> [!NOTE]    
-> Verify if the **Host Type** is correct for your SQL Server instance before uploading the CSV file.
+**Note**: Verify if the **Host Type** is correct for your SQL Server instance before uploading the CSV file.
 
 To collect registration information from **all instances listed in a text file**, you can use the example Powershell script [EOS_DataGenerator_InputList.ps1](./scripts/EOS_DataGenerator_InputList.ps1). Refer to [ServerInstances.txt](./scripts/ServerInstances.txt) for an input text file example.
 
