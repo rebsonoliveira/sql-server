@@ -7,8 +7,8 @@ End of support means the end of security updates, which can cause security and c
 We recommend upgrading to current versions for the most advanced security, performance, and innovation. 
 
 For customers that couldn’t get all servers upgraded by the deadline, new options help protect applications and data during the upgrade transition:
--  Migrate your existing SQL Server 2008 and 2008 R2 workloads as-is to Azure Virtual Machines, and receive additional three years of free Extended Security Updates (if and when available).
--  Purchase Extended Security Updates for your servers and remain protected until you are ready to upgrade to a newer SQL Server version, for up to three years after the End of Support date.
+-  Migrate your existing SQL Server 2008 and 2008 R2 workloads as-is to Azure Virtual Machines, and automatically subscribe to an additional three years of Extended Security Updates (if and when available) at no additional cost apart from the VM cost.
+-  Purchase an Extended Security Update subscription for your servers and remain protected until you are ready to upgrade to a newer SQL Server version, for up to three years after the End of Support date.
 
 Microsoft recommends applying Extended Security Update patches as soon as they are available to keep their environment protected.
 
