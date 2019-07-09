@@ -4,13 +4,13 @@
 SQL Server 2008 and SQL Server 2008 R2 have reached the end of their support lifecycle on July 9, 2019. 
 Each version is backed by a minimum of 10 years of support (5 years for Mainstream Support and 5 years for Extended Support) including regular security updates. 
 End of support means the end of security updates, which can cause security and compliance issues and put applications and business at risk. 
-We recommend upgrading to current versions for the most advanced security, performance, and innovation. 
+Microsoft recommends upgrading to current versions for the most advanced security, performance, and innovation. 
 
 For customers that couldn’t get all servers upgraded by the deadline, new options help protect applications and data during the upgrade transition:
 -  Migrate your existing SQL Server 2008 and 2008 R2 workloads as-is to Azure Virtual Machines, and automatically subscribe to an additional three years of Extended Security Updates (if and when available) at no additional cost apart from the VM cost.
 -  Purchase an Extended Security Update subscription for your servers and remain protected until you are ready to upgrade to a newer SQL Server version, for up to three years after the End of Support date.
 
-Microsoft recommends applying Extended Security Update patches as soon as they are available to keep their environment protected.
+Microsoft recommends applying Extended Security Update patches as soon as they are available to keep a SQL Server instance protected.
 
 ---
 
