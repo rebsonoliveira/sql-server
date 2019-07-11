@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/mssql/server:vNext-CTP2.0-ubuntu
+FROM mcr.microsoft.com/mssql/rhel/server:2019-CTP3.1
 
 COPY . /
 
