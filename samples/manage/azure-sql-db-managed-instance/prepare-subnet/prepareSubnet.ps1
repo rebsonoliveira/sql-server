@@ -67,7 +67,7 @@ function ConvertCidrToUint32Array
     param(
         $cidrRange
     )
-    $cidrRangeParts = $cidrRange.Split(@(".","/"))
+    $cidrRangeParts = $cidrRange.Split([char]".",[char]"/")
 
     If(
         ($cidrRangeParts[0] -eq 0) -and `
