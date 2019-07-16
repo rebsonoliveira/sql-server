@@ -38,6 +38,8 @@ To register SQL Server instances, you must first create a SQL Server Registry in
 6. If the validation passed, you are presented with a screen that summarizes the choices for the new registry resource. If everything seems correct, click on the ***Create*** button to start deployment of the new resource.
 
     ![New Registry Step 6](./media/NewRegistry-Step6.png "New Registry Step 6") 
+    
+    Note the [Terms of Use](https://go.microsoft.com/fwlink/?linkid=2045708) and [Privacy Policy](https://go.microsoft.com/fwlink/?linkid=512132) for the SQL Server Registry are available in this window.
 
 7. Once deployment is complete, click on the ***Go to resource*** button.
 
