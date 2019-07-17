@@ -7,12 +7,21 @@ GO
 -- execution.
 --
 IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'HadoopData')
-    CREATE EXTERNAL DATA SOURCE HadoopData
-    WITH(
-            TYPE=HADOOP,
-            LOCATION='hdfs://nmnode-0-svc:9000/',
-            RESOURCE_MANAGER_LOCATION='master-svc:8032'
-    );
+    IF SERVERPROPERTY('ProductLevel') = 'CTP3.1'
+        CREATE EXTERNAL DATA SOURCE HadoopData
+        WITH(
+                TYPE=HADOOP,
+                LOCATION='hdfs://nmnode-0-svc:9000/',
+                RESOURCE_MANAGER_LOCATION='master-svc:8032'
+        );
+    ELSE IF SERVERPROPERTY('ProductLevel') = 'CTP3.2'
+        CREATE EXTERNAL DATA SOURCE HadoopData
+        WITH(
+                TYPE=HADOOP,
+                LOCATION='hdfs://nmnode-0-svc:9000/',
+                RESOURCE_MANAGER_LOCATION='sparkhead-svc:8032'
+        );
+
 
 -- Create file format for orc file with appropriate properties.
 --
