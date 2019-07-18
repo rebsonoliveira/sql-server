@@ -1,12 +1,12 @@
 { 
-    "checks":[ 
-        { 
-            "id": "SqlServer.Database.AutoCreateStats", 
-            "enabled": false 
-        }, 
+	"checks":[ 
+		{
+			"id": "SqlServer.Database.AutoCreateStats", 
+			"enabled": false 
+		}, 
 		{ 
-            "select": ["TraceFlag"], 
-            "enabled": false 
-        } 
-    ] 
+			"select": ["TraceFlag"], 
+			"enabled": false 
+		} 
+	] 
 } 
