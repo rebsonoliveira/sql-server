@@ -8,7 +8,7 @@ Contains two parts. First shows how you can disable a specified check by its ID.
 
 ## MakingCustomChecks_sample.json
 
-Demonstrates how to make a custom rule set containing two checks. The sample contains two schemas: `checks` and `probes`. `Checks` is for check (or rule) definitions. Usually, checks or rules are best practices or a company's internal policies that should be applied to SQL Server. Here's one of the checks from this sample with comments on each property:
+Demonstrates how to make a custom rule set containing two checks. The sample contains two sections: `checks` and `probes`. `Checks` is for check (or rule) definitions. Usually, checks or rules are best practices or a company's internal policies that should be applied to SQL Server. Here's one of the checks from this sample with comments on each property:
 
 ```
 {
