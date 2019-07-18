@@ -37,28 +37,31 @@ Demonstrates how to make a custom rule set containing two checks. The sample con
 `Probes`, in fact, describe how and where get required data to perform a check. For this, you can use T-SQL queries as well as methods from assemblies. The probe below uses a T-SQL query.
 ```
 "probes":{
-  "DatabaseConfiguration": [
+  "DatabaseConfiguration": [                            //Probe name that is used to reference the probe from a check.
+                                                        //Probe can have a few implementations that will be used for different targets.
+                                                        //This probe has two implementations for different version of SQL Server.
     {
-    "type": "SQL",
-    "target": {
-      "type": "Database",
-      "version": "(,12.0)",
-      "platform": "Windows"
+      "type": "SQL",                                    //Probe uses a T-SQL query to get the required data
+      "target": {
+        "type": "Database",                             //Targets at database
+        "version": "(,12.0)",                           //This implementation is for SQL Server before 2014
+        "platform": "Windows"                           //Targets at SQL on Windows
+      },
+      "implementation": {                               //Implementation object with a T-SQL query.
+                                                        //sys.databases of SQL Server before 2014 doesn't have the field is_query_store_on so we replace it with 0.
+        "query": "SELECT db.[is_auto_create_stats_on] AS is_auto_create_stats_on, db.[is_auto_update_stats_on] AS is_auto_update_stats_on, 0 AS is_query_store_on FROM sys.databases AS db WHERE db.[name]='@DatabaseName'"
+      }
     },
-    "implementation": {
-      "query": "SELECT db.[is_auto_create_stats_on] AS is_auto_create_stats_on, db.[is_auto_update_stats_on] AS is_auto_update_stats_on, 0 AS is_query_store_on FROM sys.databases AS db WHERE db.[name]='@DatabaseName'"
-    }
-    },
-    {
-    "type": "SQL",
-    "target": {
-      "type": "Database",
-      "version": "[12.0,)",
-      "platform": "Windows"
-    },
-    "implementation": {
-      "query": "SELECT db.[is_auto_create_stats_on] AS is_auto_create_stats_on, db.[is_auto_update_stats_on] AS is_auto_update_stats_on, db.[is_query_store_on] AS is_query_store_on FROM sys.databases AS db WHERE db.[name]='@DatabaseName'"
-    }
+    {                                                   //Second implementation
+      "type": "SQL",
+      "target": {
+        "type": "Database",
+        "version": "[12.0,)",                           //This implementation is for SQL Server 2014 and up.
+        "platform": "Windows"
+      },
+      "implementation": {                               //Query of the second implementation.
+        "query": "SELECT db.[is_auto_create_stats_on] AS is_auto_create_stats_on, db.[is_auto_update_stats_on] AS is_auto_update_stats_on, db.[is_query_store_on] AS is_query_store_on FROM sys.databases AS db WHERE db.[name]='@DatabaseName'"
+      }
     }
   ]
 }
