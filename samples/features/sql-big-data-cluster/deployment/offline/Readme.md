@@ -24,7 +24,7 @@ python push-bdc-images-to-custom-private-repo.py
 >```
 
 When prompted, provide your input for:
-- Docker registry, repository and credentials to access Microsoft private registry where the images will be pulled from (source)
+- Docker registry, repository to access Microsoft registry where the images will be pulled from (source). Press enter to use default mcr registry.
 - Docker registry, repository and credentials to access your private registry where the images will be pushed to (target)
 
 ## Deploy with from your private repository
