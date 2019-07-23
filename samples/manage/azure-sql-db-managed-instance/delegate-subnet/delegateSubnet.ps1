@@ -1,11 +1,4 @@
-#$parameters = $args[0]
-
-$parameters = @{
-    subscriptionId = 'a8c9a924-06c0-4bde-9788-e7b1370969e1'
-    resourceGroupName = 'srbozovi_delegation_test'
-    virtualNetworkName = 'vnet-subnetdelegation-westus'
-    subnetName = 'default'
-    }
+$parameters = $args[0]
 
 $subscriptionId = $parameters['subscriptionId']
 $resourceGroupName = $parameters['resourceGroupName']
