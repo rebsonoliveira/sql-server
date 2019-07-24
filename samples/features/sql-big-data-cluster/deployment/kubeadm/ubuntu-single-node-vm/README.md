@@ -21,14 +21,14 @@ curl --output setup-bdc.sh https://github.com/microsoft/sql-server-samples/blob/
 
 ```
 
-chmod +x setup-azdata.sh
+chmod +x setup-bdc.sh
 ```
 
 1. Run the script (make sure you are running with sudo)
 
 ```
 
-sudo ./setup-azdata.sh
+sudo ./setup-bdc.sh
 ```
 
 1. Refresh alias setup for azdata
