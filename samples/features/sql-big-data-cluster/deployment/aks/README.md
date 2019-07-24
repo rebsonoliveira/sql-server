@@ -16,9 +16,9 @@ Using this sample Python script, you will deploy a Kubernetes cluster in Azure u
         python -m pip install requests
         python -m pip install requests --upgrade
         ```
-    - Install mssqlctl CLI latest version using . Run the command below using elevated priviledges (sudo or admin cmd window):
+    - Install latest version of the cluster management tool **azdata** (previously named mssqlctl) using below command. Run the command below using elevated priviledges (sudo or admin cmd window):
         ```
-        pip3 install -r  https://private-repo.microsoft.com/python/ctp3.1/mssqlctl/requirements.txt
+        pip3 install -r https://aka.ms/azdata
         ```
 1. Login into your Azure account. Run this command:
 ```

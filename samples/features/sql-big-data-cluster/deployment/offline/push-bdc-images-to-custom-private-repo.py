@@ -13,10 +13,11 @@ def execute_cmd (cmd):
     if (stderr is not None):
         raise Exception(stderr)
 
-SOURCE_DOCKER_REGISTRY = input("Provide Docker registry source - press ENTER for using `private-repo.microsoft.com`:") or "private-repo.microsoft.com"
-SOURCE_DOCKER_REPOSITORY = input("Provide Docker repository source - press ENTER for using `mssql-private-preview`:") or "mssql-private-preview"
-SOURCE_DOCKER_USERNAME = input("Provide Docker username for the source registry:")
-SOURCE_DOCKER_PASSWORD=getpass.getpass("Provide Docker password for the source registry:")
+SOURCE_DOCKER_REGISTRY = input("Provide Docker registry source - press ENTER for using `mcr.microsoft.com`:") or "mcr.microsoft.com"
+SOURCE_DOCKER_REPOSITORY = input("Provide Docker repository source - press ENTER for using `mssql/bdc`:") or "mssql/bdc"
+# Use this only if your source is a private Docker registry
+# SOURCE_DOCKER_USERNAME = input("Provide Docker username for the source registry:")
+# SOURCE_DOCKER_PASSWORD=getpass.getpass("Provide Docker password for the source registry:")
 SOURCE_DOCKER_TAG = input("Provide Docker tag for the images at the source: ") or "latest"
 
 TARGET_DOCKER_REGISTRY = input("Provide Docker registry target:")
@@ -43,12 +44,14 @@ images = [  'mssql-appdeploy-init',
             'mssql-service-proxy',
 	    'mssql-app-service-proxy',
 	    'mssql-ssis-app-runtime',
-            'mssql-monitor-telegraf']
+            'mssql-monitor-telegraf',
+	    'mssql-security-support']
 
-print("Execute docker login to source registry: " + SOURCE_DOCKER_REGISTRY)
-cmd = "docker login " + SOURCE_DOCKER_REGISTRY + " -u " + SOURCE_DOCKER_USERNAME + " -p " + SOURCE_DOCKER_PASSWORD
-execute_cmd(cmd)
-print("")
+# Use this only if your source is a private Docker registry
+# print("Execute docker login to source registry: " + SOURCE_DOCKER_REGISTRY)
+# cmd = "docker login " + SOURCE_DOCKER_REGISTRY + " -u " + SOURCE_DOCKER_USERNAME + " -p " + SOURCE_DOCKER_PASSWORD
+# execute_cmd(cmd)
+# print("")
 
 
 print("Pulling images from source repository: " + SOURCE_DOCKER_REGISTRY + "/" + SOURCE_DOCKER_REPOSITORY)
