@@ -6,7 +6,7 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 
-# This is a script to create single-node Kubernetes cluster & deploy BDC on it.
+# This is a script to create single-node Kubernetes cluster and deploy BDC on it.
 #
 export BDCDEPLOY_DIR=bdcdeploy
 
@@ -135,7 +135,7 @@ source $VIRTUALENV_NAME/bin/activate
 pip3 install -r $REQUIREMENTS_LINK
 echo "Packages installed." 
 
-# Load all prereqs for kubernetes.
+# Load all pre-requisites for Kubernetes.
 #
 echo "###########################################################################"
 echo "Starting to setup pre-requisites for kubernetes..." 
@@ -280,14 +280,14 @@ while true ; do
 done
 
 
-# Install the dashbaord for kubernetes.
+# Install the dashboard for Kubernetes.
 #
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml
 
 kubectl create clusterrolebinding kubernetes-dashboard --clusterrole=cluster-admin --serviceaccount=kube-system:kubernetes-dashboard
 echo "Kubernetes master setup done."
 
-# Pull docker images of azdata.
+# Pull docker images of SQL Server big data cluster.
 #
 echo ""
 echo "############################################################################"
