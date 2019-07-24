@@ -17,21 +17,21 @@ Using this sample bash script, you will deploy a single node Kubernetes cluster 
 curl --output setup-bdc.sh https://raw.githubusercontent.com/microsoft/sql-server-samples/master/samples/features/sql-big-data-cluster/deployment/kubeadm/ubuntu-single-node-vm/setup-bdc.sh
 ```
 
-1. Make the script executable
+2. Make the script executable
 
 ```
 
 chmod +x setup-bdc.sh
 ```
 
-1. Run the script (make sure you are running with sudo)
+3. Run the script (make sure you are running with sudo)
 
 ```
 
 sudo ./setup-bdc.sh
 ```
 
-1. Refresh alias setup for azdata
+4. Refresh alias setup for azdata
 
 ```
 
