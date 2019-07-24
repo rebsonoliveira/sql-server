@@ -25,7 +25,7 @@ SELECT TOP(80) PERCENT SIGN(q.clicks_in_category) AS book_category
 		, q.clicks_in_7
 		, q.clicks_in_8
 		, q.clicks_in_9
-	FROM web_clickstreams_book_clicks as q
+	FROM web_clickstreams_hdfs_book_clicks as q
 ';
 	-- Training R script that uses rxLogit function from RevoScaleR package (Microsoft R Server) to generate model to predict book_category click(s).
 		SET @train_script = N'
@@ -91,7 +91,7 @@ SELECT TOP(@top_count_value) PERCENT SIGN(q.clicks_in_category) AS book_category
 		, q.clicks_in_7
 		, q.clicks_in_8
 		, q.clicks_in_9
-	FROM web_clickstreams_book_clicks as q
+	FROM web_clickstreams_hdfs_book_clicks as q
 ';
 
 	-- Scoring script that uses sklearn logistic regression model to predict book_category click(s)
