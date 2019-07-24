@@ -6,7 +6,7 @@ Using this sample bash script, you will deploy a single node Kubernetes cluster 
 ## Pre-requisites
 
 1. A vanilla Ubuntu 16.04 or 18.04 VM. All dependencies will be setup by the script. Using Azure Linux VMs is not yet supported.
-1. VM should have at least 8CPUs, 64GB RAM and 100GB disk space.After installing the images you will be left with 50GB for data/logs across all components.
+1. VM should have at least 8 CPUs, 64GB RAM and 100GB disk space. After installing the images you will be left with 50GB for data/logs across all components.
 
 ## Instructions
 
@@ -14,21 +14,21 @@ Using this sample bash script, you will deploy a single node Kubernetes cluster 
 
 ```
 
-curl --output kickstarter-azdata.sh  http://rima-5.guest.corp.microsoft.com/kickstarter-azdata.sh
+curl --output setup-bdc.sh https://github.com/microsoft/sql-server-samples/blob/master/samples/features/sql-big-data-cluster/deployment/kubeadm/ubuntu-single-node-vm/setup-bdc.sh
 ```
 
 1. Make the script executable
 
 ```
 
-chmod +x kickstarter-azdata.sh
+chmod +x setup-azdata.sh
 ```
 
 1. Run the script (make sure you are running with sudo)
 
 ```
 
-sudo ./kickstarter-azdata.sh
+sudo ./setup-azdata.sh
 ```
 
 1. Refresh alias setup for azdata
