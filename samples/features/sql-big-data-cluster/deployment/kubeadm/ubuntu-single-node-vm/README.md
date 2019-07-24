@@ -14,7 +14,7 @@ Using this sample bash script, you will deploy a single node Kubernetes cluster 
 
 ```
 
-curl --output setup-bdc.sh https://github.com/microsoft/sql-server-samples/blob/master/samples/features/sql-big-data-cluster/deployment/kubeadm/ubuntu-single-node-vm/setup-bdc.sh
+curl --output setup-bdc.sh https://raw.githubusercontent.com/microsoft/sql-server-samples/master/samples/features/sql-big-data-cluster/deployment/kubeadm/ubuntu-single-node-vm/setup-bdc.sh
 ```
 
 1. Make the script executable
