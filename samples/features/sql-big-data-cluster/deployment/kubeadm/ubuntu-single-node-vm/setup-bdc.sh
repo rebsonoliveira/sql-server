@@ -10,7 +10,7 @@ fi
 #
 export BDCDEPLOY_DIR=bdcdeploy
 
-# Get password as input. It is used as default for controller, SQL Server Master instance (sa account) and knox.
+# Get password as input. It is used as default for controller, SQL Server Master instance (sa account) and Knox.
 #
 while true; do
     read -s -p "Create Password for Big Data Cluster: " password
@@ -333,5 +333,4 @@ if [ -d "$HOME/.azdata/" ]; then
 fi
 
 echo "alias azdata='$BDCDEPLOY_DIR/$VIRTUALENV_NAME/bin/azdata'" >> $HOME/.bashrc
-source ~/.bashrc
 }| tee $LOG_FILE

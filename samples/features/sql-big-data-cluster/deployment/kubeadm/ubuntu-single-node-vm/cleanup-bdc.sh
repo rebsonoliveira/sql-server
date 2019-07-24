@@ -7,6 +7,7 @@ fi
 DIR_PREFIX=$1
 
 kubeadm reset --force
+unalias azdata
 
 systemctl stop kubelet
 rm -rf /var/lib/cni/
@@ -14,7 +15,8 @@ rm -rf /var/lib/etcd/
 rm -rf /run/flannel/
 rm -rf /var/lib/kubelet/*
 rm -rf /etc/cni/
-rm -rf /etc/kubernetes/*
+rm -rf /etc/kubernetes/
+
 ip link set cni0 down
 #brctl delbr cni0
 ip link set flannel.1 down
@@ -22,7 +24,10 @@ ip link set flannel.1 down
 iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
 
 rm -rf .azdata/
+rm -rf bdcdeploy/
 
+# Remove mounts.
+#
 SERVICE_STOP_FAILED=0
 
 systemctl | grep "/var/lib/kubelet/pods" | while read -r line; do
@@ -58,6 +63,9 @@ else
     echo "All orphaned services successfully stopped."
 fi
 
+# Clean the mounted volumes.
+#
+
 for i in $(seq 1 30); do
 
   vol="vol$i"
@@ -68,8 +76,12 @@ for i in $(seq 1 30); do
 
 done
 
-
-kubeadm reset -y
-sudo apt-get -y purge kubeadm kubectl kubelet kubernetes-cni kube*
-sudo apt-get autoremove
+# Reset kube
+#
+sudo apt-get purge -y kubeadm --allow-change-held-packages 
+sudo apt-get purge -y kubectl --allow-change-held-packages
+sudo apt-get purge -y kubelet --allow-change-held-packages
+sudo apt-get purge -y kubernetes-cni --allow-change-held-packages
+sudo apt-get purge -y kube* --allow-change-held-packages
+sudo apt -y autoremove
 sudo rm -rf ~/.kube
