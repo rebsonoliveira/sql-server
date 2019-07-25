@@ -24,8 +24,9 @@ def executeCmd (cmd):
 #
 SUBSCRIPTION_ID = input("Provide your Azure subscription ID:").strip()
 GROUP_NAME = input("Provide Azure resource group name to be created:").strip()
-DOCKER_USERNAME = input("Provide your Docker username:").strip()
-DOCKER_PASSWORD  = getpass.getpass("Provide your Docker password:").strip()
+# Required only if you are using a private registry different than mcr. 
+# DOCKER_USERNAME = input("Provide your Docker username:").strip()
+# DOCKER_PASSWORD  = getpass.getpass("Provide your Docker password:").strip()
 
 #
 # Optionally change these configuration settings
@@ -58,7 +59,7 @@ os.environ['KNOX_PASSWORD'] = PASSWORD
 # os.environ['DOCKER_PASSWORD']=DOCKER_PASSWORD
 os.environ['ACCEPT_EULA']="Yes"
 
-print ("Set azure context to subcription: "+SUBSCRIPTION_ID)
+print ("Set azure context to subscription: "+SUBSCRIPTION_ID)
 command = "az account set -s "+ SUBSCRIPTION_ID
 executeCmd (command)
 
@@ -77,7 +78,7 @@ print("Creating SQL Big Data cluster:" +CLUSTER_NAME)
 command="azdata bdc config init --source aks-dev-test --target custom --force"
 executeCmd (command)
 
-command="azdata bdc config section set -c custom -j ""metadata.name=" + CLUSTER_NAME + ""
+command="azdata bdc config replace -c custom/cluster.json -j ""metadata.name=" + CLUSTER_NAME + ""
 executeCmd (command)
 
 # Use this only if you are using a private registry different than default Micrososft registry (mcr). 
