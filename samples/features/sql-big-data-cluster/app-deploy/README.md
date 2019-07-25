@@ -7,10 +7,10 @@ Application deployment allows you to deploy applications into SQL Server big dat
 
 ## Pre-requisites
 * SQL Server big data cluster CTP 2.3 or later
-* `mssqlctl` CLI familiarity. If you are unfamiliar with `mssqlctl` please refer to - [App Deployment in SQL Server big data cluster](https://docs.microsoft.com/en-us/sql/big-data-cluster/big-data-cluster-create-apps?view=sqlallproducts-allversions) for more information.
+* `azdata` CLI familiarity. If you are unfamiliar with `azdata` please refer to - [App Deployment in SQL Server big data cluster](https://docs.microsoft.com/en-us/sql/big-data-cluster/big-data-cluster-create-apps?view=sqlallproducts-allversions) for more information.
 
 * Tip 
-**mssqlctl app -h** will display the various commands to manage the app
+**azdata app -h** will display the various commands to manage the app
 
 ## Templates
 Templates are used by our [App Deploy add-ins](https://docs.microsoft.com/en-us/sql/big-data-cluster/app-deployment-extension?view=sqlallproducts-allversions) and can be used to quickly deploy applications.
