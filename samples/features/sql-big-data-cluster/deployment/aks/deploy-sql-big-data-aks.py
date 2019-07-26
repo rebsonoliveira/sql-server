@@ -24,8 +24,9 @@ def executeCmd (cmd):
 #
 SUBSCRIPTION_ID = input("Provide your Azure subscription ID:").strip()
 GROUP_NAME = input("Provide Azure resource group name to be created:").strip()
-DOCKER_USERNAME = input("Provide your Docker username:").strip()
-DOCKER_PASSWORD  = getpass.getpass("Provide your Docker password:").strip()
+# Use this only if you are using a private registry different than default Micrososft registry (mcr). 
+#DOCKER_USERNAME = input("Provide your Docker username:").strip()
+#DOCKER_PASSWORD  = getpass.getpass("Provide your Docker password:").strip()
 
 #
 # Optionally change these configuration settings
