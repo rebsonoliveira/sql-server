@@ -12,6 +12,6 @@ This folder contains the R samples.
 
 This folder contains the R samples.
 
-[java](java)
+[java](https://github.com/microsoft/sql-server-language-extensions/tree/master/language-extensions/java/samples/regex)
 
 This folder contains the Java samples.
