@@ -10,7 +10,7 @@ SQL Server Big Data cluster bundles Spark and HDFS together with SQL server. Azu
 
 [SparkR Hello World ](data-loading/hello_sparkR.ipynb)
 
-[DataLoading   - Transforming CSV to Parquet](data-loading/transform-csv-files.ipynb/)
+[Data Loading   - Transforming CSV to Parquet](data-loading/transform-csv-files.ipynb/)
 
 [Data Transfer - Spark to SQL using Spark JDBC connector](data-virtualization/spark_to_sql_jdbc.ipynb/)
 
