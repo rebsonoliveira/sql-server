@@ -9,7 +9,7 @@ Installation instructions for SQL Server 2019 big data clusters can be found [he
 ## Executing the sample scripts
 The scripts should be executed in a specific order to test the various features. Execute the scripts from each folder in below order:
 
-1. __[spark/dataloading/transform-csv-files.ipynb](spark/dataloading/transform-csv-files.ipynb)__
+1. __[spark/data-loading/transform-csv-files.ipynb](spark/data-loading/transform-csv-files.ipynb)__
 1. __[data-virtualization/generic-odbc](data-virtualization/generic-odbc)__
 1. __[data-virtualization/hadoop](data-virtualization/hadoop)__
 1. __[data-virtualization/storage-pool](data-virtualization/storage-pool)__

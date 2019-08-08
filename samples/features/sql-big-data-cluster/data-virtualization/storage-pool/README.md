@@ -12,7 +12,7 @@ In SQL Server 2019 big data cluster, the storage pool consists of HDFS data node
 
 1. Connect to SQL Server Master instance.
 
-1. Run the [../../spark/dataloading/transform-csv-files.ipynb](../../spark/dataloading/transform-csv-files.ipynb/) notebook to generate the sample parquet file(s).
+1. Run the [../../spark/data-loading/transform-csv-files.ipynb](../../spark/data-loading/transform-csv-files.ipynb/) notebook to generate the sample parquet file(s).
 
 1. Execute the [web-clickstreams-hdfs-csv.sql](web-clickstreams-hdfs-csv.sql). This script demonstrates how to read CSV file(s) stored in HDFS.
 
