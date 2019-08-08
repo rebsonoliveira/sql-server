@@ -10,7 +10,7 @@ This folder contains the R samples.
 
 [python](python)
 
-This folder contains the R samples.
+This folder contains the Python samples.
 
 [java](java)
 
