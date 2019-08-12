@@ -1,0 +1,31 @@
+{
+  "patch": [
+    {
+      "op": "add",
+      "path": "security",
+      "value": {
+        "useInternalDomain": false,
+        "ouDistinguishedName":"OU=bdc,DC=contoso,DC=local",
+        "dnsIpAddresses": ["11.11.111.11"],
+        "domainControllerFullyQualifiedDns": ["VM.CONTOSO.LOCAL"],
+        "realm":"CONTOSO.LOCAL",
+        "domainDnsName":"contoso.local",
+        "bdcAdminPrincipals": [
+          "Domain Admins", "Enterprise Admins"
+        ],
+        "bdcUserPrincipals": [
+          "Domain Users"
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "spec.endpoints/0",
+      "value": {
+        "name": "Kerberos",
+        "serviceType": "NodePort",
+        "port": 30088
+      }
+    }
+  ]
+}

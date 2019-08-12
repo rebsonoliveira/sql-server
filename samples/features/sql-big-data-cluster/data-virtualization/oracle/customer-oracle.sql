@@ -49,7 +49,7 @@ GO
 SELECT pr.pr_item_sk, pc.pr_review_content, pr.pr_user_sk AS customerid 
 FROM dbo.product_reviews as pr
 JOIN (SELECT TOP(100) * FROM dbo.product_reviews_hdfs_csv) AS pc ON pc.pr_review_sk = pr.pr_review_sk
-JOIN dbo.customer_ora AS c ON c.c_customer_sk = pr.pr_user_sk
+JOIN dbo.customer_ora AS c ON c.C_CUSTOMER_SK = pr.pr_user_sk
 JOIN dbo.item AS i ON i.i_item_sk = pr.pr_item_sk
 INNER JOIN (
     SELECT

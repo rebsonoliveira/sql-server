@@ -8,7 +8,7 @@ SQL Server 2019 introduces new ODBC connectors to data sources like SQL Server, 
 
 In this example, you are going to create an external table in a SQL Server instance over the inventory table that sits on an Oracle server. If you are using a SQL Server 2019 big data cluster then the scripts can be executed on the SQL Server Master instance.
 
-**Before you begin**, you need to have an Oracle instance and credentials. Follow the instruction in the [setup\README.md](setup\README.md).
+**Before you begin**, you need to have an Oracle instance and credentials. Follow the instruction in the [setup\README.md](setup/README.md).
 
 ### Instructions
 

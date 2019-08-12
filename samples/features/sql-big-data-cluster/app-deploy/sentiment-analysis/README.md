@@ -35,30 +35,30 @@ To run this sample, you need the following prerequisites.
 **Software prerequisites:**
 
 1. SQL Server big data cluster CTP 2.3 or later.
-2. `mssqlctl`. Refer to [installing mssqlctl](https://docs.microsoft.com/en-us/sql/big-data-cluster/deploy-install-mssqlctl?view=sqlallproducts-allversions) document on setting up the `mssqlctl` and connecting to a SQL Server 2019 big data cluster.
+2. `azdata`. Refer to [installing azdata](https://docs.microsoft.com/en-us/sql/big-data-cluster/deploy-install-azdata?view=sqlallproducts-allversions) document on setting up the `azdata` and connecting to a SQL Server 2019 big data cluster.
 
 <a name=run-this-sample></a>
 
 ## Run this sample
 
 1. Clone or download this sample on your computer.
-2. Log in to the SQL Server big data cluster using the command below using the IP address of the `mgmtproxy-svc-external` in your cluster. If you are not familiar with `mssqltctl` you can refer to the [documentation](https://docs.microsoft.com/en-us/sql/big-data-cluster/big-data-cluster-create-apps?view=sqlallproducts-allversions) and then return to this sample.
+2. Log in to the SQL Server big data cluster using the command below using the IP address of the `controller-svc-external` in your cluster. If you are not familiar with `mssqltctl` you can refer to the [documentation](https://docs.microsoft.com/en-us/sql/big-data-cluster/big-data-cluster-create-apps?view=sqlallproducts-allversions) and then return to this sample.
 
     ```bash
-    mssqlctl login -e https://<ip-address-of-mgmtproxy-svc-external>:30777 -u <user-name> -p <password>
+    azdata login -e https://<ip-address-of-controller-svc-external>:30080 -u <user-name>
     ```
 3. Deploy the application by running the following command, specifying the folder where your `spec.yaml`, `sentiment.rds` and `sentiment.R` files are located:
     ```bash
-    mssqlctl app create --spec ./sentiment-analysis
+    azdata app create --spec ./sentiment-analysis
     ```
 4. Check the deployment by running the following command:
     ```bash
-    mssqlctl app list -n sentiment-r -v [version]
+    azdata app list -n sentiment-r -v [version]
     ```
     Once the app is listed as `Ready` you can continue to the next step.
 5. Test the app by running the following command:
     ```bash
-    mssqlctl app run -n sentiment-r  -v [version] --input reviewText="Absolutely the best movie experience I have ever had!"
+    azdata app run -n sentiment-r  -v [version] --input reviewText="Absolutely the best movie experience I have ever had!"
     ```
     You should get output like the example below. The result of the sentiment analysis scoring is returned as a data frame in `out`. A `PredictedLabel` equal to `1` indicates the sentiment is deemed positive, whereas a `PredictedLabel` of `0` indicates a negative sentiment. The `Probability.1` indicates the level of certainty for the `PredictedLabel` to be the true sentiment.
     ```json
@@ -89,7 +89,7 @@ To run this sample, you need the following prerequisites.
 6. You can clean up the sample by running the following commands:
     ```bash
     # delete app
-    mssqlctl app delete --name sentiment-r --version [version]
+    azdata app delete --name sentiment-r --version [version]
     ```
 
 <a name=sample-details></a>

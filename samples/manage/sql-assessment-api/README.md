@@ -1,6 +1,10 @@
 # SQL Assessment API samples
 
-Contains samples for customizing SQL Assessment API. Learn more about API and how run it with your own customization here <link to the SQL Assessment docs page>.
+Contains samples for customizing SQL Assessment API. Learn more about the API on the [SQL Assessment API docs page](https://docs.microsoft.com/en-us/sql/sql-assessment-api/sql-assessment-api-overview).
+
+## config.json
+
+This is the default set of checks shipped with SQL Assessment API. Feel free to open issues to have us fix or add checks. Also, we're happy to see your pull requests to this file.
 
 ## DisablingBuiltInChecks_sample.json
 
@@ -34,7 +38,7 @@ Demonstrates how to make a custom rule set containing two checks. The sample con
 }
 ```
 
-`Probes`, in fact, describe how and where get required data to perform a check. For this, you can use T-SQL queries as well as methods from assemblies. The probe below uses a T-SQL query.
+`Probes` describe how and where get required data to perform a check. For this, you can use T-SQL queries as well as methods from assemblies. The probe below uses a T-SQL query.
 ```
 "probes":{
   "DatabaseConfiguration": [                            //Probe name that is used to reference the probe from a check.
@@ -66,3 +70,4 @@ Demonstrates how to make a custom rule set containing two checks. The sample con
   ]
 }
 ```
+

@@ -20,22 +20,22 @@ IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'OracleSalesS
 --       As a result, the names are case-sensitive so specify the name in the external table definition
 --       that matches the exact case of the table and column names in the Oracle metadata.
 CREATE EXTERNAL TABLE [inventory_ora]
-    ([inv_date] DECIMAL(10,0) NOT NULL, [inv_item] DECIMAL(10,0) NOT NULL,
-    [inv_warehouse] DECIMAL(10,0) NOT NULL, [inv_quantity_on_hand] DECIMAL(10,0))
+    ([INV_DATE] DECIMAL(10,0) NOT NULL, [INV_ITEM] DECIMAL(10,0) NOT NULL,
+    [INV_WAREHOUSE] DECIMAL(10,0) NOT NULL, [INV_QUANTITY_ON_HAND] DECIMAL(10,0))
 WITH (DATA_SOURCE=[OracleSalesSrvr],
       LOCATION='<oracle_service_name,nvarchar(30),xe>.SALES.INVENTORY');
 GO
 
 -- Find quantity of certain items from inventory for a specific category
 --
-SELECT TOP(100) w.w_warehouse_name, i.inv_item, SUM(i.inv_quantity_on_hand) as total_quantity
+SELECT TOP(100) w.w_warehouse_name, i.INV_ITEM, SUM(i.INV_QUANTITY_ON_HAND) as total_quantity
   FROM [inventory_ora] as i
   JOIN item as it
-    ON it.i_item_sk = i.inv_item
+    ON it.i_item_sk = i.INV_ITEM
   JOIN warehouse as w
-    ON w.w_warehouse_sk = i.inv_warehouse
- WHERE it.i_category = 'Movies & TV' and i.inv_item BETWEEN 17401 and 17402 --> get items within specific range
- GROUP BY w.w_warehouse_name, i.inv_item;
+    ON w.w_warehouse_sk = i.INV_WAREHOUSE
+ WHERE it.i_category = 'Movies & TV' and i.INV_ITEM BETWEEN 17401 and 17402 --> get items within specific range
+ GROUP BY w.w_warehouse_name, i.INV_ITEM;
 GO
 
 -- Cleanup
