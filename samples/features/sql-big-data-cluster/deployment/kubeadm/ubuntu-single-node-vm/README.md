@@ -50,4 +50,4 @@ When prompted, provide your input for the password that will be used for all ext
 
 ## Cleanup
 
-1. The [cleanup-bdc.sh](cleanup-bdc.sh/) script is provided as convenience to reset the environment in case of errors. However, we recommend that you use a virtual machine for testing purposes and use the snapshot capabiility in your hyper-visor to rollback the virtual machine to a clean state.
+1. The [cleanup-bdc.sh](cleanup-bdc.sh/) script is provided as convenience to reset the environment in case of errors. However, we recommend that you use a virtual machine for testing purposes and use the snapshot capability in your hyper-visor to rollback the virtual machine to a clean state.

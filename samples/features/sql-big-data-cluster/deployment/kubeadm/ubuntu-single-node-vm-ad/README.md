@@ -25,12 +25,12 @@ sudo systemctl reboot
 1. Download the script on the VM you are planning to use for the deployment
 
 ``` bash
-curl --output setup-bdc.sh https://raw.githubusercontent.com/microsoft/sql-server-samples/master/samples/features/sql-big-data-cluster/deployment/kubeadm/ubuntu-single-node-vm-ad/setup-bdc.sh
+curl --output setup-bdc-ad.sh https://raw.githubusercontent.com/microsoft/sql-server-samples/master/samples/features/sql-big-data-cluster/deployment/kubeadm/ubuntu-single-node-vm-ad/setup-bdc-ad.sh
 curl --output endpoint-patch.json https://raw.githubusercontent.com/microsoft/sql-server-samples/master/samples/features/sql-big-data-cluster/deployment/kubeadm/ubuntu-single-node-vm-ad/endpoint-patch.json
 curl --output security-patch.json https://raw.githubusercontent.com/microsoft/sql-server-samples/master/samples/features/sql-big-data-cluster/deployment/kubeadm/ubuntu-single-node-vm-ad/security-patch.json
 ```
 
-1. Edit and modify the endpoint-patch.json & security-patch.json files to supply the values specific to your Active Directory environment
+1. Modify the endpoint-patch.json & security-patch.json files to supply the values specific to your Active Directory environment
 
 1. Make the script executable
 
@@ -54,4 +54,4 @@ When prompted, provide your input for the password that will be used for all ext
 
 ## Cleanup
 
-1. The [cleanup-bdc.sh](cleanup-bdc.sh/) script is provided as convenience to reset the environment in case of errors. However, we recommend that you use a virtual machine for testing purposes and use the snapshot capabiility in your hyper-visor to rollback the virtual machine to a clean state.
+1. The [cleanup-bdc.sh](cleanup-bdc.sh/) script is provided as convenience to reset the environment in case of errors. However, we recommend that you use a virtual machine for testing purposes and use the snapshot capability in your hyper-visor to rollback the virtual machine to a clean state.
