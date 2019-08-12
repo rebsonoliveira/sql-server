@@ -6,6 +6,8 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 
+STARTUP_PATH=$(pwd)
+
 # This is a script to create single-node Kubernetes cluster and deploy BDC on it.
 #
 export BDCDEPLOY_DIR=bdcdeploy
