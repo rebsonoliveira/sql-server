@@ -9,7 +9,7 @@
 -  [Formatting requirements for a CSV file](#csv)
 
 ## <a name="RegSingle"></a> Register a single SQL Server instance
-It's required that at least one SQL Server instance is registered in the scope of your SQL Server Registry, in order to download an ESU package (if and when available). 
+It's required that at least one SQL Server instance is registered in the scope of your SQL Server Registry, in order to download an ESU package (if and when available). If you have not yet created the SQL Server Registry in your Azre subscription, refer to the page [Create the SQL Server Registry](./registry.md). 
 
 **Important**: It's not required to register a SQL Server instance for ESUs when running an Azure Virtual Machine that is configured for Automatic Updates. For more information, see [Manage Windows updates by using Azure Automation](https://docs.microsoft.com/azure/automation/automation-tutorial-update-management).
 
