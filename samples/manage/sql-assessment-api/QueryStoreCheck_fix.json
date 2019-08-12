@@ -1,0 +1,13 @@
+{ 
+	"checks":[
+        {
+            "id": "SqlServer.Database.QueryStoreOn",
+            "target":{
+                "type": "Database",
+                "version": "[13.0,)",
+                "platform": "Windows",
+                "name": { "not": "/^(master|tempdb)$/" }
+            }
+        }
+	] 
+} 
