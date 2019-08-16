@@ -1,10 +1,4 @@
-USE master;
-GO
-
-CREATE DATABASE SequentialKeySampleDB;
-GO
-
-USE SequentialKeySampleDB;
+USE AdventureWorks2016_EXT;
 GO
 
 -- Create regular table
