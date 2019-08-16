@@ -37,6 +37,7 @@ To run this sample, you need the following prerequisites.
 
 1. SQL Server 2019 (or higher)
 2. A server (physical or virtual) with multiple cores
+3. The [AdventureWorks2016_EXT](https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2016_EXT.bak) sample database
 
 [!NOTE] 
 > This sample was designed for a server with 8 logical cores. If you run the sample on a server with more cores, you may need to increase the number of concurrent threads in order to observe the improvement.
@@ -48,21 +49,23 @@ To run this sample, you need the following prerequisites.
 
 1. Copy the files from the root folder to a folder on the SQL Server.
 
-2. From SQL Server Management Studio or Azure Data Studio, run the Setup.sql script.
+2. Download [AdventureWorks2016_EXT.bak](https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2016_EXT.bak) and restore it to your SQL Server 2019 instance.
 
-3. Modify the SequentialInserts_Optimized.bat and SequentialInserts_Unoptimized.bat files and change the -S parameter to point to the server where the setup script was run. For example, `-S.\SQL2019` points to an instance named SQL2019 on the local server.
+3. From SQL Server Management Studio or Azure Data Studio, run the Setup.sql script.
 
-4. Open the SQL2019_LatchWaits.htm file to open a Performance Monitor session in your default browser.
+4. Modify the SequentialInserts_Optimized.bat and SequentialInserts_Unoptimized.bat files and change the -S parameter to point to the server where the setup script was run. For example, `-S.\SQL2019` points to an instance named SQL2019 on the local server.
 
-5. Right-click anywhere in the browser window to clear the existing data from the session.
+5. Open the SQL2019_LatchWaits.htm file to open a Performance Monitor session in your default browser.
 
-6. Click the play button to start the Performance Monitor session.
+6. Right-click anywhere in the browser window to clear the existing data from the session.
 
-7. From a Command Prompt, browse to the folder that contains the demo files and run SequentialInserts_Unoptimized.bat, then return to the Performance Monitor window. You should see a high number of Page Latch waits as well as high average wait times. Note the time it takes for the script to complete.
+7. Click the play button to start the Performance Monitor session.
 
-8. Run the SequentialInserts_Optimized.bat script from the same Command Prompt window and again return to the Performance Monitor window. This time you should see much lower number and duration of Page Latch waits, along with higher Batch requests/sec. Note the time it takes for the script to complete, it should be significantly faster than the Unoptimized script.
+8. From a Command Prompt, browse to the folder that contains the demo files and run SequentialInserts_Unoptimized.bat, then return to the Performance Monitor window. You should see a high number of Page Latch waits as well as high average wait times. Note the time it takes for the script to complete.
 
-9. **OPTIONAL** - Modify the `-n256` parameter in the Optimized and Unoptimized scripts to see the effect on performance. Generally, the larger the number of concurrent sessions, the greater the improvement will be with OPTIMIZE_FOR_SEQUENTIAL_KEY.
+9. Run the SequentialInserts_Optimized.bat script from the same Command Prompt window and again return to the Performance Monitor window. This time you should see much lower number and duration of Page Latch waits, along with higher Batch requests/sec. Note the time it takes for the script to complete, it should be significantly faster than the Unoptimized script.
+
+10. **OPTIONAL** - Modify the `-n256` parameter in the Optimized and Unoptimized scripts to see the effect on performance. Generally, the larger the number of concurrent sessions, the greater the improvement will be with OPTIMIZE_FOR_SEQUENTIAL_KEY.
 
 
 
