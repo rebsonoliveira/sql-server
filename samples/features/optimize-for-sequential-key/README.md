@@ -2,7 +2,7 @@
 
 # OPTIMIZE_FOR_SEQUENTIAL_KEY
 
-In SQL Server 2019, a new index option was added called OPTIMIZE_FOR_SEQUENTIAL_KEY that is intended to address an issue known as [last page insert contention](https://support.microsoft.com/kb/4460004). Most of the solutions to this problem that have been suggested in the past involve making changes to either the application or the structure of the contentious index, which can be costly and sometimes involve performance trade-offs. Rather than making major structural changes, OPTIMIZE_FOR_SEQUENTIAL_KEY addresses some of the SQL Server scheduling issues that can lead to severely reduced throughput when last page insert contention occurs. Using the OPTMIZE_FOR_SEQUENTIAL_KEY index option can help maintain consistent throughput in high-concurrency environments when the following conditions are true:
+In SQL Server 2019, a new index option was added called [OPTIMIZE_FOR_SEQUENTIAL_KEY](https://docs.microsoft.com/sql/t-sql/statements/create-index-transact-sql#sequential-keys) that is intended to address an issue known as [last page insert contention](https://support.microsoft.com/kb/4460004). Most of the solutions to this problem that have been suggested in the past involve making changes to either the application or the structure of the contentious index, which can be costly and sometimes involve performance trade-offs. Rather than making major structural changes, OPTIMIZE_FOR_SEQUENTIAL_KEY addresses some of the SQL Server scheduling issues that can lead to severely reduced throughput when last page insert contention occurs. Using the OPTMIZE_FOR_SEQUENTIAL_KEY index option can help maintain consistent throughput in high-concurrency environments when the following conditions are true:
 
 - The index has a sequential key
 - The number of concurrent insert threads to the index far exceeds the number of schedulers (in other words logical cores)
@@ -81,3 +81,5 @@ The code included in this sample is not intended to be a set of best practices o
 For more information, see these articles:
 
 [CREATE INDEX - Sequential Keys](https://docs.microsoft.com/sql/t-sql/statements/create-index-transact-sql#sequential-keys)
+
+[Behind the Scenes on OPTIMIZE_FOR_SEQUENTIAL_KEY](https://techcommunity.microsoft.com/t5/SQL-Server/Behind-the-Scenes-on-OPTIMIZE-FOR-SEQUENTIAL-KEY/ba-p/806888)
