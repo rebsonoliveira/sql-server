@@ -41,8 +41,7 @@ if NOT EXIST tpcxbb_1gb.bak (
 set SQLCMDSERVER=%SQL_MASTER_INSTANCE%
 set SQLCMDUSER=sa
 set SQLCMDPASSWORD=%SQL_MASTER_SA_PASSWORD%
-for /F "usebackq" %%v in (`sqlcmd -I -b -h-1 -Q "print RTRIM((CAST(SERVERPROPERTY('ProductLevel') as nvarchar(128))));"`) do SET CTP_VERSION=%%v
-if /i "%CTP_VERSION%" EQU "CTP2.4" (set MASTER_POD_NAME=mssql-master-pool-0) else (set MASTER_POD_NAME=master-0)
+for /F "usebackq" %%v in (`sqlcmd -I -b -h-1 -Q "print @@SERVERNAME;"`) do SET MASTER_POD_NAME=%%v
 
 REM Copy the backup file, restore the database, create necessary objects and data file
 echo Copying sales database backup file to SQL Master instance...

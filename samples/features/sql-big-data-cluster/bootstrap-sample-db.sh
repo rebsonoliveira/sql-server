@@ -51,14 +51,7 @@ then
     $DEBUG curl -G "https://sqlchoice.blob.core.windows.net/sqlchoice/static/tpcxbb_1gb.bak" -o tpcxbb_1gb.bak
 fi
 
-CTP_VERSION=$(sqlcmd -S $SQL_MASTER_INSTANCE -Usa -P$SQL_MASTER_SA_PASSWORD -I -b -h-1 -Q "print RTRIM((CAST(SERVERPROPERTY('ProductLevel') as nvarchar(128))));")
-
-if [ "$CTP_VERSION" == "CTP2.4" ]
-then
-    MASTER_POD_NAME=mssql-master-pool-0
-else
-    MASTER_POD_NAME=master-0
-fi
+MASTER_POD_NAME=$(sqlcmd -S $SQL_MASTER_INSTANCE -Usa -P$SQL_MASTER_SA_PASSWORD -I -b -h-1 -Q "print @@SERVERNAME;")
 
 echo Copying sales database backup file...
 $DEBUG kubectl cp tpcxbb_1gb.bak $CLUSTER_NAMESPACE/$MASTER_POD_NAME:var/opt/mssql/data -c mssql-server || (echo $ERROR_MESSAGE && exit 1)
