@@ -24,8 +24,9 @@ def executeCmd (cmd):
 #
 SUBSCRIPTION_ID = input("Provide your Azure subscription ID:").strip()
 GROUP_NAME = input("Provide Azure resource group name to be created:").strip()
-DOCKER_USERNAME = input("Provide your Docker username:").strip()
-DOCKER_PASSWORD  = getpass.getpass("Provide your Docker password:").strip()
+# Use this only if you are using a private registry different than default Micrososft registry (mcr). 
+#DOCKER_USERNAME = input("Provide your Docker username:").strip()
+#DOCKER_PASSWORD  = getpass.getpass("Provide your Docker password:").strip()
 
 #
 # Optionally change these configuration settings
@@ -77,17 +78,17 @@ print("Creating SQL Big Data cluster:" +CLUSTER_NAME)
 command="azdata bdc config init --source aks-dev-test --target custom --force"
 executeCmd (command)
 
-command="azdata bdc config section set -c custom -j ""metadata.name=" + CLUSTER_NAME + ""
+command="azdata bdc config replace -c custom/cluster.json -j ""metadata.name=" + CLUSTER_NAME + ""
 executeCmd (command)
 
 # Use this only if you are using a private registry different than default Micrososft registry (mcr). 
-# command="azdata bdc config section set -c custom -j ""$.spec.controlPlane.spec.docker.registry=" + DOCKER_REGISTRY + ""
+# command="azdata bdc config replace -c custom/control.json -j ""$.spec.controlPlane.spec.docker.registry=" + DOCKER_REGISTRY + ""
 # executeCmd (command)
 
-# command="azdata bdc config section set -c custom -j ""$.spec.controlPlane.spec.docker.repository=" + DOCKER_REPOSITORY + ""
+# command="azdata bdc config replace -c custom/control.json -j ""$.spec.controlPlane.spec.docker.repository=" + DOCKER_REPOSITORY + ""
 # executeCmd (command)
 
-# command="azdata bdc config section set -c custom -j ""$.spec.controlPlane.spec.docker.imageTag=" + DOCKER_IMAGE_TAG + ""
+# command="azdata bdc config replace -c custom/control.json -j ""$.spec.controlPlane.spec.docker.imageTag=" + DOCKER_IMAGE_TAG + ""
 # executeCmd (command)
 
 command="azdata bdc create -c custom --accept-eula yes"

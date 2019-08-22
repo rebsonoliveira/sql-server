@@ -1,0 +1,61 @@
+{
+	"checks":[
+		{
+				"target": {
+					"type": "Database",
+					"platform": "Windows"
+				},
+			"id": "Custom_SqlServer.Database.AutoUpdateStats",
+			"tags": [ "InternalBestPracticeSet", "Performance" ],
+			"displayName": "Auto-Update Statistics should be on",
+			"description": "The query optimizer needs up-to-date and accurate statistics in order to generate good plans. In most cases, it's best to let SQL Server maintain the statistics. If you turn 'Auto Create Stats' and 'Auto Update Stats' off, then it is up to you to keep the statistics up-to-date somehow. Failure to do so will lead to poor query performance. Most applications should have these options ON.\n \n When the Auto Update Statistics setting is ON, the query optimizer updates statistics when they are used by a query and when they might be out-of-date. Statistics become out-of-date after insert, update, delete, or merge operations change the data distribution in the table or indexed view. The query optimizer determines when statistics might be out-of-date by counting the number of data modifications since the last statistics update and comparing the number of modifications to a threshold. The threshold is based on the number of rows in the table or indexed view. The query optimizer checks for out-of-date statistics before compiling a query and before executing a cached query plan. Before compiling a query, the query optimizer uses the columns, tables, and indexed views in the query predicate to determine which statistics might be out-of-date. Before executing a cached query plan, the Database Engine verifies that the query plan references up-to-date statistics. The AUTO_UPDATE_STATISTICS option applies to statistics created for indexes, single-columns in query predicates, and statistics that are created by using the CREATE STATISTICS statement. This option also applies to filtered statistics.",
+			"message": "Turn Auto-Update Statistics option on to improve query performance.",
+			"helpLink": "https://blogs.msdn.microsoft.com/buckwoody/2009/08/18/sql-server-best-practices-auto-create-and-auto-update-statistics-should-be-on-most-of-the-time/",
+			"probes": [ "DatabaseConfiguration" ],
+			"condition": "@is_auto_update_stats_on"
+		},
+		{
+			"target": {
+				"type": "Database",
+				"version": "[12.0,)",
+				"platform": "Windows",
+				"name": { "not": "/^(master|msdb)$/" }
+			},
+			"id": "Custom_SqlServer.Database.QueryStoreOn",
+			"tags": [ "InternalBestPracticeSet", "Performance" ],
+			"displayName": "Query Store should be on",
+			"description": "The SQL Server Query Store feature provides you with insight on query plan choice and performance. It simplifies performance troubleshooting by helping you quickly find performance differences caused by query plan changes. Query Store automatically captures a history of queries, plans, and runtime statistics, and retains these for your review. It separates data by time windows so you can see database usage patterns and understand when query plan changes happened on the server.",
+			"message": "Turn Query Store option on to improve query performance troubleshooting.",
+			"helpLink": "https://docs.microsoft.com/sql/relational-databases/performance/monitoring-performance-by-using-the-query-store",
+			"probes": [ "DatabaseConfiguration" ],
+			"condition": "@is_query_store_on"
+		}
+	],
+	"probes":{
+		"DatabaseConfiguration": [
+			{
+				"type": "SQL",
+				"target": {
+					"type": "Database",
+					"version": "(,12.0)",
+					"platform": "Windows"
+				},
+				"implementation": {
+					"query": "SELECT db.[is_auto_create_stats_on] AS is_auto_create_stats_on, db.[is_auto_update_stats_on] AS is_auto_update_stats_on, 0 AS is_query_store_on FROM sys.databases AS db WHERE db.[name]='@DatabaseName'"
+				}
+			},
+			{
+				"type": "SQL",
+				"target": {
+					"type": "Database",
+					"version": "[12.0,)",
+					"platform": "Windows"
+				},
+				"implementation": {
+					"query": "SELECT db.[is_auto_create_stats_on] AS is_auto_create_stats_on, db.[is_auto_update_stats_on] AS is_auto_update_stats_on, db.[is_query_store_on] AS is_query_store_on FROM sys.databases AS db WHERE db.[name]='@DatabaseName'"
+				}
+			}
+		]
+	}
+}
+

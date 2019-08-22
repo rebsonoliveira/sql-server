@@ -23,7 +23,7 @@ To run this sample, you need the following prerequisites.
 **Software prerequisites:**
 
 1. SQL Server big data cluster CTP 2.3 or later.
-2. `mssqlctl`. Refer to [installing mssqlctl](https://docs.microsoft.com/en-us/sql/big-data-cluster/deploy-install-mssqlctl?view=sqlallproducts-allversions) document on setting up the `mssqlctl` and connecting to a SQL Server big data cluster.
+2. `azdata`. Refer to [installing azdata](https://docs.microsoft.com/en-us/sql/big-data-cluster/deploy-install-azdata?view=sqlallproducts-allversions) document on setting up the `azdata` and connecting to a SQL Server big data cluster.
 3. Optional: to see the SSIS package itself, install Visual Studio 2017 if you don't have it already. After that download and install [SSDT](https://docs.microsoft.com/en-us/sql/ssdt/download-sql-server-data-tools-ssdt?view=sql-server-2017#ssdt-for-vs-2017-standalone-installer). 
 4. Optional: install [SSMS](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-2017) if it is not already installed.
 
@@ -32,19 +32,19 @@ To run this sample, you need the following prerequisites.
 ## Run this sample
 
 1. Clone or download this sample on your computer.
-2. Log in to the SQL Server big data cluster using the command below using the IP address of the `mgmtproxy-svc-external` in your cluster. If you are not familiar with `mssqltctl` you can refer to the [documentation](https://docs.microsoft.com/en-us/sql/big-data-cluster/big-data-cluster-create-apps?view=sqlallproducts-allversions) and then return to this sample.
+2. Log in to the SQL Server big data cluster using the command below using the IP address of the `controller-svc-external` in your cluster. If you are not familiar with `mssqltctl` you can refer to the [documentation](https://docs.microsoft.com/en-us/sql/big-data-cluster/big-data-cluster-create-apps?view=sqlallproducts-allversions) and then return to this sample.
 
     ```bash
-    mssqlctl login -e https://<ip-address-of-mgmtproxy-svc-external>:30777 -u <user-name> -p <password>
+    azdata login -e https://<ip-address-of-controller-svc-external>:30080 -u <user-name>
     ```
 3. Replace `[SA_PASSWORD]` in the `spec.yaml` file with the password for SQL user `sa`.
 4. Deploy the application by running the following command, specifying the folder where your `spec.yaml` and `back-up-db.dtsx` files are located:
     ```bash
-    mssqlctl app create --spec ./SSIS
+    azdata app create --spec ./SSIS
     ```
 5. Check the deployment by running the following command:
     ```bash
-    mssqlctl app list --name back-up-db --version [version]
+    azdata app list --name back-up-db --version [version]
     ```
     Once the app is listed as `Ready` the job should run within a minute.
     You can check if the backup is created by running:
@@ -56,7 +56,7 @@ To run this sample, you need the following prerequisites.
 6. You can clean up the sample by running the following commands:
     ```bash
     # delete app
-    mssqlctl app delete --name back-up-db --version [version]
+    azdata app delete --name back-up-db --version [version]
     # delete backup files
     kubectl -n [your namespace] exec -it mssql-master-pool-0 -c mssql-server -- /bin/bash -c "rm /var/opt/mssql/data/*.DWConfigbak"
     ```
@@ -73,7 +73,7 @@ Here is the spec file for this application. This sample uses the `SSIS` runtime 
 |Setting|Description|
 |-|-|
 |options|Specifies any command line parameters passed to the execution of the SSIS package|
-|schedule|Specifies when the job should run. This follows cron expressions. A value of '*/1 * * * *' means the job runs *every minute*. If omitted the package will not run automatically and you can run the package on demand using `mssqlctl run -n back-up-db -v [version]` or making a call to the API.|
+|schedule|Specifies when the job should run. This follows cron expressions. A value of '*/1 * * * *' means the job runs *every minute*. If omitted the package will not run automatically and you can run the package on demand using `azdata run -n back-up-db -v [version]` or making a call to the API.|
 
 ```yaml
 name: back-up-db

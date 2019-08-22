@@ -9,14 +9,14 @@ if NOT DEFINED ORACLE_SERVER goto :usage
 if NOT DEFINED ORACLE_USER goto :usage
 if NOT DEFINED ORACLE_PASSWORD goto :usage
 
-for %F in (sqlplus.exe sqlldr.exe) do (
+for %%F in (sqlplus.exe sqlldr.exe) do (
     echo Verifying %%F is in path & CALL WHERE /Q %%F || GOTO exit
 )
 
 
 for %%F in (sales-user.sql inventory.sql customer.sql) do (
     echo Executing [%%F]...
-    echo exit | sqlplus -S %ORACLE_USER%/%ORACLE_PASSWORD%@%ORACLE_SERVER% @sales-user.sql || GOTO exit
+    echo exit | sqlplus -S %ORACLE_USER%/%ORACLE_PASSWORD%@%ORACLE_SERVER% @%%F || GOTO exit
 )
 
 for %%F in (inventory.ctl customer.ctl) do (
