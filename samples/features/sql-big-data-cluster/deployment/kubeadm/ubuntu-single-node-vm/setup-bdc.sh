@@ -60,7 +60,7 @@ export STORAGE_CLASS=local-storage
 export PV_COUNT="30"
 
 IMAGES=(
-	      mssql-app-service-proxy
+	mssql-app-service-proxy
         mssql-control-watchdog
         mssql-controller
         mssql-dns
