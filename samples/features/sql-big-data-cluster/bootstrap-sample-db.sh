@@ -51,11 +51,10 @@ then
     $DEBUG curl -G "https://sqlchoice.blob.core.windows.net/sqlchoice/static/tpcxbb_1gb.bak" -o tpcxbb_1gb.bak
 fi
 
-MASTER_POD_NAME=$(sqlcmd -S $SQL_MASTER_INSTANCE -Usa -P$SQL_MASTER_SA_PASSWORD -I -b -h-1 -Q "print @@SERVERNAME;")
+read -r MASTER_POD_NAME HADR_ENABLED <<<$(sqlcmd -S $SQL_MASTER_INSTANCE -Usa -P$SQL_MASTER_SA_PASSWORD -I -b -h-1 -Q "SET NOCOUNT ON; SELECT @@SERVERNAME, SERVERPROPERTY('IsHadrEnabled');")
 
 echo Copying sales database backup file...
 $DEBUG kubectl cp tpcxbb_1gb.bak $CLUSTER_NAMESPACE/$MASTER_POD_NAME:var/opt/mssql/data -c mssql-server || (echo $ERROR_MESSAGE && exit 1)
-# $DEBUG rm tpcxbb_1gb.bak
 
 if [ "$AW_WWI_SAMPLES" == "--install-extra-samples" ]
 then
@@ -68,6 +67,9 @@ then
         fi
         echo Copying $file database backup file to SQL Master instance...
         $DEBUG kubectl cp $file $CLUSTER_NAMESPACE/$MASTER_POD_NAME:var/opt/mssql/data -c mssql-server || (echo $ERROR_MESSAGE && exit 1)
+
+        echo Removing database backup file...
+        $DEBUG kubectl exec $MASTER_POD_NAME -n $CLUSTER_NAMESPACE -c mssql-server -i -t -- bash -c "rm -rvf /var/opt/mssql/data/$file"
     done
 
 
@@ -80,7 +82,18 @@ then
         fi
         echo Copying $file database backup file to SQL Master instance...
         $DEBUG kubectl cp $file $CLUSTER_NAMESPACE/$MASTER_POD_NAME:var/opt/mssql/data -c mssql-server || (echo $ERROR_MESSAGE && exit 1)
+
+        echo Removing database backup file...
+        $DEBUG kubectl exec $MASTER_POD_NAME -n $CLUSTER_NAMESPACE -c mssql-server -i -t -- bash -c "rm -rvf /var/opt/mssql/data/$file"
     done
+fi
+
+# If HADR is enabled then port-forward 1533 temporarily to connect to the primary directly
+# Default timeout for port-forward is 5 minutes so start command in background & it will terminate automatically
+if [ "$HADR_ENABLED" == "1" ]
+then
+    $DEBUG kubectl port-forward pods/$MASTER_POD_NAME 1533:1533 -n $CLUSTER_NAMESPACE &
+    SQL_MASTER_INSTANCE=127.0.0.1,1533
 fi
 
 echo Configuring sample database...
@@ -89,7 +102,7 @@ export SA_PASSWORD=$KNOX_PASSWORD
 $DEBUG sqlcmd -S $SQL_MASTER_INSTANCE -Usa -P$SQL_MASTER_SA_PASSWORD -I -b -i "$STARTUP_PATH/bootstrap-sample-db.sql" -o "bootstrap.out" || (echo $ERROR_MESSAGE && exit 2)
 
 # remove files copied into the pod:
-echo Removing database backup files...
+echo Removing database backup file...
 $DEBUG kubectl exec $MASTER_POD_NAME -n $CLUSTER_NAMESPACE -c mssql-server -i -t -- bash -c "rm -rvf /var/opt/mssql/data/tpcxbb_1gb.bak"
 
 for table in web_clickstreams inventory customer
@@ -104,26 +117,26 @@ for table in web_clickstreams inventory customer
     # WSL ex: "/mnt/c/Program Files/Microsoft SQL Server/Client SDK/ODBC/130/Tools/Binn/bcp.exe"
     if [ ! -f $table.csv ]
     then
-        $DEBUG bcp sales.dbo.$table out "$table.csv" -S $SQL_MASTER_INSTANCE -Usa -P$SQL_MASTER_SA_PASSWORD -c -t"$DELIMITER" -e "$table.err" || (echo $ERROR_MESSAGE && exit 3)
+        $DEBUG bcp sales.dbo.$table out "$table.csv" -S $SQL_MASTER_INSTANCE -Usa -P$SQL_MASTER_SA_PASSWORD -c -t"$DELIMITER" -e "$table.err" > "$table.out" || (echo $ERROR_MESSAGE && exit 3)
     fi
 done
 
 if [ ! -f product_reviews.csv ]
 then
     echo Exporting product_reviews data...
-    $DEBUG bcp "select pr_review_sk, replace(replace(pr_review_content, ',', ';'), char(34), '') as pr_review_content from sales.dbo.product_reviews" queryout "product_reviews.csv" -S $SQL_MASTER_INSTANCE -Usa -P$SQL_MASTER_SA_PASSWORD -c -t, -e "product_reviews.err" || (echo $ERROR_MESSAGE && exit 3)
+    $DEBUG bcp "select pr_review_sk, replace(replace(pr_review_content, ',', ';'), char(34), '') as pr_review_content from sales.dbo.product_reviews" queryout "product_reviews.csv" -S $SQL_MASTER_INSTANCE -Usa -P$SQL_MASTER_SA_PASSWORD -c -t, -e "product_reviews.err" > "$table.out" || (echo $ERROR_MESSAGE && exit 3)
 fi
 
 # Copy the data file to HDFS
 echo Uploading web_clickstreams data to HDFS...
-$DEBUG curl -i -L -k -u root:$KNOX_PASSWORD -X PUT "https://$KNOX_ENDPOINT/gateway/default/webhdfs/v1/clickstream_data?op=MKDIRS" || (echo $ERROR_MESSAGE && exit 4)
-$DEBUG curl -i -L -k -u root:$KNOX_PASSWORD -X PUT "https://$KNOX_ENDPOINT/gateway/default/webhdfs/v1/clickstream_data/web_clickstreams.csv?op=create&overwrite=true" -H 'Content-Type: application/octet-stream' -T "web_clickstreams.csv" || (echo $ERROR_MESSAGE && exit 5)
+$DEBUG curl -L -k -u root:$KNOX_PASSWORD -X PUT "https://$KNOX_ENDPOINT/gateway/default/webhdfs/v1/clickstream_data?op=MKDIRS" || (echo $ERROR_MESSAGE && exit 4)
+$DEBUG curl -L -k -u root:$KNOX_PASSWORD -X PUT "https://$KNOX_ENDPOINT/gateway/default/webhdfs/v1/clickstream_data/web_clickstreams.csv?op=create&overwrite=true" -H 'Content-Type: application/octet-stream' -T "web_clickstreams.csv" || (echo $ERROR_MESSAGE && exit 5)
 #$DEBUG rm -f web_clickstreams.*
 
 echo
 echo Uploading product_reviews data to HDFS...
-$DEBUG curl -i -L -k -u root:$KNOX_PASSWORD -X PUT "https://$KNOX_ENDPOINT/gateway/default/webhdfs/v1/product_review_data?op=MKDIRS" || (echo $ERROR_MESSAGE && exit 6)
-$DEBUG curl -i -L -k -u root:$KNOX_PASSWORD -X PUT "https://$KNOX_ENDPOINT/gateway/default/webhdfs/v1/product_review_data/product_reviews.csv?op=create&overwrite=true" -H "Content-Type: application/octet-stream" -T "product_reviews.csv" || (echo $ERROR_MESSAGE && exit 7)
+$DEBUG curl -L -k -u root:$KNOX_PASSWORD -X PUT "https://$KNOX_ENDPOINT/gateway/default/webhdfs/v1/product_review_data?op=MKDIRS" || (echo $ERROR_MESSAGE && exit 6)
+$DEBUG curl -L -k -u root:$KNOX_PASSWORD -X PUT "https://$KNOX_ENDPOINT/gateway/default/webhdfs/v1/product_review_data/product_reviews.csv?op=create&overwrite=true" -H "Content-Type: application/octet-stream" -T "product_reviews.csv" || (echo $ERROR_MESSAGE && exit 7)
 #$DEBUG rm -f product_reviews.*
 
 echo
