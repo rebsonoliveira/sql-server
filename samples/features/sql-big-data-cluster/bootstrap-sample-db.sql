@@ -137,7 +137,7 @@ BEGIN
 			-- Set recovery to full
 			EXECUTE @proc N'ALTER DATABASE CURRENT SET RECOVERY FULL';
 
-			SET @command = CONCAT(N'BACKUP DATABASE ', @db_name, ' TO DISK = ''/dev/null'';' );
+			SET @command = CONCAT(N'BACKUP DATABASE ', @db_name, ' TO DISK = ''NUL'';' );
 			EXEC(@command);
 		END;
 
