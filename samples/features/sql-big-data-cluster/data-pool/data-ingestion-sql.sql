@@ -4,12 +4,8 @@ GO
 -- Create external data source for Data Pool inside a SQL big data cluster
 --
 IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'SqlDataPool')
-		IF SERVERPROPERTY('ProductLevel') = 'CTP3.0'
-			CREATE EXTERNAL DATA SOURCE SqlDataPool
-			WITH (LOCATION = 'sqldatapool://controller-svc:8080/datapools/default');
-		ELSE IF SERVERPROPERTY('ProductLevel') = 'CTP3.1'
-			CREATE EXTERNAL DATA SOURCE SqlDataPool
-			WITH (LOCATION = 'sqldatapool://controller-svc/default');
+    CREATE EXTERNAL DATA SOURCE SqlDataPool
+    WITH (LOCATION = 'sqldatapool://controller-svc/default');
 
 -- Create external table in a data pool in SQL Server 2019 big data cluster.
 -- The SqlDataPool data source is a special data source that is available in 
