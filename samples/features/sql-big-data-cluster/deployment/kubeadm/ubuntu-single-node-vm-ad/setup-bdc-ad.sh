@@ -95,7 +95,6 @@ IMAGES=(
         mssql-appdeploy-init
         mssql-controller
         mssql-hadoop
-		mssql-dns
         mssql-mleap-serving-runtime
         mssql-mlserver-py-runtime
         mssql-mlserver-r-runtime
@@ -347,7 +346,6 @@ azdata bdc config init --source kubeadm-dev-test  --target kubeadm-custom -f
 azdata bdc config replace -c kubeadm-custom/control.json -j ".spec.docker.repository=$DOCKER_REPOSITORY"
 azdata bdc config replace -c kubeadm-custom/control.json -j ".spec.docker.registry=$DOCKER_REGISTRY"
 azdata bdc config replace -c kubeadm-custom/control.json -j ".spec.docker.imageTag=$DOCKER_TAG"
-azdata bdc config replace -c kubeadm-custom/control.json -j ".spec.docker.imagePullPolicy=IfNotPresent"
 azdata bdc config replace -c kubeadm-custom/cluster.json -j "$.spec.pools[?(@.spec.type == "Data")].spec.replicas=1"
 azdata bdc config replace -c kubeadm-custom/control.json -j "spec.storage.data.className=$STORAGE_CLASS"
 azdata bdc config replace -c kubeadm-custom/control.json -j "spec.storage.logs.className=$STORAGE_CLASS"
@@ -375,4 +373,3 @@ fi
  
 echo "alias azdata='$BDCDEPLOY_DIR/$VIRTUALENV_NAME/bin/azdata'" >> $HOME/.bashrc
 }| tee $LOG_FILE
-
