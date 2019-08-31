@@ -373,3 +373,4 @@ fi
  
 echo "alias azdata='$BDCDEPLOY_DIR/$VIRTUALENV_NAME/bin/azdata'" >> $HOME/.bashrc
 }| tee $LOG_FILE
+
