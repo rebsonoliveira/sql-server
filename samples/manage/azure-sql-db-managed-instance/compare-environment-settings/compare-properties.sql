@@ -18,6 +18,11 @@ select property = 'TEMPDB:'+y.v.value('local-name(.)', 'nvarchar(300)'),
 		value = y.v.value('.[1]', 'nvarchar(300)')
 from @source.nodes('//tempdb') x(v)
 cross apply x.v.nodes('*') y(v)
+UNION ALL
+select property = 'INSTANCE:'+y.v.value('local-name(.)', 'nvarchar(300)'),
+		value = y.v.value('.[1]', 'nvarchar(300)')
+from @source.nodes('//instance') x(v)
+cross apply x.v.nodes('*') y(v)
 ),
 tgt as(
 select property = x.v.value('name[1]', 'nvarchar(300)'),
@@ -32,6 +37,11 @@ UNION ALL
 select property = 'TEMPDB:'+y.v.value('local-name(.)', 'nvarchar(300)'),
 		value = y.v.value('.[1]', 'nvarchar(300)')
 from @target.nodes('//tempdb') x(v)
+cross apply x.v.nodes('*') y(v)
+UNION ALL
+select property = 'INSTANCE:'+y.v.value('local-name(.)', 'nvarchar(300)'),
+		value = y.v.value('.[1]', 'nvarchar(300)')
+from @target.nodes('//instance') x(v)
 cross apply x.v.nodes('*') y(v)
 ),
 diff as (
