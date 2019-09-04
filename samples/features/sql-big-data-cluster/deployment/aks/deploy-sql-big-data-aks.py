@@ -78,7 +78,7 @@ print("Creating SQL Big Data cluster:" +CLUSTER_NAME)
 command="azdata bdc config init --source aks-dev-test --target custom --force"
 executeCmd (command)
 
-command="azdata bdc config replace -c custom/cluster.json -j ""metadata.name=" + CLUSTER_NAME + ""
+command="azdata bdc config replace -c custom/bdc.json -j ""metadata.name=" + CLUSTER_NAME + ""
 executeCmd (command)
 
 # Use this only if you are using a private registry different than default Micrososft registry (mcr). 
