@@ -6,6 +6,8 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 
+STARTUP_PATH=$(pwd)
+
 # This is a script to create single-node Kubernetes cluster and deploy BDC on it.
 #
 export BDCDEPLOY_DIR=bdcdeploy
@@ -38,26 +40,6 @@ while true; do
 done
 export DOMAIN_SERVICE_ACCOUNT_PASSWORD=$ds_password
 echo ""
-
-# Get the security patch filepath.
-#
-read -p "Enter the Absolute FilePath for Security Patch Json: " security_patch_json_path
-while [ ! -s $security_patch_json_path ];do
-  echo "Security Patch Json File does not exist."
-  read -p "Enter the Absolute FilePath for Security Patch Json: " security_patch_json_path
-done
-echo ""
-export SECURITY_PATCH_JSON_PATH=$security_patch_json_path
-
-# Get the endpoint patch filepath.
-#
-read -p "Enter the Absolute FilePath for Endpoint Patch Json: " endpoint_patch_json_path
-while [ ! -s $endpoint_patch_json_path ];do
-  echo "Endpoint Patch Json File does not exist."
-  read -p "Enter the Absolute FilePath for Endpoint Patch Json: " endpoint_patch_json_path
-done
-export ENDPOINT_PATCH_JSON_PATH=$endpoint_patch_json_path
-echo 
 
 # Name of virtualenv variable used.
 #
@@ -173,7 +155,7 @@ source $VIRTUALENV_NAME/bin/activate
 
 # Install azdata cli.
 #
-pip3 install -r $REQUIREMENTS_LINK --trusted-host helsinki.redmond.corp.microsoft.com
+pip3 install -r $REQUIREMENTS_LINK
 echo "Packages installed." 
 
 # Load all pre-requisites for Kubernetes.
@@ -358,9 +340,8 @@ azdata bdc config replace -c kubeadm-custom/control.json -j ".spec.docker.imageT
 azdata bdc config replace -c kubeadm-custom/bdc.json -j "$.spec.resources.data-0.spec.replicas=1"
 azdata bdc config replace -c kubeadm-custom/control.json -j "spec.storage.data.className=$STORAGE_CLASS"
 azdata bdc config replace -c kubeadm-custom/control.json -j "spec.storage.logs.className=$STORAGE_CLASS"
-
-azdata bdc config patch -c kubeadm-custom/control.json -p $SECURITY_PATCH_JSON_PATH
-azdata bdc config patch -c kubeadm-custom/bdc.json -p $ENDPOINT_PATCH_JSON_PATH
+azdata bdc config patch -c kubeadm-custom/control.json -p $STARTUP_PATH/security-patch.json
+azdata bdc config patch -c kubeadm-custom/cluster.json -p $STARTUP_PATH/endpoint-patch.json
 
 azdata bdc create -c kubeadm-custom --accept-eula $ACCEPT_EULA
 
