@@ -1,20 +1,19 @@
 {
   "patch": [
     {
-      "op": "replace",
-      "path": "spec.pools[?(@.spec.type=='Master')].spec",
-      "value": {
-        "type": "Master",
-        "dnsName": "mastersql.contoso.local",
-        "replicas": 1,
-        "endpoints": [
-          {
-            "name": "Master",
-            "serviceType": "NodePort",
-            "port": 31433
-          }
-        ]
-      }
+      "op": "add",
+      "path": "spec.resources.master.spec.endpoints[0].dnsName",
+      "value": "mastersql.contoso.local"
+    },
+    {
+      "op": "add",
+      "path": "spec.resources.gateway.spec.endpoints[0].dnsName",
+      "value": "knox.contoso.local"
+    },
+    {
+      "op": "add",
+      "path": "spec.resources.appproxy.spec.endpoints[0].dnsName",
+      "value": "app.contoso.local"
     }
   ]
 }
