@@ -341,7 +341,7 @@ azdata bdc config replace -c kubeadm-custom/bdc.json -j "$.spec.resources.data-0
 azdata bdc config replace -c kubeadm-custom/control.json -j "spec.storage.data.className=$STORAGE_CLASS"
 azdata bdc config replace -c kubeadm-custom/control.json -j "spec.storage.logs.className=$STORAGE_CLASS"
 azdata bdc config patch -c kubeadm-custom/control.json -p $STARTUP_PATH/security-patch.json
-azdata bdc config patch -c kubeadm-custom/cluster.json -p $STARTUP_PATH/endpoint-patch.json
+azdata bdc config patch -c kubeadm-custom/bdc.json -p $STARTUP_PATH/endpoint-patch.json
 
 azdata bdc create -c kubeadm-custom --accept-eula $ACCEPT_EULA
 
