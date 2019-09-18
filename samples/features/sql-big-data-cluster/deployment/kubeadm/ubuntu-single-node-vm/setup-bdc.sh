@@ -321,7 +321,7 @@ azdata bdc config replace -c kubeadm-custom/bdc.json -j "$.spec.resources.data-0
 azdata bdc config replace -c kubeadm-custom/control.json -j "spec.storage.data.className=$STORAGE_CLASS"
 azdata bdc config replace -c kubeadm-custom/control.json -j "spec.storage.logs.className=$STORAGE_CLASS"
 azdata bdc create -c kubeadm-custom --accept-eula $ACCEPT_EULA
-echo "Azdata cluster created." 
+echo "Big data cluster created." 
 
 # Setting context to cluster.
 #
