@@ -46,7 +46,7 @@ RETRY_INTERVAL=5
 #
 export DOCKER_REGISTRY="mcr.microsoft.com"
 export DOCKER_REPOSITORY="mssql/bdc"
-export DOCKER_TAG="2019-CTP3.2-ubuntu"
+export DOCKER_TAG="2019-RC1-ubuntu"
 
 # Variables used for azdata cluster creation.
 #
@@ -60,9 +60,10 @@ export STORAGE_CLASS=local-storage
 export PV_COUNT="30"
 
 IMAGES=(
-        mssql-app-service-proxy
-        mssql-appdeploy-init
+	mssql-app-service-proxy
+        mssql-control-watchdog
         mssql-controller
+        mssql-dns
         mssql-hadoop
         mssql-mleap-serving-runtime
         mssql-mlserver-py-runtime
@@ -74,10 +75,13 @@ IMAGES=(
         mssql-monitor-influxdb
         mssql-monitor-kibana
         mssql-monitor-telegraf
+        mssql-security-domainctl
         mssql-security-knox
         mssql-security-support
+        mssql-server
         mssql-server-controller
         mssql-server-data
+        mssql-server-ha
         mssql-service-proxy
         mssql-ssis-app-runtime
 )
@@ -313,11 +317,11 @@ azdata bdc config init --source kubeadm-dev-test  --target kubeadm-custom -f
 azdata bdc config replace -c kubeadm-custom/control.json -j ".spec.docker.repository=$DOCKER_REPOSITORY"
 azdata bdc config replace -c kubeadm-custom/control.json -j ".spec.docker.registry=$DOCKER_REGISTRY"
 azdata bdc config replace -c kubeadm-custom/control.json -j ".spec.docker.imageTag=$DOCKER_TAG"
-azdata bdc config replace -c kubeadm-custom/cluster.json -j "$.spec.pools[?(@.spec.type == "Data")].spec.replicas=1"
+azdata bdc config replace -c kubeadm-custom/bdc.json -j "$.spec.resources.data-0.spec.replicas=1"
 azdata bdc config replace -c kubeadm-custom/control.json -j "spec.storage.data.className=$STORAGE_CLASS"
 azdata bdc config replace -c kubeadm-custom/control.json -j "spec.storage.logs.className=$STORAGE_CLASS"
 azdata bdc create -c kubeadm-custom --accept-eula $ACCEPT_EULA
-echo "Azdata cluster created." 
+echo "Big data cluster created." 
 
 # Setting context to cluster.
 #

@@ -4,10 +4,9 @@
       "op": "add",
       "path": "security",
       "value": {
-        "useInternalDomain": false,
         "ouDistinguishedName":"OU=bdc,DC=contoso,DC=local",
-        "dnsIpAddresses": ["11.11.111.11"],
-        "domainControllerFullyQualifiedDns": ["VM.CONTOSO.LOCAL"],
+        "dnsIpAddresses": ["00.00.000.00"],
+        "domainControllerFullyQualifiedDns": ["DC.CONTOSO.LOCAL"],
         "realm":"CONTOSO.LOCAL",
         "domainDnsName":"contoso.local",
         "bdcAdminPrincipals": [
@@ -20,12 +19,13 @@
     },
     {
       "op": "add",
-      "path": "spec.endpoints/0",
-      "value": {
-        "name": "Kerberos",
-        "serviceType": "NodePort",
-        "port": 30088
-      }
+      "path": "spec.endpoints[0].dnsName",
+      "value": "controller.contoso.local"
+    },
+    {
+      "op": "add",
+      "path": "spec.endpoints[1].dnsName",
+      "value": "serviceproxy.contoso.local"
     }
   ]
 }

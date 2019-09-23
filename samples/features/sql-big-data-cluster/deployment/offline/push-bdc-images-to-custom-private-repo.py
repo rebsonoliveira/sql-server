@@ -26,26 +26,30 @@ TARGET_DOCKER_USERNAME = input("Provide Docker username for the target registry:
 TARGET_DOCKER_PASSWORD = getpass.getpass("Provide Docker password for the target registry:")
 TARGET_DOCKER_TAG = input("Provide Docker tag for the images at the target: ") or "latest"
 
-images = [  'mssql-appdeploy-init',
-            'mssql-monitor-fluentbit',
-            'mssql-monitor-collectd',
-            'mssql-server-data',
-            'mssql-hadoop',
-            'mssql-monitor-elasticsearch',
-            'mssql-monitor-influxdb',
-            'mssql-security-knox',
-            'mssql-mlserver-r-runtime',
-            'mssql-mlserver-py-runtime',
-            'mssql-controller',
-            'mssql-mleap-serving-runtime',
-            'mssql-server-controller',
-            'mssql-monitor-grafana',
-            'mssql-monitor-kibana',
-            'mssql-service-proxy',
-	    'mssql-app-service-proxy',
-	    'mssql-ssis-app-runtime',
-            'mssql-monitor-telegraf',
-	    'mssql-security-support']
+images = ['mssql-app-service-proxy',
+          'mssql-control-watchdog'
+           'mssql-controller'
+           'mssql-dns'
+           'mssql-hadoop'
+           'mssql-mleap-serving-runtime'
+           'mssql-mlserver-py-runtime'
+           'mssql-mlserver-r-runtime'
+           'mssql-monitor-collectd'
+           'mssql-monitor-elasticsearch'
+           'mssql-monitor-fluentbit'
+           'mssql-monitor-grafana'
+           'mssql-monitor-influxdb'
+           'mssql-monitor-kibana'
+           'mssql-monitor-telegraf'
+           'mssql-security-domainctl'
+           'mssql-security-knox'
+           'mssql-security-support'
+           'mssql-server'
+           'mssql-server-controller'
+           'mssql-server-data'
+           'mssql-server-ha'
+           'mssql-service-proxy'
+           'mssql-ssis-app-runtime']
 
 # Use this only if your source is a private Docker registry
 # print("Execute docker login to source registry: " + SOURCE_DOCKER_REGISTRY)

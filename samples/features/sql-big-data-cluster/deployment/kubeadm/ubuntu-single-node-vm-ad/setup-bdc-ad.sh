@@ -22,19 +22,7 @@ while true; do
     [ "$password" = "$password2" ] && break
     echo "Password mismatch. Please try again."
 done
-echo ""
-# Get docker credentials for private release.
-#
-read -p "Enter Docker username: " DOCKER_USERNAME
-while true; do
-    read -s -p "Enter Docker Password: " docker_password
-    echo
-    read -s -p "Confirm Docker Password: " docker_password2
-    echo
-    [ "$docker_password" = "$docker_password2" ] && break
-    echo "Password mismatch. Please try again."
-done
-export DOCKER_PASSWORD=$docker_password
+
 echo ""
 
 # Get Domain Service Account Username and Password.
@@ -75,9 +63,9 @@ RETRY_INTERVAL=5
 
 # Variables for pulling dockers.
 #
-export DOCKER_REGISTRY="private-repo.microsoft.com"
-export DOCKER_REPOSITORY="mssql-private-preview"
-export DOCKER_TAG="ctp3.2.1"
+export DOCKER_REGISTRY="mcr.microsoft.com"
+export DOCKER_REPOSITORY="mssql/bdc"
+export DOCKER_TAG="2019-RC1-ubuntu"
 
 # Variables used for azdata cluster creation.
 #
@@ -91,9 +79,10 @@ export STORAGE_CLASS=local-storage
 export PV_COUNT="30"
 
 IMAGES=(
-        mssql-app-service-proxy
-        mssql-appdeploy-init
+	mssql-app-service-proxy
+        mssql-control-watchdog
         mssql-controller
+        mssql-dns
         mssql-hadoop
         mssql-mleap-serving-runtime
         mssql-mlserver-py-runtime
@@ -105,10 +94,13 @@ IMAGES=(
         mssql-monitor-influxdb
         mssql-monitor-kibana
         mssql-monitor-telegraf
+        mssql-security-domainctl
         mssql-security-knox
         mssql-security-support
+        mssql-server
         mssql-server-controller
         mssql-server-data
+        mssql-server-ha
         mssql-service-proxy
         mssql-ssis-app-runtime
 )
@@ -320,25 +312,24 @@ echo "Kubernetes master setup done."
 
 # Pull docker images of SQL Server big data cluster.
 #
+
 echo ""
 echo "############################################################################"
 echo "Starting to pull docker images..." 
 echo "Pulling images from repository: " $DOCKER_REGISTRY"/"$DOCKER_REPOSITORY
 
-docker login $DOCKER_REGISTRY -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 for image in "${IMAGES[@]}";
 do
     docker pull $DOCKER_REGISTRY/$DOCKER_REPOSITORY/$image:$DOCKER_TAG
     echo "Docker image" $image " pulled."
 done
-docker logout $DOCKER_REGISTRY
 echo "Docker images pulled." 
 
 # Deploy azdata bdc create cluster.
 #
 echo ""
 echo "############################################################################"
-echo "Starting to deploy azdata cluster..." 
+echo "Starting to deploy big data cluster..." 
 
 # Command to create cluster for single node cluster.
 #
@@ -346,13 +337,15 @@ azdata bdc config init --source kubeadm-dev-test  --target kubeadm-custom -f
 azdata bdc config replace -c kubeadm-custom/control.json -j ".spec.docker.repository=$DOCKER_REPOSITORY"
 azdata bdc config replace -c kubeadm-custom/control.json -j ".spec.docker.registry=$DOCKER_REGISTRY"
 azdata bdc config replace -c kubeadm-custom/control.json -j ".spec.docker.imageTag=$DOCKER_TAG"
-azdata bdc config replace -c kubeadm-custom/cluster.json -j "$.spec.pools[?(@.spec.type == "Data")].spec.replicas=1"
+azdata bdc config replace -c kubeadm-custom/bdc.json -j "$.spec.resources.data-0.spec.replicas=1"
 azdata bdc config replace -c kubeadm-custom/control.json -j "spec.storage.data.className=$STORAGE_CLASS"
 azdata bdc config replace -c kubeadm-custom/control.json -j "spec.storage.logs.className=$STORAGE_CLASS"
 azdata bdc config patch -c kubeadm-custom/control.json -p $STARTUP_PATH/security-patch.json
-azdata bdc config patch -c kubeadm-custom/cluster.json -p $STARTUP_PATH/endpoint-patch.json
+azdata bdc config patch -c kubeadm-custom/bdc.json -p $STARTUP_PATH/endpoint-patch.json
+
 azdata bdc create -c kubeadm-custom --accept-eula $ACCEPT_EULA
-echo "Azdata cluster created." 
+
+echo "Big data cluster created." 
 
 # Setting context to cluster.
 #

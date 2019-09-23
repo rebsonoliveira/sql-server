@@ -7,4 +7,8 @@ This folder contains scripts that provide a template for deploying a Kubernetes 
 
 ## __[ubuntu-single-node-vm](ubuntu-single-node-vm/)__
 
-This folder contains a sample script that can be used to deploy a single-node Kubernetes cluster on a Linux machine.
+This folder contains a sample script that can be used to create a single-node Kubernetes cluster on a Linux machine and deploy SQL Server big data cluster.
+
+## __[ubuntu-single-node-vm-ad](ubuntu-single-node-vm-ad/)__
+
+This folder contains a sample script that can be used to create a single-node Kubernetes cluster on a Linux machine and deploy SQL Server big data cluster with Active Directory integration.

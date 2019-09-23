@@ -18,7 +18,16 @@ BEGIN
 END;
 GO
 
-CREATE OR ALTER PROCEDURE #restore_database (@backup_file nvarchar(255))
+-- Enable option to allow INSERT against external table defined on HADOOP data source
+DECLARE @config_option nvarchar(100) = 'allow polybase export';
+IF NOT EXISTS(SELECT * FROM sys.configurations WHERE name = @config_option and value_in_use = 1)
+BEGIN
+	EXECUTE sp_configure @config_option, 1;
+	RECONFIGURE WITH OVERRIDE;
+END;
+GO
+
+CREATE OR ALTER PROCEDURE #restore_database (@backup_file nvarchar(255), @db_name nvarchar(128))
 AS
 BEGIN
 	DECLARE @restore_filelist_tmpl nvarchar(1000) = N'RESTORE FILELISTONLY FROM  DISK = N''/var/opt/mssql/data/%F''';
@@ -53,7 +62,7 @@ BEGIN
 	INSERT INTO @files
 	EXECUTE(@restore_cmd);
 
-	SET @restore_cmd = REPLACE(REPLACE(@restore_database_tmpl, '%F', @backup_file), '%D', LEFT(@backup_file, CHARINDEX('.', @backup_file)-1));
+	SET @restore_cmd = REPLACE(REPLACE(@restore_database_tmpl, '%F', @backup_file), '%D', @db_name);
 	SET @restore_cur = CURSOR FAST_FORWARD FOR SELECT LogicalName, REVERSE(LEFT(REVERSE(PhysicalName), CHARINDEX('\', REVERSE(PhysicalName))-1)) FROM @files;
 	OPEN @restore_cur;
 	WHILE(1=1)
@@ -84,50 +93,58 @@ BEGIN
 		WITH (LOCATION = 'sqlhdfs://controller-svc/default');
 
 	IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'HadoopData')
-		IF SERVERPROPERTY('ProductLevel') = 'CTP3.1'
-			CREATE EXTERNAL DATA SOURCE HadoopData
-			WITH(
-					TYPE=HADOOP,
-					LOCATION='hdfs://nmnode-0-svc:9000/',
-					RESOURCE_MANAGER_LOCATION='master-svc:8032'
-			);
-		ELSE IF SERVERPROPERTY('ProductLevel') = 'CTP3.2'
-			CREATE EXTERNAL DATA SOURCE HadoopData
-			WITH(
-					TYPE=HADOOP,
-					LOCATION='hdfs://nmnode-0-svc:9000/',
-					RESOURCE_MANAGER_LOCATION='sparkhead-svc:8032'
-			);
+		CREATE EXTERNAL DATA SOURCE HadoopData
+		WITH(
+				TYPE=HADOOP,
+				LOCATION='hdfs://nmnode-0-svc:9000/',
+				RESOURCE_MANAGER_LOCATION='sparkhead-svc:8032'
+		);
 END;
 GO
 
 --- Sample dbs:
 DECLARE @sample_dbs CURSOR, @proc nvarchar(255);
 SET @sample_dbs = CURSOR FAST_FORWARD FOR
-									SELECT file_or_directory_name
-									FROM sys.dm_os_enumerate_filesystem('/var/opt/mssql/data', '*.bak')
-									WHERE DB_ID(REPLACE(REPLACE(file_or_directory_name, 'tpcxbb_1gb', 'sales'), '.bak', '')) IS NULL;
-DECLARE @file nvarchar(260);														
+									SELECT file_or_directory_name, d.db_name
+									FROM sys.dm_os_enumerate_filesystem('/var/opt/mssql/data', '*.bak') as f
+									CROSS APPLY (VALUES(REPLACE(REPLACE(file_or_directory_name, 'tpcxbb_1gb', 'sales'), '.bak', ''))) as d(db_name)
+									WHERE DB_ID(d.db_name) IS NULL;
+DECLARE @file nvarchar(260), @db_name nvarchar(128);														
 OPEN @sample_dbs;
 WHILE(1=1)
 BEGIN
-	FETCH @sample_dbs INTO @file;
+	FETCH @sample_dbs INTO @file, @db_name;
 	IF @@FETCH_STATUS < 0 BREAK;
 
 	-- Restore the sample databases:
-	EXECUTE #restore_database @file;
+	EXECUTE #restore_database @file, @db_name;
 
 	-- Get database name used in restore:
-	SET @proc = CONCAT(QUOTENAME(LEFT(@file, CHARINDEX('.', @file)-1)), N'.sys.sp_executesql');
+	SET @db_name = QUOTENAME(@db_name);
+	SET @proc = CONCAT(@db_name, N'.sys.sp_executesql');
 
 	EXECUTE @proc N'#create_data_sources';
 
 	-- Set compatibility level to 150:
 	EXECUTE @proc N'ALTER DATABASE CURRENT SET COMPATIBILITY_LEVEL = 150';
 
-	-- Rename TPCx-BB database:
-	IF DB_ID('tpcxbb_1gb') IS NOT NULL
-		ALTER DATABASE tpcxbb_1gb MODIFY NAME = sales;
+	-- Check for HADR & add database to containedag:
+	IF SERVERPROPERTY('IsHadrEnabled') = 1
+	BEGIN
+		DECLARE @command nvarchar(1000);
+		IF EXISTS(SELECT * FROM sys.databases WHERE name = PARSENAME(@db_name,1) and recovery_model_desc = 'SIMPLE')
+		BEGIN
+			-- Set recovery to full
+			EXECUTE @proc N'ALTER DATABASE CURRENT SET RECOVERY FULL';
+
+			SET @command = CONCAT(N'BACKUP DATABASE ', @db_name, ' TO DISK = ''NUL'';' );
+			EXEC(@command);
+		END;
+
+		-- Add database to AG
+		SET @command = CONCAT(N'ALTER AVAILABILITY GROUP containedag ADD DATABASE ', @db_name);
+		EXEC(@command);
+	END;
 END;
 GO
 

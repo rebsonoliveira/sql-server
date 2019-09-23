@@ -53,6 +53,20 @@ where name in ('cost threshold for parallelism','cursor threshold','fill factor 
 for xml raw, elements
 );
 set @result += (select name = 'version', value = @@VERSION for xml raw, elements)
-select cast(@result as xml);
-end;
 
+set @result += isnull
+((SELECT scheduler_count, scheduler_total_count FROM sys.dm_os_sys_info
+   for xml raw('instance'), elements),''
+);
+
+set @result += 
+isnull((SELECT name = REPLACE([type], 'MEMORYCLERK_', 'MEMORY:') 
+     , value = CAST(sum(pages_kb)/1024.1/1024 AS NUMERIC(6,1))
+   FROM sys.dm_os_memory_clerks
+   GROUP BY type
+   HAVING sum(pages_kb) /1024. /1024 > 1
+   for xml raw, elements),'');
+
+select cast(@result as xml);
+
+end;
