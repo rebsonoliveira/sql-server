@@ -1,49 +1,60 @@
-{
-  "version": "0.3",
+﻿{
+  "version": "0.1.203",
+  "name": "Microsoft Ruleset", 
   "checks": [
     {
       "target": {
         "type": "Database",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises, ManagedInstance"
       },
-      "id": "SqlServer.Database.AutoCreateStats",
-      "tags": [ "Performance" ],
+      "id": "AutoCreateStats",
+      "tags": ["DefaultRuleset", "Performance"],
       "displayName": "Auto-Create Statistics should be on",
-      "description": "The Query Optimizer determines whether an index is useful for a specific query by evaluating the stored statistics. If the statistics become out of date and significant changes have occurred against the underlying data, this can result in less than optimal query performance. In most cases, it's best to let SQL Server maintain the statistics. If you turn 'Auto Create Stats' and 'Auto Update Stats' off, then it is up to you to keep the statistics up-to-date somehow. Failure to do so will lead to poor query performance. Most applications should have these options ON.\n \n When the Auto Create statistics setting is ON, the Query Optimizer creates statistics on one or more columns of a table or an indexed view, as necessary, to improve query plans and query performance.",
+      "description":
+        "The Query Optimizer determines whether an index is useful for a specific query by evaluating the stored statistics. If the statistics become out of date and significant changes have occurred against the underlying data, this can result in less than optimal query performance. In most cases, it's best to let SQL Server maintain the statistics. If you turn 'Auto Create Stats' and 'Auto Update Stats' off, then it is up to you to keep the statistics up-to-date somehow. Failure to do so will lead to poor query performance. Most applications should have these options ON.\n \n When the Auto Create statistics setting is ON, the Query Optimizer creates statistics on one or more columns of a table or an indexed view, as necessary, to improve query plans and query performance.",
       "message": "Turn Auto-Create Statistics option on to improve query performance.",
       "helpLink": "https://docs.microsoft.com/sql/relational-databases/statistics/statistics#CreateStatistics",
-      "probes": [ "DatabaseConfiguration" ],
+      "probes": ["DatabaseConfiguration"],
       "condition": "@is_auto_create_stats_on"
     },
     {
       "target": {
         "type": "Database",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises, ManagedInstance"
       },
-      "id": "SqlServer.Database.AutoUpdateStats",
-      "tags": [ "Performance" ],
+      "id": "AutoUpdateStats",
+      "tags": ["DefaultRuleset", "Performance"],
       "displayName": "Auto-Update Statistics should be on",
-      "description": "The Query Optimizer determines whether an index is useful for a specific query by evaluating the stored statistics. If the statistics become out of date and significant changes have occurred against the underlying data, this can result in less than optimal query performance. In most cases, it's best to let SQL Server maintain the statistics. If you turn 'Auto Create Stats' and 'Auto Update Stats' off, then it is up to you to keep the statistics up-to-date somehow. Failure to do so will lead to poor query performance. Most applications should have these options ON.\n \n When the Auto Update Statistics setting is ON, the Query Optimizer updates statistics when they are used by a query and when they might be out-of-date. Statistics become out-of-date after insert, update, delete, or merge operations change the data distribution in the table or indexed view. The Query Optimizer determines when statistics might be out-of-date by counting the number of data modifications since the last statistics update and comparing the number of modifications to a threshold. The threshold is based on the number of rows in the table or indexed view. The Query Optimizer checks for out-of-date statistics before compiling a query and before executing a cached query plan. Before compiling a query, the Query Optimizer uses the columns, tables, and indexed views in the query predicate to determine which statistics might be out-of-date. Before executing a cached query plan, the Database Engine verifies that the query plan references up-to-date statistics. The AUTO_UPDATE_STATISTICS option applies to statistics created for indexes, single-columns in query predicates, and statistics that are created by using the CREATE STATISTICS statement. This option also applies to filtered statistics.",
+      "description":
+        "The Query Optimizer determines whether an index is useful for a specific query by evaluating the stored statistics. If the statistics become out of date and significant changes have occurred against the underlying data, this can result in less than optimal query performance. In most cases, it's best to let SQL Server maintain the statistics. If you turn 'Auto Create Stats' and 'Auto Update Stats' off, then it is up to you to keep the statistics up-to-date somehow. Failure to do so will lead to poor query performance. Most applications should have these options ON.\n \n When the Auto Update Statistics setting is ON, the Query Optimizer updates statistics when they are used by a query and when they might be out-of-date. Statistics become out-of-date after insert, update, delete, or merge operations change the data distribution in the table or indexed view. The Query Optimizer determines when statistics might be out-of-date by counting the number of data modifications since the last statistics update and comparing the number of modifications to a threshold. The threshold is based on the number of rows in the table or indexed view. The Query Optimizer checks for out-of-date statistics before compiling a query and before executing a cached query plan. Before compiling a query, the Query Optimizer uses the columns, tables, and indexed views in the query predicate to determine which statistics might be out-of-date. Before executing a cached query plan, the Database Engine verifies that the query plan references up-to-date statistics. The AUTO_UPDATE_STATISTICS option applies to statistics created for indexes, single-columns in query predicates, and statistics that are created by using the CREATE STATISTICS statement. This option also applies to filtered statistics.",
       "message": "Turn Auto-Update Statistics option on to improve query performance.",
       "helpLink": "https://docs.microsoft.com/sql/relational-databases/statistics/statistics#UpdateStatistics",
-      "probes": [ "DatabaseConfiguration" ],
+      "probes": ["DatabaseConfiguration"],
       "condition": "@is_auto_update_stats_on"
     },
     {
       "target": {
         "type": "Database",
-        "version": "[12.0,)",
+        "version": "[13.0,)",
         "platform": "Windows",
-        "name": { "not": "/^(master|tempdb)$/" }
+        "engineEdition": "OnPremises, ManagedInstance",
+        "name": { "not": "/^(master|tempdb|model)$/" }
       },
-      "id": "SqlServer.Database.QueryStoreOn",
-      "tags": [ "Performance" ],
-      "displayName": "Query Store should be on",
-      "description": "The Query Store feature provides you with insight on query plan choice and performance. It simplifies performance troubleshooting by helping you quickly find performance differences caused by query plan changes. Query Store automatically captures a history of queries, plans, and runtime statistics, and retains these for your review. It separates data by time windows so you can see database usage patterns and understand when query plan changes happened on the server.",
-      "message": "Enable the Query Store to improve performance troubleshooting.",
-      "helpLink": "https://docs.microsoft.com/sql/relational-databases/performance/monitoring-performance-by-using-the-query-store",
-      "probes": [ "DatabaseConfiguration" ],
-      "condition": "@is_query_store_on"
+      "id": "QueryStoreOn",
+      "tags": ["DefaultRuleset", "Performance"],
+      "displayName": "Query Store should be active",
+      "description":
+        "The Query Store feature provides you with insight on query plan choice and performance. It simplifies performance troubleshooting by helping you quickly find performance differences caused by query plan changes. Query Store automatically captures a history of queries, plans, and runtime statistics, and retains these for your review. It separates data by time windows so you can see database usage patterns and understand when query plan changes happened on the server. While Query Store collects queries, execution plans and statistics, its size in the database grows until this limit is reached. When that happens, Query Store automatically changes the operation mode to read-only and stops collecting new data, which means that your performance analysis is no longer accurate.",
+      "message":
+        "Make sure Query Store actual operation mode is 'Read Write' to keep your performance analysis accurate",
+      "helpLink":
+        "https://docs.microsoft.com/sql/relational-databases/performance/monitoring-performance-by-using-the-query-store",
+      "probes": ["DatabaseConfiguration"],
+      "condition": {
+        "equal": ["@query_store_state", 2]
+      }
     },
     {
       "target": {
@@ -53,74 +64,87 @@
           "[12.0.2480,13.0)",
           "[13.0,)"
         ],
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.174",
-      "tags": [ "TraceFlag", "Compression", "TF174", "Memory" ],
+      "id": "TF174",
+      "tags": ["DefaultRuleset", "TraceFlag", "Compression", "TF174", "Memory"],
       "displayName": "TF 174 increases the plan cache bucket count",
-      "description": "Trace Flag 174 increases the SQL Server plan cache bucket count from 40,009 to 160,001 on 64-bit systems.\n When the SQL Server plan cache reaches its entry limit, plans that have low cost must be evicted in order to insert new plans. This can cause severe contention on the SOS_CACHESTORE spinlock and a high CPU usage occurs in SQL Server.\n On 64-bit systems, the number of buckets for the SQL Server plan cache is 40,009. Therefore, the maximum number of entries that can fit inside the SQL Server plan cache is 160,036. Enabling trace flag 174 on high performance systems increases the size of the cache and can avoid SOS_CACHESTORE spinlock contention.",
+      "description":
+        "Trace Flag 174 increases the SQL Server plan cache bucket count from 40,009 to 160,001 on 64-bit systems.\n When the SQL Server plan cache reaches its entry limit, plans that have low cost must be evicted in order to insert new plans. This can cause severe contention on the SOS_CACHESTORE spinlock and a high CPU usage occurs in SQL Server.\n On 64-bit systems, the number of buckets for the SQL Server plan cache is 40,009. Therefore, the maximum number of entries that can fit inside the SQL Server plan cache is 160,036. Enabling trace flag 174 on high performance systems increases the size of the cache and can avoid SOS_CACHESTORE spinlock contention.",
       "message": "Consider enabling trace flag 174 to increase the plan cache bucket count.",
-      "helpLink": "https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql",
+      "helpLink":
+        "https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql",
       "level": "Information",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
-        "in": [ 174, "@TraceFlag" ]
+        "in": [174, "@TraceFlag"]
       }
     },
     {
       "target": {
         "type": "Server",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.634",
-      "tags": [ "TraceFlag", "Compression", "TF634", "Memory" ],
+      "id": "TF634",
+      "tags": ["DefaultRuleset", "TraceFlag", "Compression", "TF634", "Memory"],
       "displayName": "TF 634 disables background columnstore compression",
-      "description": "Trace Flag 634 disables the background columnstore compression task.\n SQL Server periodically runs the Tuple Mover background task that compresses columnstore index rowgroups with uncompressed data, one such rowgroup at a time.\n Columnstore compression improves query performance but also consumes system resources.\n You can control the timing of columnstore compression manually, by disabling the background compression task with trace flag 634, and then explicitly invoking ALTER INDEX...REORGANIZE or ALTER INDEX...REBUILD at the time of your choice.",
-      "message": "Trace Flag 634 disables the background columnstore compression task. Verify need to set a non-default trace flag with the current system build and configuration.",
-      "helpLink": "https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql",
+      "description":
+        "Trace Flag 634 disables the background columnstore compression task.\n SQL Server periodically runs the Tuple Mover background task that compresses columnstore index rowgroups with uncompressed data, one such rowgroup at a time.\n Columnstore compression improves query performance but also consumes system resources.\n You can control the timing of columnstore compression manually, by disabling the background compression task with trace flag 634, and then explicitly invoking ALTER INDEX...REORGANIZE or ALTER INDEX...REBUILD at the time of your choice.",
+      "message":
+        "Trace Flag 634 disables the background columnstore compression task. Verify need to set a non-default trace flag with the current system build and configuration.",
+      "helpLink":
+        "https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql",
       "level": "Information",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
         "not": {
-          "in": [ 634, "@TraceFlag" ]
+          "in": [634, "@TraceFlag"]
         }
       }
     },
     {
       "target": {
         "type": "Server",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.652",
-      "tags": [ "TraceFlag", "TF652", "Performance", "Memory" ],
+      "id": "TF652",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF652", "Performance", "Memory"],
       "displayName": "TF 652 disables page pre-fetching scans",
-      "description": "Trace Flag 652 disables page pre-fetching for scans.\n The read-ahead process reads the full extent of a referenced database page into the buffer pool, before those contiguous database pages are consumed by scans.\n Enabling the trace flag can lead to performance issues on queries that leverage pre-fetching.",
-      "message": "Trace Flag 652 disables Page Pre-fetching Scans. Verify need to set a non-default trace flag with the current system build and configuration.",
+      "description":
+        "Trace Flag 652 disables page pre-fetching for scans.\n The read-ahead process reads the full extent of a referenced database page into the buffer pool, before those contiguous database pages are consumed by scans.\n Enabling the trace flag can lead to performance issues on queries that leverage pre-fetching.",
+      "message":
+        "Trace Flag 652 disables Page Pre-fetching Scans. Verify need to set a non-default trace flag with the current system build and configuration.",
       "helpLink": "http://support.microsoft.com/kb/920093",
       "level": "Information",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
         "not": {
-          "in": [ 652, "@TraceFlag" ]
+          "in": [652, "@TraceFlag"]
         }
       }
     },
     {
       "target": {
         "type": "Server",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.661",
-      "tags": [ "TraceFlag", "TF661", "Performance" ],
+      "id": "TF661",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF661", "Performance"],
       "displayName": "TF 661 disables Ghost Cleanup Task",
-      "description": "Trace Flag 661 disables the ghost record removal process. A ghost record is the result of a delete operation.\n When you delete a record, the deleted record is kept as a ghost record. Later, the deleted record is purged by the ghost record removal process. When you disable this process, the deleted record is not purged.\n Therefore, the space that the deleted record consumes is not freed. This behavior affects space consumption and the performance of scan operations.\n If you turn off this trace Flag, the ghost record removal process works correctly.",
-      "message": "Trace flag 661 disables the background ghost cleanup task. Verify need to set a non-default trace flag with the current system build and configuration.",
+      "description":
+        "Trace Flag 661 disables the ghost record removal process. A ghost record is the result of a delete operation.\n When you delete a record, the deleted record is kept as a ghost record. Later, the deleted record is purged by the ghost record removal process. When you disable this process, the deleted record is not purged.\n Therefore, the space that the deleted record consumes is not freed. This behavior affects space consumption and the performance of scan operations.\n If you turn off this trace Flag, the ghost record removal process works correctly.",
+      "message":
+        "Trace flag 661 disables the background ghost cleanup task. Verify need to set a non-default trace flag with the current system build and configuration.",
       "helpLink": "https://support.microsoft.com/help/920093",
       "level": "Information",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
         "not": {
-          "in": [ 661, "@TraceFlag" ]
+          "in": [661, "@TraceFlag"]
         }
       }
     },
@@ -128,300 +152,334 @@
       "target": {
         "type": "Server",
         "version": "[11.0,)",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.834",
-      "tags": [ "TraceFlag", "TF834", "Performance" ],
+      "id": "TF834",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF834", "Performance", "Memory"],
       "displayName": "TF 834 enables large-page allocations",
-      "description": "Trace Flag 834 causes the server to use large-page memory (LPM) model for the buffer pool allocations. Consider enabling TF 834 if you have a server that has a lot of memory, particularly for an analytical or data warehousing workload.\n trace flag 834 is NOT recommended on SQL Server instances that use columnstore indexes.",
-      "message": "Enable trace flag 834 to use large-page allocations to improve analytical and data warehousing workloads.",
+      "description":
+        "Trace Flag 834 causes the server to use large-page memory (LPM) model for the buffer pool allocations. Consider enabling TF 834 if you have a server that has a lot of memory, particularly for an analytical or data warehousing workload.\n trace flag 834 is NOT recommended on SQL Server instances that use columnstore indexes.",
+      "message":
+        "Enable trace flag 834 to use large-page allocations to improve analytical and data warehousing workloads.",
       "helpLink": "https://support.microsoft.com/help/4465518",
       "level": "Information",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
-        "in": [ 834, "@TraceFlag" ]
+        "in": [834, "@TraceFlag"]
       }
     },
     {
       "target": {
         "type": "Server",
         "version": "(,11.0)",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.834.1",
-      "tags": [ "TraceFlag", "TF834", "Performance", "Memory" ],
+      "id": "TF834.1",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF834", "Performance", "Memory"],
       "displayName": "TF 834 enables large-page allocations",
-      "description": "Trace Flag 834 causes the server to use large-page memory (LPM) model for the buffer pool allocations. Consider enabling TF 834 if you have a server that has a lot of memory, particularly for an analytical or data warehousing workload.",
-      "message": "Consider enabling trace flag 834 to use large-page allocations to improve analytical and data warehousing workloads.",
+      "description":
+        "Trace Flag 834 causes the server to use large-page memory (LPM) model for the buffer pool allocations. Consider enabling TF 834 if you have a server that has a lot of memory, particularly for an analytical or data warehousing workload.",
+      "message":
+        "Consider enabling trace flag 834 to use large-page allocations to improve analytical and data warehousing workloads.",
       "helpLink": "https://support.microsoft.com/help/2964518",
       "level": "Information",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
-        "in": [ 834, "@TraceFlag" ]
+        "in": [834, "@TraceFlag"]
       }
     },
     {
       "target": {
         "type": "Server",
         "version": "[11.0,)",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.845",
-      "tags": [ "TraceFlag", "TF845", "Memory" ],
+      "id": "TF845",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF845", "Memory"],
       "displayName": "TF 845 is not needed in SQL Server 2012 and higher versions",
-      "description": "Trace Flag 845 supports locking pages in memory in SQL Server Standard edition, which is needed together with trace flag 834 to use the large-page memory (LPM) model for the buffer pool allocations.\n  Consider enabling TF 834 if you have a server that has a lot of memory, particularly for an analytical or data warehousing workload.\n Starting with SQL Server 2012 this behavior is enabled by default for Standard edition, and trace flag 845 must not be used.",
+      "description":
+        "Trace Flag 845 supports locking pages in memory in SQL Server Standard edition, which is needed together with trace flag 834 to use the large-page memory (LPM) model for the buffer pool allocations.\n  Consider enabling TF 834 if you have a server that has a lot of memory, particularly for an analytical or data warehousing workload.\n Starting with SQL Server 2012 this behavior is enabled by default for Standard edition, and trace flag 845 must not be used.",
       "message": "Disable trace flag 845 in SQL Server 2012 and higher versions.",
-      "helpLink": "https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "helpLink":
+        "https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql",
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
         "not": {
-          "in": [ 845, "@TraceFlag" ]
+          "in": [845, "@TraceFlag"]
         }
       }
     },
     {
       "target": {
         "type": "Server",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.902",
-      "tags": [ "TraceFlag", "TF902", "Update" ],
+      "id": "TF902",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF902", "Update"],
       "displayName": "TF 902: Database Upgrade Bypass should be disabled",
-      "description": "Trace Flag 902 bypasses execution of database upgrade script when installing a Cumulative Update or Service Pack.\n This trace flag is not supported to run it continuously in a production environment.\n If you encounter an error during script upgrade mode, it is recommended to contact Microsoft SQL Customer Service and Support (CSS) for further guidance.",
+      "description":
+        "Trace Flag 902 bypasses execution of database upgrade script when installing a Cumulative Update or Service Pack.\n This trace flag is not supported to run it continuously in a production environment.\n If you encounter an error during script upgrade mode, it is recommended to contact Microsoft SQL Customer Service and Support (CSS) for further guidance.",
       "message": "Disable trace flag 902 which bypasses database upgrade.",
       "helpLink": "https://support.microsoft.com/help/2163980",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
         "not": {
-          "in": [ 902, "@TraceFlag" ]
+          "in": [902, "@TraceFlag"]
         }
       }
     },
-
     {
       "target": {
         "type": "Server",
         "version": "[13.0,]",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.1117",
-      "tags": [ "TraceFlag", "TF1117", "FileGroup" ],
+      "id": "TF1117",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF1117", "FileGroup"],
       "displayName": "TF 1117 has no effect in SQL Server 2016 and higher versions",
-      "description": "Trace Flag 1117 initiates the growth of every file in the filegroup, when a file in the filegroup meets the autogrow threshold, and together with trace flag 1118, can help reduce allocation contention in the SQL Server TempDB database.\n Starting with SQL Server 2016, this behavior is controlled by the AUTOGROW_SINGLE_FILE and AUTOGROW_ALL_FILES options of ALTER DATABASE syntax.",
+      "description":
+        "Trace Flag 1117 initiates the growth of every file in the filegroup, when a file in the filegroup meets the autogrow threshold, and together with trace flag 1118, can help reduce allocation contention in the SQL Server TempDB database.\n Starting with SQL Server 2016, this behavior is controlled by the AUTOGROW_SINGLE_FILE and AUTOGROW_ALL_FILES options of ALTER DATABASE syntax.",
       "message": "Disable trace flag 1117 in SQL Server 2016 and higher versions.",
-      "helpLink": "https://docs.microsoft.com/sql/t-sql/statements/alter-database-transact-sql-file-and-filegroup-options",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "helpLink":
+        "https://docs.microsoft.com/sql/t-sql/statements/alter-database-transact-sql-file-and-filegroup-options",
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
         "not": {
-          "in": [ 1117, "@TraceFlag" ]
+          "in": [1117, "@TraceFlag"]
         }
       }
     },
-
     {
       "target": {
         "type": "Server",
         "version": "[,13.0)",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.1117.1",
-      "tags": [ "TraceFlag", "TF1117", "FileGroup" ],
+      "id": "TF1117.1",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF1117", "FileGroup"],
       "displayName": "TF 1117 Enables Filegroup-level Autogrow",
-      "description": "Trace Flag 1117 initiates the growth of every file in the filegroup, when a file in the filegroup meets the autogrow threshold, and together with trace flag 1118, can help reduce allocation contention in the SQL Server TempDB database.\n This trace flag affects all databases and is recommended only if every database is safe to be grow all files in a filegroup by the same amount.",
+      "description":
+        "Trace Flag 1117 initiates the growth of every file in the filegroup, when a file in the filegroup meets the autogrow threshold, and together with trace flag 1118, can help reduce allocation contention in the SQL Server TempDB database.\n This trace flag affects all databases and is recommended only if every database is safe to be grow all files in a filegroup by the same amount.",
       "message": "Consider enabling trace flag 1117 to enable filegroup autogrow.",
       "helpLink": "https://support.microsoft.com/help/2154845",
       "level": "Information",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
-        "in": [ 1117, "@TraceFlag" ]
+        "in": [1117, "@TraceFlag"]
       }
     },
-
     {
       "target": {
         "type": "Server",
         "version": "[13.0,]",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.1118",
-      "tags": [ "TraceFlag", "TF1118", "Memory", "Performance" ],
+      "id": "TF1118",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF1118", "Memory", "Performance"],
       "displayName": "TF 1118 has no effect in SQL Server 2016 and higher versions",
-      "description": "Trace Flag 1118 forces page allocations on uniform extents instead of mixed extents, and together with trace flag 1117, can help reduce allocation contention in the SQL Server TempDB database.\n When a new object is created, by default, the first eight pages are allocated from different extents (mixed extents).\n Afterwards, when more pages are needed, those are allocated from that same extent (uniform extent).\n The SGAM page is used to track these mixed extents, so can quickly become a bottleneck when numerous mixed page allocations are occurring.\n This trace flag allocates all eight pages from the same extent when creating new objects, minimizing the need to scan the SGAM page and forces uniform extent allocations instead of mixed page allocations.\n Starting with SQL Server 2016, this behavior is controlled by the SET MIXED_PAGE_ALLOCATION option of ALTER DATABASE syntax.",
+      "description":
+        "Trace Flag 1118 forces page allocations on uniform extents instead of mixed extents, and together with trace flag 1117, can help reduce allocation contention in the SQL Server TempDB database.\n When a new object is created, by default, the first eight pages are allocated from different extents (mixed extents).\n Afterwards, when more pages are needed, those are allocated from that same extent (uniform extent).\n The SGAM page is used to track these mixed extents, so can quickly become a bottleneck when numerous mixed page allocations are occurring.\n This trace flag allocates all eight pages from the same extent when creating new objects, minimizing the need to scan the SGAM page and forces uniform extent allocations instead of mixed page allocations.\n Starting with SQL Server 2016, this behavior is controlled by the SET MIXED_PAGE_ALLOCATION option of ALTER DATABASE syntax.",
       "message": "Disable trace flag 1118 in SQL Server 2016 and higher versions.",
-      "helpLink": "https://docs.microsoft.com/sql/t-sql/statements/alter-database-transact-sql-file-and-filegroup-options",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "helpLink":
+        "https://docs.microsoft.com/sql/t-sql/statements/alter-database-transact-sql-file-and-filegroup-options",
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
         "not": {
-          "in": [ 1118, "@TraceFlag" ]
+          "in": [1118, "@TraceFlag"]
         }
       }
     },
-
     {
       "target": {
         "type": "Server",
         "version": "[,13.0)",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.1118.1",
-      "tags": [ "TraceFlag", "TF1118", "Memory", "Performance" ],
+      "id": "TF1118.1",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF1118", "Memory", "Performance"],
       "displayName": "TF 1118 Disables Single Page Allocations",
-      "description": "Trace Flag 1118 forces page allocations on uniform extents instead of mixed extents, and together with trace flag 1117, can help reduce allocation contention in the SQL Server TempDB database.\n When a new object is created, by default, the first eight pages are allocated from different extents (mixed extents).\n Afterwards, when more pages are needed, those are allocated from that same extent (uniform extent).\n The SGAM page is used to track these mixed extents, so can quickly become a bottleneck when numerous mixed page allocations are occurring.\n This trace flag allocates all eight pages from the same extent when creating new objects, minimizing the need to scan the SGAM page and forces uniform extent allocations instead of mixed page allocations.",
+      "description":
+        "Trace Flag 1118 forces page allocations on uniform extents instead of mixed extents, and together with trace flag 1117, can help reduce allocation contention in the SQL Server TempDB database.\n When a new object is created, by default, the first eight pages are allocated from different extents (mixed extents).\n Afterwards, when more pages are needed, those are allocated from that same extent (uniform extent).\n The SGAM page is used to track these mixed extents, so can quickly become a bottleneck when numerous mixed page allocations are occurring.\n This trace flag allocates all eight pages from the same extent when creating new objects, minimizing the need to scan the SGAM page and forces uniform extent allocations instead of mixed page allocations.",
       "message": "Consider enabling trace flag 1118 to force page allocations on uniform extents.",
       "helpLink": "https://support.microsoft.com/help/328551",
       "level": "Information",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
-        "in": [ 1118, "@TraceFlag" ]
+        "in": [1118, "@TraceFlag"]
       }
     },
-
     {
       "target": {
         "type": "Server",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.1204",
-      "tags": [ "TraceFlag", "TF1204", "Lock" ],
+      "id": "TF1204",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF1204", "Lock"],
       "displayName": "TF 1204 returns deadlock information",
-      "description": "Trace Flag 1204 returns the resources and types of locks that are participating in a deadlock, including the affected command.\n The resulting information is recorded in the SQL Server Errorlog.",
+      "description":
+        "Trace Flag 1204 returns the resources and types of locks that are participating in a deadlock, including the affected command.\n The resulting information is recorded in the SQL Server Errorlog.",
       "message": "Trace Flag 1204 returns deadlock information.",
       "helpLink": "https://support.microsoft.com/help/832524",
       "level": "Information",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
         "not": {
-          "in": [ 1204, "@TraceFlag" ]
+          "in": [1204, "@TraceFlag"]
         }
       }
     },
     {
       "target": {
         "type": "Server",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.1211",
-      "tags": [ "TraceFlag", "TF1211", "Lock" ],
+      "id": "TF1211",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF1211", "Lock"],
       "displayName": "TF 1211: Lock Escalation should be enabled",
-      "description": "Trace Flag 1211 disables lock escalation based on memory pressure, or based on number of locks. Because SQL Server will not escalate row or page locks to table locks, this can generate an excessive number of locks. If the lock memory grows large enough, attempts to allocate additional locks for any query may fail and cause performance issues.\n This trace flag should not be used in order to avoid inability to allocate lock resources because of insufficient memory. If lock escalation needs to be disabled, use trace flag 1224 instead.",
+      "description":
+        "Trace Flag 1211 disables lock escalation based on memory pressure, or based on number of locks. Because SQL Server will not escalate row or page locks to table locks, this can generate an excessive number of locks. If the lock memory grows large enough, attempts to allocate additional locks for any query may fail and cause performance issues.\n This trace flag should not be used in order to avoid inability to allocate lock resources because of insufficient memory. If lock escalation needs to be disabled, use trace flag 1224 instead.",
       "message": "Disable trace flag 1211 to allow lock escalation.",
-      "helpLink": "https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "helpLink":
+        "https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql",
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
         "not": {
-          "in": [ 1211, "@TraceFlag" ]
+          "in": [1211, "@TraceFlag"]
         }
       }
     },
     {
       "target": {
         "type": "Server",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.1222",
-      "tags": [ "TraceFlag", "TF1222", "Lock" ],
+      "id": "TF1222",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF1222", "Lock"],
       "displayName": "TF 1222 returns deadlock information",
-      "description": "Trace Flag 1222 returns the resources and types of locks that are participating in a deadlock, including the affected command.\n The resulting information is recorded in the SQL Server Errorlog, in XML format that does not comply with any XSD schema.",
+      "description":
+        "Trace Flag 1222 returns the resources and types of locks that are participating in a deadlock, including the affected command.\n The resulting information is recorded in the SQL Server Errorlog, in XML format that does not comply with any XSD schema.",
       "message": "Trace Flag 1222 returns deadlock information.",
-      "helpLink": "https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql",
+      "helpLink":
+        "https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql",
       "level": "Information",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
         "not": {
-          "in": [ 1222, "@TraceFlag" ]
+          "in": [1222, "@TraceFlag"]
         }
       }
     },
     {
       "target": {
         "type": "Server",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.1224",
-      "tags": [ "TraceFlag", "TF1224", "Lock" ],
+      "id": "TF1224",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF1224", "Lock"],
       "displayName": "TF 1224 should be disabled",
-      "description": "Trace Flag 1224 disables lock escalation based on the number of locks, unless SQL Server is under memory pressure. Because SQL Server will not escalate row or page locks to table locks, this can generate an excessive number of locks.",
+      "description":
+        "Trace Flag 1224 disables lock escalation based on the number of locks, unless SQL Server is under memory pressure. Because SQL Server will not escalate row or page locks to table locks, this can generate an excessive number of locks.",
       "message": "Disable trace flag 1224 to allow lock escalation.",
-      "helpLink": "https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "helpLink":
+        "https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql",
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
         "not": {
-          "in": [ 1224, "@TraceFlag" ]
+          "in": [1224, "@TraceFlag"]
         }
       }
     },
     {
       "target": {
         "type": "Server",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.1229",
-      "tags": [ "TraceFlag", "TF1229", "Lock" ],
+      "id": "TF1229",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF1229", "Lock"],
       "displayName": "TF 1229: Lock Partitioning should be enabled",
-      "description": "Trace Flag 1229 disables lock partitioning regardless of the number of CPUs. By default, SQL Server enables lock partitioning when a server has 16 or more CPUs, to improve the scalability characteristics of larger systems.\n Disabling lock partitioning may cause can cause spinlock contention and poor performance, or unexpected behaviors when switching partitions.",
+      "description":
+        "Trace Flag 1229 disables lock partitioning regardless of the number of CPUs. By default, SQL Server enables lock partitioning when a server has 16 or more CPUs, to improve the scalability characteristics of larger systems.\n Disabling lock partitioning may cause can cause spinlock contention and poor performance, or unexpected behaviors when switching partitions.",
       "message": "Disable trace flag 1229 to allow lock partitioning.",
-      "helpLink": "https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "helpLink":
+        "https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql",
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
         "not": {
-          "in": [ 1229, "@TraceFlag" ]
+          "in": [1229, "@TraceFlag"]
         }
       }
     },
-
     {
       "target": {
         "type": "Server",
         "version": [ "[9.0,11.0.6020)", "[12.0,12.0.4100)" ],
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.1236",
-      "tags": [ "TraceFlag", "TF1236", "Lock" ],
+      "id": "TF1236",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF1236", "Lock"],
       "displayName": "TF 1236: Database Lock Partitioning should be enabled",
-      "description": "Trace Flag 1236 enables database-level lock partitioning.\n Lock Partitioning is utilized to improve the scalability characteristics on larger systems.",
+      "description":
+        "Trace Flag 1236 enables database-level lock partitioning.\n Lock Partitioning is utilized to improve the scalability characteristics on larger systems.",
       "message": "Enable trace Flag 1236 to allow database lock partitioning.",
       "helpLink": "https://support.microsoft.com/help/2926217",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
-        "in": [ 1236, "@TraceFlag" ]
+        "in": [1236, "@TraceFlag"]
       }
     },
-
     {
       "target": {
         "type": "Server",
         "version": [ "[11.0.6020,12.0)", "[12.0.4100,)" ],
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.1236.1",
-      "tags": [ "TraceFlag", "TF1236", "Lock" ],
+      "id": "TF1236.1",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF1236", "Lock"],
       "displayName": "TF 1236 is not needed in SQL Server 2012 SP3, SQL Server 2014 SP1 and higher versions.",
-      "description": "Trace Flag 1236 enables database-level lock partitioning.\n Starting with SQL Server 2012 SP3 and SQL Server 2014 SP1, this behavior is controlled by the engine and trace flag 1236 has no effect.",
+      "description":
+        "Trace Flag 1236 enables database-level lock partitioning.\n Starting with SQL Server 2012 SP3 and SQL Server 2014 SP1, this behavior is controlled by the engine and trace flag 1236 has no effect.",
       "message": "Disable trace flag 1236 in SQL Server 2012 SP3, SQL Server 2014 SP1 and higher versions.",
       "helpLink": "https://support.microsoft.com/help/2926217",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
         "not": {
-          "in": [ 1236, "@TraceFlag" ]
+          "in": [1236, "@TraceFlag"]
         }
       }
     },
-
     {
       "target": {
         "type": "Server",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.1462",
-      "tags": [ "TraceFlag", "TF1462", "Compression" ],
+      "id": "TF1462",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF1462", "Compression"],
       "displayName": "TF 1462 should be disabled to allow Log Stream Compression",
-      "description": "Trace Flag 1462 disables log stream compression for asynchronous availability groups.\n This feature is enabled by default on asynchronous replicas to optimize network bandwidth.",
+      "description":
+        "Trace Flag 1462 disables log stream compression for asynchronous availability groups.\n This feature is enabled by default on asynchronous replicas to optimize network bandwidth.",
       "message": "Disable trace flag 1462 to allow log stream compression.",
-      "helpLink": "https://docs.microsoft.com/sql/database-engine/availability-groups/windows/tune-compression-for-availability-group",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "helpLink":
+        "https://docs.microsoft.com/sql/database-engine/availability-groups/windows/tune-compression-for-availability-group",
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
         "not": {
-          "in": [ 1462, "@TraceFlag" ]
+          "in": [1462, "@TraceFlag"]
         }
       }
     },
@@ -429,119 +487,130 @@
       "target": {
         "type": "Server",
         "version": "[12.0,13.0)",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.2312",
-      "tags": [ "TraceFlag", "TF2312", "Optimizer" ],
+      "id": "TF2312",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF2312", "Optimizer"],
       "displayName": "TF 2312 sets the default Cardinality Estimation model",
-      "description": "Trace Flag 2312 sets the Query Optimizer cardinality estimation model to the default version of the database compability level of SQL Server 2014 and higher versions.\n If the database compatibility level is lower than 120, enabling trace flag 2312 uses the cardinality estimation model of SQL Server 2014 (120).",
-      "message": "Trace Flag 2312 enables the default cardinality estimation model to SQL Server 2014 or above versions, dependent of the compatibility level of the database.",
+      "description":
+        "Trace Flag 2312 sets the Query Optimizer cardinality estimation model to the default version of the database compability level of SQL Server 2014 and higher versions.\n If the database compatibility level is lower than 120, enabling trace flag 2312 uses the cardinality estimation model of SQL Server 2014 (120).",
+      "message":
+        "Trace Flag 2312 enables the default cardinality estimation model to SQL Server 2014 or above versions, dependent of the compatibility level of the database.",
       "helpLink": "https://support.microsoft.com/help/2801413",
       "level": "Information",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
         "not": {
-          "in": [ 2312, "@TraceFlag" ]
+          "in": [2312, "@TraceFlag"]
         }
       }
     },
-
     {
       "target": {
         "type": "Server",
         "version": "[13.0,]",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.2312.1",
-      "tags": [ "TraceFlag", "TF2312", "Optimizer" ],
+      "id": "TF2312.1",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF2312", "Optimizer"],
       "displayName": "TF 2312 sets the default Cardinality Estimation model",
-      "description": "Trace Flag 2312 sets the Query Optimizer cardinality estimation model to the default version of the database compability level of SQL Server 2014 and higher versions.\n If the database compatibility level is lower than 120, enabling trace flag 2312 uses the cardinality estimation model of SQL Server 2014 (120).",
-      "message": "Trace Flag 2312 enables the default cardinality estimation model to SQL Server 2014 or above versions, dependent of the compatibility level of the database.",
+      "description":
+        "Trace Flag 2312 sets the Query Optimizer cardinality estimation model to the default version of the database compability level of SQL Server 2014 and higher versions.\n If the database compatibility level is lower than 120, enabling trace flag 2312 uses the cardinality estimation model of SQL Server 2014 (120).",
+      "message":
+        "Trace Flag 2312 enables the default cardinality estimation model to SQL Server 2014 or above versions, dependent of the compatibility level of the database.",
       "helpLink": "https://support.microsoft.com/help/2801413",
       "level": "Information",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
         "not": {
-          "in": [ 2312, "@TraceFlag" ]
+          "in": [2312, "@TraceFlag"]
         }
       }
     },
-
     {
       "target": {
         "type": "Server",
         "version": "[,12.0)",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.2312.2",
-      "tags": [ "TraceFlag", "TF2312", "Optimizer" ],
+      "id": "TF2312.2",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF2312", "Optimizer"],
       "displayName": "TF 2312 sets the default Cardinality Estimation model",
-      "description": "Trace Flag 2312 sets the Query Optimizer cardinality estimation model to the default version of the database compability level of SQL Server 2014 and higher versions.\n If the database compatibility level is lower than 120, enabling trace flag 2312 uses the cardinality estimation model of SQL Server 2014 (120).",
-      "message": "Trace Flag 2312 does not apply to this SQL Server version. Verify need to set a non-default trace flag with the current system build and configuration.",
+      "description":
+        "Trace Flag 2312 sets the Query Optimizer cardinality estimation model to the default version of the database compability level of SQL Server 2014 and higher versions.\n If the database compatibility level is lower than 120, enabling trace flag 2312 uses the cardinality estimation model of SQL Server 2014 (120).",
+      "message":
+        "Trace Flag 2312 does not apply to this SQL Server version. Verify need to set a non-default trace flag with the current system build and configuration.",
       "helpLink": "https://support.microsoft.com/help/2801413",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
         "not": {
-          "in": [ 2312, "@TraceFlag" ]
+          "in": [2312, "@TraceFlag"]
         }
       }
     },
-
     {
       "target": {
         "type": "Server",
         "version": "[9.0,10.0)",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.2330",
-      "tags": [ "TraceFlag", "TF2330" ],
+      "id": "TF2330",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF2330"],
       "displayName": "TF 2330 disables recording of index usage stats",
-      "description": "Trace Flag 2330 disables recording of index usage stats, which could lead to a non-yielding condition in SQL 2005.",
+      "description":
+        "Trace Flag 2330 disables recording of index usage stats, which could lead to a non-yielding condition in SQL 2005.",
       "message": "Disable trace flag 2330 in SQL Server 2008 and higher versions.",
       "helpLink": "",
       "level": "Information",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
         "not": {
-          "in": [ 2330, "@TraceFlag" ]
+          "in": [2330, "@TraceFlag"]
         }
       }
     },
-
     {
       "target": {
         "type": "Server",
         "version": "[10.0,]",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.2330.1",
-      "tags": [ "TraceFlag", "TF2330" ],
+      "id": "TF2330.1",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF2330"],
       "displayName": "TF 2330 disables recording of index usage stats",
-      "description": "Trace Flag 2330 disables recording of index usage stats, which could lead to a non-yielding condition in SQL 2005.\n This trace flag should be disabled in SQL Server 2008 and higher versions.",
+      "description":
+        "Trace Flag 2330 disables recording of index usage stats, which could lead to a non-yielding condition in SQL 2005.\n This trace flag should be disabled in SQL Server 2008 and higher versions.",
       "message": "Disable trace flag 2330 in SQL Server 2008 and higher versions.",
       "helpLink": "",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
-        "not": { "in": [ 2330, "@TraceFlag" ] }
+        "not": { "in": [2330, "@TraceFlag"] }
       }
     },
-
     {
       "target": {
         "type": "Server",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.2340",
-      "tags": [ "TraceFlag", "TF2340", "Optimizer" ],
+      "id": "TF2340",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF2340", "Optimizer"],
       "displayName": "TF 2340 disables Batch Sorts for optimized nested loops joins",
-      "description": "Trace Flag 2340 causes SQL Server not to use a sort operation (batch sort) for optimized nested loops joins when generating a plan.\n Verify need to set a non-default trace flag with the current system build and configuration.",
+      "description":
+        "Trace Flag 2340 causes SQL Server not to use a sort operation (batch sort) for optimized nested loops joins when generating a plan.\n Verify need to set a non-default trace flag with the current system build and configuration.",
       "message": "Trace Flag 2340 disables Batch Sorts for optimized nested loops joins.",
-      "helpLink": "https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql",
+      "helpLink":
+        "https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql",
       "level": "Information",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
         "not": {
-          "in": [ 2340, "@TraceFlag" ]
+          "in": [2340, "@TraceFlag"]
         }
       }
     },
@@ -549,195 +618,224 @@
       "target": {
         "type": "Server",
         "version": "[10.5.2500,13.0)",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.2371",
-      "tags": [ "TraceFlag", "TF2371", "Performance" ],
+      "id": "TF2371",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF2371", "Performance"],
       "displayName": "TF 2371 enables a linear recompilation threshold for statistics",
-      "description": "Trace Flag 2371 causes SQL Server to change the fixed update statistics threshold to a linear update statistics threshold.\n This is especially useful to keep statistics updated on large tables.",
+      "description":
+        "Trace Flag 2371 causes SQL Server to change the fixed update statistics threshold to a linear update statistics threshold.\n This is especially useful to keep statistics updated on large tables.",
       "message": "Enable trace Flag 2371 to allow a linear recompilation threshold for statistics.",
-      "helpLink": "https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql",
+      "helpLink":
+        "https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql",
       "level": "Information",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
-        "in": [ 2371, "@TraceFlag" ]
+        "in": [2371, "@TraceFlag"]
       }
     },
     {
       "target": {
         "type": "Server",
         "version": "[13.0,]",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.2371.1",
-      "tags": [ "TraceFlag", "TF2371", "Performance" ],
+      "id": "TF2371.1",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF2371", "Performance"],
       "displayName": "TF 2371 has no effect in SQL Server 2016 and higher versions",
-      "description": "Trace Flag 2371 causes SQL Server to change the fixed update statistics threshold to a linear update statistics threshold.\n This is especially useful to keep statistics updated on large tables. \n Starting with SQL Server 2016, for databases using compatibility level 130 and above, this behavior is controlled by the engine and trace flag 2371 has no effect.",
-      "message": "Disable trace flag 2371 in SQL Server 2016 and higher versions when all databases are at compatibility level 130 and above.",
-      "helpLink": "https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql",
+      "description":
+        "Trace Flag 2371 causes SQL Server to change the fixed update statistics threshold to a linear update statistics threshold.\n This is especially useful to keep statistics updated on large tables. \n Starting with SQL Server 2016, for databases using compatibility level 130 and above, this behavior is controlled by the engine and trace flag 2371 has no effect.",
+      "message":
+        "Disable trace flag 2371 in SQL Server 2016 and higher versions when all databases are at compatibility level 130 and above.",
+      "helpLink":
+        "https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql",
       "level": "Information",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
         "not": {
-          "in": [ 2371, "@TraceFlag" ]
+          "in": [2371, "@TraceFlag"]
         }
       }
     },
     {
       "target": {
         "type": "Server",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.2389",
-      "tags": [ "TraceFlag", "TF2389" ],
+      "id": "TF2389",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF2389"],
       "displayName": "TF 2389 enables automatic statistics for Ascending Keys",
-      "description": "Trace Flag 2389 enables automatically generated quick statistics for ascending keys (histogram amendment).\n This trace flag is recommended to be set in cases where queries access newly inserted ascending key values (such as an IDENTITY column), but the new values are not yet updated in the statistics histogram for the affected columns. In this case the histogram used to estimate cardinality will be adjusted at query compile time.\n Verify need to set a non-default trace flag with the current system build and configuration.",
-      "message": "Trace Flag 2389 enables automatic statistics for ascending keys. Verify need to set a non-default trace flag with the current system build and configuration.",
+      "description":
+        "Trace Flag 2389 enables automatically generated quick statistics for ascending keys (histogram amendment).\n This trace flag is recommended to be set in cases where queries access newly inserted ascending key values (such as an IDENTITY column), but the new values are not yet updated in the statistics histogram for the affected columns. In this case the histogram used to estimate cardinality will be adjusted at query compile time.\n Verify need to set a non-default trace flag with the current system build and configuration.",
+      "message":
+        "Trace Flag 2389 enables automatic statistics for ascending keys. Verify need to set a non-default trace flag with the current system build and configuration.",
       "helpLink": "https://support.microsoft.com/help/2801413",
       "level": "Information",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
         "not": {
-          "in": [ 2389, "@TraceFlag" ]
+          "in": [2389, "@TraceFlag"]
         }
       }
     },
     {
       "target": {
         "type": "Server",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.2390",
-      "tags": [ "TraceFlag", "TF2390" ],
+      "id": "TF2390",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF2390"],
       "displayName": "TF 2390 enables automatic statistics for Ascending or Unknown Keys",
-      "description": "Trace Flag 2390 enables automatically generated quick statistics for ascending or unknown keys (histogram amendment).\n This trace flag is recommended to be set in cases where queries access newly inserted ascending key values (such as an IDENTITY column), but the new values are not yet updated in the statistics histogram for the affected columns. In this case the histogram used to estimate cardinality will be adjusted at query compile time.\n Verify need to set a non-default trace flag with the current system build and configuration.",
-      "message": "Trace Flag 2390 enables automatic statistics for ascending or unknown keys. Verify need to set a non-default trace flag with the current system build and configuration.",
+      "description":
+        "Trace Flag 2390 enables automatically generated quick statistics for ascending or unknown keys (histogram amendment).\n This trace flag is recommended to be set in cases where queries access newly inserted ascending key values (such as an IDENTITY column), but the new values are not yet updated in the statistics histogram for the affected columns. In this case the histogram used to estimate cardinality will be adjusted at query compile time.\n Verify need to set a non-default trace flag with the current system build and configuration.",
+      "message":
+        "Trace Flag 2390 enables automatic statistics for ascending or unknown keys. Verify need to set a non-default trace flag with the current system build and configuration.",
       "helpLink": "https://support.microsoft.com/help/2801413",
       "level": "Information",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
         "not": {
-          "in": [ 2390, "@TraceFlag" ]
+          "in": [2390, "@TraceFlag"]
         }
       }
     },
     {
       "target": {
         "type": "Server",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.2528",
-      "tags": [ "TraceFlag", "TF2528" ],
+      "id": "TF2528",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF2528"],
       "displayName": "TF 2528 disables parallel operations for integrity checking",
-      "description": "Trace Flag 2528 disables parallel checking of objects by DBCC CHECKDB, DBCC CHECKFILEGROUP, and DBCC CHECKTABLE.\n By default, the degree of parallelism is automatically determined by the query processor. The maximum degree of parallelism is configured just like that of parallel queries.\n When parallel checks are disabled, the DBCC commands will take longer to complete.\n Starting with SQL Server 2014 SP2, a MAXDOP option is available to override the max degree of parallelism configuration option of sp_configure for the DBCC statements.",
+      "description":
+        "Trace Flag 2528 disables parallel checking of objects by DBCC CHECKDB, DBCC CHECKFILEGROUP, and DBCC CHECKTABLE.\n By default, the degree of parallelism is automatically determined by the query processor. The maximum degree of parallelism is configured just like that of parallel queries.\n When parallel checks are disabled, the DBCC commands will take longer to complete.\n Starting with SQL Server 2014 SP2, a MAXDOP option is available to override the max degree of parallelism configuration option of sp_configure for the DBCC statements.",
       "message": "Trace Flag 2528 disables parallel operations for integrity checking.",
-      "helpLink": "https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql",
+      "helpLink":
+        "https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql",
       "level": "Warning",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
-        "not": { "in": [ 2528, "@TraceFlag" ] }
+        "not": { "in": [2528, "@TraceFlag"] }
       }
     },
     {
       "target": {
         "type": "Server",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.2549",
-      "tags": [ "TraceFlag", "TF2549" ],
+      "id": "TF2549",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF2549"],
       "displayName": "TF 2549 optimizes PHYSICAL_ONLY option of DBCC CHECKDB",
-      "description": "Trace Flag 2549 forces the DBCC CHECKDB command to assume each database file is on a unique disk drive but treating different physical files as one logical file.\n This trace flag can improve the performance when using the PHYSICAL_ONLY option, but it's not recommended unless it is known that each file is based on a unique physical disk.",
+      "description":
+        "Trace Flag 2549 forces the DBCC CHECKDB command to assume each database file is on a unique disk drive but treating different physical files as one logical file.\n This trace flag can improve the performance when using the PHYSICAL_ONLY option, but it's not recommended unless it is known that each file is based on a unique physical disk.",
       "message": "Trace Flag 2549 forces DBCC CHECKDB to treat different physical files as one logical file.",
       "helpLink": "https://support.microsoft.com/help/2634571",
       "level": "Warning",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
-        "not": { "in": [ 2549, "@TraceFlag" ] }
+        "not": { "in": [2549, "@TraceFlag"] }
       }
     },
     {
       "target": {
         "type": "Server",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.2562",
-      "tags": [ "TraceFlag", "TF2562" ],
+      "id": "TF2562",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF2562"],
       "displayName": "TF 2562 forces the DBCC CHECKDB command to execute in a single batch",
-      "description": "Trace Flag 2562 forces the DBCC CHECKDB command to execute in a single batch regardless of the number of indexes in the database.\n This trace flag can improve the performance when using the PHYSICAL_ONLY option, but space requirements for TempDB may increase.",
+      "description":
+        "Trace Flag 2562 forces the DBCC CHECKDB command to execute in a single batch regardless of the number of indexes in the database.\n This trace flag can improve the performance when using the PHYSICAL_ONLY option, but space requirements for TempDB may increase.",
       "message": "Trace Flag 2562 forces the DBCC CHECKDB command to execute in a single batch.",
       "helpLink": "https://support.microsoft.com/help/2634571",
       "level": "Warning",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
-        "not": { "in": [ 2562, "@TraceFlag" ] }
+        "not": { "in": [2562, "@TraceFlag"] }
       }
     },
     {
       "target": {
         "type": "Server",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.2566",
-      "tags": [ "TraceFlag", "TF2566" ],
+      "id": "TF2566",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF2566"],
       "displayName": "TF 2566 disables default data purity check",
-      "description": "Trace Flag 2566 forces the DBCC CHECKDB command to execute without data purity check unless the DATA_PURITY option is specified.\n For databases upgraded from earlier versions of SQL Server, it is recommended to run the DBCC CHECKDB WITH DATA_PURITY command at least once, to enable column-value integrity checks to happen by default.",
+      "description":
+        "Trace Flag 2566 forces the DBCC CHECKDB command to execute without data purity check unless the DATA_PURITY option is specified.\n For databases upgraded from earlier versions of SQL Server, it is recommended to run the DBCC CHECKDB WITH DATA_PURITY command at least once, to enable column-value integrity checks to happen by default.",
       "message": "Trace Flag 2566 disables default data purity check.",
       "helpLink": "https://support.microsoft.com/help/945770",
       "level": "Warning",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
-        "not": { "in": [ 2566, "@TraceFlag" ] }
+        "not": { "in": [2566, "@TraceFlag"] }
       }
     },
     {
       "target": {
         "type": "Server",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.3023",
-      "tags": [ "TraceFlag", "TF3023", "Backup" ],
+      "id": "TF3023",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF3023", "Backup"],
       "displayName": "TF 3023 enables Backup Checksum option by default",
-      "description": "Trace Flag 3023 enables the CHECKSUM option of the BACKUP command by default.\n This trace flag forces the CHECKSUM option for BACKUP command even when not explicitely set.\n Starting with SQL Server 2014, this behavior is controlled by setting the Backup Checksum Default configuration option.",
+      "description":
+        "Trace Flag 3023 enables the CHECKSUM option of the BACKUP command by default.\n This trace flag forces the CHECKSUM option for BACKUP command even when not explicitely set.\n Starting with SQL Server 2014, this behavior is controlled by setting the Backup Checksum Default configuration option.",
       "message": "Trace Flag 3023 enables CHECKSUM option as default for BACKUP command.",
       "helpLink": "https://support.microsoft.com/help/2656988",
       "level": "Information",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
-        "not": { "in": [ 3023, "@TraceFlag" ] }
+        "not": { "in": [3023, "@TraceFlag"] }
       }
     },
     {
       "target": {
         "type": "Server",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.3042",
-      "tags": [ "TraceFlag", "TF3042", "Backup" ],
+      "id": "TF3042",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF3042", "Backup"],
       "displayName": "TF 3042 bypasses the default backup compression pre-allocation algorithm",
-      "description": "Trace Flag 3042 bypasses the default backup compression pre-allocation algorithm to allow the backup file to grow only as needed to reach its final size.\n This trace flag can achieve space savings by allocating only the actual size required for the compressed backup, but might increase the overall backup operation time.",
+      "description":
+        "Trace Flag 3042 bypasses the default backup compression pre-allocation algorithm to allow the backup file to grow only as needed to reach its final size.\n This trace flag can achieve space savings by allocating only the actual size required for the compressed backup, but might increase the overall backup operation time.",
       "message": "Trace Flag 3042 enables the bypass of the default backup compression.",
       "helpLink": "https://docs.microsoft.com/sql/relational-databases/backup-restore/backup-compression-sql-server",
       "level": "Information",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
-        "not": { "in": [ 3042, "@TraceFlag" ] }
+        "not": { "in": [3042, "@TraceFlag"] }
       }
     },
     {
       "target": {
         "type": "Server",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.3226",
-      "tags": [ "TraceFlag", "TF3226", "Backup" ],
+      "id": "TF3226",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF3226", "Backup"],
       "displayName": "TF 3226 disables ErrorLog entries for every successful backup operation",
-      "description": "Trace Flag 3226 prevents SQL Server from recording an entry to the Errorlog on every successful backup operation.\n Backup operations are registered in the Errorlog by default. Frequent backup operations can contribute to massive Errorlog files that become unwieldy.",
+      "description":
+        "Trace Flag 3226 prevents SQL Server from recording an entry to the Errorlog on every successful backup operation.\n Backup operations are registered in the Errorlog by default. Frequent backup operations can contribute to massive Errorlog files that become unwieldy.",
       "message": "Trace Flag 3226 disables ErrorLog entries for every successful backup operation.",
-      "helpLink": "https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql",
+      "helpLink":
+        "https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql",
       "level": "Information",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
-        "not": { "in": [ 3226, "@TraceFlag" ] }
+        "not": { "in": [3226, "@TraceFlag"] }
       }
     },
     {
@@ -749,18 +847,21 @@
           "[10.50.1720,11.0)",
           "[11.0.2316,)"
         ],
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.4136",
-      "tags": [ "TraceFlag", "TF4136", "Optimizer" ],
+      "id": "TF4136",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF4136", "Optimizer"],
       "displayName": "TF 4136 disables Parameter Sniffing",
-      "description": "Trace Flag 4136 disables parameter sniffing unless OPTION(RECOMPILE), WITH RECOMPILE or OPTIMIZE FOR value is used.\n Starting with SQL Server 2016, to accomplish this at the database level use the PARAMETER_SNIFFING option in ALTER DATABASE SCOPED CONFIGURATION.\n Verify need to set a non-default trace flag with the current system build and configuration.",
-      "message": "Trace Flag 4136 disables parameter sniffing. Verify need to set a non-default trace flag with the current system build and configuration.",
+      "description":
+        "Trace Flag 4136 disables parameter sniffing unless OPTION(RECOMPILE), WITH RECOMPILE or OPTIMIZE FOR value is used.\n Starting with SQL Server 2016, to accomplish this at the database level use the PARAMETER_SNIFFING option in ALTER DATABASE SCOPED CONFIGURATION.\n Verify need to set a non-default trace flag with the current system build and configuration.",
+      "message":
+        "Trace Flag 4136 disables parameter sniffing. Verify need to set a non-default trace flag with the current system build and configuration.",
       "helpLink": "https://support.microsoft.com/help/980653",
       "level": "Information",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
-        "not": { "in": [ 4136, "@TraceFlag" ] }
+        "not": { "in": [4136, "@TraceFlag"] }
       }
     },
     {
@@ -772,20 +873,22 @@
           "[10.50,10.50.1720)",
           "[11.0,11.0.2316)"
         ],
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.4136.1",
-      "tags": [ "TraceFlag", "TF4136", "Optimizer" ],
+      "id": "TF4136.1",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF4136", "Optimizer"],
       "displayName": "TF 4136 disables Parameter Sniffing",
-      "description": "Trace Flag 4136 disables parameter sniffing unless OPTION(RECOMPILE), WITH RECOMPILE or OPTIMIZE FOR value is used, but does not apply to this SQL Server version.\n Starting with SQL Server 2016, to accomplish this at the database level use the PARAMETER_SNIFFING option in ALTER DATABASE SCOPED CONFIGURATION.\n Verify need to set a non-default trace flag with the current system build and configuration.",
-      "message": "Trace Flag 4136 does not apply to this SQL Server version. Verify need to set a non-default trace flag with the current system build and configuration.",
+      "description":
+        "Trace Flag 4136 disables parameter sniffing unless OPTION(RECOMPILE), WITH RECOMPILE or OPTIMIZE FOR value is used, but does not apply to this SQL Server version.\n Starting with SQL Server 2016, to accomplish this at the database level use the PARAMETER_SNIFFING option in ALTER DATABASE SCOPED CONFIGURATION.\n Verify need to set a non-default trace flag with the current system build and configuration.",
+      "message":
+        "Trace Flag 4136 does not apply to this SQL Server version. Verify need to set a non-default trace flag with the current system build and configuration.",
       "helpLink": "https://support.microsoft.com/help/980653",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
-        "not": { "in": [ 4136, "@TraceFlag" ] }
+        "not": { "in": [4136, "@TraceFlag"] }
       }
     },
-
     {
       "target": {
         "type": "Server",
@@ -795,18 +898,21 @@
           "[10.50.2806,11.0)",
           "[11.0.2316,)"
         ],
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.4137",
-      "tags": [ "TraceFlag", "TF4137", "Optimizer" ],
+      "id": "TF4137",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF4137", "Optimizer"],
       "displayName": "TF 4137 causes plans to use partial correlation for filters",
-      "description": "Trace Flag 4137 causes SQL Server to generate a plan using minimum selectivity when estimating AND predicates for filters to account for partial correlation instead of independance, under the query optimizer cardinality estimation model of SQL Server 2012 and earlier versions (CE 70).\n Does not apply to CE version 120 or above. Use trace flag 9471 instead.\n Starting with SQL Server 2016 SP1, to accomplish this at the query level use the USE HINT 'ASSUME_MIN_SELECTIVITY_FOR_FILTER_ESTIMATES' query hint.\n Verify need to set a non-default trace flag with the current system build and configuration.",
-      "message": "Trace Flag 4137 causes SQL Server to generate a plan using partial correlation of filters. Verify need to set a non-default trace flag with the current system build and configuration.",
+      "description":
+        "Trace Flag 4137 causes SQL Server to generate a plan using minimum selectivity when estimating AND predicates for filters to account for partial correlation instead of independance, under the query optimizer cardinality estimation model of SQL Server 2012 and earlier versions (CE 70).\n Does not apply to CE version 120 or above. Use trace flag 9471 instead.\n Starting with SQL Server 2016 SP1, to accomplish this at the query level use the USE HINT 'ASSUME_MIN_SELECTIVITY_FOR_FILTER_ESTIMATES' query hint.\n Verify need to set a non-default trace flag with the current system build and configuration.",
+      "message":
+        "Trace Flag 4137 causes SQL Server to generate a plan using partial correlation of filters. Verify need to set a non-default trace flag with the current system build and configuration.",
       "helpLink": "https://support.microsoft.com/help/2658214",
       "level": "Information",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
-        "not": { "in": [ 4137, "@TraceFlag" ] }
+        "not": { "in": [4137, "@TraceFlag"] }
       }
     },
     {
@@ -818,20 +924,22 @@
           "[10.50,10.50.2806)",
           "[11.0,11.0.2316)"
         ],
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.4137.1",
-      "tags": [ "TraceFlag", "TF4137", "Optimizer" ],
+      "id": "TF4137.1",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF4137", "Optimizer"],
       "displayName": "TF 4137 causes plans to use partial correlation for filters",
-      "description": "Trace Flag 4137 causes SQL Server to generate a plan using minimum selectivity when estimating AND predicates for filters to account for partial correlation instead of independance, under the query optimizer cardinality estimation model of SQL Server 2012 and earlier versions (CE 70). However it does not apply to this SQL Server version.\n Does not apply to CE version 120 or above. Use trace flag 9471 instead.\n Starting with SQL Server 2016 SP1, to accomplish this at the query level use the USE HINT 'ASSUME_MIN_SELECTIVITY_FOR_FILTER_ESTIMATES' query hint.\n Verify need to set a non-default trace flag with the current system build and configuration.",
-      "message": "Trace flag 4137 does not apply to this SQL Server version. Verify need to set a non-default trace flag with the current system build and configuration.",
+      "description":
+        "Trace Flag 4137 causes SQL Server to generate a plan using minimum selectivity when estimating AND predicates for filters to account for partial correlation instead of independance, under the query optimizer cardinality estimation model of SQL Server 2012 and earlier versions (CE 70). However it does not apply to this SQL Server version.\n Does not apply to CE version 120 or above. Use trace flag 9471 instead.\n Starting with SQL Server 2016 SP1, to accomplish this at the query level use the USE HINT 'ASSUME_MIN_SELECTIVITY_FOR_FILTER_ESTIMATES' query hint.\n Verify need to set a non-default trace flag with the current system build and configuration.",
+      "message":
+        "Trace flag 4137 does not apply to this SQL Server version. Verify need to set a non-default trace flag with the current system build and configuration.",
       "helpLink": "https://support.microsoft.com/help/2658214",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
-        "not": { "in": [ 4137, "@TraceFlag" ] }
+        "not": { "in": [4137, "@TraceFlag"] }
       }
     },
-
     {
       "target": {
         "type": "Server",
@@ -840,18 +948,21 @@
           "[10.50.4260,11.0)",
           "[11.0.2325,)"
         ],
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.4138",
-      "tags": [ "TraceFlag", "TF4138", "Optimizer" ],
+      "id": "TF4138",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF4138", "Optimizer"],
       "displayName": "TF 4138 causes plans to not use Row Goal adjustments",
-      "description": "Trace Flag 4138 causes SQL Server to generate a plan that does not use row goal adjustments with queries that contain TOP, OPTION (FAST N), IN, or EXISTS keywords.\n Starting with SQL Server 2016 SP1, to accomplish this at the query level use the USE HINT 'DISABLE_OPTIMIZER_ROWGOAL' query hint.\n Verify need to set a Non-default trace flag with current system build and configuration.",
-      "message": "Trace Flag 4138 enables plan that without row goal adjustments. Verify need to set a non-default trace flag with the current system build and configuration.",
+      "description":
+        "Trace Flag 4138 causes SQL Server to generate a plan that does not use row goal adjustments with queries that contain TOP, OPTION (FAST N), IN, or EXISTS keywords.\n Starting with SQL Server 2016 SP1, to accomplish this at the query level use the USE HINT 'DISABLE_OPTIMIZER_ROWGOAL' query hint.\n Verify need to set a Non-default trace flag with current system build and configuration.",
+      "message":
+        "Trace Flag 4138 enables plan that without row goal adjustments. Verify need to set a non-default trace flag with the current system build and configuration.",
       "helpLink": "https://support.microsoft.com/help/2667211",
       "level": "Information",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
-        "not": { "in": [ 4138, "@TraceFlag" ] }
+        "not": { "in": [4138, "@TraceFlag"] }
       }
     },
     {
@@ -862,20 +973,22 @@
           "(10.50.2881,10.50.4260)",
           "[11.0,11.0.2325)"
         ],
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.4138.1",
-      "tags": [ "TraceFlag", "TF4138", "Optimizer" ],
+      "id": "TF4138.1",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF4138", "Optimizer"],
       "displayName": "TF 4138 causes plans to not use Row Goal adjustments",
-      "description": "Trace Flag 4138 causes SQL Server to generate a plan that does not use row goal adjustments with queries that contain TOP, OPTION (FAST N), IN, or EXISTS keywords.\n Starting with SQL Server 2016 SP1, to accomplish this at the query level use the USE HINT 'DISABLE_OPTIMIZER_ROWGOAL' query hint. However it does not apply to this SQL Server version.\n Verify need to set a Non-default trace flag with current system build and configuration.",
-      "message": "Trace flag 4138 does not apply to this SQL Server version. Verify need to set a non-default trace flag with the current system build and configuration.",
+      "description":
+        "Trace Flag 4138 causes SQL Server to generate a plan that does not use row goal adjustments with queries that contain TOP, OPTION (FAST N), IN, or EXISTS keywords.\n Starting with SQL Server 2016 SP1, to accomplish this at the query level use the USE HINT 'DISABLE_OPTIMIZER_ROWGOAL' query hint. However it does not apply to this SQL Server version.\n Verify need to set a Non-default trace flag with current system build and configuration.",
+      "message":
+        "Trace flag 4138 does not apply to this SQL Server version. Verify need to set a non-default trace flag with the current system build and configuration.",
       "helpLink": "https://support.microsoft.com/help/2667211",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
-        "not": { "in": [ 4138, "@TraceFlag" ] }
+        "not": { "in": [4138, "@TraceFlag"] }
       }
     },
-
     {
       "target": {
         "type": "Server",
@@ -883,18 +996,21 @@
           "[11.0.3431,11.0.5058)",
           "[11.0.5532,)"
         ],
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.4139",
-      "tags": [ "TraceFlag", "TF4139" ],
+      "id": "TF4139",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF4139"],
       "displayName": "TF 4139 enables automatic statistics for any key ordering",
-      "description": "Trace Flag 4139 enables automatically generated quick statistics (histogram amendment) regardless of key column status.\n This trace flag is recommended to be set in cases where queries access newly inserted key values that may change plan shape, but the new values are not yet updated in the statistics histogram for the affected columns. In this case, regardless of the leading statistics column status (ascending, descending, or stationary), the histogram used to estimate cardinality will be adjusted at query compile time.\n This trace flag does not apply to the cardinality estimation model of SQL Server 2012 and earlier versions (CE 70).\n Verify need to set a non-default trace flag with the current system build and configuration.",
-      "message": "Trace Flag 4139 enables automatic statistics for any key ordering. Verify need to set a non-default trace flag with the current system build and configuration.",
+      "description":
+        "Trace Flag 4139 enables automatically generated quick statistics (histogram amendment) regardless of key column status.\n This trace flag is recommended to be set in cases where queries access newly inserted key values that may change plan shape, but the new values are not yet updated in the statistics histogram for the affected columns. In this case, regardless of the leading statistics column status (ascending, descending, or stationary), the histogram used to estimate cardinality will be adjusted at query compile time.\n This trace flag does not apply to the cardinality estimation model of SQL Server 2012 and earlier versions (CE 70).\n Verify need to set a non-default trace flag with the current system build and configuration.",
+      "message":
+        "Trace Flag 4139 enables automatic statistics for any key ordering. Verify need to set a non-default trace flag with the current system build and configuration.",
       "helpLink": "https://support.microsoft.com/help/2952101",
       "level": "Information",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
-        "not": { "in": [ 4139, "@TraceFlag" ] }
+        "not": { "in": [4139, "@TraceFlag"] }
       }
     },
     {
@@ -904,17 +1020,20 @@
           "(,11.0.3431)",
           "[11.0.5058,11.0.5532)"
         ],
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.4139.1",
-      "tags": [ "TraceFlag", "TF4139" ],
+      "id": "TF4139.1",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF4139"],
       "displayName": "TF 4139 enables automatic statistics for any key ordering",
-      "description": "Trace Flag 4139 enables automatically generated quick statistics (histogram amendment) regardless of key column status.\n However, this trace flag does not apply to this SQL Server version.\n Verify need to set a non-default trace flag with the current system build and configuration.",
-      "message": "Trace flag 4139 does not apply to this SQL Server version. Verify need to set a non-default trace flag with the current system build and configuration.",
+      "description":
+        "Trace Flag 4139 enables automatically generated quick statistics (histogram amendment) regardless of key column status.\n However, this trace flag does not apply to this SQL Server version.\n Verify need to set a non-default trace flag with the current system build and configuration.",
+      "message":
+        "Trace flag 4139 does not apply to this SQL Server version. Verify need to set a non-default trace flag with the current system build and configuration.",
       "helpLink": "https://support.microsoft.com/help/2952101",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
-        "not": { "in": [ 4139, "@TraceFlag" ] }
+        "not": { "in": [4139, "@TraceFlag"] }
       }
     },
     {
@@ -923,18 +1042,21 @@
         "version": [
           "[9.0.4035,)"
         ],
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.4199",
-      "tags": [ "TraceFlag", "TF4199", "Optimizer" ],
+      "id": "TF4199",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF4199", "Optimizer"],
       "displayName": "TF 4199 enables Query Optimizer fixes",
-      "description": "Trace Flag 4199 enables Query Optimizer fixes released in SQL Server Cumulative Updates and Service Packs.",
-      "message": "Trace Flag 4199 enables Query Optimizer fixes. Verify need to set a non-default trace flag with the current system build and configuration.",
+      "description":
+        "Trace Flag 4199 enables Query Optimizer fixes released in SQL Server Cumulative Updates and Service Packs.",
+      "message":
+        "Trace Flag 4199 enables Query Optimizer fixes. Verify need to set a non-default trace flag with the current system build and configuration.",
       "helpLink": "http://support.microsoft.com/help/974006",
       "level": "Information",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
-        "not": { "in": [ 4199, "@TraceFlag" ] }
+        "not": { "in": [4199, "@TraceFlag"] }
       }
     },
     {
@@ -944,35 +1066,39 @@
           "[12.0.2474,12.0.2480]",
           "[12.0.4416,12.0.5000)"
         ],
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.6498",
-      "tags": [ "TraceFlag", "TF6498", "Memory" ],
+      "id": "TF6498",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF6498", "Memory"],
       "displayName": "TF 6498 enables additional concurrent large queries",
-      "description": "Trace Flag 6498 enables more than one large query compilation to gain access to the big gateway when there is sufficient memory available.\n This trace flag can be used to keep memory usage for the compilation of incoming queries under control, avoiding compilation waits for concurrent large queries.\n Starting with SQL Server 2014 SP2 and SQL Server 2016, this behavior is controlled by the engine and trace flag 1236 has no effect.",
+      "description":
+        "Trace Flag 6498 enables more than one large query compilation to gain access to the big gateway when there is sufficient memory available.\n This trace flag can be used to keep memory usage for the compilation of incoming queries under control, avoiding compilation waits for concurrent large queries.\n Starting with SQL Server 2014 SP2 and SQL Server 2016, this behavior is controlled by the engine and trace flag 1236 has no effect.",
       "message": "Trace Flag 6498 enables concurrent large queries.",
       "helpLink": "https://support.microsoft.com/help/3024815",
       "level": "Information",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
-        "not": { "in": [ 6498, "@TraceFlag" ] }
+        "not": { "in": [6498, "@TraceFlag"] }
       }
     },
     {
       "target": {
         "type": "Server",
         "version": "[12.0.5000,)",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.6498.1",
-      "tags": [ "TraceFlag", "TF6498", "Memory" ],
+      "id": "TF6498.1",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF6498", "Memory"],
       "displayName": "TF 6498 enables additional concurrent large queries",
-      "description": "Trace Flag 6498 enables more than one large query compilation to gain access to the big gateway when there is sufficient memory available.\n This trace flag can be used to keep memory usage for the compilation of incoming queries under control, avoiding compilation waits for concurrent large queries.\n Starting with SQL Server 2014 SP2 and SQL Server 2016, this behavior is controlled by the engine and trace flag 1236 has no effect.",
+      "description":
+        "Trace Flag 6498 enables more than one large query compilation to gain access to the big gateway when there is sufficient memory available.\n This trace flag can be used to keep memory usage for the compilation of incoming queries under control, avoiding compilation waits for concurrent large queries.\n Starting with SQL Server 2014 SP2 and SQL Server 2016, this behavior is controlled by the engine and trace flag 1236 has no effect.",
       "message": "Disable trace flag 6498 in SQL Server 2014 SP2, SQL Server 2016 and higher versions.",
       "helpLink": "https://support.microsoft.com/help/3024815",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
-        "not": { "in": [ 6498, "@TraceFlag" ] }
+        "not": { "in": [6498, "@TraceFlag"] }
       }
     },
     {
@@ -982,17 +1108,20 @@
           "(,12.0.2474)",
           "(12.0.2480,12.0.4416)"
         ],
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.6498.2",
-      "tags": [ "TraceFlag", "TF6498", "Memory" ],
+      "id": "TF6498.2",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF6498", "Memory"],
       "displayName": "TF 6498 enables additional concurrent large queries",
-      "description": "Trace Flag 6498 enables more than one large query compilation to gain access to the big gateway when there is sufficient memory available.\n However, this trace flag does not apply to this SQL Server version.\n This trace flag can be used to keep memory usage for the compilation of incoming queries under control, avoiding compilation waits for concurrent large queries.\n Starting with SQL Server 2014 SP2 and SQL Server 2016, this behavior is controlled by the engine and trace flag 1236 has no effect.",
-      "message": "Trace Flag 6498 does not apply to this SQL Server version. Verify need to set a non-default trace flag with the current system build and configuration.",
+      "description":
+        "Trace Flag 6498 enables more than one large query compilation to gain access to the big gateway when there is sufficient memory available.\n However, this trace flag does not apply to this SQL Server version.\n This trace flag can be used to keep memory usage for the compilation of incoming queries under control, avoiding compilation waits for concurrent large queries.\n Starting with SQL Server 2014 SP2 and SQL Server 2016, this behavior is controlled by the engine and trace flag 1236 has no effect.",
+      "message":
+        "Trace Flag 6498 does not apply to this SQL Server version. Verify need to set a non-default trace flag with the current system build and configuration.",
       "helpLink": "https://support.microsoft.com/help/3024815",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
-        "not": { "in": [ 6498, "@TraceFlag" ] }
+        "not": { "in": [6498, "@TraceFlag"] }
       }
     },
     {
@@ -1001,17 +1130,19 @@
         "version": [
           "[11.0.6020,11.0.6518)"
         ],
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.6532",
-      "tags": [ "TraceFlag", "TF6532", "Performance" ],
+      "id": "TF6532",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF6532", "Performance"],
       "displayName": "TF 6532 enables performance improvements for Spatial data",
-      "description": "Trace Flag 6532 enables performance improvements of query operations with spatial data types.\n The performance gain will vary, depending on the configuration, the types of queries, and the objects.",
+      "description":
+        "Trace Flag 6532 enables performance improvements of query operations with spatial data types.\n The performance gain will vary, depending on the configuration, the types of queries, and the objects.",
       "message": "Enable trace flag 6532 to enable performance improvements for Spatial data.",
       "helpLink": "https://support.microsoft.com/help/3107399",
       "level": "Information",
-      "probes": [ "EnabledGlobalTraceFlags" ],
-      "condition": { "in": [ 6532, "@TraceFlag" ] }
+      "probes": ["EnabledGlobalTraceFlags"],
+      "condition": { "in": [6532, "@TraceFlag"] }
     },
     {
       "target": {
@@ -1020,20 +1151,22 @@
           "[11.0.6518,12.0)",
           "[12.0.5000,13.0)"
         ],
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.6532.6533",
-      "tags": [ "TraceFlag", "TF6532", "TF6533", "Performance" ],
+      "id": "TF6532.6533",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF6532", "TF6533", "Performance"],
       "displayName": "TF 6532 and TF 6533 enable performance improvements for Spatial data",
-      "description": "Trace Flag 6532 and trace flag 6533 enable performance improvements of query operations with spatial data types.\n The performance gain will vary, depending on the configuration, the types of queries, and the objects.",
+      "description":
+        "Trace Flag 6532 and trace flag 6533 enable performance improvements of query operations with spatial data types.\n The performance gain will vary, depending on the configuration, the types of queries, and the objects.",
       "message": "Enable trace flag 6532 and trace flag 6533 to enable performance improvements for Spatial data.",
       "helpLink": "https://support.microsoft.com/help/3107399",
       "level": "Information",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
         "and": [
-          { "in": [ 6532, "@TraceFlag" ] },
-          { "in": [ 6533, "@TraceFlag" ] }
+          { "in": [6532, "@TraceFlag"] },
+          { "in": [6533, "@TraceFlag"] }
         ]
       }
     },
@@ -1041,19 +1174,21 @@
       "target": {
         "type": "Server",
         "version": "[13.0,)",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.6532.6533.1",
-      "tags": [ "TraceFlag", "TF6532", "TF6533", "Performance" ],
+      "id": "TF6532.6533.1",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF6532", "TF6533", "Performance"],
       "displayName": "TF 6532 and TF 6533 enable performance improvements for Spatial data",
-      "description": "Trace flags 6532 and 6533 enable performance improvements of query operations with spatial data types.\n However, this trace flag does not apply to this SQL Server version.\n Starting with SQL Server 2016, this behavior is controlled by the engine and trace flags 6532 and 6533 have no effect.",
+      "description":
+        "Trace flags 6532 and 6533 enable performance improvements of query operations with spatial data types.\n However, this trace flag does not apply to this SQL Server version.\n Starting with SQL Server 2016, this behavior is controlled by the engine and trace flags 6532 and 6533 have no effect.",
       "message": "Disable trace flag 6532 in SQL Server 2016 and higher versions.",
       "helpLink": "https://support.microsoft.com/help/3107399",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
         "and": [
-          { "not": { "in": [ 6532, "@TraceFlag" ] } },
-          { "not": { "in": [ 6533, "@TraceFlag" ] } }
+          { "not": { "in": [6532, "@TraceFlag"] } },
+          { "not": { "in": [6533, "@TraceFlag"] } }
         ]
       }
     },
@@ -1064,239 +1199,274 @@
           "(,11.0.6020)",
           "[12.0,12.0.5000)"
         ],
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.6532.6533.2",
-      "tags": [ "TraceFlag", "TF6532", "TF6533", "Performance" ],
+      "id": "TF6532.6533.2",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF6532", "TF6533", "Performance"],
       "displayName": "TF 6532 and TF 6533 enable performance improvements for Spatial data",
-      "description": "Trace flags 6532 and 6533 enable performance improvements of query operations with spatial data types.\n However, this trace flag does not apply to this SQL Server version.\n Starting with SQL Server 2016, this behavior is controlled by the engine and trace flags 6532 and 6533 have no effect.",
-      "message": "Trace flags 6532 and 6533 do not apply to this SQL Server version. Verify need to set a non-default trace flag with the current system build and configuration.",
+      "description":
+        "Trace flags 6532 and 6533 enable performance improvements of query operations with spatial data types.\n However, this trace flag does not apply to this SQL Server version.\n Starting with SQL Server 2016, this behavior is controlled by the engine and trace flags 6532 and 6533 have no effect.",
+      "message":
+        "Trace flags 6532 and 6533 do not apply to this SQL Server version. Verify need to set a non-default trace flag with the current system build and configuration.",
       "helpLink": "https://support.microsoft.com/help/3107399",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
         "and": [
-          { "not": { "in": [ 6532, "@TraceFlag" ] } },
-          { "not": { "in": [ 6533, "@TraceFlag" ] } }
+          { "not": { "in": [6532, "@TraceFlag"] } },
+          { "not": { "in": [6533, "@TraceFlag"] } }
         ]
       }
     },
-
     {
       "target": {
         "type": "Server",
         "version": [
           "[11.0.6020,12.0)",
-          "[12.0.5000,)"
+          "[12.0.5000,13.0)"
         ],
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.6534",
-      "tags": [ "TraceFlag", "TF6534", "Performance" ],
+      "id": "TF6534",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF6534", "Performance"],
       "displayName": "TF 6534 enables performance improvements for Spatial data",
-      "description": "Trace Flag 6534 enable performance improvements of query operations with spatial data types.\n The performance gain will vary, depending on the configuration, the types of queries, and the objects.",
-      "message": "Enable trace Flag 6534 to enable performance improvement of query operations with spatial data types.",
+      "description":
+        "Trace Flag 6534 enables performance improvements of query operations with spatial data types.\n The performance gain will vary, depending on the configuration, the types of queries, and the objects.",
+      "message":
+        "Enable trace flag 6534 to enable performance improvement of query operations with spatial data types.",
       "helpLink": "https://support.microsoft.com/help/3107399",
       "level": "Information",
-      "probes": [ "EnabledGlobalTraceFlags" ],
-      "condition": { "in": [ 6534, "@TraceFlag" ] }
+      "probes": ["EnabledGlobalTraceFlags"],
+      "condition": { "in": [6534, "@TraceFlag"] }
     },
     {
       "target": {
         "type": "Server",
         "version": [
           "(,11.0.6020)",
-          "[12.0,12.0.5000)"
+          "[12.0,12.0.5000)",
+          "[13.0,)"
         ],
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.6534.1",
-      "tags": [ "TraceFlag", "TF6534", "Performance" ],
+      "id": "TF6534.1",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF6534", "Performance"],
       "displayName": "TF 6534 enables performance improvements for Spatial data",
-      "description": "Trace Flag 6534 enables performance improvement of query operations with spatial data types.\n However, this trace flag does not apply to this SQL Server version.\n Verify need to set a Non-default trace flag with current system build and configuration.",
-      "message": "Trace flag 6534 does not apply to this SQL Server version. Verify need to set a non-default trace flag with the current system build and configuration.",
+      "description":
+        "Trace Flag 6534 enables performance improvement of query operations with spatial data types.\n However, this trace flag does not apply to this SQL Server version.\n Verify need to set a Non-default trace flag with current system build and configuration.",
+      "message":
+        "Trace flag 6534 does not apply to this SQL Server version. Verify need to set a non-default trace flag with the current system build and configuration.",
       "helpLink": "https://support.microsoft.com/help/3107399",
-      "probes": [ "EnabledGlobalTraceFlags" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
-        "not": { "in": [ 6534, "@TraceFlag" ] }
+        "not": { "in": [6534, "@TraceFlag"] }
       }
     },
     {
       "target": {
         "type": "Server",
         "version": "[13.0.4001,15.0)",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.TraceFlag.7412",
-      "tags": [ "TraceFlag", "TF7412", "Performance" ],
-      "displayName": "TF 7412 enables the lightweight profiling infrastructure for live query performance troubleshooting",
-      "description": "Trace Flag 7412 enables the lightweight profiling infrastructure for live query performance troubleshooting. Consider enabling TF 7412 to have the ability to access runtime information on query execution plans for any session.",
-      "message": "Enable trace flag 7412 to enables the lightweight profiling infrastructure for live query performance troubleshooting.",
+      "id": "TF7412",
+      "tags": ["DefaultRuleset", "TraceFlag", "TF7412", "Performance"],
+      "displayName":
+        "TF 7412 enables the lightweight profiling infrastructure for live query performance troubleshooting",
+      "description":
+        "Trace Flag 7412 enables the lightweight profiling infrastructure for live query performance troubleshooting. Consider enabling TF 7412 to have the ability to access runtime information on query execution plans for any session.",
+      "message":
+        "Enable trace flag 7412 to enables the lightweight profiling infrastructure for live query performance troubleshooting.",
       "helpLink": "https://docs.microsoft.com/sql/relational-databases/performance/query-profiling-infrastructure",
       "level": "Information",
-      "probes": [ "EnabledGlobalTraceFlags" ],
-      "condition": { "in": [ 7412, "@TraceFlag" ]
-      }
-    },
-
-    {
-      "target": {
-        "type": "Server",
-        "platform": "Windows"
-      },
-      "id": "SqlServer.Server.DeprecatedOrDiscontinuedFeatures",
-      "tags": [ "deprecated_feature", "discontinued_feature" ],
-      "displayName": "Deprecated or discontinued features should not be used",
-      "description": "This check detects deprecated or discontinued features used on target SQL Server instance. Deprecated features may be removed in a future release of SQL Server. Discontinued features have been removed from specific versions of SQL Server.",
-      "message": "Detected deprecated or discontinued feature uses: @{DeprecatedFeature}. We recommend to replace them with features actual for SQL Server version @{ProductVersion}.",
-      "helpLink": "https://docs.microsoft.com/sql/relational-databases/performance-monitor/sql-server-deprecated-features-object",
-      "probes": [ "Microsoft.DeprecatedFeaturesStats", "SQLServerVersion" ],
+      "probes": ["EnabledGlobalTraceFlags"],
       "condition": {
-        "equal": [ "@DeprecatedFeature", "" ]
+        "in": [7412, "@TraceFlag"]
       }
     },
-
     {
       "target": {
         "type": "Server",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises, ManagedInstance"
       },
-      "id": "SqlServer.Server.SystemHealthSessionNotActive",
-      "tags": [ "XEvent", "SystemHealth" ],
+      "id": "DeprecatedFeatures",
+      "tags": ["DefaultRuleset", "deprecated_feature", "discontinued_feature"],
+      "displayName": "Deprecated or discontinued features should not be used",
+      "description":
+        "This check detects deprecated or discontinued features used on target SQL Server instance. Deprecated features may be removed in a future release of SQL Server. Discontinued features have been removed from specific versions of SQL Server.",
+      "message":
+        "Detected deprecated or discontinued feature uses: @{DeprecatedFeature}. We recommend to replace them with features actual for SQL Server version @{ProductVersion}.",
+      "helpLink":
+        "https://docs.microsoft.com/sql/relational-databases/performance-monitor/sql-server-deprecated-features-object",
+      "probes": ["DeprecatedFeaturesStats", "SQLServerVersion"],
+      "condition": {
+        "equal": ["@DeprecatedFeature", ""]
+      }
+    },
+    {
+      "target": {
+        "type": "Server",
+        "platform": "Windows",
+        "engineEdition": "OnPremises, ManagedInstance"
+      },
+      "id": "SystemHealthSession",
+      "tags": ["DefaultRuleset", "XEvent", "SystemHealth"],
       "displayName": "system_health XEvent session is not active",
-      "description": "This session starts automatically when the SQL Server Database Engine starts, and runs without any noticeable performance effects. The session collects system data that you can use to help troubleshoot performance issues in the Database Engine.\n We recommend that you do not stop, alter, or delete the system health session.",
-      "message": "Start the session by using the ALTER EVENT SESSION statement or by using the Extended Events node in Object Explorer.",
+      "description":
+        "This session starts automatically when the SQL Server Database Engine starts, and runs without any noticeable performance effects. The session collects system data that you can use to help troubleshoot performance issues in the Database Engine.\n We recommend that you do not stop, alter, or delete the system health session.",
+      "message":
+        "Start the session by using the ALTER EVENT SESSION statement or by using the Extended Events node in Object Explorer.",
       "helpLink": "https://docs.microsoft.com/sql/relational-databases/extended-events/use-the-system-health-session",
       "level": "Warning",
-      "probes": [ "Microsoft.XEvent.SystemHealth" ],
+      "probes": ["XEvent.SystemHealth"],
       "condition": "@XEvent.SystemHealthCount"
     },
-
     {
       "target": {
         "type": "Server",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.SPServerDiagnosticsSessionNotActive",
-      "tags": [ "XEvent", "SPServerDiagnostics", "sp_server_diagnostics" ],
+      "id": "SPServerDiagnosticsSession",
+      "tags": ["DefaultRuleset", "XEvent", "SPServerDiagnostics", "sp_server_diagnostics"],
       "displayName": "sp_server_diagnostics xEvent session is not active",
-      "description": "This session starts automatically when the SQL Server Database Engine starts, and runs without any noticeable performance effects. The session collects system data that you can use to help troubleshoot performance issues in the Database Engine.\n We recommend that you do not stop, alter, or delete the system health session.",
-      "message": "Start the session by using the ALTER EVENT SESSION statement or by using the Extended Events node in Object Explorer.",
-      "helpLink": "https://docs.microsoft.com/sql/relational-databases/system-stored-procedures/sp-server-diagnostics-transact-sql",
+      "description":
+        "This session starts automatically when the SQL Server Database Engine starts, and runs without any noticeable performance effects. The session collects system data that you can use to help troubleshoot performance issues in the Database Engine.\n We recommend that you do not stop, alter, or delete the system health session.",
+      "message":
+        "Start the session by using the ALTER EVENT SESSION statement or by using the Extended Events node in Object Explorer.",
+      "helpLink":
+        "https://docs.microsoft.com/sql/relational-databases/system-stored-procedures/sp-server-diagnostics-transact-sql",
       "level": "Warning",
-      "probes": [ "Microsoft.XEvent.SPServerDiagnostics" ],
+      "probes": ["XEvent.SPServerDiagnostics"],
       "condition": "@XEvent.SPServerDiagnostics"
     },
-
     {
       "target": {
         "type": "Server",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.BlackboxTraceConfiguredRunning",
-      "tags": [ "DefaultCollections", "BlackBox", "Trace" ],
+      "id": "BlackboxTrace",
+      "tags": ["DefaultRuleset", "DefaultCollections", "BlackBox", "Trace"],
       "displayName": "Blackbox trace is configured and running",
-      "description": "This trace is designed to behave similarly to an airplane black box, to help you diagnose intermittent server crashes. It consumes more resources than the default trace and should not be running for extended periods of time.",
+      "description":
+        "This trace is designed to behave similarly to an airplane black box, to help you diagnose intermittent server crashes. It consumes more resources than the default trace and should not be running for extended periods of time.",
       "message": "Make sure you still need the blackbox trace and stop it otherwise.",
-      "helpLink": "https://docs.microsoft.com/sql/relational-databases/system-stored-procedures/sp-trace-create-transact-sql",
+      "helpLink":
+        "https://docs.microsoft.com/sql/relational-databases/system-stored-procedures/sp-trace-create-transact-sql",
       "level": "Warning",
-      "probes": [ "Microsoft.CountBlackBoxTraces" ],
+      "probes": ["CountBlackBoxTraces"],
       "condition": { "not": "@BlackBoxTraceCount" }
     },
-
     {
       "target": {
         "type": "Server",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises, ManagedInstance"
       },
-      "id": "SqlServer.Server.NoDefaultTraceFoundIsNotActive",
-      "tags": [ "DefaultCollections", "DefaultTrace", "Trace" ],
+      "id": "DefaultTrace",
+      "tags": ["DefaultRuleset", "DefaultCollections", "DefaultTrace", "Trace"],
       "displayName": "No default trace was found or is not active",
-      "description": "Default trace provides troubleshooting assistance to database administrators by ensuring that they have the log data necessary to diagnose problems the first time they occur.",
-      "message": "Make sure that there is enough space for SQL Server to write the default trace file. Then have the default trace run by disabling and re-enabling it.",
-      "helpLink": "https://docs.microsoft.com/sql/relational-databases/policy-based-management/default-trace-log-files-disabled",
+      "description":
+        "Default trace provides troubleshooting assistance to database administrators by ensuring that they have the log data necessary to diagnose problems the first time they occur.",
+      "message":
+        "Make sure that there is enough space for SQL Server to write the default trace file. Then have the default trace run by disabling and re-enabling it.",
+      "helpLink":
+        "https://docs.microsoft.com/sql/relational-databases/policy-based-management/default-trace-log-files-disabled",
       "level": "Warning",
-      "probes": [ "Microsoft.CountDefaultTraces" ],
+      "probes": ["CountDefaultTraces"],
       "condition": "@DefaultTraceCount"
     },
-
     {
       "target": {
         "type": "Server",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises, ManagedInstance"
       },
-      "id": "SqlServer.Server.HintsStatistics",
-      "tags": [ "Hints", "Instance" ],
+      "id": "HintsStatistics",
+      "tags": ["DefaultRuleset", "Hints", "Instance"],
       "displayName": "Hints are being used",
-      "description": "Hints are options or strategies specified for enforcement by the SQL Server query processor on SELECT, INSERT, UPDATE, or DELETE statements. The hints override any execution plan the Query Optimizer might select for a query. Because the SQL Server Query Optimizer typically selects the best execution plan for a query, we recommend that <join_hint>, <query_hint>, and <table_hint> be used only as a last resort by experienced developers and database administrators.",
-      "message": "We recommend that <join_hint>, <query_hint>, and <table_hint> be used only as a last resort by experienced developers and database administrators, because the SQL Server Query Optimizer typically selects the best execution plan for a query.",
+      "description":
+        "Hints are options or strategies specified for enforcement by the SQL Server query processor on SELECT, INSERT, UPDATE, or DELETE statements. The hints override any execution plan the Query Optimizer might select for a query. Because the SQL Server Query Optimizer typically selects the best execution plan for a query, we recommend that <join_hint>, <query_hint>, and <table_hint> be used only as a last resort by experienced developers and database administrators.",
+      "message":
+        "We recommend that <join_hint>, <query_hint>, and <table_hint> be used only as a last resort by experienced developers and database administrators, because the SQL Server Query Optimizer typically selects the best execution plan for a query.",
       "helpLink": "https://docs.microsoft.com/sql/t-sql/queries/hints-transact-sql",
       "level": "Information",
-      "probes": [ "Microsoft.Hints.InstanceStatistics" ],
-      "condition": "@HintUsageCount"
+      "probes": ["Hints.InstanceStatistics"],
+      "condition": { "@HintUsageCount": 0 }
     },
-
     {
       "target": {
         "type": "Database",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises, ManagedInstance"
       },
-      "id": "SqlServer.Database.HintsUsageInModules",
-      "tags": [ "Hints", "Database", "Module" ],
+      "id": "HintsUsageInModules",
+      "tags": ["DefaultRuleset", "Hints", "Database", "Module"],
       "displayName": "Hints usage in modules",
       "enabled": false,
-      "description": "Hints are options or strategies specified for enforcement by the SQL Server query processor on SELECT, INSERT, UPDATE, or DELETE statements. The hints override any execution plan the Query Optimizer might select for a query. Because the SQL Server Query Optimizer typically selects the best execution plan for a query, we recommend that <join_hint>, <query_hint>, and <table_hint> be used only as a last resort by experienced developers and database administrators.",
+      "description":
+        "Hints are options or strategies specified for enforcement by the SQL Server query processor on SELECT, INSERT, UPDATE, or DELETE statements. The hints override any execution plan the Query Optimizer might select for a query. Because the SQL Server Query Optimizer typically selects the best execution plan for a query, we recommend that <join_hint>, <query_hint>, and <table_hint> be used only as a last resort by experienced developers and database administrators.",
       "message": "@{Hint} was used in @{type_desc} @{Schema_Name}.@{Object_Name}.",
       "helpLink": "https://docs.microsoft.com/sql/t-sql/queries/hints-transact-sql",
       "level": "Information",
-      "probes": [ "Microsoft.Hints.ModuleUsage" ]
+      "probes": ["Hints.ModuleUsage"]
     },
-
     {
       "target": {
         "type": "Server",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises, ManagedInstance"
       },
-      "id": "SqlServer.Server.PlansUseRatio",
-      "tags": [ "Plan", "Usage" ],
+      "id": "PlansUseRatio",
+      "tags": ["DefaultRuleset", "Plan", "Usage"],
       "displayName": "Amount of single use plans in cache is high",
       "description": "Single use plans waste system resources.",
-      "message": "Amount of single use plans in cache is high (@{SingleUsePlansUseRatio:P0}). Consider enabling the Optimize for ad hoc workloads setting on heavy OLTP ad-hoc workloads to conserve resources.",
-      "helpLink": "https://docs.microsoft.com/sql/database-engine/configure-windows/optimize-for-ad-hoc-workloads-server-configuration-option",
+      "message":
+        "Amount of single use plans in cache is high (@{SingleUsePlansUseRatio:P0}). Consider enabling the Optimize for ad hoc workloads setting on heavy OLTP ad-hoc workloads to conserve resources.",
+      "helpLink":
+        "https://docs.microsoft.com/sql/database-engine/configure-windows/optimize-for-ad-hoc-workloads-server-configuration-option",
       "level": "Warning",
-      "probes": [ "Microsoft.CachedPlans.SingleUseRatio" ],
-      "condition": { "less": [ "@SingleUsePlansUseRatio", 0.5 ] }
+      "probes": ["CachedPlans.SingleUseRatio"],
+      "condition": { "less": ["@SingleUsePlansUseRatio", 0.5] }
     },
-
     {
       "target": {
         "type": "Database",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises, ManagedInstance"
       },
-      "id": "SqlServer.Database.HypotheticalIndices",
-      "tags": [ "Hypothetical", "Index" ],
+      "id": "HypotheticalIndexes",
+      "tags": ["DefaultRuleset", "Hypothetical", "Index"],
       "displayName": "Hypothetical indexes found",
-      "description": "Database has indexes that are marked as hypothetical. Hypothetical indexes are created by the Database Tuning Assistant (DTA) during its tests. If a DTA session was interrupted, these indexes may not be deleted. It is recommended to drop these objects as soon as possible.",
-      "message": "Index @{IndexName} for @{Schema}.@{Object} is marked as hypothetical. It is recommended to drop hypothetical index @{IndexName} as soon as possible.",
+      "description":
+        "Database has indexes that are marked as hypothetical. Hypothetical indexes are created by the Database Tuning Assistant (DTA) during its tests. If a DTA session was interrupted, these indexes may not be deleted. It is recommended to drop these objects as soon as possible.",
+      "message":
+        "Index @{IndexName} for @{Schema}.@{Object} is marked as hypothetical. It is recommended to drop hypothetical index @{IndexName} as soon as possible.",
       "helpLink": "",
       "level": "Warning",
-      "probes": [ "Microsoft.Hypothetical.Indices" ]
+      "probes": ["Hypothetical.Indexes"]
     },
-
     {
       "target": {
         "type": "Database",
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises, ManagedInstance"
       },
-      "id": "SqlServer.Database.HypotheticalStatistics",
-      "tags": [ "Hypothetical", "Statistics" ],
+      "id": "HypotheticalStatistics",
+      "tags": ["DefaultRuleset", "Hypothetical", "Statistics"],
       "displayName": "Hypothetical statistics found",
-      "description": "Database has statistics that are marked as hypothetical. Hypothetical statistics are created by the Database Tuning Assistant (DTA) during its tests. If a DTA session was interrupted, these statistics may not be deleted. It is recommended to drop these objects as soon as possible.",
-      "message": "Statistics @{StatName} for @{Schema}.@{Object} is hypothetical. It is recommended to drop hypothetical statistics @{StatName} as soon as possible.",
+      "description":
+        "Database has statistics that are marked as hypothetical. Hypothetical statistics are created by the Database Tuning Assistant (DTA) during its tests. If a DTA session was interrupted, these statistics may not be deleted. It is recommended to drop these objects as soon as possible.",
+      "message":
+        "Statistics @{StatName} for @{Schema}.@{Object} is hypothetical. It is recommended to drop hypothetical statistics @{StatName} as soon as possible.",
       "helpLink": "",
       "level": "Warning",
-      "probes": [ "Microsoft.Hypothetical.Statistics" ]
+      "probes": ["Hypothetical.Statistics"]
     },
-
     {
       "target": {
         "type": "Server",
@@ -1306,15 +1476,19 @@
           "[13.0,13.0.5337.0)",
           "[14.0,14.0.3162.1)"
         ],
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.LatestCUInstalled",
-      "tags": [ "Update" ],
+      "id": "LatestCU",
+      "tags": ["DefaultRuleset", "Update"],
       "displayName": "SQL Server instance is not up to date",
-      "description": "On an installed instance of SQL Server, we recommend that you apply the latest security updates and critical updates including general distribution releases (GDRs), service packs (SPs), and cumulative updates (CUs).",
-      "message": "Product version @{ProductVersion} is not the latest available. We recommend keeping your SQL Server up to date and install Service Packs and Cumulative Updates as they are released.",
-      "helpLink": "https://support.microsoft.com/help/321185/how-to-determine-the-version-edition-and-update-level-of-sql-server-an https://docs.microsoft.com/sql/database-engine/install-windows/install-sql-server-servicing-updates",
-      "probes": [ "SQLServerVersion" ]
+      "description":
+        "On an installed instance of SQL Server, we recommend that you apply the latest security updates and critical updates including general distribution releases (GDRs), service packs (SPs), and cumulative updates (CUs).",
+      "message":
+        "Product version @{ProductVersion} is not the latest available. We recommend keeping your SQL Server up to date and install Service Packs and Cumulative Updates as they are released.",
+      "helpLink":
+        "https://support.microsoft.com/help/321185/how-to-determine-the-version-edition-and-update-level-of-sql-server-an https://docs.microsoft.com/sql/database-engine/install-windows/install-sql-server-servicing-updates",
+      "probes": ["SQLServerVersion"]
     },
     {
       "target": {
@@ -1325,101 +1499,641 @@
           "[13.0.5337.0, 14.0)",
           "[14.0.3162.1,)"
         ],
-        "platform": "Windows"
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
       },
-      "id": "SqlServer.Server.LatestCUInstalled.1",
-      "tags": [ "Update" ],
+      "id": "LatestCU.1",
+      "tags": ["DefaultRuleset", "Update"],
       "displayName": "SQL Server instance is not up to date",
-      "description": "On an installed instance of SQL Server, we recommend that you apply the latest security updates and critical updates including general distribution releases (GDRs), service packs (SPs), and cumulative updates (CUs).",
-      "message": "Product version @{ProductVersion} is not the latest available. We recommend keeping your SQL Server up to date and install Service Packs and Cumulative Updates as they are released.",
-      "helpLink": "https://support.microsoft.com/help/321185/how-to-determine-the-version-edition-and-update-level-of-sql-server-an https://docs.microsoft.com/sql/database-engine/install-windows/install-sql-server-servicing-updates",
-      "condition": false
+      "description":
+        "On an installed instance of SQL Server, we recommend that you apply the latest security updates and critical updates including general distribution releases (GDRs), service packs (SPs), and cumulative updates (CUs).",
+      "message":
+        "Product version @{ProductVersion} is not the latest available. We recommend keeping your SQL Server up to date and install Service Packs and Cumulative Updates as they are released.",
+      "helpLink":
+        "https://support.microsoft.com/help/321185/how-to-determine-the-version-edition-and-update-level-of-sql-server-an https://docs.microsoft.com/sql/database-engine/install-windows/install-sql-server-servicing-updates",
+      "condition": true
+    },
+    {
+      "target": {
+        "type": "Database",
+        "engineEdition": "OnPremises, ManagedInstance",
+        "name": { "not": "msdb" }
+      },
+      "id": "ForeignKeysNoIndexes",
+      "tags": ["DefaultRuleset", "Performance", "Index"],
+      "displayName": "Foreign key constraints should have corresponding indexes",
+      "description":
+        "Unlike primary key constraints, creating a foreign key constraint does not automatically create a corresponding index. However, manually creating an index on a foreign key is often useful.",
+      "message":
+        "There is no index on the following foreign key(s): @{ConstraintName}. We recommend you have a corresponding index on every foreign key.",
+      "helpLink": "https://docs.microsoft.com/sql/relational-databases/tables/primary-and-foreign-key-constraints",
+      "level": "Warning",
+      "probes": ["FKNoIndexes"],
+      "condition": { "@ConstraintName": "" }
+    },
+    {
+      "target": {
+        "type": "Database",
+        "name": { "not": "/^(master|model|msdb|tempdb)$/" },
+        "engineEdition": "OnPremises, ManagedInstance"
+      },
+      "id": "MissedIndexes",
+      "tags": ["DefaultRuleset", "Performance", "Index"],
+      "displayName": "Potentially missing indexes",
+      "description":
+        "Potentially missing indexes were found based on query history. It may be important to revise these. Please note that this check based on the scoring method and the results may be approximate - for information purposes only.",
+      "message":
+        "Consider creating index on @{Table} with key column(s) @{KeyCols}@{IncludedCols: and included column(s): #}",
+      "helpLink": "https://docs.microsoft.com/sql/relational-databases/indexes/create-indexes-with-included-columns",
+      "level": "Information",
+      "probes": ["MissedIndexes"]
+    },
+    {
+      "target": {
+        "type": "Database",
+        "name": { "not": "/^(model|tempdb)$/" },
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
+      },
+      "id": "FullBackup",
+      "tags": ["DefaultRuleset", "Performance", "Backup"],
+      "displayName": "Full backup is missed or outdated",
+      "description": "Database doesn't have any Full backups or the last Full backup is over 7 days.",
+      "message": "Consider creating new Full backup.",
+      "helpLink":
+        "https://docs.microsoft.com/sql/relational-databases/backup-restore/create-a-full-database-backup-sql-server",
+      "level": "Warning",
+      "probes": ["DatabaseBackups"],
+      "condition": {
+        "not": { "equal": ["@LastFullBackup", null] },
+        "less": ["@LastFullBackup", 7]
+      }
+    },
+    {
+      "target": {
+        "type": "Database",
+        "name": { "not": "/^(master|model|msdb|tempdb)$/" },
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
+      },
+      "id": "OutdatedTranLogBackup",
+      "tags": ["DefaultRuleset", "Performance", "Backup"],
+      "displayName": "Outdated Transaction Log Backups",
+      "description":
+        "Database does not have any corresponding transaction Log backup since the last Full or Differential backup or its older than 24H",
+      "message":
+        "Database in @{recovery_model_desc} recovery model does not have any corresponding transaction Log backups since the last Full or Differential backup or its older than 24H",
+      "helpLink":
+        "https://docs.microsoft.com/sql/relational-databases/backup-restore/back-up-a-transaction-log-sql-server",
+      "level": "Warning",
+      "probes": ["DatabaseBackups"],
+      "condition": {
+        "not": { "equal": ["@LastTLBackup", null] },
+        "less": ["@recovery_model", 3],
+        "less": ["@LastTLBackup", 24]
+      }
+    },
+    {
+      "target": {
+        "type": "Database",
+        "platform": "Windows",
+        "engineEdition": "OnPremises, ManagedInstance"
+      },
+      "id": "DbDiffCollation",
+      "tags": ["DefaultRuleset", "Collation"],
+      "displayName": "Different Database collation",
+      "description": "Database collation differs from master database",
+      "message":
+        "We recommend that the collations of user-defined databases match the collation of master or model. Otherwise, collation conflicts can occur that might prevent code from executing.",
+      "helpLink":
+        "https://docs.microsoft.com/sql/database-engine/set-collation-user-defined-databases-match-master-model-database",
+      "level": "Warning",
+      "probes": ["DatabaseConfiguration"],
+      "condition": {
+        "equal": ["@collation_name", "@master_collation"]
+      }
+    },
+    
+    {
+      "target": {
+        "type": "Database",
+        "platform": "Windows",
+        "engineEdition": "OnPremises",
+        "name": { "not": "/^(master|msdb|tempdb)$/" }
+      },
+      "id": "AutoClose",
+      "tags": [ "DefaultRuleset", "Settings", "Performance" ],
+      "displayName": "Auto Close Option should be OFF",
+      "description": "When AUTO_CLOSE is set ON, this option can cause performance degradation on frequently accessed databases because of the increased overhead of opening and closing the database after each connection. AUTO_CLOSE also flushes the procedure cache after each connection.",
+      "message": "Set the AUTO_CLOSE database option to OFF.",
+      "helpLink": "https://docs.microsoft.com/sql/relational-databases/policy-based-management/set-the-auto-close-database-option-to-off",
+      "level": "Warning",
+      "probes": [ "DatabaseConfiguration" ],
+      "condition": { "not": "@is_auto_close_on" }
     },
 
     {
       "target": {
         "type": "Database",
-        "name": { "not": "msdb" }
+        "platform": "Windows",
+        "engineEdition": "OnPremises, ManagedInstance",
+        "name": { "not": "/^(master|msdb|tempdb)$/" }
       },
-      "id": "SqlServer.Database.ForeignKeysNoIndices",
-      "tags": [ "Performance", "Index" ],
-      "displayName": "Foreign key constraints should have corresponding indexes",
-      "description": "Unlike primary key constraints, creating a foreign key constraint does not automatically create a corresponding index. However, manually creating an index on a foreign key is often useful.",
-      "message": "There is no index on the following foreign key(s): @{ConstraintName}. We recommend you have a corresponding index on every foreign key.",
-      "helpLink": "https://docs.microsoft.com/sql/relational-databases/tables/primary-and-foreign-key-constraints",
+      "id": "AutoShrink",
+      "tags": [ "DefaultRuleset", "Settings", "Performance" ],
+      "displayName": "Auto Shrink Option should be OFF",
+      "description": "Shrinking databases is the fastest way to achieve fragmentation.  SQL Server goes to the last page in the database, moves it to the first free available space, and then repeats the process again. This shuffles the deck, putting your pages out of order.",
+      "message": "Set the AUTO_SHRINK database option to OFF.",
+      "helpLink": "https://blogs.msdn.microsoft.com/buckwoody/2009/07/01/sql-server-best-practices-auto-shrink-should-be-off",
       "level": "Warning",
-      "probes": [ "FKNoIndices" ]
+      "probes": [ "DatabaseConfiguration" ],
+      "condition": { "not": "@is_auto_shrink_on" }
+    },
+
+    {
+      "target": {
+        "type": "Database",
+        "platform": "Windows",
+        "engineEdition": "OnPremises",
+        "name": { "not": "/^(master|msdb|tempdb)$/" }
+      },
+      "id": "PageVerify",
+      "tags": [ "DefaultRuleset", "Settings", "Performance" ],
+      "displayName": "PAGE_VERIFY option should be CHECKSUM",
+      "description": "When CHECKSUM is enabled for the PAGE_VERIFY database option, the SQL Server Database Engine calculates a checksum over the contents of the whole page, and stores the value in the page header when a page is written to disk. When the page is read from disk, the checksum is recomputed and compared to the checksum value that is stored in the page header. This helps provide a high level of data-file integrity.",
+      "message": "Set the PAGE_VERIFY database option to CHECKSUM.",
+      "helpLink": "https://docs.microsoft.com/sql/relational-databases/policy-based-management/set-the-page-verify-database-option-to-checksum",
+      "level": "Warning",
+      "probes": [ "DatabaseConfiguration" ],
+      "condition": { "@page_verify_option": 2 }
+    },
+
+    {
+      "target": {
+        "type": "Database",
+        "platform": "Windows",
+        "engineEdition": "OnPremises, ManagedInstance",
+        "name": { "not": "/^(master|msdb|tempdb)$/" }
+      },
+      "id": "DbChaining",
+      "tags": [ "DefaultRuleset", "Settings", "Security" ],
+      "displayName": "Cross-Database Access should be disabled",
+      "description": "Ownership chaining across databases is turned off by default. Microsoft recommends that you disable cross-database ownership chaining because it exposes you to the additional security risks.",
+      "message": "Set the DB_CHAINING database option to OFF.",
+      "helpLink": "https://docs.microsoft.com/dotnet/framework/data/adonet/sql/enabling-cross-database-access-in-sql-server",
+      "level": "Warning",
+      "probes": [ "DatabaseConfiguration" ],
+      "condition": { "not": "@is_db_chaining_on" }
+    },
+
+    {
+      "target": {
+        "type": "Database",
+        "platform": "Windows",
+        "engineEdition": "OnPremises, ManagedInstance",
+        "version": "[12.0,)",
+        "name": { "not": "/^(master|msdb|tempdb)$/" }
+      },
+      "id": "AutoCreateStatsIncremental",
+      "tags": [ "DefaultRuleset", "Settings", "Statistics", "Performance" ],
+      "displayName": "Incremental option of auto stats should be ON",
+      "description": "Incremental statistics update at partition level is a new feature introduced in SQL Server 2014. When the option INCREMENTAL is turn on at the database level, newly auto created column statistics will use incremental statistics on partitioned tables by default.",
+      "message": "Set AUTO_CREATE_STATISTICS to ON, and set INCREMENTAL to ON. This setting creates automatically created stats as incremental whenever incremental stats are supported.",
+      "helpLink": "https://docs.microsoft.com/sql/relational-databases/statistics/statistics",
+      "level": "Warning",
+      "probes": [ "DatabaseConfiguration" ],
+      "condition": "@is_auto_create_stats_incremental_on"
+    },
+
+    {
+      "target": {
+        "type": "Database",
+        "platform": "Windows",
+        "engineEdition": "OnPremises",
+        "name": { "not": "/^(master|msdb|tempdb)$/" }
+      },
+      "id": "TrustWorthy",
+      "tags": [ "DefaultRuleset", "Settings", "Security" ],
+      "displayName": "TRUSTWORTHY should be OFF",
+      "description": "You can use the TRUSTWORTHY database setting to indicate whether the instance of Microsoft SQL Server trusts the database and the contents within the database. By default, this setting is set to OFF. However, you can set it to ON by using the ALTER DATABASE statement.",
+      "message": "We recommend that you leave this setting set to OFF to mitigate certain threats that may be present when a database is attached to the server",
+      "helpLink": "https://support.microsoft.com/help/2183687/guidelines-for-using-the-trustworthy-database-setting-in-sql-server",
+      "level": "Warning",
+      "probes": [ "DatabaseConfiguration" ],
+      "condition": { "not": "@is_trustworthy_on" }
+    },
+
+    {
+      "target": {
+        "type": "Database",
+        "platform": "Windows",
+        "engineEdition": "OnPremises, ManagedInstance",
+        "name": { "not": "/^(master|msdb|tempdb)$/" }
+      },
+      "id": "ParameterizationForced",
+      "tags": [ "DefaultRuleset", "Settings", "Performance" ],
+      "displayName": "PARAMETERIZATION should be SIMPLE",
+      "description": "When the PARAMETERIZATION database option is set to SIMPLE, the SQL Server query optimizer may choose to parameterize the queries. This means that any literal values that are contained in a query are substituted with parameters. This process is referred to as simple parameterization. When SIMPLE parameterization is in effect, you cannot control which queries are parameterized and which queries are not. However, you can specify that all queries in a database be parameterized by setting the PARAMETERIZATION database option to FORCED.",
+      "message": "Regardless of whether you have a Plan-Stability or not, SQL Server will always auto parameterize your SQL Statements, and reuse the cached execution plan over and over again. It doesn't matter how terrible the execution plan is. Therefore you have to know in exact detail the shape of your execution plans, and whether they can lead to some performance related problems.",
+      "helpLink": "https://support.microsoft.com/help/2183687/guidelines-for-using-the-trustworthy-database-setting-in-sql-server",
+      "level": "Warning",
+      "probes": [ "DatabaseConfiguration" ],
+      "condition": { "not": "@is_parameterization_forced" }              
+    },
+
+    {
+      "target": {
+        "type": "Server",
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
+      },
+      "id": "TempDBFilesSameSize",
+      "tags": [ "DefaultRuleset", "TempDB", "Performance", "DataFile" ],
+      "displayName": "TempDb data files are not the same size",
+      "description": "We recommend that you use equal sizing of data files. SQL Server 2000 Service Pack 4 (SP4) introduced a fix that uses a round robin algorithm for mixed page allocations. Because of this improvement, the starting file is different for each consecutive mixed page allocation (if more than one file exists). The new allocation algorithm for SGAM is pure round robin, and does not honor the proportional fill to maintain speed. We recommend that you create all tempdb data files at the same size.",
+      "message": "Consider to make all TempDB data files to be the same size",
+      "helpLink": "https://support.microsoft.com/kb/2154845",
+      "level": "Warning",
+      "probes": [ "TempDBFiles" ],
+      "condition": {"@filesizeCount": 1}
+    },
+
+    {
+      "target": {
+        "type": "Server",
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
+      },
+      "id": "TempDBFileSizeMul4",
+      "tags": [ "DefaultRuleset", "TempDB", "Performance", "DataFile" ],
+      "displayName": "TempDb data files should be in multiples of 4",
+      "description": "The number of files depends on the number of (logical) processors on the machine. As a general rule, if the number of logical processors is less than or equal to eight, use the same number of data files as logical processors. If the number of logical processors is greater than eight, use eight data files and then if contention continues, increase the number of data files by multiples of 4 until the contention is reduced to acceptable levels or make changes to the workload/code.",
+      "message": "Consider to have TempDB data files in multiples of 4",
+      "helpLink": "https://support.microsoft.com/kb/2154845",
+      "level": "Warning",
+      "probes": [ {
+            "id": "DatabaseMasterFiles",
+            "params": {
+                "@dbId": 2,
+                "@type": 0
+            },
+            "transform": {
+                "type": "aggregate",
+                "map": {
+                    "physical_name": "count"                    
+                }
+            }
+        }, "ServerInstanceConfiguration" ],
+      "condition": [
+            {"less": ["@online_logical_processors", 8]},
+            {"equal": [ {"mod": ["@physical_name", 4]}, 0]}
+      ]
+    },
+
+    {
+      "target": {
+        "type": "Server",
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
+      },
+      "id": "TempDBFiles",
+      "tags": [ "DefaultRuleset", "TempDB", "Performance", "DataFile" ],
+      "displayName": "Number of TempDB data files not optimal",
+      "description": "The number of files depends on the number of (logical) processors on the machine. As a general rule, if the number of logical processors is less than or equal to eight, use the same number of data files as logical processors. If the number of logical processors is greater than eight, use eight data files and then if contention continues, increase the number of data files by multiples of 4 until the contention is reduced to acceptable levels or make changes to the workload/code.",
+      "message": "Consider to have 1 data file per logical processor, thus data files count should be @{online_logical_processors}",
+      "helpLink": "https://support.microsoft.com/kb/2154845",
+      "level": "Warning",
+      "probes": [ {
+            "id": "DatabaseMasterFiles",
+            "params": {
+                "@dbId": 2,
+                "@type": 0
+            },
+            "transform": {
+                "type": "aggregate",
+                "map": {
+                    "physical_name": "count"                    
+                }
+            }
+        }, "ServerInstanceConfiguration" ],
+      "condition": [
+            {"greater": ["@online_logical_processors", 8]},
+            {"greaterequal": ["@physical_name", "@online_logical_processors"]} 
+        ]      
+    },
+
+    {
+      "target": {
+        "type": "Server",
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
+      },
+      "id": "TempDBFiles.1",
+      "tags": [ "DefaultRuleset", "TempDB", "Performance", "DataFile" ],
+      "displayName": "Number of TempDB data files not optimal",
+      "description": "The number of files depends on the number of (logical) processors on the machine. As a general rule, if the number of logical processors is less than or equal to eight, use the same number of data files as logical processors. If the number of logical processors is greater than eight, use eight data files and then if contention continues, increase the number of data files by multiples of 4 until the contention is reduced to acceptable levels or make changes to the workload/code.",
+      "message": "You have @{physical_name} data files, but should have at least eight ones. Consider creating additional data files.",
+      "helpLink": "https://support.microsoft.com/kb/2154845",
+      "level": "Warning",
+      "probes": [ {
+            "id": "DatabaseMasterFiles",
+            "params": {
+                "@dbId": 2,
+                "@type": 0
+            },
+            "transform": {
+                "type": "aggregate",
+                "map": {
+                    "physical_name": "count"                    
+                }
+            }
+        }, "ServerInstanceConfiguration" ],
+      "condition": [
+            {"less": ["@online_logical_processors", 9]},                         
+            {"greater": ["@physical_name", 7]}
+        ]      
+    },
+
+    {
+      "target": {
+        "type": "Server",
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
+      },
+      "id": "TempDBFiles.2",
+      "tags": [ "DefaultRuleset", "TempDB", "Performance", "DataFile" ],
+      "displayName": "Number of TempDB data files not optimal",
+      "description": "The number of files depends on the number of (logical) processors on the machine. As a general rule, if the number of logical processors is less than or equal to eight, use the same number of data files as logical processors. If the number of logical processors is greater than eight, use eight data files and then if contention continues, increase the number of data files by multiples of 4 until the contention is reduced to acceptable levels or make changes to the workload/code.",
+      "message": "Consider creating 1 data file per each logical core, thus data files count should be @{online_logical_processors}",
+      "helpLink": "https://support.microsoft.com/kb/2154845",
+      "level": "Information",
+      "probes": [
+        {
+          "id": "DatabaseMasterFiles",
+          "params": {
+            "@dbId": 2,
+            "@type": 0
+          },
+          "transform": {
+            "type": "aggregate",
+            "map": {
+              "physical_name": "count"
+            }
+          }
+        },
+        "ServerInstanceConfiguration"
+      ],
+      "condition": [
+        { "less": [ "@online_logical_processors", 9 ] },
+        { "less": [ "@physical_name", 7 ] },
+        { "@physical_name": "@online_logical_processors" }
+      ]
+    },
+
+    {
+      "target": {
+        "type": "Server",
+        "platform": "Windows",
+        "engineEdition": "OnPremises"
+      },
+      "id": "TempDBFilesAutoGrowth",
+      "tags": [ "DefaultRuleset", "TempDB", "Performance", "DataFile" ],
+      "displayName": "Some TempDB data files have different growth settings",
+      "description": "Data files should be of equal size within each filegroup, as SQL Server uses a proportional-fill algorithm that favors allocations in files with more free space. ",
+      "message": "Consider making autogrowth settings the same for every TempDB data file",
+      "helpLink": "https://docs.microsoft.com/sql/relational-databases/databases/tempdb-database",
+      "level": "Warning",
+      "probes": [ 
+        {
+            "id": "DatabaseMasterFiles",
+            "params": {
+                "@dbId": 2,
+                "@type": 0
+            },
+            "transform": {
+                "type": "aggregate",
+                "map": {
+                    "growth": "count",
+                    "is_percent_growth": "count"
+                }
+            }
+        }
+      ],
+      "condition": {
+        "and": [
+            {"@growth": 1},            
+            {"@is_percent_growth": 1}, 
+        ]
+      }
+    },
+
+    {
+      "target": {
+        "type": "Database",
+        "version": "[13.0.4001,)",
+        "platform": "Windows",
+        "engineEdition": "OnPremises, ManagedInstance"
+      },
+      "id": "FilesAutoGrowth",
+      "tags": [ "DefaultRuleset", "Performance", "DataFile" ],
+      "displayName": "Database files have set growth over 1GB",
+      "description": "A data or log file will be extended with auto-growth value to prevent the lack of free space in files. This process can perform significant impact on SQL Server performance if auto-growth value gets over 1 GB. By default, SQL Server will put zeros to a newly allocated space. And the more space it takes, the more time it takes to initialize it.",
+      "message": "Consider making auto-growth setting less than 1GB for file(s): @{FileName}",
+      "helpLink": "https://support.microsoft.com/help/315512/considerations-for-the-autogrow-and-autoshrink-settings-in-sql-server",
+      "level": "Warning",
+      "probes": ["Autogrow1GB"],
+      "condition": { "@FileName": "" }
+    },
+
+    {
+      "target": {
+        "type": "Database",
+        "platform": "Windows",
+        "engineEdition": "OnPremises, ManagedInstance"
+      },
+      "id": "DuplicateIndexes",
+      "tags": [ "DefaultRuleset", "Performance", "Index" ],
+      "displayName": "Duplicate Indexes",
+      "description": "Database has table with duplicate index(es) according to its defenitions",
+      "message": "@{Table} has the following duplicate index(es) to delete: @{ToDelete}. It is recommended to revise the need to maintain these objects as soon as possible",
+      "helpLink": "",
+      "level": "Warning",
+      "probes": [ 
+        {
+            "id": "IndexesDefinitions",
+            "transform": {
+                "type": "duplicateIndexes"
+            }
+        }  
+      ]
+    },
+
+    {
+      "target": {
+        "type": "Database",
+        "platform": "Windows",
+        "engineEdition": "OnPremises, ManagedInstance"
+      },
+      "id": "RedundantIndexes",
+      "tags": [ "DefaultRuleset", "Performance", "Index" ],
+      "displayName": "Redundant Indexes",
+      "description": "Database has table with possibly redundant index(es) according to set of key and included columns.",
+      "message": "@{Table} has the following possibly redundant index(es): @{Indexes}. It is recommended to revise the need to maintain all these objects as soon as possible",
+      "helpLink": "",
+      "level": "Warning",
+      "probes": [ 
+        {
+            "id": "IndexesDefinitions",
+            "transform": {
+                "type": "redundantIndexes"
+            }
+        }  
+      ]   
+    },
+    {
+      "target": {
+        "type": "Database",
+        "platform": "Windows",
+        "engineEdition": "OnPremises, ManagedInstance",
+        "name": "master"
+      },
+      "id": "UserObjectsInMaster",
+      "tags": [ "DefaultRuleset" ],
+      "displayName": "User objects in the master database",
+      "description": "If user objects are created in the master database, the database must be backed up more frequently.",
+      "message": "Remove user objects from the master database: @{Object_Name}",
+      "helpLink": "https://docs.microsoft.com/en-us/sql/relational-databases/databases/master-database?view=sql-server-2017",
+      "probes": [ "UserObjectsCountInMasterDB" ],
+      "condition": {
+        "@Object_Name": ""
+      }
+    },
+
+    {
+      "target": {
+        "type": "Server",
+        "platform": "Windows",
+        "engineEdition": "OnPremises, ManagedInstance"
+      },
+      "id": "CpuUtil70",
+      "tags": [ "DefaultRuleset", "Performance", "CPU" ],
+      "displayName": "CPU usage over 70%",
+      "description": "Potential causes include memory pressure, low query plan reuse, non-optimized queries.",
+      "message": "Consider review queries with high CPU usage or add additional hadrware resources",
+      "helpLink": "https://docs.microsoft.com/previous-versions/technet-magazine/cc137784(v=msdn.10)",
+      "level": "Warning",
+      "probes": ["CpuIdle"],
+      "condition": [
+        { "less": [ "@MinIdle", 10 ] },
+        { "greaterequal": [ "@MinIdle", 30 ] }
+      ]
+    },
+
+    {
+      "target": {
+        "type": "Server",
+        "platform": "Windows",
+        "engineEdition": "OnPremises, ManagedInstance"
+      },
+      "id": "CpuUtil90",
+      "tags": [ "DefaultRuleset", "Performance", "CPU" ],
+      "displayName": "CPU usage over 90%",
+      "description": "Potential causes include memory pressure, low query plan reuse, non-optimized queries.",
+      "message": "Consider review queries with high CPU usage or add additional hadrware resources",
+      "helpLink": "https://docs.microsoft.com/previous-versions/technet-magazine/cc137784(v=msdn.10)",
+      "level": "Warning",
+      "probes": ["CpuIdle"],
+      "condition": { "greaterequal": [ "@MinIdle", 10 ] }
     }
+
   ],
   "probes": {
     "EnabledGlobalTraceFlags": [
       {
-        "type": "CLR",
+        "type": "SQL",
         "target": {
-          "type": "Server"
+          "type": "Server",
+          "engineEdition": "OnPremises, ManagedInstance"
         },
         "implementation": {
-          "class": "Microsoft.SqlServer.Management.Assessment.Probes.TransposeColumnProbe",
-          "query": "DECLARE @tracestatus TABLE (TraceFlag NVARCHAR(40), [Status] tinyint, [Global] tinyint, [Session] tinyint); INSERT INTO @tracestatus EXEC ('DBCC TRACESTATUS WITH NO_INFOMSGS'); SELECT [TraceFlag], [Status] FROM @tracestatus WHERE Global=1;",
-          "columnName": "TraceFlag"
+          "query":
+            "DECLARE @tracestatus TABLE (TraceFlag NVARCHAR(40), [Status] tinyint, [Global] tinyint, [Session] tinyint); INSERT INTO @tracestatus EXEC ('DBCC TRACESTATUS WITH NO_INFOMSGS'); SELECT [TraceFlag], [Status] FROM @tracestatus WHERE Global=1;",
+          "transform": {
+            "type": "aggregate",
+            "map": {
+              "TraceFlag": "array"
+            }
+          }
         }
       }
     ],
-    "Microsoft.CountBlackBoxTraces": [
+    "CountBlackBoxTraces": [
       {
         "type": "SQL",
         "target": {
-          "type": "Server"
+          "type": "Server",
+          "engineEdition": "OnPremises, ManagedInstance"
         },
         "implementation": {
-          "query": "SELECT COUNT(id) AS [BlackBoxTraceCount] FROM [sys].[traces] WHERE [path] LIKE '%blackbox%.trc' AND status = 1;"
+          "query":
+            "SELECT COUNT(id) AS [BlackBoxTraceCount] FROM [sys].[traces] WHERE [path] LIKE '%blackbox%.trc' AND status = 1;"
         }
       }
     ],
-    "Microsoft.CountDefaultTraces": [
+    "CountDefaultTraces": [
       {
         "type": "SQL",
         "target": {
-          "type": "Server"
+          "type": "Server",
+          "engineEdition": "OnPremises, ManagedInstance"
         },
         "implementation": {
           "query": "SELECT COUNT(id) AS [DefaultTraceCount] FROM [sys].[traces] WHERE is_default = 1 AND status = 1;"
         }
       }
     ],
-    "Microsoft.XEvent.SystemHealth": [
+    "XEvent.SystemHealth": [
       {
         "type": "SQL",
         "target": {
-          "type": "Server"
+          "type": "Server",
+          "engineEdition": "OnPremises, ManagedInstance"
         },
         "implementation": {
-          "query": "SELECT COUNT(name) AS [XEvent.SystemHealthCount] FROM [sys].[dm_xe_sessions] WHERE [name] = 'system_health';"
+          "query":
+            "SELECT COUNT(name) AS [XEvent.SystemHealthCount] FROM [sys].[dm_xe_sessions] WHERE [name] = 'system_health';"
         }
       }
     ],
-    "Microsoft.XEvent.SPServerDiagnostics": [
+    "XEvent.SPServerDiagnostics": [
       {
         "type": "SQL",
         "target": {
-          "type": "Server"
+          "type": "Server",
+          "engineEdition": "OnPremises, ManagedInstance"
         },
         "implementation": {
-          "query": "SELECT COUNT(name) AS [XEvent.SPServerDiagnostics] FROM sys.dm_xe_sessions WHERE [name] = 'sp_server_diagnostics session';"
+          "query":
+            "SELECT COUNT(name) AS [XEvent.SPServerDiagnostics] FROM sys.dm_xe_sessions WHERE [name] = 'sp_server_diagnostics session';"
         }
       }
     ],
-    "Microsoft.DeprecatedFeaturesStats": [
+    "DeprecatedFeaturesStats": [
       {
-        "type": "CLR",
+        "type": "SQL",
         "target": {
-          "type": "Server"
+          "type": "Server",
+          "engineEdition": "OnPremises, ManagedInstance"
         },
         "implementation": {
-          "class": "Microsoft.SqlServer.Management.Assessment.Probes.TransposeColumnProbe",
-          "query": "SELECT [instance_name] AS [DeprecatedFeature] FROM [sys].[dm_os_performance_counters] WHERE ([object_name] LIKE '%Deprecated Features%') AND ([cntr_value] > 0);",
-          "columnName": "DeprecatedFeature",
-          "convertToString": true
+          "query":
+            "SELECT [instance_name] AS [DeprecatedFeature] FROM [sys].[dm_os_performance_counters] WHERE ([object_name] LIKE '%Deprecated Features%') AND ([cntr_value] > 0);",
+          "transform": {
+            "type": "aggregate",
+            "map": {
+              "DeprecatedFeature": "join"
+            }
+          }
         }
       }
     ],
@@ -1429,95 +2143,124 @@
         "target": {
           "type": "Database",
           "version": "(,12.0)",
-          "platform": "Windows"
+          "platform": "Windows",
+          "engineEdition": "OnPremises, ManagedInstance"
         },
         "implementation": {
-          "query": "SELECT db.[is_auto_create_stats_on] AS is_auto_create_stats_on, db.[is_auto_update_stats_on] AS is_auto_update_stats_on, 0 AS is_query_store_on FROM [sys].[databases] AS db WHERE db.[name]='@DatabaseName'"
+          "query": "SELECT db.is_auto_create_stats_on, db.is_auto_update_stats_on, 0 AS query_store_state, db.collation_name, (SELECT collation_name FROM master.sys.databases (NOLOCK) WHERE database_id = 1) AS master_collation, db.is_auto_close_on, db.is_auto_shrink_on, db.page_verify_option, db.is_db_chaining_on, NULL AS is_auto_create_stats_incremental_on, db.is_trustworthy_on, db.is_parameterization_forced FROM [sys].[databases] (NOLOCK) AS db WHERE db.[name]='@DatabaseName'"
         }
       },
       {
         "type": "SQL",
         "target": {
           "type": "Database",
-          "version": "[12.0,)",
-          "platform": "Windows"
+          "version": "[12.0, 13.0)",
+          "platform": "Windows",
+          "engineEdition": "OnPremises, ManagedInstance"
         },
         "implementation": {
-          "query": "SELECT db.[is_auto_create_stats_on] AS is_auto_create_stats_on, db.[is_auto_update_stats_on] AS is_auto_update_stats_on, db.[is_query_store_on] AS is_query_store_on FROM [sys].[databases] AS db WHERE db.[name]='@DatabaseName'"
+          "query": "SELECT db.is_auto_create_stats_on, db.is_auto_update_stats_on, 0 AS query_store_state, db.collation_name, (SELECT collation_name FROM master.sys.databases (NOLOCK) WHERE database_id = 1) AS master_collation, db.is_auto_close_on, db.is_auto_shrink_on, db.page_verify_option, db.is_db_chaining_on, db.is_auto_create_stats_incremental_on, db.is_trustworthy_on, db.is_parameterization_forced FROM [sys].[databases] (NOLOCK) AS db WHERE db.[name]='@DatabaseName'"
         }
-      }
-    ],
-    "FKNoIndices": [
+      },
       {
-        "type": "CLR",
+        "type": "SQL",
         "target": {
-          "type": "Database"
+          "type": "Database",
+          "version": "[13.0,)",
+          "platform": "Windows",
+          "engineEdition": "OnPremises, ManagedInstance"
         },
         "implementation": {
-          "class": "Microsoft.SqlServer.Management.Assessment.Probes.TransposeColumnProbe",
-          "query": "USE [@DatabaseName];SELECT QUOTENAME(fk.parent_schema_name)+ '.' + QUOTENAME(fk.parent_table_name) + '.' + QUOTENAME(fk.constraint_name) AS ConstraintName  FROM ( SELECT t.name AS [parent_schema_name],  OBJECT_NAME(FKC.parent_object_id) [parent_table_name],  OBJECT_NAME(constraint_object_id) AS [constraint_name],  SUBSTRING((SELECT ',' + RTRIM(COL_NAME(k.parent_object_id,parent_column_id)) AS [data()] FROM sys.foreign_key_columns k (NOLOCK) INNER JOIN sys.foreign_keys (NOLOCK) ON k.constraint_object_id = [object_id] AND k.constraint_object_id = FKC.constraint_object_id ORDER BY constraint_column_id FOR XML PATH('')), 2, 8000) AS [parent_columns]  FROM sys.foreign_key_columns FKC (NOLOCK) INNER JOIN sys.objects o (NOLOCK) ON FKC.parent_object_id = o.[object_id] INNER JOIN sys.tables mst (NOLOCK) ON mst.[object_id] = o.[object_id] INNER JOIN sys.schemas t (NOLOCK) ON t.[schema_id] = mst.[schema_id] INNER JOIN sys.objects so (NOLOCK) ON FKC.referenced_object_id = so.[object_id] WHERE o.type = 'U' AND so.type = 'U' GROUP BY o.[schema_id],so.[schema_id],FKC.parent_object_id,constraint_object_id,referenced_object_id,t.name ) fk WHERE NOT EXISTS (SELECT 1 FROM (  SELECT t.name AS schemaName,  OBJECT_NAME(mst.[object_id]) AS objectName,  SUBSTRING(( SELECT ',' + RTRIM(ac.name) FROM sys.tables AS st INNER JOIN sys.indexes AS mi ON st.[object_id] = mi.[object_id] INNER JOIN sys.index_columns AS ic ON mi.[object_id] = ic.[object_id] AND mi.[index_id] = ic.[index_id]  INNER JOIN sys.all_columns AS ac ON st.[object_id] = ac.[object_id] AND ic.[column_id] = ac.[column_id] WHERE i.[object_id] = mi.[object_id] AND i.index_id = mi.index_id AND ic.is_included_column = 0 ORDER BY ac.column_id  FOR XML PATH('')), 2, 8000) AS KeyCols  FROM sys.indexes AS i  INNER JOIN sys.tables AS mst ON mst.[object_id] = i.[object_id]  INNER JOIN sys.schemas AS t ON t.[schema_id] = mst.[schema_id]  WHERE i.[type] IN (1,2,5,6) AND i.is_unique_constraint = 0 AND mst.is_ms_shipped = 0 ) ict  WHERE fk.parent_schema_name = ict.schemaName AND fk.parent_table_name = ict.objectName  AND REPLACE(fk.parent_columns,' ,',',') = ict.KeyCols);",
-          "columnName": "ConstraintName",
-          "convertToString": true
+          "query": "USE [@DatabaseName]; SELECT db.is_auto_create_stats_on, db.is_auto_update_stats_on, (SELECT CAST(actual_state AS DECIMAL) FROM [sys].[database_query_store_options]) AS query_store_state, db.collation_name, (SELECT collation_name FROM master.sys.databases (NOLOCK) WHERE database_id = 1) AS master_collation, db.is_auto_close_on, db.is_auto_shrink_on, db.page_verify_option, db.is_db_chaining_on, db.is_auto_create_stats_incremental_on, db.is_trustworthy_on, db.is_parameterization_forced FROM [sys].[databases] (NOLOCK) AS db WHERE db.[name]='@DatabaseName'"
         }
       }
     ],
-    "Microsoft.Hints.InstanceStatistics": [
+    "FKNoIndexes": [
+      {
+        "type": "SQL",
+        "target": {
+          "type": "Database",
+          "engineEdition": "OnPremises, ManagedInstance"
+        },
+        "implementation": {
+          "query":
+            "USE [@DatabaseName];SELECT QUOTENAME(fk.parent_schema_name)+ '.' + QUOTENAME(fk.parent_table_name) + '.' + QUOTENAME(fk.constraint_name) AS ConstraintName  FROM ( SELECT t.name AS [parent_schema_name], OBJECT_NAME(FKC.parent_object_id) [parent_table_name], OBJECT_NAME(constraint_object_id) AS [constraint_name], SUBSTRING((SELECT ',' + RTRIM(COL_NAME(k.parent_object_id,parent_column_id)) AS [data()] FROM sys.foreign_key_columns k (NOLOCK) INNER JOIN sys.foreign_keys (NOLOCK) ON k.constraint_object_id = [object_id] AND k.constraint_object_id = FKC.constraint_object_id ORDER BY constraint_column_id FOR XML PATH('')), 2, 8000) AS [parent_columns]  FROM sys.foreign_key_columns FKC (NOLOCK) INNER JOIN sys.objects o (NOLOCK) ON FKC.parent_object_id = o.[object_id] INNER JOIN sys.tables mst (NOLOCK) ON mst.[object_id] = o.[object_id] INNER JOIN sys.schemas t (NOLOCK) ON t.[schema_id] = mst.[schema_id] INNER JOIN sys.objects so (NOLOCK) ON FKC.referenced_object_id = so.[object_id] WHERE o.type = 'U' AND so.type = 'U' GROUP BY o.[schema_id],so.[schema_id],FKC.parent_object_id,constraint_object_id,referenced_object_id,t.name ) fk WHERE NOT EXISTS (SELECT 1 FROM (  SELECT t.name AS schemaName, OBJECT_NAME(mst.[object_id]) AS objectName, SUBSTRING(( SELECT ',' + RTRIM(ac.name) FROM sys.tables AS st INNER JOIN sys.indexes AS mi ON st.[object_id] = mi.[object_id] INNER JOIN sys.index_columns AS ic ON mi.[object_id] = ic.[object_id] AND mi.[index_id] = ic.[index_id]  INNER JOIN sys.all_columns AS ac ON st.[object_id] = ac.[object_id] AND ic.[column_id] = ac.[column_id] WHERE i.[object_id] = mi.[object_id] AND i.index_id = mi.index_id AND ic.is_included_column = 0 ORDER BY ac.column_id  FOR XML PATH('')), 2, 8000) AS KeyCols  FROM sys.indexes AS i  INNER JOIN sys.tables AS mst ON mst.[object_id] = i.[object_id]  INNER JOIN sys.schemas AS t ON t.[schema_id] = mst.[schema_id]  WHERE i.[type] IN (1,2,5,6) AND i.is_unique_constraint = 0 AND mst.is_ms_shipped = 0 ) ict  WHERE fk.parent_schema_name = ict.schemaName AND fk.parent_table_name = ict.objectName  AND REPLACE(fk.parent_columns,' ,',',') = ict.KeyCols);",
+          "transform": {
+            "type": "aggregate",
+            "map": {
+              "ConstraintName": "join"
+            }
+          }
+        }
+      }
+    ],
+    "Hints.InstanceStatistics": [
       {
         "type": "SQL",
         "target": {
           "type": "Server",
-          "platform": "Windows"
+          "platform": "Windows",
+          "engineEdition": "OnPremises, ManagedInstance"
         },
         "implementation": {
-          "query": "SELECT COUNT([counter]) AS [HintUsageCount] FROM [sys].[dm_exec_query_optimizer_info] WHERE ([counter] = 'order hint' OR [counter] = 'join hint') AND occurrence > 1;"
+          "query":
+            "SELECT COUNT([counter]) AS [HintUsageCount] FROM [sys].[dm_exec_query_optimizer_info] WHERE ([counter] = 'order hint' OR [counter] = 'join hint') AND occurrence > 1;"
         }
       }
     ],
-    "Microsoft.Hints.ModuleUsage": [
+    "Hints.ModuleUsage": [
       {
         "type": "SQL",
         "target": {
           "type": "Database",
-          "platform": "Windows"
+          "platform": "Windows",
+          "engineEdition": "OnPremises, ManagedInstance"
         },
         "implementation": {
-          "query": "USE [@DatabaseName]; SELECT ss.name AS [Schema_Name], so.name AS [Object_Name], so.type_desc, CASE WHEN sm.[definition] LIKE '%FORCE ORDER%' THEN '[FORCE ORDER Hint]' WHEN sm.[definition] LIKE '%MERGE JOIN%' OR sm.[definition] LIKE '%LOOP JOIN%' OR sm.[definition] LIKE '%HASH JOIN%' THEN '[JOIN Hint]' END AS Hint FROM [sys].[sql_modules] AS sm INNER JOIN [sys].[objects] AS so ON sm.[object_id] = so.[object_id] INNER JOIN [sys].[schemas] AS ss ON so.[schema_id] = ss.[schema_id] WHERE (sm.[definition] LIKE '%FORCE ORDER%' OR sm.[definition] LIKE '%MERGE JOIN%' OR sm.[definition] LIKE '%LOOP JOIN%' OR sm.[definition] LIKE '%HASH JOIN%') AND OBJECTPROPERTY(sm.[object_id],'IsMSShipped') = 0;"
+          "query":
+            "USE [@DatabaseName]; SELECT ss.name AS [Schema_Name], so.name AS [Object_Name], so.type_desc, CASE WHEN sm.[definition] LIKE '%FORCE ORDER%' THEN '[FORCE ORDER Hint]' WHEN sm.[definition] LIKE '%MERGE JOIN%' OR sm.[definition] LIKE '%LOOP JOIN%' OR sm.[definition] LIKE '%HASH JOIN%' THEN '[JOIN Hint]' END AS Hint FROM [sys].[sql_modules] AS sm INNER JOIN [sys].[objects] AS so ON sm.[object_id] = so.[object_id] INNER JOIN [sys].[schemas] AS ss ON so.[schema_id] = ss.[schema_id] WHERE (sm.[definition] LIKE '%FORCE ORDER%' OR sm.[definition] LIKE '%MERGE JOIN%' OR sm.[definition] LIKE '%LOOP JOIN%' OR sm.[definition] LIKE '%HASH JOIN%') AND OBJECTPROPERTY(sm.[object_id],'IsMSShipped') = 0;"
         }
       }
     ],
-    "Microsoft.CachedPlans.SingleUseRatio": [
+    "CachedPlans.SingleUseRatio": [
       {
         "type": "SQL",
         "target": {
           "type": "Server",
-          "platform": "Windows"
+          "platform": "Windows",
+          "engineEdition": "OnPremises, ManagedInstance"
         },
         "implementation": {
-          "query": "DECLARE @Size1 AS REAL, @Size2 AS REAL; SET @Size1=COALESCE((SELECT SUM(CAST(size_in_bytes AS bigint)) AS Size1 FROM [sys].[dm_exec_cached_plans] (NOLOCK) WHERE cacheobjtype LIKE '%Plan%' AND usecounts = 1),0);SET @Size2=COALESCE((SELECT SUM(CAST(size_in_bytes AS bigint)) AS Size2 FROM [sys].[dm_exec_cached_plans] (NOLOCK) WHERE cacheobjtype LIKE '%Plan%' AND usecounts > 1),0);SELECT @Size1/(@Size1+@Size2) AS [SingleUsePlansUseRatio];"
+          "query":
+            "DECLARE @Size1 AS REAL, @Size2 AS REAL; SET @Size1=COALESCE((SELECT SUM(CAST(size_in_bytes AS bigint)) AS Size1 FROM [sys].[dm_exec_cached_plans] (NOLOCK) WHERE cacheobjtype LIKE '%Plan%' AND usecounts = 1),0);SET @Size2=COALESCE((SELECT SUM(CAST(size_in_bytes AS bigint)) AS Size2 FROM [sys].[dm_exec_cached_plans] (NOLOCK) WHERE cacheobjtype LIKE '%Plan%' AND usecounts > 1),0);SELECT @Size1/(@Size1+@Size2) AS [SingleUsePlansUseRatio];"
         }
       }
     ],
-    "Microsoft.Hypothetical.Indices": [
+    "Hypothetical.Indexes": [
       {
         "type": "SQL",
         "target": {
           "type": "Database",
-          "platform": "Windows"
+          "platform": "Windows",
+          "engineEdition": "OnPremises, ManagedInstance"
         },
         "implementation": {
-          "query": "USE [@DatabaseName]; SELECT QUOTENAME(t.name) AS [Schema], QUOTENAME(o.[name]) AS [Object], i.name AS [IndexName] FROM [sys].[indexes] i INNER JOIN [sys].[objects] AS o ON o.[object_id] = i.[object_id] INNER JOIN [sys].[tables] AS mst ON mst.[object_id] = i.[object_id] INNER JOIN [sys].[schemas] AS t ON t.[schema_id] = mst.[schema_id] WHERE i.is_hypothetical = 1;"
+          "query":
+            "USE [@DatabaseName]; SELECT QUOTENAME(t.name) AS [Schema], QUOTENAME(o.[name]) AS [Object], i.name AS [IndexName] FROM [sys].[indexes] i INNER JOIN [sys].[objects] AS o ON o.[object_id] = i.[object_id] INNER JOIN [sys].[tables] AS mst ON mst.[object_id] = i.[object_id] INNER JOIN [sys].[schemas] AS t ON t.[schema_id] = mst.[schema_id] WHERE i.is_hypothetical = 1;"
         }
       }
     ],
-    "Microsoft.Hypothetical.Statistics": [
+    "Hypothetical.Statistics": [
       {
         "type": "SQL",
         "target": {
           "type": "Database",
-          "platform": "Windows"
+          "platform": "Windows",
+          "engineEdition": "OnPremises, ManagedInstance"
         },
         "implementation": {
-          "query": "USE [@DatabaseName]; SELECT QUOTENAME(t.name) AS [Schema], QUOTENAME(o.[name]) AS [Object], s.name AS [StatName] FROM [sys].[stats] s INNER JOIN [sys].[objects] AS o (NOLOCK) ON o.[object_id] = s.[object_id] INNER JOIN [sys].[tables] AS mst (NOLOCK) ON mst.[object_id] = s.[object_id] INNER JOIN [sys].[schemas] AS t (NOLOCK) ON t.[schema_id] = mst.[schema_id] WHERE (s.name LIKE 'hind_%' OR s.name LIKE '_dta_stat%') AND auto_created = 0 AND s.name NOT IN (SELECT name FROM sys.indexes);"
+          "query":
+            "USE [@DatabaseName]; SELECT QUOTENAME(t.name) AS [Schema], QUOTENAME(o.[name]) AS [Object], s.name AS [StatName] FROM [sys].[stats] s INNER JOIN [sys].[objects] AS o (NOLOCK) ON o.[object_id] = s.[object_id] INNER JOIN [sys].[tables] AS mst (NOLOCK) ON mst.[object_id] = s.[object_id] INNER JOIN [sys].[schemas] AS t (NOLOCK) ON t.[schema_id] = mst.[schema_id] WHERE (s.name LIKE 'hind_%' OR s.name LIKE '_dta_stat%') AND auto_created = 0 AND s.name NOT IN (SELECT name FROM sys.indexes);"
         }
       }
     ],
@@ -1527,6 +2270,181 @@
         "name": "SQLServerVersion",
         "implementation": {
           "class": "Microsoft.SqlServer.Management.Assessment.Probes.ServerVersionProbe"
+        }
+      }
+    ],
+    "MissedIndexes": [
+      {
+        "type": "SQL",
+        "target": {
+          "type": "Database",
+          "platform": "Windows",
+          "engineEdition": "OnPremises, ManagedInstance"
+        },
+        "implementation": {
+          "query":
+            "USE [@DatabaseName]; SELECT RIGHT(i.[statement], LEN(i.[statement]) - (LEN(m.[name])+3)) AS [Table], CASE WHEN (i.equality_columns IS NOT NULL AND i.inequality_columns IS NULL) THEN i.equality_columns WHEN (i.equality_columns IS NULL AND i.inequality_columns IS NOT NULL) THEN i.inequality_columns ELSE i.equality_columns+','+i.inequality_columns END AS [KeyCols], ISNULL(i.included_columns, '') AS [IncludedCols] FROM [sys].[dm_db_missing_index_details] i INNER JOIN [master].[sys].[databases] m ON i.database_id = m.database_id INNER JOIN [sys].[dm_db_missing_index_groups] g ON i.index_handle = g.index_handle INNER JOIN [sys].[dm_db_missing_index_group_stats] s ON s.group_handle = g.index_group_handle WHERE (CONVERT(NUMERIC(19,3), s.user_seeks)+CONVERT(NUMERIC(19,3), s.user_scans)) * CONVERT(NUMERIC(19,3), s.avg_total_user_cost)  * CONVERT(NUMERIC(19,3), s.avg_user_impact) > 100000 AND m.[name]='@DatabaseName'"
+        }
+      }
+    ],
+    "DatabaseBackups": [
+      {
+        "type": "SQL",
+        "target": {
+          "type": "Database",
+          "platform": "Windows",
+          "engineEdition": "OnPremises, ManagedInstance"
+        },
+        "implementation": {
+          "query":
+            "SELECT db.recovery_model, db.recovery_model_desc, fb.LastFullBackup, tl.LastTLBackup FROM [master].[sys].[databases] db (NOLOCK) LEFT JOIN (SELECT b.database_name, DATEDIFF(HH, MAX(b.backup_finish_date),GETDATE()) AS LastFullBackup FROM [msdb].[dbo].[backupset] b WHERE b.is_copy_only=0 AND b.type='D' GROUP BY b.database_name ) fb ON fb.database_name=db.name left join ( SELECT b.database_name, DATEDIFF(HH, MAX(b.backup_finish_date), GETDATE()) AS LastTLBackup FROM [msdb].[dbo].[backupset] b WHERE b.is_copy_only=0 AND b.type='L' GROUP BY b.database_name HAVING MAX(b.backup_finish_date) >=  ( SELECT MAX(f.backup_finish_date) FROM [msdb].[dbo].[backupset] f WHERE f.is_copy_only=0 AND f.type IN ('D','I') AND f.database_name=b.database_name GROUP BY f.database_name )) tl on fb.database_name=tl.database_name WHERE db.name='@DatabaseName';"
+        }
+      }
+    ],
+    "TempDBFiles":[
+      {
+        "type": "SQL",
+        "target": {
+          "type": "Server",
+          "platform": "Windows",
+          "engineEdition": "OnPremises, ManagedInstance"
+        },
+        "implementation": {
+          "query": "SELECT COUNT(DISTINCT size) AS filesizeCount FROM tempdb.sys.database_files WHERE [type] = 0"
+        }
+      }
+    ],
+    "ServerInstanceConfiguration":[
+      {
+        "type": "SQL",
+        "target": {
+          "type": "Server",
+          "platform": "Windows",
+          "engineEdition": "OnPremises, ManagedInstance"
+        },
+        "implementation": {
+          "query": "SELECT (SELECT COUNT(cpu_id) FROM sys.dm_os_schedulers WHERE is_online = 1 AND scheduler_id < 255 AND parent_node_id < 64) AS online_logical_processors"
+        }
+      }
+    ],    
+    "DatabaseMasterFiles":[
+      {
+        "type": "SQL",
+        "target": {
+          "type": "Server",
+          "platform": "Windows",
+          "engineEdition": "OnPremises, ManagedInstance"
+        },
+        "implementation": {
+          "query": "SELECT mf.database_id, dbs.name AS databaseName, [type], physical_name, mf.name AS fileName, size, growth, is_percent_growth FROM [sys].[master_files] AS mf INNER JOIN [sys].databases AS dbs ON mf.database_id = dbs.database_id WHERE mf.database_id = ISNULL(@dbId, mf.database_id) AND [type] = ISNULL(@type, [type])"
+        }
+      }
+    ],
+    "InstantFileInitialization": [
+      {
+        "type": "SQL",
+        "target": {
+          "type": "Server",
+          "version": "[13.0.4001,)",
+          "platform": "Windows",
+          "engineEdition": "OnPremises"
+        },
+        "implementation": {
+          "query": "SELECT instant_file_initialization_enabled FROM [sys].[dm_server_services] WHERE servicename LIKE 'SQL Server%' AND servicename NOT LIKE 'SQL Server Agent%' AND servicename NOT LIKE 'SQL Server Launchpad%'"
+        }
+      },
+      {
+        "type": "SQL",
+        "target": {
+          "type": "Server",
+          "platform": "Windows",
+          "engineEdition": "ManagedInstance"
+        },
+        "implementation": {
+          "query": "SELECT 'N' AS instant_file_initialization_enabled"
+        }
+      }
+    ],
+    "IndexesDefinitions": [
+      {
+        "type": "SQL",
+        "target": {
+          "type": "Database",
+          "version": "(,10.0)",
+          "platform": "Windows",
+          "engineEdition": "OnPremises, ManagedInstance"
+        },
+        "implementation": {
+          "query": "USE [@DatabaseName];SELECT QUOTENAME(t.name)+'.'+QUOTENAME(st.name) AS TableName, QUOTENAME(i.name) IndexName, QUOTENAME(ac.Name) ColumnName, ic.is_included_column, i.is_primary_key, NULL AS filter_definition, i.is_unique, ic.key_ordinal FROM [sys].[tables] AS st INNER JOIN [sys].[schemas] AS t ON t.[schema_id] = st.[schema_id] INNER JOIN [sys].[indexes] AS i ON st.[object_id] = i.[object_id] INNER JOIN [sys].[index_columns] AS ic ON i.[object_id] = ic.[object_id] AND i.[index_id] = ic.[index_id]  INNER JOIN [sys].[all_columns] AS ac ON st.[object_id] = ac.[object_id] AND ic.[column_id] = ac.[column_id] WHERE i.type IN (1,2,5,6) AND st.is_ms_shipped = 0 AND i.is_unique_constraint = 0",
+          "transform": {
+            "type": "indexDefinition"
+          }
+        }
+      },
+      {
+        "type": "SQL",
+        "target": {
+          "type": "Database",
+          "version": "[10.0,)",
+          "platform": "Windows",
+          "engineEdition": "OnPremises, ManagedInstance"
+        },
+        "implementation": {
+          "query": "USE [@DatabaseName];SELECT QUOTENAME(t.name)+'.'+QUOTENAME(st.name) AS TableName, QUOTENAME(i.name) IndexName, QUOTENAME(ac.Name) ColumnName, ic.is_included_column, i.is_primary_key, i.filter_definition, i.is_unique, ic.key_ordinal FROM [sys].[tables] AS st INNER JOIN [sys].[schemas] AS t ON t.[schema_id] = st.[schema_id] INNER JOIN [sys].[indexes] AS i ON st.[object_id] = i.[object_id] INNER JOIN [sys].[index_columns] AS ic ON i.[object_id] = ic.[object_id] AND i.[index_id] = ic.[index_id]  INNER JOIN [sys].[all_columns] AS ac ON st.[object_id] = ac.[object_id] AND ic.[column_id] = ac.[column_id] WHERE i.type IN (1,2,5,6) AND st.is_ms_shipped = 0 AND i.is_unique_constraint = 0",
+          "transform": {
+            "type": "indexDefinition"
+          }
+        }
+      }
+    ],
+    "UserObjectsCountInMasterDB": [
+      {
+        "type": "SQL",
+        "target": {
+          "type": "Database",
+          "name": "master"
+        },
+        "implementation": {
+          "query": "SELECT sao.name AS [Object_Name] FROM master.sys.all_objects sao INNER JOIN master.sys.schemas ss ON sao.[schema_id] = ss.[schema_id] WHERE sao.is_ms_shipped = 0 AND sao.[type] IN ('AF','FN','P','IF','PC','TF','TR','T','V') ORDER BY sao.name, sao.type_desc;",
+          "transform": {
+            "type": "aggregate",
+            "map": {
+              "Object_Name": "join"                    
+            }
+          }
+        }
+      }
+    ],
+    "Autogrow1GB": [
+      {
+        "type": "SQL",
+        "target": {
+          "type": "Database",
+          "version": "[13.0.4001,)",
+          "platform": "Windows",
+          "engineEdition": "OnPremises, ManagedInstance"
+        },
+        "implementation": { 
+          "query": "DECLARE @ifi bit IF ( SELECT instant_file_initialization_enabled FROM sys.dm_server_services WHERE servicename LIKE 'SQL Server%' AND servicename NOT LIKE 'SQL Server Agent%' AND servicename NOT LIKE 'SQL Server Launchpad%' ) = 'Y' SET @ifi = 1; ELSE SET @ifi = 0; SELECT mf.[name] AS FileName FROM [sys].[master_files] AS mf (NOLOCK) INNER JOIN [sys].[databases] as dbs (NOLOCK) ON mf.database_id = dbs.database_id WHERE [type] >= CASE WHEN @ifi = 1 THEN 1 ELSE 0 END  AND [type] < 2  AND ((is_percent_growth = 1 AND ((CONVERT(bigint,size)*8)*growth)/100 > 1048576)  OR (is_percent_growth = 0 AND growth*8 > 1048576)) AND dbs.name = '@DatabaseName'",
+           "transform": {
+              "type": "aggregate",
+              "map": {
+                "FileName": "join"
+              }
+           }
+        }
+      }
+    ],
+    "CpuIdle": [
+      {
+        "type": "SQL",
+        "target": {
+          "type": "Server",
+          "platform": "Windows",
+          "engineEdition": "OnPremises, ManagedInstance"
+        },
+        "implementation": {
+          "query": "DECLARE @ts_now bigint; SELECT @ts_now = ms_ticks FROM sys.dm_os_sys_info (NOLOCK); SELECT MIN(SystemIdle) AS MinIdle FROM (SELECT AVG(SystemIdle) AS SystemIdle FROM (SELECT record.value('(./Record/SchedulerMonitorEvent/SystemHealth/SystemIdle)[1]', 'int') AS SystemIdle, [TIMESTAMP] FROM (SELECT [TIMESTAMP], CONVERT(xml, record) AS record FROM sys.dm_os_ring_buffers (NOLOCK) WHERE ring_buffer_type = N'RING_BUFFER_SCHEDULER_MONITOR' AND record LIKE '%<SystemHealth>%' AND @ts_now - [TIMESTAMP] <= 7200000) AS xrb) AS si GROUP BY (@ts_now - [TIMESTAMP]) / 600000) AS avg;"
         }
       }
     ]
