@@ -1,6 +1,6 @@
 { 
 	"version": "0.2",
-	"name": "Custom Ruleset", 
+	"name": "Overrides for Default Ruleset", 
 	"checks":[ 
 		{
 			"id": "AutoCreateStats", 
