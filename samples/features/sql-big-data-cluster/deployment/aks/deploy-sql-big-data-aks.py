@@ -68,7 +68,7 @@ command="az group create --name "+GROUP_NAME+" --location "+AZURE_REGION
 executeCmd (command)
 
 print("Creating AKS cluster: "+CLUSTER_NAME)
-command = "az aks create --name "+CLUSTER_NAME+" --resource-group "+GROUP_NAME+" --generate-ssh-keys --node-vm-size "+VM_SIZE+" --node-count "+AKS_NODE_COUNT+" --kubernetes-version 1.12.8"
+command = "az aks create --name "+CLUSTER_NAME+" --resource-group "+GROUP_NAME+" --generate-ssh-keys --node-vm-size "+VM_SIZE+" --node-count "+AKS_NODE_COUNT+" --kubernetes-version 1.13.10"
 executeCmd (command)
 
 command = "az aks get-credentials --overwrite-existing --name "+CLUSTER_NAME+" --resource-group "+GROUP_NAME+" --admin"

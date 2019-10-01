@@ -9,7 +9,7 @@ One of the most popular tools for calling an API on `http:` endpoints is [curl](
 
 [About this sample](#about-this-sample)<br/>
 [Build the CLR/CURL extension](#build-functions)<br/>
-[Add RegEx functions to your SQL database](#add-functions)<br/>
+[Add CURL functions to your SQL database](#add-functions)<br/>
 [Test the functions](#test)<br/>
 [Disclaimers](#disclaimers)<br/>
 [Appendix](#appendix) - quick install script for your dev environment.<br/>
