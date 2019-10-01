@@ -1,0 +1,21 @@
+This tool can be used to troubleshoot HDFS Kerberos connections for PolyBase, when you experience HDFS Kerberos failure while creating an external table in a Kerberos secured HDFS cluster. This tool helps identify the following issues:
+   i.    Username/password misconfigurations
+  ii.    Cluster Kerberos setup misconfigurations     
+
+ 
+
+This tool is completely independent from SQL Server, and can assist in ruling out non-SQL Server issues, and  concentrate on resolving HDFS Kerberos setup issues. This tool requires Azure Data Studio and around 40 MB of hard disk space. 
+
+ 
+
+1. Download all the content in this location to your local machine. Please make sure all these files are co-existed in same folder.
+
+2. Open the Azure Data Studio.
+
+3. In Azure Data studio goto -> File -> Open File -> go to the folder where hdfs-kerberos-tester.ipynb exist, choose hdfs-kerberos-tester.ipynb and click open
+
+4. It should open the Notebook.
+ 
+5. Choose Python3 as kernel.
+
+6. Click on all RunCells button in Notebook and follow instruction in notebook.
