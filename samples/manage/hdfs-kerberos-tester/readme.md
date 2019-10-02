@@ -5,15 +5,21 @@ This tool will assist in ruling out non-SQL Server issues, to help you concentra
 - Username/password misconfigurations
 - Cluster Kerberos setup misconfigurations     
 
-This tool is completely independent from SQL Server. It is available as a Jupyter Notebook, requires Azure Data Studio, and around 40 MB of hard disk space. 
+## Prerequisites
+This tool is completely independent from SQL Server. It is available as a Jupyter Notebook, and requires:
+
+- SQL Server 2016 RTM CU6 / SQL Server 2016 SP1 CU3 / SQL Server 2017 or higher with PolyBase installed
+- A Hadoop cluster (Cloudera or Hortonworks) secured with Kerberos (Active Directory or MIT)
+- Azure Data Studio
+- Around 40 MB of hard disk space
 
 ## Instructions
 1. Download all the content in this location to your local machine. Please make sure all these files are co-located in same folder.
 
-2. Open the Azure Data Studio.
+2. Open Azure Data Studio.
 
-3. In Azure Data studio click the **File** top menu -> **Open File** -> navigate to the folder where you saved the hdfs-kerberos-tester.ipynb. Choose hdfs-kerberos-tester.ipynb and click open.
+3. In Azure Data studio click the **File** top menu -> **Open File** -> and navigate to the folder where you saved the `hdfs-kerberos-tester.ipynb` file. Choose the `hdfs-kerberos-tester.ipynb` file and click open.
  
-4. After the Notebook has loaded, choose **Python3** as kernel.
+4. After the Notebook has loaded, choose **Python3** as kernel. For more information on using NOtebooks with the Python kernel, see [Configure Python for Notebooks](https://docs.microsoft.com/sql/azure-data-studio/sql-notebooks#configure-python-for-notebooks).
 
 5. Click on all **RunCells** button in the Notebook and follow instruction in the Notebook.
