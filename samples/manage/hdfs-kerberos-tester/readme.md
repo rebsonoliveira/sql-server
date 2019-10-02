@@ -8,7 +8,6 @@ This tool will assist in ruling out non-SQL Server issues, to help you concentra
 ## Prerequisites
 This tool is completely independent from SQL Server. It is available as a Jupyter Notebook, and requires:
 
-- SQL Server 2016 RTM CU6 / SQL Server 2016 SP1 CU3 / SQL Server 2017 or higher with PolyBase installed
 - A Hadoop cluster (Cloudera or Hortonworks) secured with Kerberos (Active Directory or MIT)
 - [Azure Data Studio](https://docs.microsoft.com/sql/azure-data-studio/download)
 - Around 40 MB of hard disk space
