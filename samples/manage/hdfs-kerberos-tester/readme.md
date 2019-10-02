@@ -1,7 +1,7 @@
 # HDFS Kerberos Tester
 Use the HDFS Kerberos tester to troubleshoot HDFS Kerberos connections for PolyBase, when you experience HDFS Kerberos failure while creating an external table in a Kerberos secured HDFS cluster. 
 
-This tool will assist in ruling out non-SQL Server issues, to help you concentrate on resolving HDFS Kerberos setup issues, nanely identifying the following issues:
+This tool will assist in ruling out non-SQL Server issues, to help you concentrate on resolving HDFS Kerberos setup issues, namely identifying the following issues:
 - Username/password misconfigurations
 - Cluster Kerberos setup misconfigurations     
 
