@@ -20,6 +20,6 @@ This tool is completely independent from SQL Server. It is available as a Jupyte
 
 3. In Azure Data studio click the **File** top menu -> **Open File** -> and navigate to the folder where you saved the `hdfs-kerberos-tester.ipynb` file. Choose the `hdfs-kerberos-tester.ipynb` file and click open.
  
-4. After the Notebook has loaded, choose **Python3** as kernel. For more information on using NOtebooks with the Python kernel, see [Configure Python for Notebooks](https://docs.microsoft.com/sql/azure-data-studio/sql-notebooks#configure-python-for-notebooks).
+4. After the Notebook has loaded, choose **Python3** as kernel. For more information on using Notebooks with the Python kernel, see [Configure Python for Notebooks](https://docs.microsoft.com/sql/azure-data-studio/sql-notebooks#configure-python-for-notebooks).
 
 5. Click on all **RunCells** button in the Notebook and follow instruction in the Notebook.
