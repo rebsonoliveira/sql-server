@@ -2,6 +2,10 @@
 
 Contains samples for customizing SQL Assessment API. Learn more about the API on the [SQL Assessment API docs page](https://docs.microsoft.com/en-us/sql/sql-assessment-api/sql-assessment-api-overview).
 
+## QuickStart.md
+
+Learn how to assess your SQL Server configuration for best practices in 2 simple steps.
+
 ## config.json
 
 This is the default set of checks shipped with SQL Assessment API. Feel free to open issues to have us fix or add checks. Also, we're happy to see your pull requests to this file.
