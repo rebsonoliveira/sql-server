@@ -2,6 +2,8 @@
 
 Assess your SQL Server configuration for best practices in 2 simple steps.
 
+SQL Assessment API provides a mechanism to evaluate the configuration of your SQL Server for best practices. The API is delivered with a ruleset containing best practice rules suggested by SQL Server Team. This ruleset is enhancing with the release of new versions but at the same time, the API is built with the intent to give a highly customizable and extensible solution. So, users can tune the default rules and create their own ones. The API can be used to assess SQL Server versions 2012 and higher and Azure SQL Database Managed Instance (more to come).
+
 ### 1. Setup
 
 You just need to install PowerShell SqlServer module using the following command. Get-Module will show you the version you have installed. 21.2.18179 is the latest version and CTP2 for SQL Assessment API.
