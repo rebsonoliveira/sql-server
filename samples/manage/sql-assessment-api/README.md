@@ -74,13 +74,3 @@ Demonstrates how to make a custom rule set containing two checks. The sample con
   ]
 }
 ```
-
-## QueryStoreCheck_fix.json
-
-Overrides the default ruleset to fix the rule "Query Store should be on." Query Store appeared in SQL Server 2016 but the rule checks for it starting with SQL Server 2014.
-
-Here's an example of applying the fix to running the InvokeSqlAssessment cmdlet.
-
-```PowerShell
-Get-SqlInstance -ServerInstance 'localhost' | Get-SqlDatabase | Invoke-SqlAssessment -configuration "C:\SQLAssessment\QueryStore_fix.json"
-```

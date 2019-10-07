@@ -20,9 +20,8 @@ In this example, we will deploy Kubernetes over multiple Linux machines (physica
 
 ### Instructions
 
-1. Start a sudo shell context
-1. Execute [setup-k8s-prereqs.sh](setup-k8s-prereqs.sh/) script on each machine
-1. Execute [setup-k8s-master.sh](setup-k8s-master.sh/) script on the machine designated as Kubernetes master
+1. Start a sudo shell context and Execute [setup-k8s-prereqs.sh](setup-k8s-prereqs.sh/) script on each machine
+1. Execute [setup-k8s-master.sh](setup-k8s-master.sh/) script on the machine designated as Kubernetes master (_not_ under sudo su as otherwise you'll setup K8S .kube/config permissions for root)
 1. After successful initialization of the Kubernetes master, follow the kubeadm join commands output by the setup script on each agent machine
 1. Execute [setup-volumes-agent.sh](setup-volumes-agent.sh/) script on each agent machine to create volumes for local storage
 1. Execute ***kubectl apply -f local-storage-provisioner.yaml*** against the Kubernetes cluster to create the local storage provisioner.
