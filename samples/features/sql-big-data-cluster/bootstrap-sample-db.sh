@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 set -o pipefail
+
 STARTUP_PATH=$(pwd)
 TMP_DIR_NAME=$(basename $0)
 USAGE_MESSAGE="USAGE: $0 <CLUSTER_NAMESPACE> <SQL_MASTER_IP> <SQL_MASTER_SA_PASSWORD> <KNOX_IP> [<KNOX_PASSWORD>] [--install-extra-samples] [SQL_MASTER_PORT] [KNOX_PORT]"
