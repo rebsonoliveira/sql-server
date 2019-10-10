@@ -46,14 +46,12 @@ RETRY_INTERVAL=5
 #
 export DOCKER_REGISTRY="mcr.microsoft.com"
 export DOCKER_REPOSITORY="mssql/bdc"
-export DOCKER_TAG="2019-RC1-ubuntu"
+export DOCKER_TAG="2019-CU1-ubuntu"
 
 # Variables used for azdata cluster creation.
 #
-export CONTROLLER_USERNAME=admin
-export CONTROLLER_PASSWORD=$password
-export MSSQL_SA_PASSWORD=$password
-export KNOX_PASSWORD=$password
+export AZDATA_USERNAME=admin
+export AZDATA_PASSWORD=$password
 export ACCEPT_EULA=yes
 export CLUSTER_NAME=mssql-cluster
 export STORAGE_CLASS=local-storage
@@ -81,7 +79,8 @@ IMAGES=(
         mssql-server
         mssql-server-controller
         mssql-server-data
-        mssql-server-ha
+        mssql-ha-operator
+	mssql-ha-supervisor
         mssql-service-proxy
         mssql-ssis-app-runtime
 )
@@ -125,6 +124,9 @@ usermod --append --groups docker $USER
 #
 apt-get install -q -y python3 
 apt-get install -q -y python3-pip
+apt-get install -y libkrb5-dev
+apt-get install libsqlite3-dev
+apt-get install unixodbc-dev
 
 pip3 install requests --upgrade
 
