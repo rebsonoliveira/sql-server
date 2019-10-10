@@ -80,35 +80,35 @@ CREATE OR ALTER PROCEDURE #create_data_sources
 AS
 BEGIN
 	-- Create database master key (required for database scoped credentials used in the samples)
-	IF NOT EXISTS(SELECT * FROM sys.symmetric_keys WHERE name = '##MS_DatabaseMasterKey##')
-		CREATE MASTER KEY ENCRYPTION BY PASSWORD = 'sql19bigdatacluster!';
+	CREATE MASTER KEY ENCRYPTION BY PASSWORD = 'sql19bigdatacluster!';
 
 	-- Create default data sources for SQL Big Data Cluster
-	IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'SqlDataPool')
-		CREATE EXTERNAL DATA SOURCE SqlDataPool
-		WITH (LOCATION = 'sqldatapool://controller-svc/default');
+	IF SERVERPROPERTY('ProductLevel') = 'RTM'	
+		CREATE EXTERNAL DATA SOURCE SqlComputePool
+		WITH (LOCATION = 'sqlcomputepool://controller-svc/default');
 
-	IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'SqlStoragePool')
-		CREATE EXTERNAL DATA SOURCE SqlStoragePool
-		WITH (LOCATION = 'sqlhdfs://controller-svc/default');
+	CREATE EXTERNAL DATA SOURCE SqlDataPool
+	WITH (LOCATION = 'sqldatapool://controller-svc/default');
 
-	IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'HadoopData')
-		CREATE EXTERNAL DATA SOURCE HadoopData
-		WITH(
-				TYPE=HADOOP,
-				LOCATION='hdfs://nmnode-0-svc:9000/',
-				RESOURCE_MANAGER_LOCATION='sparkhead-svc:8032'
-		);
+	CREATE EXTERNAL DATA SOURCE SqlStoragePool
+	WITH (LOCATION = 'sqlhdfs://controller-svc/default');
+
+	CREATE EXTERNAL DATA SOURCE HadoopData
+	WITH(
+			TYPE=HADOOP,
+			LOCATION='hdfs://nmnode-0-svc:9000/',
+			RESOURCE_MANAGER_LOCATION='sparkhead-svc:8032'
+	);
 END;
 GO
 
 --- Sample dbs:
 DECLARE @sample_dbs CURSOR, @proc nvarchar(255);
 SET @sample_dbs = CURSOR FAST_FORWARD FOR
-									SELECT file_or_directory_name, d.db_name
-									FROM sys.dm_os_enumerate_filesystem('/var/opt/mssql/data', '*.bak') as f
-									CROSS APPLY (VALUES(REPLACE(REPLACE(file_or_directory_name, 'tpcxbb_1gb', 'sales'), '.bak', ''))) as d(db_name)
-									WHERE DB_ID(d.db_name) IS NULL;
+					SELECT file_or_directory_name, d.db_name
+					FROM sys.dm_os_enumerate_filesystem('/var/opt/mssql/data', '*.bak') as f
+					CROSS APPLY (VALUES(REPLACE(REPLACE(file_or_directory_name, 'tpcxbb_1gb', 'sales'), '.bak', ''))) as d(db_name)
+					WHERE DB_ID(d.db_name) IS NULL;
 DECLARE @file nvarchar(260), @db_name nvarchar(128);														
 OPEN @sample_dbs;
 WHILE(1=1)
