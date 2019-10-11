@@ -125,8 +125,8 @@ usermod --append --groups docker $USER
 apt-get install -q -y python3 
 apt-get install -q -y python3-pip
 apt-get install -y libkrb5-dev
-apt-get install libsqlite3-dev
-apt-get install unixodbc-dev
+apt-get install -y libsqlite3-dev
+apt-get install -y unixodbc-dev
 
 pip3 install requests --upgrade
 
