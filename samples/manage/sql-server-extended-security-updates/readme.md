@@ -10,7 +10,7 @@ For customers that couldn’t get all servers upgraded by the deadline, new opti
 -  Migrate your existing SQL Server 2008 and 2008 R2 workloads as-is to Azure Virtual Machines, and automatically subscribe to an additional three years of Extended Security Updates (if and when available) at no additional cost apart from the VM cost.
 -  Purchase an Extended Security Update subscription for your servers and remain protected until you are ready to upgrade to a newer SQL Server version, for up to three years after the End of Support date.
 
-Microsoft recommends applying Extended Security Update patches as soon as they are available to keep a SQL Server instance protected.
+**IMPORTANT:** as stated in the [ESU FAQ page](https://aka.ms/sqleosfaq), ESUs will be distributed **if and when available**. There is no regular release cadence of SQL Server ESUs. Also, ESUs do not include new features, customer-requested non-security hotfixes, or design change requests. When an ESU is released, Microsoft recommends applying ESU patches as soon as they are available to keep a SQL Server instance protected. For other clarifications and frequently asked questions, refer to the the [ESU FAQ page](https://aka.ms/sqleosfaq).
 
 ---
 
@@ -28,7 +28,7 @@ Microsoft recommends applying Extended Security Update patches as soon as they a
 ## Useful links
 - [SQL Server 2008 / 2008 R2 lifecycle page](https://support.microsoft.com/en-us/lifecycle/search?alpha=sql%20server%202008)
 - [SQL Server 2008 / 2008 R2 end of support page](https://aka.ms/sqleos)     
-- [Extended Security Updates frequently asked questions](https://aka.ms/sqleosfaq)    
+- [Extended Security Updates frequently asked questions (FAQ)](https://aka.ms/sqleosfaq)    
 - [Microsoft Security Response Center (MSRC)](https://portal.msrc.microsoft.com/security-guidance/summary)
 - [Manage Windows updates by using Azure Automation](https://docs.microsoft.com/azure/automation/automation-tutorial-update-management)
 - [Microsoft Data Migration Guide](https://datamigration.microsoft.com/)
