@@ -83,6 +83,8 @@ To download a security update that is made available throughout the three years 
 
     ![Downloads](./media/Downloads.png "Downloads") 
 
+If there are no available ESU packages for your registered SQL Server 2008 / 2008 R2 instances, the SQL Server registry download page will display the message "No updates available", as seen in the screenshot above.
+
 ---
 
 ## <a name="scripts"></a> ESU registration script examples
