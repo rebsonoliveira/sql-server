@@ -4,5 +4,5 @@ In this folder, you will find various notebooks that you can use in [Azure Data 
 The [What's New](https://docs.microsoft.com/en-us/sql/sql-server/what-s-new-in-sql-server-ver15?view=sql-server-ver15) article covers all the *NEW* features in SQL Server 2019.
 
 ## Notebook List
-1. [Intelligent Query Processing](https://github.com/microsoft/sql-server-samples/tree/master/samples/features/intelligent-query-processing)  
+1. Intelligent Query Processing
 *  Scalar UDF Inlining
