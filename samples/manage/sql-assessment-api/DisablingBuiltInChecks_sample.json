@@ -1,13 +1,16 @@
 { 
+	"schemaVersion": "1.0",
 	"version": "0.2",
 	"name": "Overrides for Default Ruleset", 
-	"checks":[ 
+	"rules":[ 
 		{
-			"id": "AutoCreateStats", 
+			"id": "LatestCU", 
+			"itemType": "override",
 			"enabled": false 
 		}, 
 		{ 
-			"select": ["TraceFlag"], 
+			"id": ["TraceFlag"], 
+			"itemType": "override",
 			"enabled": false 
 		} 
 	] 
