@@ -1,4 +1,4 @@
-# Intelligent Query Processing Demos
+# Intelligent Query Processing Notebooks
 
 ## Notebook List
 - Scalar UDF Inlining
