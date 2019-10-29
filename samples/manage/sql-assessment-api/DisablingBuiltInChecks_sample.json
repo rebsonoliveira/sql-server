@@ -1,7 +1,9 @@
 { 
+	"version": "0.2",
+	"name": "Overrides for Default Ruleset", 
 	"checks":[ 
 		{
-			"id": "SqlServer.Database.AutoCreateStats", 
+			"id": "AutoCreateStats", 
 			"enabled": false 
 		}, 
 		{ 
@@ -10,4 +12,3 @@
 		} 
 	] 
 }
-

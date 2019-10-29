@@ -94,7 +94,7 @@ executeCmd (command)
 command="azdata bdc create -c custom --accept-eula yes"
 executeCmd (command)
 
-command="azdata login --cluster-name " + CLUSTER_NAME
+command="azdata login -n " + CLUSTER_NAME
 executeCmd (command)
 
 print("")

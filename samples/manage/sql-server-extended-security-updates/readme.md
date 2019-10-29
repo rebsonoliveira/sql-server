@@ -10,7 +10,9 @@ For customers that couldn’t get all servers upgraded by the deadline, new opti
 -  Migrate your existing SQL Server 2008 and 2008 R2 workloads as-is to Azure Virtual Machines, and automatically subscribe to an additional three years of Extended Security Updates (if and when available) at no additional cost apart from the VM cost.
 -  Purchase an Extended Security Update subscription for your servers and remain protected until you are ready to upgrade to a newer SQL Server version, for up to three years after the End of Support date.
 
-Microsoft recommends applying Extended Security Update patches as soon as they are available to keep a SQL Server instance protected.
+**IMPORTANT:** as stated in the [ESU FAQ page](https://aka.ms/sqleosfaq), ESUs will be distributed **if and when available**, when a security vulnerability is discovered that is rated **Critical** by [MSRC](https://portal.msrc.microsoft.com/security-guidance/summary). Therefore, there is no regular release cadence for SQL Server ESUs. 
+
+**NOTE:** When an ESU does get released, Microsoft recommends applying ESU patches as soon as they are available to keep a SQL Server instance protected. For other clarifications and frequently asked questions, refer to the the [ESU FAQ page](https://aka.ms/sqleosfaq).
 
 ---
 
@@ -28,7 +30,7 @@ Microsoft recommends applying Extended Security Update patches as soon as they a
 ## Useful links
 - [SQL Server 2008 / 2008 R2 lifecycle page](https://support.microsoft.com/en-us/lifecycle/search?alpha=sql%20server%202008)
 - [SQL Server 2008 / 2008 R2 end of support page](https://aka.ms/sqleos)     
-- [Extended Security Updates frequently asked questions](https://aka.ms/sqleosfaq)    
+- [Extended Security Updates frequently asked questions (FAQ)](https://aka.ms/sqleosfaq)    
 - [Microsoft Security Response Center (MSRC)](https://portal.msrc.microsoft.com/security-guidance/summary)
 - [Manage Windows updates by using Azure Automation](https://docs.microsoft.com/azure/automation/automation-tutorial-update-management)
 - [Microsoft Data Migration Guide](https://datamigration.microsoft.com/)
@@ -37,9 +39,9 @@ Microsoft recommends applying Extended Security Update patches as soon as they a
 ---
 
 ## <a name="What"></a> What are Extended Security Updates for SQL Server
-Extended Security Updates (ESUs) include provision of Security Updates rated **Critical** by [MSRC](https://portal.msrc.microsoft.com/security-guidance/summary).    
+Extended Security Updates (ESUs) for SQL Server 2008/2008 R2 include provision of Security Updates, when a security vulnerability is found and rated **Critical** by [MSRC](https://portal.msrc.microsoft.com/security-guidance/summary) in these versions. There is no regular release cadence for SQL Server ESUs.   
 
-ESUs will be distributed if and when available, and do not include:
+ESUs will be distributed **if and when available**, and do not include:
 -  New features
 -  Customer-requested non-security hotfixes
 -  Design change requests    
@@ -80,6 +82,8 @@ To download a security update that is made available throughout the three years 
 - A ***Download*** button will appear inline with each available update package, allowing customers to download, to later install in the eligible SQL Server instances.
 
     ![Downloads](./media/Downloads.png "Downloads") 
+
+If there are no available ESU packages for your registered SQL Server 2008 / 2008 R2 instances, the SQL Server registry download page will display the message "No updates available", as seen in the screenshot above.
 
 ---
 

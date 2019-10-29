@@ -1922,7 +1922,7 @@
       "condition": {
         "and": [
             {"@growth": 1},            
-            {"@is_percent_growth": 1}, 
+            {"@is_percent_growth": 1}
         ]
       }
     },
