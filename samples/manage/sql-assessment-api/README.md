@@ -11,15 +11,15 @@ Learn how to assess your SQL Server configuration for best practices in 2 simple
 
 ## config.json
 
-This is the default set of checks shipped with SQL Assessment API. Feel free to open issues to have us fix or add checks. Also, we're happy to see your pull requests to this file.
+This is the default set of rules shipped with SQL Assessment API. Feel free to open issues to have us fix or add rules. Also, we're happy to see your pull requests to this file.
 
 ## DisablingBuiltInChecks_sample.json
 
-Contains two parts. First shows how you can disable a specified check by its ID. The second disables all the checks with the "TraceFlag" tag.
+Contains two parts. First shows how you can disable a specified rule by its ID. The second disables all the rules with the "TraceFlag" tag.
 
 ## MakingCustomChecks_sample.json
 
-Demonstrates how to make a custom rule set containing two checks. The sample contains two sections: `checks` and `probes`. `Checks` is for check (or rule) definitions. Usually, checks or rules are best practices or a company's internal policies that should be applied to SQL Server. Here's one of the checks from this sample with comments on each property:
+Demonstrates how to make a custom ruleset containing two checks. The sample contains two sections: `rules` and `probes`. `Rules` is for rule (sometimes refered to as check) definitions. Usually, rules are best practices or a company's internal policies that should be applied to SQL Server configuration. Here's one of the rules from this sample with comments on each property:
 
 ```
 {
@@ -45,7 +45,7 @@ Demonstrates how to make a custom rule set containing two checks. The sample con
 }
 ```
 
-`Probes` describe how and where get required data to perform a check. For this, you can use T-SQL queries as well as methods from assemblies. The probe below uses a T-SQL query.
+`Probes` describes how and where get required data to perform a check. For this, you can use T-SQL queries as well as methods from assemblies. The probe below uses a T-SQL query.
 ```
 "probes":{
   "DatabaseConfiguration": [                            //Probe name that is used to reference the probe from a check.
