@@ -1,4 +1,4 @@
-declare @db_name sysname = ; --> put the database name here like 'WideWorldImporters'
+USE <database_name, , > --> put the database name here like WideWorldImporters
 
 begin
 declare @result NVARCHAR(MAX);
@@ -6,7 +6,7 @@ set @result = (select database_name = name, compatibility_level, recovery_model_
 					is_auto_update_stats_on, is_auto_update_stats_async_on, delayed_durability_desc,
 					is_encrypted, is_auto_create_stats_incremental_on, is_arithabort_on, is_ansi_warnings_on, is_parameterization_forced
 from sys.databases
-where name = @db_name 
+where name = db_name()
 for xml raw('db'), elements);
 set @result += (select compatibility_level, snapshot_isolation_state_desc, is_read_committed_snapshot_on, 
 					is_auto_update_stats_on, is_auto_update_stats_async_on, delayed_durability_desc,
@@ -76,6 +76,15 @@ isnull((
 		join sys.tables t on t.object_id = ix.object_id
 	where ix.type <> 0
 for xml raw, elements),'');
+
+set @result += 
+isnull((
+	select	name = 'JOB::'+j.name + '/' + s.step_name, 
+			value = subsystem
+	from msdb.dbo.sysjobs j
+		join msdb.dbo.sysjobsteps s on j.job_id = s.job_id
+for xml raw, elements),'');
+
 
 select cast(@result as xml);
 
