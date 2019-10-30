@@ -7,7 +7,11 @@ The [What's New](https://docs.microsoft.com/en-us/sql/sql-server/what-s-new-in-s
 ### Intelligent Query Processing
 *  **Scalar_UDF_Inlining.ipynb** - Demonstrate the benefits of Scalar UDF Inlining along with how to find out which UDFs in your database can be inlined.
 
-### Security Notebooks
+### Security 
 * **TDE_on_Standard.ipynb** - This notebook demonstrates the ability to enable TDE on SQL Server 2019 Standard Edition along with Encryption Scan SUSPEND and RESUME.
 * **TDE_on_Standard_EKM.ipynb** - This notebook demonstrates the ability to enable TDE on a SQL Server 2019 Standard Edition using EKM and Azure Key Vault.
+
+### In-Memory Database
+* **MemoryOptimizedTempDBMetadata-TSQL.ipynb** - This is a T-SQL notebook which shows the benefits of Memory Optimized Tempdb metadata.
+* **MemoryOptmizedTempDBMetadata-Python.ipynb** - This is a Python notebook which shows the benefits of Memory Optimized Tempdb metadata.
 
