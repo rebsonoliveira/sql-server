@@ -67,6 +67,16 @@ isnull((SELECT name = REPLACE([type], 'MEMORYCLERK_', 'MEMORY:')
    HAVING sum(pages_kb) /1024. /1024 > 1
    for xml raw, elements),'');
 
+set @result += 
+isnull((
+	select name = 'INDEX:'+schema_name(schema_id)+'.'+object_name(t.object_id)+'.'+ix.name,
+		value = concat(ix.type_desc COLLATE SQL_Latin1_General_CP1_CI_AS,
+		'/disabled:',is_disabled,'/row_locks:',allow_row_locks,'/page_locks:',allow_page_locks,'/filter:',filter_definition,'/compression_delay:',compression_delay)
+	from sys.indexes ix
+		join sys.tables t on t.object_id = ix.object_id
+	where ix.type <> 0
+for xml raw, elements),'');
+
 select cast(@result as xml);
 
 end;
