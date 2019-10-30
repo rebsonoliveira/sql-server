@@ -12,7 +12,7 @@
 			"id": ["TraceFlag"], 
 			"itemType": "override",
 			"enabled": false 
-		} 
+		}, 
 		{
 			"id": ["DefaultRuleset"],
 			"itemType": "override",
