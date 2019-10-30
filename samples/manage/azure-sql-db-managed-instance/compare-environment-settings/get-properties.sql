@@ -1,8 +1,8 @@
-declare @db_name sysname = 'master'
+declare @db_name sysname = ; --> put the database name here like 'WideWorldImporters'
 
 begin
 declare @result NVARCHAR(MAX);
-set @result = (select compatibility_level, recovery_model_desc, snapshot_isolation_state_desc, is_read_committed_snapshot_on, 
+set @result = (select database_name = name, compatibility_level, recovery_model_desc, snapshot_isolation_state_desc, is_read_committed_snapshot_on, 
 					is_auto_update_stats_on, is_auto_update_stats_async_on, delayed_durability_desc,
 					is_encrypted, is_auto_create_stats_incremental_on, is_arithabort_on, is_ansi_warnings_on, is_parameterization_forced
 from sys.databases
