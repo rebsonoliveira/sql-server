@@ -25,7 +25,7 @@ Demonstrates how to make a custom ruleset containing two checks. The sample cont
     "target": {                                                                  /*Target describes a SQL Server object the check is supposed to run against*/
         "type": "Database",                                                          //This check targets Database object
         "version": "[13.0,)",                                                        //Applies to SQL Server 2016 and higher
-                                                                                     //Another example: "[12.0,13.0)" reads as "any SQL Server version >= 12.0 and < 13.0"
+                                                                                     /*Another example: "[12.0,13.0)" reads as "any SQL Server version >= 12.0 and < 13.0"*/
         "platform": "/^(Windows|Linux)$/",                                           //Applies to SQL Server on Windows and Linux
         "engineEdition": "OnPremises, ManagedInstance",                              //Applies to SQL on Premises and Azure SQL Managed Instance. Here you can also filter specific editions of SQL Server
         "name": { "not": "/^(master|tempdb|model)$/" }                               //Applies to any database excluding master, tempdb, and msdb
