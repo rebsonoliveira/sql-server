@@ -5,7 +5,8 @@ The [What's New](https://docs.microsoft.com/en-us/sql/sql-server/what-s-new-in-s
 
 ## Notebook List
 ### Intelligent Query Processing
-*  **[Scalar_UDF_Inlining.ipynb](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/intelligent-query-processing/notebooks/Scalar_UDF_Inlining.ipynb)** - Demonstrate the benefits of Scalar UDF Inlining along with how to find out which UDFs in your database can be inlined.
+*  **[Scalar_UDF_Inlining.ipynb](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/intelligent-query-processing/notebooks/Scalar_UDF_Inlining.ipynb)** - This notebook demonstrates the benefits of Scalar UDF Inlining along with how to find out which UDFs in your database can be inlined.
+* **[IQP_tablevariabledeferred.ipynb](https://github.com/microsoft/sqlworkshops/blob/master/sql2019lab/01_IntelligentPerformance/iqp/iqp_tablevariabledeferred.ipynb)** - In this example, you will learn about the new cardinality estimation for table variables called deferred compilation.
 
 ### Security 
 * **[TDE_on_Standard.ipynb](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/security/tde-sql2019-standard/TDE_on_Standard.ipynb)** - This notebook demonstrates the ability to enable TDE on SQL Server 2019 Standard Edition along with Encryption Scan SUSPEND and RESUME.
@@ -14,4 +15,10 @@ The [What's New](https://docs.microsoft.com/en-us/sql/sql-server/what-s-new-in-s
 ### In-Memory Database
 * **[MemoryOptimizedTempDBMetadata-TSQL.ipynb](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/in-memory-database/memory-optimized-tempdb-metadata/MemoryOptimizedTempDBMetadata-TSQL.ipynb)** - This is a T-SQL notebook which shows the benefits of Memory Optimized Tempdb metadata.
 * **[MemoryOptmizedTempDBMetadata-Python.ipynb](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/in-memory-database/memory-optimized-tempdb-metadata/MemoryOptmizedTempDBMetadata-Python.ipynb)** - This is a Python notebook which shows the benefits of Memory Optimized Tempdb metadata.
+
+### Availability
+* **[ADR.ipynb](https://github.com/microsoft/sqlworkshops/blob/master/sql2019workshop/sql2019wks/04_Availability/adr/adr.ipynb)** - In this notebook, you will see how fast rollback can now be with Accelerated Database Recovery. You will also see that a long active transaction does not affect the ability to truncate the transaction log.
+* **[ADR_Recovery.ipynb](https://github.com/microsoft/sqlworkshops/blob/master/sql2019workshop/sql2019wks/04_Availability/adr/adr_recovery.ipynb)** - In this example, you will see how Accelerated Database Recovery will speed up recovery.
+
+
 
