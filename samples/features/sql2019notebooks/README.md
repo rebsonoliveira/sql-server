@@ -4,5 +4,10 @@ In this folder, you will find various notebooks that you can use in [Azure Data 
 The [What's New](https://docs.microsoft.com/en-us/sql/sql-server/what-s-new-in-sql-server-ver15?view=sql-server-ver15) article covers all the *NEW* features in SQL Server 2019.
 
 ## Notebook List
-1. Intelligent Query Processing
+## Intelligent Query Processing
 *  Scalar UDF Inlining
+
+### Security Notebooks
+* **TDE_on_Standard.ipynb** - This notebook demonstrates the ability to enable TDE on SQL Server 2019 Standard Edition along with Encryption Scan SUSPEND and RESUME.
+* **TDE_on_Standard_EKM.ipynb** - This notebook demonstrates the ability to enable TDE on a SQL Server 2019 Standard Edition using EKM and Azure Key Vault.
+
