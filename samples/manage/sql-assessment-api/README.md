@@ -22,7 +22,7 @@ Demonstrates how to make a custom ruleset containing two checks. The sample cont
 
 ```json
 {
-    "target": {                                                                  //Target describes a SQL Server object the check is supposed to run against
+    "target": {                                                                  /*Target describes a SQL Server object the check is supposed to run against*/
         "type": "Database",                                                          //This check targets Database object
         "version": "[13.0,)",                                                        //Applies to SQL Server 2016 and higher
                                                                                      //Another example: "[12.0,13.0)" reads as "any SQL Server version >= 12.0 and < 13.0"
