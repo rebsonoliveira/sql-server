@@ -1,14 +1,26 @@
 { 
+	"schemaVersion": "1.0",
 	"version": "0.2",
-	"name": "Overrides for Default Ruleset", 
-	"checks":[ 
+	"name": "Custom Overrides", 
+	"rules":[ 
 		{
-			"id": "AutoCreateStats", 
+			"id": "LatestCU", 
+			"itemType": "override",
 			"enabled": false 
 		}, 
 		{ 
-			"select": ["TraceFlag"], 
+			"id": ["TraceFlag"], 
+			"itemType": "override",
 			"enabled": false 
-		} 
+		}, 
+		{
+			"id": ["DefaultRuleset"],
+			"itemType": "override",
+			"targetFilter": {
+				"type": "Database",
+				"name": "/^(DBName1|DBName2)$/"
+			},
+			"enabled": false
+		}
 	] 
 }
