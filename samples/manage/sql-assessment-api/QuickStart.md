@@ -4,7 +4,7 @@ Assess your SQL Server configuration for best practices in 2 simple steps.
 
 ### 1. Setup
 
-You just need to install PowerShell SqlServer module using the following command. Get-Module will show you the version you have installed. 21.1.18206 is the latest version and GA for SQL Assessment API.
+You just need to install [PowerShell SqlServer module](https://www.powershellgallery.com/packages/SqlServer) using the following command. Get-Module will show you the version you have installed. 21.1.18206 is the latest version and GA for SQL Assessment API.
 
 ```PowerShell
 Install-Module -Name SqlServer -AllowClobber
