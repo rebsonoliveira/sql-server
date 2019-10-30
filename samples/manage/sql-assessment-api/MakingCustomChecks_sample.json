@@ -6,18 +6,22 @@
 		{
 			"target": {
 			  "type": "Database",
+			  "version": "[13.0,)",
 			  "platform": "/^(Windows|Linux)$/",
-			  "engineEdition": "OnPremises, ManagedInstance"
+			  "engineEdition": "OnPremises, ManagedInstance",
+			  "name": { "not": "/^(master|tempdb|model)$/" }
 			},
-			"id": "Custom_AutoCreateStats",
+			"id": "QueryStoreOn",
 			"itemType": "definition",
-			"tags": [ "CustomRuleset", "Performance", "Statistics", "QueryOptimizer" ],
-			"displayName": "Auto-Create Statistics should be on",
-			"description": "The Query Optimizer determines whether an index is useful for a specific query by evaluating the stored statistics. If the statistics become out of date and significant changes have occurred against the underlying data, this can result in less than optimal query performance. In most cases, it's best to let SQL Server maintain the statistics. If you turn 'Auto Create Stats' and 'Auto Update Stats' off, then it is up to you to keep the statistics up-to-date somehow. Failure to do so will lead to poor query performance. Most applications should have these options ON.\n \n When the Auto Create statistics setting is ON, the Query Optimizer creates statistics on one or more columns of a table or an indexed view, as necessary, to improve query plans and query performance.",
-			"message": "Turn Auto-Create Statistics option on to improve query performance.",
-			"helpLink": "https://docs.microsoft.com/sql/relational-databases/statistics/statistics#CreateStatistics",
+			"tags": [ "CustomRuleset", "Performance", "QueryStore", "Statistics" ],
+			"displayName": "Query Store should be active",
+			"description": "The Query Store feature provides you with insight on query plan choice and performance. It simplifies performance troubleshooting by helping you quickly find performance differences caused by query plan changes. Query Store automatically captures a history of queries, plans, and runtime statistics, and retains these for your review. It separates data by time windows so you can see database usage patterns and understand when query plan changes happened on the server. While Query Store collects queries, execution plans and statistics, its size in the database grows until this limit is reached. When that happens, Query Store automatically changes the operation mode to read-only and stops collecting new data, which means that your performance analysis is no longer accurate.",
+			"message": "Make sure Query Store actual operation mode is 'Read Write' to keep your performance analysis accurate",
+			"helpLink": "https://docs.microsoft.com/sql/relational-databases/performance/monitoring-performance-by-using-the-query-store",
 			"probes": [ "Custom_DatabaseConfiguration" ],
-			"condition": "@is_auto_create_stats_on"
+			"condition": {
+			  "equal": [ "@query_store_state", 2 ]
+			}
 		},
 		{
 			"target": {

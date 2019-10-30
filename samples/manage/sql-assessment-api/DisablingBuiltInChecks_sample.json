@@ -1,7 +1,7 @@
 { 
 	"schemaVersion": "1.0",
 	"version": "0.2",
-	"name": "Overrides for Default Ruleset", 
+	"name": "Custom Overrides", 
 	"rules":[ 
 		{
 			"id": "LatestCU", 
@@ -13,5 +13,14 @@
 			"itemType": "override",
 			"enabled": false 
 		} 
+		{
+			"id": ["DefaultRuleset"],
+			"itemType": "override",
+			"targetFilter": {
+				"type": "Database",
+				"name": "/^(DBName1|DBName2)$/"
+			},
+			"enabled": false
+		}
 	] 
 }
