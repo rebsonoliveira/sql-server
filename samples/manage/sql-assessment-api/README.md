@@ -20,7 +20,7 @@ Contains three parts. First shows how you can disable a specified rule by its ID
 
 Demonstrates how to make a custom ruleset containing two checks. The sample contains two sections: `rules` and `probes`. `Rules` is for rule (sometimes referred to as check) definitions. Usually, rules are best practices or a company's internal policies that should be applied to SQL Server configuration. Here's one of the rules from this sample with explanations for each line:
 
-```json
+```
 {
     "target": {                                                                  /*Target describes a SQL Server object the check is supposed to run against*/
         "type": "Database",                                                          //This check targets Database object
