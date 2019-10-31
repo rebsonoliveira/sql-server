@@ -53,6 +53,8 @@ where name in ('cost threshold for parallelism','cursor threshold','fill factor 
 for xml raw, elements
 );
 set @result += (select name = 'version', value = @@VERSION for xml raw, elements)
+set @result += (select name = 'script version', value = '1.0' for xml raw, elements)
+set @result += (select name = 'date', value = GETUTCDATE() for xml raw, elements)
 
 set @result += isnull
 ((SELECT scheduler_count, scheduler_total_count FROM sys.dm_os_sys_info
