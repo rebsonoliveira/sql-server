@@ -28,8 +28,8 @@ Release date: October 30, 2019
 
 ### Known issues in 21.1.18206
 
-- Invoke-SqlAssessment may crash with message "Missing data item 'FilterDefinition'" on some databases. If you face this issue, override the RedundantIndexes rule to disable it. We'll fix it with the next release.
+- Invoke-SqlAssessment may crash with message "Missing data item 'FilterDefinition'" on some databases. If you face this issue, create a customization to disable the RedundantIndexes rule to disable it. See README.md to learn how to disable rules. We'll fix this issue with the next release.
 
-- Assemblies providing methods for CLR probes should be recompiled for each new release of SQL Assessment.
+- Assemblies providing methods for CLR probes should be recompiled for each new release of SQL Assessment API.
 
 You can use GitHub issues to provide feedback to the product team.
