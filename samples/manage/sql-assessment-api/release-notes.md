@@ -26,7 +26,7 @@ Release date: October 30, 2019
 - Broken order of recommendations
 - Error messages are not clear
 
-### Known issues in 21.1.18206
+## Known issues in 21.1.18206
 
 - Invoke-SqlAssessment may crash with message "Missing data item 'FilterDefinition'" on some databases. If you face this issue, create a customization to disable the RedundantIndexes rule to disable it. See README.md to learn how to disable rules. We'll fix this issue with the next release.
 
