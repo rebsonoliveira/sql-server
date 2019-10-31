@@ -7,6 +7,7 @@ The [What's New](https://docs.microsoft.com/en-us/sql/sql-server/what-s-new-in-s
 ### Intelligent Query Processing
 *  **[Scalar_UDF_Inlining.ipynb](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/intelligent-query-processing/notebooks/Scalar_UDF_Inlining.ipynb)** - This notebook demonstrates the benefits of Scalar UDF Inlining along with how to find out which UDFs in your database can be inlined.
 * **[IQP_tablevariabledeferred.ipynb](https://github.com/microsoft/sqlworkshops/blob/master/sql2019lab/01_IntelligentPerformance/iqp/iqp_tablevariabledeferred.ipynb)** - In this example, you will learn about the new cardinality estimation for table variables called deferred compilation.
+* **[Batch_Mode_on_Rowstore.ipynb](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/intelligent-query-processing/notebooks/Batch_Mode_on_Rowstore.ipynb)** - In this notebook, you will learn about how Batch Mode for Rowstore can help execute queries faster on SQL Server 2019.
 
 ### Security 
 * **[TDE_on_Standard.ipynb](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/security/tde-sql2019-standard/TDE_on_Standard.ipynb)** - This notebook demonstrates the ability to enable TDE on SQL Server 2019 Standard Edition along with Encryption Scan SUSPEND and RESUME.
