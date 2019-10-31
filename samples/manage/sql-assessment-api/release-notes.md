@@ -2,36 +2,34 @@
 
 This article provides details about updates, improvements, and bug fixes for the current and previous versions of SQL Assessment API.
 
-## SQL Assessment GA <version-number>
+## SQL Assessment November 2019 Release — First GA
 
-Download: [Download SSMS 18.3.1](download-sql-server-management-studio-ssms.md)  
-Build number: 15.0.18183.0  
+SQL Assessment API is part of the SQL Server Management Objects (SMO) and the SQL Server PowerShell module. Install one of them or both to start working with the API.  
+
+Build number: SqlServer module 21.1.18206, SqlManagementObjectsSMO package coming soon  
+Download: [Download SqlServer module](https://www.powershellgallery.com/packages/SqlServer)  
 Release date: October 30, 2019
 
-SSMS 18.3.1 is the latest general availability (GA) release of SSMS. If you need a previous version of SSMS, see [previous SSMS releases](release-notes-ssms.md#previous-ssms-releases).
+## What's new in 21.1.18206 
 
-18.3.1 is an update to 18.2 with the following new items and bug fixes.
+- Added 50 assessment rules (144 rules in total so far)
+- Added base math expressions and comparisons to rules conditions
+- Added support for RegisteredServer object
+- Updated way how rules are stored in the JSON format and also updated the mechanism of applying overrides/customizations
+- Updated rules to support SQL on Linux
+- Updated the ruleset JSON format and added SCHEMA version
+- Updated cmdlets output to improve readability of recommendations
 
-## What's new in 18.3.1
+## Bug fixes in 21.1.18206
 
-| New item | Details |
-|---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Data Classification | Add Data Classification information to column properties UI (*Information Type*, *Information Type ID*, *Sensitivity Label*, and *Sensitivity Label ID* are not exposed in the SSMS UI). |
-| Intellisense/Editor | Updated support for features recently added to SQL Server 2019 (for example, "ALTER SERVER CONFIGURATION"). |
-| Integration Services | Add a new selection menu item `Tools > Migrate to Azure > Configure Azure-enabled DTExec` that will invoke SSIS package executions on Azure-SSIS Integration Runtime as Execute SSIS Package activities in ADF pipelines. |
-| SMO/Scripting | Added support for Support scripting of Azure SQL DW unique constraint. |
-| SMO/Scripting | Data Classification </br> - Added support for SQL version 10 (SQL 2008) and higher. </br> - Added new sensitivity attribute 'rank' for SQL version 15 (SQL 2019) and higher and Azure SQL DB. |
-| SMO/Scripting | [SQL Assessment API](../sql-assessment-api/sql-assessment-api-overview.md) - Added versioning to ruleset format. |
-| SMO/Scripting | [SQL Assessment API](../sql-assessment-api/sql-assessment-api-overview.md) - Added new checks. |
-| SMO/Scripting | [SQL Assessment API](../sql-assessment-api/sql-assessment-api-overview.md) - Added support for Azure SQL Database Managed Instance. |
-| SMO/Scripting | [SQL Assessment API](../sql-assessment-api/sql-assessment-api-overview.md) - Updated default view of cmdlets to display results as a table. |
+- Rules were revised and some were fixed
+- Broken order of recommendations
+- Error messages are not clear
 
-## Bug fixes in 18.3.1
+### Known issues in 21.1.18206
 
-### Known issues (18.3.1)
+- Invoke-SqlAssessment may crash with message "Missing data item 'FilterDefinition'" on some databases. If you face this issue, override the RedundantIndexes rule to disable it. We'll fix it with the next release.
 
-- Database Diagram created from SSMS running on machine A cannot be modified from machine B (SSMS crashes). See [UserVoice](https://feedback.azure.com/forums/908035/suggestions/37992649) for more details.
+- Assemblies providing methods for CLR probes should be recompiled for each new release of SQL Assessment.
 
-- There are redraw issues when switching between multiple query windows. See [UserVoice](https://feedback.azure.com/forums/908035/suggestions/37474042) for more details. A workaround for this issue is to disable hardware acceleration under Tools > Options.
-
-You can reference [UserVoice](https://feedback.azure.com/forums/908035-sql-server) for other known issues and to provide feedback to the product team.
+You can use GitHub issues to provide feedback to the product team.
