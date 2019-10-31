@@ -3,6 +3,7 @@
 This article provides details about updates, improvements, and bug fixes for the current and previous versions of SQL Assessment API. SQL Assessment API is part of the SQL Server Management Objects (SMO) and the SQL Server PowerShell module. Install one of them or both to start working with the API.
 
 Download: [Download SqlServer module](https://www.powershellgallery.com/packages/SqlServer)
+
 Download: [SMO NuGet Package](https://www.nuget.org/packages/Microsoft.SqlServer.SqlManagementObjects)
 
 You can use GitHub issues to provide feedback to the product team.
