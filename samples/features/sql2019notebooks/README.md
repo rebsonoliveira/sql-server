@@ -21,11 +21,12 @@ The [What's New](https://docs.microsoft.com/en-us/sql/sql-server/what-s-new-in-s
 * **[Basic_ADR.ipynb](https://github.com/microsoft/sqlworkshops/blob/master/sql2019workshop/sql2019wks/04_Availability/adr/basic_adr.ipynb)** - In this notebook, you will see how fast rollback can now be with Accelerated Database Recovery. You will also see that a long active transaction does not affect the ability to truncate the transaction log.
 * **[Recovery_ADR.ipynb](https://github.com/microsoft/sqlworkshops/blob/master/sql2019workshop/sql2019wks/04_Availability/adr/recovery_adr.ipynb)** - In this example, you will see how Accelerated Database Recovery will speed up recovery.
 
-### Big Data & Data Virtualization
+### Big Data, Machine Learning & Data Virtualization
 * **[SQL Server Big Data Clusters](https://github.com/microsoft/sqlworkshops/tree/master/sqlserver2019bigdataclusters/SQL2019BDC/notebooks)** - Part of our **[Ground to Cloud](https://aka.ms/sqlworkshops)** workshop. In this lab, you will use notebooks to experiment with SQL Server Big Data Clusters (BDC), and learn how you can use it to implement large-scale data processing and machine learning.
-
 * **[Data Virtualization using PolyBase](https://github.com/microsoft/sqlworkshops/tree/master/sql2019workshop/sql2019wks/08_DataVirtualization/sqldatahub)** - The notebooks in this SQL Server 2019 workshop covers how to use SQL Server as a hub for data virtualization for sources like Oracle, SAP HANA, Azure CosmosDB, SQL Server and Azure SQL Database.
-
 * **[train_score_export_ml_models_with_spark.ipynb](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/sql-big-data-cluster/spark/sparkml/train_score_export_ml_models_with_spark.ipynb)** -This notebooks covers how you can use Spark to create and deploy machine learning models.
+* **[accessing_spark_via_livy.ipynb](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/sql-big-data-cluster/spark/restful-api-access/accessing_spark_via_livy.ipynb)** - The notebook demostrates using spark service via the livy end point. 
+* **Data Virtualization**
+  * **[spark_to_sql_jdbc.ipynb](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/sql-big-data-cluster/spark/data-virtualization/spark_to_sql_jdbc.ipynb)** - This notebook shows how to read and write from Spark to SQL.
 
 
