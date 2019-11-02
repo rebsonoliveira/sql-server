@@ -31,13 +31,13 @@ GO
 CREATE INDEX IX_Stock_Item_Key
 ON Fact.OrderHistory([Stock Item Key])
 INCLUDE(Quantity)
-WITH(DATA_COMPRESSION=PAGE);
+WITH (DATA_COMPRESSION = PAGE);
 GO
 
 CREATE INDEX IX_OrderHistory_Quantity
 ON Fact.OrderHistory([Quantity])
 INCLUDE([Order Key])
-WITH(DATA_COMPRESSION=PAGE);
+WITH (DATA_COMPRESSION = PAGE);
 GO
 
 /*
