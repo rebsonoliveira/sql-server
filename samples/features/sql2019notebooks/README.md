@@ -26,8 +26,17 @@ The [What's New](https://docs.microsoft.com/en-us/sql/sql-server/what-s-new-in-s
 * **[Data Virtualization using PolyBase](https://github.com/microsoft/sqlworkshops/tree/master/sql2019workshop/sql2019wks/08_DataVirtualization/sqldatahub)** - The notebooks in this SQL Server 2019 workshop covers how to use SQL Server as a hub for data virtualization for sources like Oracle, SAP HANA, Azure CosmosDB, SQL Server and Azure SQL Database.
 * **[train_score_export_ml_models_with_spark.ipynb](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/sql-big-data-cluster/spark/sparkml/train_score_export_ml_models_with_spark.ipynb)** -This notebooks covers how you can use Spark to create and deploy machine learning models.
 * **[accessing_spark_via_livy.ipynb](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/sql-big-data-cluster/spark/restful-api-access/accessing_spark_via_livy.ipynb)** - The notebook demostrates using spark service via the livy end point. 
-* **Data Virtualization**
-  * **[spark_to_sql_jdbc.ipynb](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/sql-big-data-cluster/spark/data-virtualization/spark_to_sql_jdbc.ipynb)** - This notebook shows how to read and write from Spark to SQL.
+* **[Spark with Big Data Clusters](https://github.com/microsoft/sql-server-samples/tree/master/samples/features/sql-big-data-cluster/spark)** - The notebooks in this folder cover the following scenarios:
+  * Data Loading - Transforming CSV to Parquet
+  * Data Transfer - Spark to SQL using Spark JDBC connector
+  * Data Transfer - Spark to SQL using MSSQL Spark connector
+  * Configure - Configure a spark session using a notebook
+  * Install - Install 3rd party packages
+  * Restful-Access - Access Spark in BDC via restful Livy APIs
+ 
+* **Machine Learning**
+ * **[Powerplant Output Prediction] (https://github.com/microsoft/sql-server-samples/blob/master/samples/features/sql-big-data-cluster/machine-learning/spark/h2o/h2o-automl-powerplant.ipynb)** - This sample uses the automated machine learning capabilities of the third party H2O package running in Spark in a SQL Server 2019 Big Data Cluster to build a machine learning model that predicts powerplant output.
+ * **[TensorFlow on GPUs in SQL Server 2019 big data cluster](https://github.com/microsoft/sql-server-samples/tree/master/samples/features/sql-big-data-cluster/machine-learning/spark/tensorflow)** - The notebooks in this directory illustrate fitting TensorFlow image classification models using GPU acceleration.
   
 ### SQL Server Troubleshooting Notebooks
 * **[SQL Server Troubleshooting Notebooks](https://github.com/microsoft/tigertoolbox/tree/master/Troubleshooting-Notebooks)** - This repository of notebooks helps you troubleshooting common scenarios that you could encounter with SQL Server including Big Data Clusters.
