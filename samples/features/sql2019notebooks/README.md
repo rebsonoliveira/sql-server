@@ -21,5 +21,23 @@ The [What's New](https://docs.microsoft.com/en-us/sql/sql-server/what-s-new-in-s
 * **[Basic_ADR.ipynb](https://github.com/microsoft/sqlworkshops/blob/master/sql2019workshop/sql2019wks/04_Availability/adr/basic_adr.ipynb)** - In this notebook, you will see how fast rollback can now be with Accelerated Database Recovery. You will also see that a long active transaction does not affect the ability to truncate the transaction log.
 * **[Recovery_ADR.ipynb](https://github.com/microsoft/sqlworkshops/blob/master/sql2019workshop/sql2019wks/04_Availability/adr/recovery_adr.ipynb)** - In this example, you will see how Accelerated Database Recovery will speed up recovery.
 
+### Big Data, Machine Learning & Data Virtualization
+* **[SQL Server Big Data Clusters](https://github.com/microsoft/sqlworkshops/tree/master/sqlserver2019bigdataclusters/SQL2019BDC/notebooks)** - Part of our **[Ground to Cloud](https://aka.ms/sqlworkshops)** workshop. In this lab, you will use notebooks to experiment with SQL Server Big Data Clusters (BDC), and learn how you can use it to implement large-scale data processing and machine learning.
+* **[Data Virtualization using PolyBase](https://github.com/microsoft/sqlworkshops/tree/master/sql2019workshop/sql2019wks/08_DataVirtualization/sqldatahub)** - The notebooks in this SQL Server 2019 workshop covers how to use SQL Server as a hub for data virtualization for sources like Oracle, SAP HANA, Azure CosmosDB, SQL Server and Azure SQL Database.
+
+* **[Spark with Big Data Clusters](https://github.com/microsoft/sql-server-samples/tree/master/samples/features/sql-big-data-cluster/spark)** - The notebooks in this folder cover the following scenarios:
+  * Data Loading - Transforming CSV to Parquet
+  * Data Transfer - Spark to SQL using Spark JDBC connector
+  * Data Transfer - Spark to SQL using MSSQL Spark connector
+  * Configure - Configure a spark session using a notebook
+  * Install - Install 3rd party packages
+  * Restful-Access - Access Spark in BDC via restful Livy APIs
+ 
+* **Machine Learning**
+ * **[Powerplant Output Prediction](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/sql-big-data-cluster/machine-learning/spark/h2o/h2o-automl-powerplant.ipynb)** - This sample uses the automated machine learning capabilities of the third party H2O package running in Spark in a SQL Server 2019 Big Data Cluster to build a machine learning model that predicts powerplant output.
+ * **[TensorFlow on GPUs in SQL Server 2019 big data cluster](https://github.com/microsoft/sql-server-samples/tree/master/samples/features/sql-big-data-cluster/machine-learning/spark/tensorflow)** - The notebooks in this directory illustrate fitting TensorFlow image classification models using GPU acceleration.
+  
+### SQL Server Troubleshooting Notebooks
+* **[SQL Server Troubleshooting Notebooks](https://github.com/microsoft/tigertoolbox/tree/master/Troubleshooting-Notebooks)** - This repository of notebooks helps you troubleshooting common scenarios that you could encounter with SQL Server including Big Data Clusters.
 
 
