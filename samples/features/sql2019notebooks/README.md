@@ -28,5 +28,8 @@ The [What's New](https://docs.microsoft.com/en-us/sql/sql-server/what-s-new-in-s
 * **[accessing_spark_via_livy.ipynb](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/sql-big-data-cluster/spark/restful-api-access/accessing_spark_via_livy.ipynb)** - The notebook demostrates using spark service via the livy end point. 
 * **Data Virtualization**
   * **[spark_to_sql_jdbc.ipynb](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/sql-big-data-cluster/spark/data-virtualization/spark_to_sql_jdbc.ipynb)** - This notebook shows how to read and write from Spark to SQL.
+  
+### SQL Server Troubleshooting Notebooks
+* **[SQL Server Troubleshooting Notebooks](https://github.com/microsoft/tigertoolbox/tree/master/Troubleshooting-Notebooks)** - This repository of notebooks helps you troubleshooting common scenarios that you could encounter with SQL Server including Big Data Clusters.
 
 
