@@ -18,7 +18,8 @@ GO
 	Assumes a fresh restore of WideWorldImportersDW
 */
 
-IF OBJECT_ID('Fact.OrderHistory') IS NULL BEGIN
+IF OBJECT_ID('Fact.OrderHistory') IS NULL 
+BEGIN
     SELECT [Order Key], [City Key], [Customer Key], [Stock Item Key], [Order Date Key], [Picked Date Key], [Salesperson Key], [Picker Key], [WWI Order ID], [WWI Backorder ID], Description, Package, Quantity, [Unit Price], [Tax Rate], [Total Excluding Tax], [Tax Amount], [Total Including Tax], [Lineage Key]
     INTO Fact.OrderHistory
     FROM Fact.[Order];
@@ -61,7 +62,8 @@ GO 4
 SELECT COUNT(*) FROM Fact.OrderHistory;
 GO
 
-IF OBJECT_ID('Fact.OrderHistoryExtended') IS NULL BEGIN
+IF OBJECT_ID('Fact.OrderHistoryExtended') IS NULL 
+BEGIN
     SELECT [Order Key], [City Key], [Customer Key], [Stock Item Key], [Order Date Key], [Picked Date Key], [Salesperson Key], [Picker Key], [WWI Order ID], [WWI Backorder ID], Description, Package, Quantity, [Unit Price], [Tax Rate], [Total Excluding Tax], [Tax Amount], [Total Including Tax], [Lineage Key]
     INTO Fact.OrderHistoryExtended
     FROM Fact.[OrderHistory];
@@ -102,8 +104,10 @@ UPDATE Fact.OrderHistoryExtended
 SET [WWI Order ID] = [Order Key];
 GO
 
--- Repeat until log shrinks
+-- Repeat the following until log shrinks. These demos don't require much log space
 CHECKPOINT
 GO
 DBCC SHRINKFILE (N'WWI_Log' , 0, TRUNCATEONLY)
+GO
+SELECT * FROM sys.dm_db_log_space_usage
 GO
