@@ -44,4 +44,6 @@ The [What's New](https://docs.microsoft.com/sql/sql-server/what-s-new-in-sql-ser
 ### SQL Server Troubleshooting Notebooks
 * **[SQL Server Troubleshooting Notebooks](https://github.com/microsoft/tigertoolbox/tree/master/Troubleshooting-Notebooks)** - This repository of notebooks helps you troubleshooting common scenarios that you could encounter with SQL Server including Big Data Clusters.
 
-
+### SQL Assessment API
+* **[SQL Assessment API Quick Start and Tutorial Notebooks](https://github.com/microsoft/sql-server-samples/tree/master/samples/manage/sql-assessment-api/notebooks)** - SQL Assessment API provides a mechanism to evaluate the configuration of your SQL Server for best practices. In this repository, you will find two Azure Data Studio notebooks, one is for quick start in two steps and the other is a comprehensive tutorial that will step you through all the features of SQL Assessment API including customizing the existing rules and creating your own ones.
+ 
