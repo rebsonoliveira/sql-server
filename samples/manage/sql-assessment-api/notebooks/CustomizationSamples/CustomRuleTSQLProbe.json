@@ -18,7 +18,7 @@
 		"itemType": "definition",
         "displayName": "Database files have little free space",
 		"description": "Average available space in all the database files is less than the threshold.",
-        "message": "Database has only @{SPACEAVAILABLEPERC}% of free space. Total space: @{SPACETOTALMB} MB. Free space: @{SPACEAVAILABLEMB} MB",
+        "message": "Database has only @{SPACEAVAILABLEPERC}% of free space (threshold is set to @{threshold}%). Total space: @{SPACETOTALMB} MB. Free space: @{SPACEAVAILABLEMB} MB",
 		"probes": ["DBSpaceAvailable"],
 		"threshold": 25,
         "condition": [
