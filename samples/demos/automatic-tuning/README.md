@@ -13,7 +13,7 @@ This Windows Forms sample application built on .NET Framework 4.6 demonstrates t
 * **Programming Language:** T-SQL, C#
 * **Authors:** Pedro Lopes
 
-![Alt text](./media/auto-tuning.png "WideWorldImporters Report")
+![AAuto Tuning Demo](./media/auto-tuning.PNG "WideWorldImporters Report")
 
 ## Running this sample
 1. Before you can run this sample, you must have the following perquisites:
