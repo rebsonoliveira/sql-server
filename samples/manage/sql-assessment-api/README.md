@@ -16,6 +16,10 @@ This is the default set of rules shipped with SQL Assessment API. Feel free to o
 
 This folder contains two Azure Data Studio notebooks, one is for a quick start with SQL Assessment API and the other is a comprehensive tutorial that will step you through all the features of SQL Assessment API including customizing the existing rules and creating your own ones. The notebooks is written for the powershell kernel in Azure Data Studio, so make sure you use [ADS 1.13.0](https://docs.microsoft.com/sql/azure-data-studio/download) or newer. 
 
+## DefaultRuleset.csv
+
+This is a readable version of the default ruleset so you can familiarize yourself with the existing rules. GitHub renders .csv files as an interactive table and provides convenient search and row filtering.
+
 ## DisablingBuiltInChecks_sample.json
 
 Contains three parts. First shows how you can disable a specified rule by its ID. The second disables all the rules with the "TraceFlag" tag. The last disables to run all rules of the default ruleset (using the DefaultRuleset tag) against databases named "DBName1" and "DBName2".
