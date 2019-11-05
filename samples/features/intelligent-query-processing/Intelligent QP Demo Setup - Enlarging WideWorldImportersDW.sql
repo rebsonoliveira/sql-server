@@ -41,6 +41,12 @@ INCLUDE([Order Key])
 WITH (DATA_COMPRESSION = PAGE);
 GO
 
+CREATE INDEX IX_OrderHistory_CustomerKey
+ON Fact.OrderHistory([Customer Key])
+INCLUDE ([Total Including Tax])
+WITH (DATA_COMPRESSION = PAGE);
+GO
+
 /*
 	Reality check... Starting count should be 231,412
 */
