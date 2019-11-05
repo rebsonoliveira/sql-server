@@ -1,7 +1,7 @@
 # SQL Server 2019 Feature Notebooks
 In this folder, you will find various notebooks that you can use in [Azure Data Studio](https://docs.microsoft.com/sql/azure-data-studio/what-is) to guide you through the new features of SQL Server 2019.
 
-The [What's New](https://docs.microsoft.com/en-us/sql/sql-server/what-s-new-in-sql-server-ver15?view=sql-server-ver15) article covers all the *NEW* features in SQL Server 2019.
+The [What's New](https://docs.microsoft.com/sql/sql-server/what-s-new-in-sql-server-ver15) article covers all the *NEW* features in SQL Server 2019.
 
 ## Notebook List
 ### Intelligent Query Processing
@@ -18,12 +18,16 @@ The [What's New](https://docs.microsoft.com/en-us/sql/sql-server/what-s-new-in-s
 * **[MemoryOptmizedTempDBMetadata-Python.ipynb](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/in-memory-database/memory-optimized-tempdb-metadata/MemoryOptmizedTempDBMetadata-Python.ipynb)** - This is a Python notebook which shows the benefits of Memory Optimized Tempdb metadata.
 
 ### Availability
-* **[Basic_ADR.ipynb](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/accelerated-database-recovery/basic_adr.ipynb)** - In this notebook, you will see how fast rollback can now be with Accelerated Database Recovery. You will also see that a long active transaction does not affect the ability to truncate the transaction log.
+* **[Basic_ADR.ipynb](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/accelerated-database-recovery/basic_adr.ipynb)** - In this notebook, you will see how fast long-running transaction rollback can now be with Accelerated Database Recovery. You will also see that a long active transaction does not affect the ability to truncate the transaction log.
 * **[Recovery_ADR.ipynb](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/accelerated-database-recovery/recovery_adr.ipynb)** - In this example, you will see how Accelerated Database Recovery will speed up recovery.
+
+### SQL Server 2019 Querying 1 TRILLION rows
+* **[OneTrillionRowsWarm.ipynb](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/sql2019notebooks/OneTrillionRowsWarm.ipynb)** - This notebook shows how SQL Server 2019 reads **9 BILLION rows/second** using a 1 trillion row table using a warm cache,
+* **[OneTrillionRowsCold.ipynb](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/sql2019notebooks/OneTrillionRowsCold.ipynb)** - This notebook shows how SQL Server 2019 performs IO at **~24GB/s** using a 1 trillion row table with a cold cache.
 
 ### Big Data, Machine Learning & Data Virtualization
 * **[SQL Server Big Data Clusters](https://github.com/microsoft/sqlworkshops/tree/master/sqlserver2019bigdataclusters/SQL2019BDC/notebooks)** - Part of our **[Ground to Cloud](https://aka.ms/sqlworkshops)** workshop. In this lab, you will use notebooks to experiment with SQL Server Big Data Clusters (BDC), and learn how you can use it to implement large-scale data processing and machine learning.
-* **[Data Virtualization using PolyBase](https://github.com/microsoft/sqlworkshops/tree/master/sql2019workshop/sql2019wks/08_DataVirtualization/sqldatahub)** - The notebooks in this SQL Server 2019 workshop covers how to use SQL Server as a hub for data virtualization for sources like Oracle, SAP HANA, Azure CosmosDB, SQL Server and Azure SQL Database.
+* **[Data Virtualization using PolyBase](https://github.com/microsoft/sqlworkshops/tree/master/sql2019workshop/sql2019wks/08_DataVirtualization/sqldatahub)** - The notebooks in this SQL Server 2019 workshop cover how to use SQL Server as a hub for data virtualization for sources like [Oracle](https://github.com/microsoft/sqlworkshops/tree/master/sql2019lab/04_DataVirtualization/sqldatahub/oracle), [SAP HANA](https://github.com/microsoft/sqlworkshops/tree/master/sql2019lab/04_DataVirtualization/sqldatahub/saphana), [Azure CosmosDB](https://github.com/microsoft/sqlworkshops/tree/master/sql2019lab/04_DataVirtualization/sqldatahub/cosmosdb), [SQL Server](https://github.com/microsoft/sqlworkshops/tree/master/sql2019lab/04_DataVirtualization/sqldatahub/sql2008r2) and [Azure SQL Database](https://github.com/microsoft/sqlworkshops/tree/master/sql2019lab/04_DataVirtualization/sqldatahub/azuredb).
 
 * **[Spark with Big Data Clusters](https://github.com/microsoft/sql-server-samples/tree/master/samples/features/sql-big-data-cluster/spark)** - The notebooks in this folder cover the following scenarios:
   * Data Loading - Transforming CSV to Parquet
@@ -40,4 +44,6 @@ The [What's New](https://docs.microsoft.com/en-us/sql/sql-server/what-s-new-in-s
 ### SQL Server Troubleshooting Notebooks
 * **[SQL Server Troubleshooting Notebooks](https://github.com/microsoft/tigertoolbox/tree/master/Troubleshooting-Notebooks)** - This repository of notebooks helps you troubleshooting common scenarios that you could encounter with SQL Server including Big Data Clusters.
 
-
+### SQL Assessment API
+* **[SQL Assessment API Quick Start and Tutorial Notebooks](https://github.com/microsoft/sql-server-samples/tree/master/samples/manage/sql-assessment-api/notebooks)** - SQL Assessment API provides a mechanism to evaluate the configuration of your SQL Server for best practices. In this repository, you will find two Azure Data Studio notebooks, one is for quick start in two steps and the other is a comprehensive tutorial that will step you through all the features of SQL Assessment API including customizing the existing rules and creating your own ones.
+ 

@@ -12,6 +12,10 @@ Learn how to assess your SQL Server configuration for best practices in 2 simple
 
 This is the default set of rules shipped with SQL Assessment API. Feel free to open issues to have us fix or add rules. Also, we're happy to see your pull requests to this file.
 
+## Notebooks
+
+This folder contains two Azure Data Studio notebooks, one is for a quick start with SQL Assessment API and the other is a comprehensive tutorial that will step you through all the features of SQL Assessment API including customizing the existing rules and creating your own ones. The notebooks is written for the powershell kernel in Azure Data Studio, so make sure you use [ADS 1.13.0](https://docs.microsoft.com/sql/azure-data-studio/download) or newer. 
+
 ## DisablingBuiltInChecks_sample.json
 
 Contains three parts. First shows how you can disable a specified rule by its ID. The second disables all the rules with the "TraceFlag" tag. The last disables to run all rules of the default ruleset (using the DefaultRuleset tag) against databases named "DBName1" and "DBName2".
