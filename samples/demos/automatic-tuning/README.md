@@ -50,4 +50,4 @@ For any feedback on the sample, contact: sqlserversamples@microsoft.com
 The code included in this sample is not intended to be a set of best practices on how to build scalable enterprise grade applications. This is beyond the scope of this quick start sample.
 
 ## More information
-- [Automatic tuning] (https://docs.microsoft.com/sql/relational-databases/automatic-tuning/automatic-tuning)
+- [Automatic tuning](https://docs.microsoft.com/sql/relational-databases/automatic-tuning/automatic-tuning)
