@@ -1,3 +1,5 @@
+![](./media/solutions-microsoft-logo-small.png)
+
 # SQL Server Samples Repository
 This GitHub repository contains code samples that demonstrate how to use Microsoft's SQL products including SQL Server, Azure SQL Database, and Azure SQL Data Warehouse. Each sample includes a README file that explains how to run and use the sample.
 

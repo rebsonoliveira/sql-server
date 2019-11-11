@@ -1,0 +1,22 @@
+{
+  "patch": [
+    {
+      "op": "add",
+      "path": "spec.resources.master.spec.endpoints[0].dnsName",
+      "value": "mastersql.contoso.local"
+    },
+    {
+      "op": "add",
+      "path": "spec.resources.gateway.spec.endpoints[0].dnsName",
+      "value": "knox.contoso.local"
+    },
+    {
+      "op": "add",
+      "path": "spec.resources.appproxy.spec.endpoints[0].dnsName",
+      "value": "app.contoso.local"
+    }
+  ]
+}
+
+
+

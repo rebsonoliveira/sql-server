@@ -1,35 +1,164 @@
 USE master;  
-GO  
--- Enable external scripts execution for R/Python/Java:
-exec sp_configure 'external scripts enabled', 1;
-RECONFIGURE WITH OVERRIDE;
+GO
+-- Create login root that is part of sysadmin. You can then login as root to get the integrated
+-- login experience in Azure Data Studio
+IF SUSER_SID('root') IS NULL
+BEGIN
+	CREATE LOGIN root WITH PASSWORD = '$(SA_PASSWORD)';
+	ALTER SERVER ROLE sysadmin ADD MEMBER root;
+END;
 GO
 
-IF DB_ID('sales') IS NULL
-	RESTORE DATABASE sales  
-		FROM DISK=N'/var/opt/mssql/data/tpcxbb_1gb.bak'
-		WITH 
-		MOVE N'tpcxbb_1gb' TO N'/var/opt/mssql/data/sales.mdf',   
-		MOVE N'tpcxbb_1gb_log' TO N'/var/opt/mssql/data/sales.ldf';  
+-- Enable external scripts execution for R/Python/Java:
+DECLARE @config_option nvarchar(100) = 'external scripts enabled';
+IF NOT EXISTS(SELECT * FROM sys.configurations WHERE name = @config_option and value_in_use = 1)
+BEGIN
+	EXECUTE sp_configure @config_option, 1;
+	RECONFIGURE WITH OVERRIDE;
+END;
+GO
+
+-- Enable option to allow INSERT against external table defined on HADOOP data source
+DECLARE @config_option nvarchar(100) = 'allow polybase export';
+IF NOT EXISTS(SELECT * FROM sys.configurations WHERE name = @config_option and value_in_use = 1)
+BEGIN
+	EXECUTE sp_configure @config_option, 1;
+	RECONFIGURE WITH OVERRIDE;
+END;
+GO
+
+CREATE OR ALTER PROCEDURE #restore_database (@backup_file nvarchar(255), @db_name nvarchar(128))
+AS
+BEGIN
+	DECLARE @restore_filelist_tmpl nvarchar(1000) = N'RESTORE FILELISTONLY FROM  DISK = N''/var/opt/mssql/data/%F''';
+	DECLARE @restore_database_tmpl nvarchar(1000) = N'RESTORE DATABASE [%D] FROM  DISK = N''/var/opt/mssql/data/%F'' WITH FILE = 1';
+	DECLARE @move_tmpl nvarchar(1000) = N', MOVE N''%L'' TO N''/var/opt/mssql/data/%F''';
+	DECLARE @restore_cmd nvarchar(4000), @logical_name nvarchar(128), @filename nvarchar(260), @restore_cur CURSOR;
+	DECLARE @files TABLE (
+		[LogicalName]           NVARCHAR(128),
+		[PhysicalName]          NVARCHAR(260),
+		[Type]                  CHAR(1),
+		[FileGroupName]         NVARCHAR(128),
+		[Size]                  NUMERIC(20,0),
+		[MaxSize]               NUMERIC(20,0),
+		[FileID]                BIGINT,
+		[CreateLSN]             NUMERIC(25,0),
+		[DropLSN]               NUMERIC(25,0),
+		[UniqueID]              UNIQUEIDENTIFIER,
+		[ReadOnlyLSN]           NUMERIC(25,0),
+		[ReadWriteLSN]          NUMERIC(25,0),
+		[BackupSizeInBytes]     BIGINT,
+		[SourceBlockSize]       INT,
+		[FileGroupID]           INT,
+		[LogGroupGUID]          UNIQUEIDENTIFIER,
+		[DifferentialBaseLSN]   NUMERIC(25,0),
+		[DifferentialBaseGUID]  UNIQUEIDENTIFIER,
+		[IsReadOnly]            BIT,
+		[IsPresent]             BIT,
+		[TDEThumbprint]         VARBINARY(32),
+		[SnapshotUrl]			NVARCHAR(260)
+	)
+	SET @restore_cmd = REPLACE(@restore_filelist_tmpl, '%F', @backup_file);
+	INSERT INTO @files
+	EXECUTE(@restore_cmd);
+
+	SET @restore_cmd = REPLACE(REPLACE(@restore_database_tmpl, '%F', @backup_file), '%D', @db_name);
+	SET @restore_cur = CURSOR FAST_FORWARD FOR SELECT LogicalName, REVERSE(LEFT(REVERSE(PhysicalName), CHARINDEX('\', REVERSE(PhysicalName))-1)) FROM @files;
+	OPEN @restore_cur;
+	WHILE(1=1)
+	BEGIN
+		FETCH FROM @restore_cur INTO @logical_name, @filename;
+		IF @@FETCH_STATUS < 0 BREAK;
+
+		SET @restore_cmd += REPLACE(REPLACE(@move_tmpl, '%L', @logical_name), '%F', @filename);
+	END;
+	EXECUTE(@restore_cmd);
+END;
+GO
+
+CREATE OR ALTER PROCEDURE #create_data_sources
+AS
+BEGIN
+	-- Create database master key (required for database scoped credentials used in the samples)
+	CREATE MASTER KEY ENCRYPTION BY PASSWORD = 'sql19bigdatacluster!';
+
+	-- Create default data sources for SQL Big Data Cluster
+	IF SERVERPROPERTY('ProductLevel') <> 'RC1'	
+		CREATE EXTERNAL DATA SOURCE SqlComputePool
+		WITH (LOCATION = 'sqlcomputepool://controller-svc/default');
+
+	CREATE EXTERNAL DATA SOURCE SqlDataPool
+	WITH (LOCATION = 'sqldatapool://controller-svc/default');
+
+	CREATE EXTERNAL DATA SOURCE SqlStoragePool
+	WITH (LOCATION = 'sqlhdfs://controller-svc/default');
+
+	CREATE EXTERNAL DATA SOURCE HadoopData
+	WITH(
+			TYPE=HADOOP,
+			LOCATION='hdfs://nmnode-0-svc:9000/',
+			RESOURCE_MANAGER_LOCATION='sparkhead-svc:8032'
+	);
+END;
+GO
+
+--- Sample dbs:
+DECLARE @sample_dbs CURSOR, @proc nvarchar(255);
+SET @sample_dbs = CURSOR FAST_FORWARD FOR
+					SELECT file_or_directory_name, d.db_name
+					FROM sys.dm_os_enumerate_filesystem('/var/opt/mssql/data', '*.bak') as f
+					CROSS APPLY (VALUES(REPLACE(REPLACE(file_or_directory_name, 'tpcxbb_1gb', 'sales'), '.bak', ''))) as d(db_name)
+					WHERE DB_ID(d.db_name) IS NULL;
+DECLARE @file nvarchar(260), @db_name nvarchar(128);														
+OPEN @sample_dbs;
+WHILE(1=1)
+BEGIN
+	FETCH @sample_dbs INTO @file, @db_name;
+	IF @@FETCH_STATUS < 0 BREAK;
+
+	-- Restore the sample databases:
+	EXECUTE #restore_database @file, @db_name;
+
+	-- Get database name used in restore:
+	SET @db_name = QUOTENAME(@db_name);
+	SET @proc = CONCAT(@db_name, N'.sys.sp_executesql');
+
+	EXECUTE @proc N'#create_data_sources';
+
+	-- Set compatibility level to 150:
+	EXECUTE @proc N'ALTER DATABASE CURRENT SET COMPATIBILITY_LEVEL = 150';
+
+	-- Check for HADR & add database to containedag:
+	IF SERVERPROPERTY('IsHadrEnabled') = 1
+	BEGIN
+		DECLARE @command nvarchar(1000);
+		IF EXISTS(SELECT * FROM sys.databases WHERE name = PARSENAME(@db_name,1) and recovery_model_desc = 'SIMPLE')
+		BEGIN
+			-- Set recovery to full
+			EXECUTE @proc N'ALTER DATABASE CURRENT SET RECOVERY FULL';
+
+			SET @command = CONCAT(N'BACKUP DATABASE ', @db_name, ' TO DISK = ''NUL'';' );
+			EXEC(@command);
+		END;
+
+		-- Add database to AG
+		SET @command = CONCAT(N'ALTER AVAILABILITY GROUP containedag ADD DATABASE ', @db_name);
+		EXEC(@command);
+	END;
+END;
 GO
 
 USE sales;
 GO
--- Create default data sources for SQL Big Data Cluster
-IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'SqlDataPool')
-	CREATE EXTERNAL DATA SOURCE SqlDataPool
-	WITH (LOCATION = 'sqldatapool://service-mssql-controller:8080/datapools/default');
 
-IF NOT EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'SqlStoragePool')
-	CREATE EXTERNAL DATA SOURCE SqlStoragePool
-	WITH (LOCATION = 'sqlhdfs://service-mssql-controller:8080');
-GO
-
--- Create view used for ML services training stored procedure
-CREATE OR ALTER VIEW [dbo].[web_clickstreams_book_clicks]
+-- Create view used for ML services training and scoring stored procedures
+CREATE OR ALTER  VIEW [dbo].[web_clickstreams_book_clicks]
 AS
 	SELECT
-	  q.clicks_in_category,
+        /* There is a bug in TPCx-BB data generator which results in data where all users have purchased books.
+        As a result, we cannot use the data as is for ML training purposes. So we will treat users with 1-5 clicks
+		in the book category as not interested in books. */
+	  CASE WHEN q.clicks_in_category < 6 THEN 0 ELSE q.clicks_in_category END AS clicks_in_category,
 	  CASE WHEN cd.cd_education_status IN ('Advanced Degree', 'College', '4 yr Degree', '2 yr Degree') THEN 1 ELSE 0 END AS college_education,
 	  CASE WHEN cd.cd_gender = 'M' THEN 1 ELSE 0 END AS male,
 	  COALESCE(cd.cd_credit_rating, 'Unknown') as cd_credit_rating,
@@ -64,13 +193,13 @@ AS
 	INNER JOIN customer_demographics as cd ON c.c_current_cdemo_sk = cd.cd_demo_sk;
 GO
 
--- Create table for storing the machine learning models
-IF NOT EXISTS(SELECT * FROM sys.tables WHERE name = 'sales_models')
-	CREATE TABLE sales_models (
-		model_name varchar(100) NOT NULL PRIMARY KEY,
-		model varbinary(max) NOT NULL,
-		model_native varbinary(max) NULL,
-		created_by nvarchar(300) NOT NULL DEFAULT(SYSTEM_USER),
-		create_time datetime2 NOT NULL DEFAULT(SYSDATETIME())
-	);
+-- Create table for storing the ML models
+DROP TABLE IF EXISTS sales_models;
+CREATE TABLE sales_models (
+	model_name varchar(100) PRIMARY KEY,
+	model varbinary(max) NOT NULL,
+	model_native varbinary(max) NULL,
+	created_by nvarchar(500) NOT NULL DEFAULT(SYSTEM_USER),
+	create_time datetime2 NOT NULL DEFAULT(SYSDATETIME())
+);
 GO

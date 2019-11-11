@@ -34,7 +34,7 @@ if ($getResults == FALSE or $rowsAffected == FALSE)
 echo ($rowsAffected. " row(s) updated: " . PHP_EOL);
 sqlsrv_free_stmt($getResults);
 
-//Delte Query
+//Delete Query
 $userToDelete = 'Jared';
 $tsql= "DELETE FROM TestSchema.Employees WHERE Name = ?";
 $params = array($userToDelete);

@@ -9,19 +9,113 @@ $force =  $parameters['force']
 $NSnetworkModels = "Microsoft.Azure.Commands.Network.Models"
 $NScollections = "System.Collections.Generic"
 
-function EnsureLogin () 
-{
-    $context = Get-AzureRmContext
-    If($null -eq $context.Subscription)
-    {
-        Write-Host "Loging in ..."
-        If($null -eq (Login-AzureRmAccount -ErrorAction SilentlyContinue -ErrorVariable Errors))
-        {
-            Write-Host ("Login failed: {0}" -f $Errors[0].Exception.Message) -ForegroundColor Red
+function VerifyPSVersion {
+    Write-Host "Verifying PowerShell version."
+    if ($PSVersionTable.PSEdition -eq "Desktop") {
+        if (($PSVersionTable.PSVersion.Major -ge 6) -or 
+        (($PSVersionTable.PSVersion.Major -eq 5) -and ($PSVersionTable.PSVersion.Minor -ge 1))) {
+            Write-Host "PowerShell version verified." -ForegroundColor Green
+        }
+        else {
+            Write-Host "You need to install PowerShell version 5.1 or heigher." -ForegroundColor Red
+            Break;
+        }
+    }
+    else {
+        if ($PSVersionTable.PSVersion.Major -ge 6) {
+            Write-Host "PowerShell version verified." -ForegroundColor Green
+        }
+        else {
+            Write-Host "You need to install PowerShell version 6.0 or heigher." -ForegroundColor Red
+            Break;
+        }        
+    }
+}
+
+function EnsureAzModule {
+    Write-Host "Checking if Az module is imported."
+    $module = Get-Module Az
+    If ($null -eq $module) {
+        try {
+            Import-Module Az -ErrorAction Stop
+            Write-Host "Module Az imported." -ForegroundColor Green
+        }
+        catch {
+            Install-Module Az -AllowClobber
+            Write-Host "Module Az installed." -ForegroundColor Green
+        }
+    } else {
+        Write-Host "Module Az imported." -ForegroundColor Green        
+    }
+}
+
+function EnsureLogin () {
+    $context = Get-AzContext
+    If ($null -eq $context.Subscription) {
+        Write-Host "Sign-in..."
+        If ($null -eq (Connect-AzAccount -ErrorAction SilentlyContinue -ErrorVariable Errors)) {
+            Write-Host ("Sign-in failed: {0}" -f $Errors[0].Exception.Message) -ForegroundColor Red
             Break
         }
     }
-    Write-Host "User logedin." -ForegroundColor Green
+    Write-Host "Sign-in successful." -ForegroundColor Green
+}
+
+
+function ConvertCidrToUint32Array
+{
+    param(
+        $cidrRange
+    )
+    $cidrRangeParts = $cidrRange.Split([char]".",[char]"/")
+
+    If(
+        ($cidrRangeParts[0] -eq 0) -and `
+        ($cidrRangeParts[1] -eq 0) -and `
+        ($cidrRangeParts[2] -eq 0) -and `
+        ($cidrRangeParts[3] -eq 0) -and `
+        ($cidrRangeParts[4] -eq 0)
+        )
+    {
+        return @(0, [System.Int32]::MaxValue)
+    }
+    
+    $ipnum = ([Convert]::ToUInt32($cidrRangeParts[0]) -shl 24) -bor `
+             ([Convert]::ToUInt32($cidrRangeParts[1]) -shl 16) -bor `
+             ([Convert]::ToUInt32($cidrRangeParts[2]) -shl 8) -bor `
+             [Convert]::ToUInt32($cidrRangeParts[3])
+
+    $maskbits = [System.Convert]::ToInt32($cidrRangeParts[4])
+    $mask = 0xffffffff
+    $mask = $mask -shl (32 -$maskbits)
+    $ipstart = $ipnum -band $mask
+    $ipend = $ipnum -bor ($mask -bxor 0xffffffff)
+    return @($ipstart, $ipend)
+}
+
+function ContainsCidr
+{
+    param(
+        $cidrRangeA, 
+        $cidrRangeB
+    )
+    $a = ConvertCidrToUint32Array $cidrRangeA
+    $b = ConvertCidrToUint32Array $cidrRangeB
+
+    return `
+        (($a[0] -le $b[0]) -and ($a[1] -ge $b[1]))
+}
+
+function HasCidrOverlap
+{
+    param($cidrRangeA, $cidrRangeB)
+    $a = ConvertCidrToUint32Array $cidrRangeA
+    $b = ConvertCidrToUint32Array $cidrRangeB
+
+    return `
+        (($a[0] -ge $b[0]) -and ($a[0] -lt $b[1])) -or `
+        (($a[1] -le $b[1]) -and ($a[1] -gt $b[0])) -or `
+        (($a[0] -le $b[0]) -and ($a[1] -ge $b[1]))
 }
 
 function SelectSubscriptionId {
@@ -29,12 +123,12 @@ function SelectSubscriptionId {
         $subscriptionId
     )
     Write-Host "Selecting subscription '$subscriptionId'."
-    $context = Get-AzureRmContext
+    $context = Get-AzContext
     If($context.Subscription.Id -ne $subscriptionId)
     {
         Try
         {
-            Select-AzureRmSubscription -SubscriptionId $subscriptionId -ErrorAction Stop | Out-null
+            Select-AzSubscription -SubscriptionId $subscriptionId -ErrorAction Stop | Out-null
         }
         Catch
         {
@@ -51,7 +145,7 @@ function LoadVirtualNetwork {
         $virtualNetworkName
     )
         Write-Host("Loading virtual network '{0}' in resource group '{1}'." -f $virtualNetworkName, $resourceGroupName)
-        $virtualNetwork = Get-AzureRmVirtualNetwork -ResourceGroupName $resourceGroupName -Name $virtualNetworkName -ErrorAction SilentlyContinue -WarningAction SilentlyContinue
+        $virtualNetwork = Get-AzVirtualNetwork -ResourceGroupName $resourceGroupName -Name $virtualNetworkName -ErrorAction SilentlyContinue -WarningAction SilentlyContinue
         If($null -ne $virtualNetwork.Id)
         {
             Write-Host "Virtual network loaded." -ForegroundColor Green
@@ -116,25 +210,6 @@ function VerifySubnet {
         }
 }
 
-function VerifyDNSServersList {
-    param (
-        $virtualNetwork
-    )
-        Write-Host("Verifying DNS servers list for virtual network '{0}'." -f $virtualNetwork.Name)
-        If(
-            $virtualNetwork.DhcpOptions.DnsServers.Count -eq 0 -or
-            $virtualNetwork.DhcpOptions.DnsServers.Contains('168.63.129.16')
-          )
-        {
-            Write-Host "Passed Validation - DNS Servers List." -ForegroundColor Green
-            return $true
-        }
-        Else
-        {
-            Write-Host "Warning - DNS servers list should contain 168.63.129.16." -ForegroundColor Yellow
-            return $false
-        }
-}
 
 function VerifyServiceEndpoints {
     param (
@@ -167,7 +242,7 @@ function LoadNetworkSecurityGroup {
             $nsgSegments = ($subnet.NetworkSecurityGroup.Id).Split("/", [System.StringSplitOptions]::RemoveEmptyEntries)        
             $nsgName = $nsgSegments[-1].Trim()
             $nsgResourceGroup = $nsgSegments[3].Trim()
-            $networkSecurityGroup = Get-AzureRmNetworkSecurityGroup -ResourceGroupName $nsgResourceGroup -Name $nsgName
+            $networkSecurityGroup = Get-AzNetworkSecurityGroup -ResourceGroupName $nsgResourceGroup -Name $nsgName
             Write-Host "Network security group security group loaded." -ForegroundColor Green
             return $networkSecurityGroup
         }
@@ -181,79 +256,37 @@ function DefineSecurityRules{
 
         $securityRules = New-Object "$NScollections.List``1[$NSnetworkModels.PSSecurityRule]"
         #begin NSG inbound rules
-        $rule = New-AzureRmNetworkSecurityRuleConfig `
-            -Name prepare-allow-management-inbound-9000 `
-            -Description "Allow inbound TCP traffic on port 9000" `
+        $rule = New-AzNetworkSecurityRuleConfig `
+            -Name prepare-allow-management-inbound `
+            -Description "Allow inbound TCP traffic on ports 9000,9003,1438,1440,1452" `
             -Direction Inbound -Priority 110 -Access Allow -Protocol Tcp `
             -SourceAddressPrefix * -DestinationAddressPrefix * `
-            -SourcePortRange * -DestinationPortRange 9000
+            -SourcePortRange * -DestinationPortRange @(9000, 9003, 1438, 1440, 1452)
         $securityRules.Add($rule)
-        $rule = New-AzureRmNetworkSecurityRuleConfig `
-            -Name prepare-allow-management-inbound-9003 `
-            -Description "Allow inbound TCP traffic on port 9003" `
-            -Direction Inbound -Priority 120 -Access Allow -Protocol Tcp `
-            -SourceAddressPrefix * -DestinationAddressPrefix * `
-            -SourcePortRange * -DestinationPortRange 9003
-        $securityRules.Add($rule)
-        $rule = New-AzureRmNetworkSecurityRuleConfig `
-            -Name prepare-allow-management-inbound-1438 `
-            -Description "Allow inbound TCP traffic on port 1438" `
-            -Direction Inbound -Priority 130 -Access Allow -Protocol Tcp `
-            -SourceAddressPrefix * -DestinationAddressPrefix * `
-            -SourcePortRange * -DestinationPortRange 1438
-        $securityRules.Add($rule)
-        $rule = New-AzureRmNetworkSecurityRuleConfig `
-            -Name prepare-allow-management-inbound-1440 `
-            -Description "Allow inbound TCP traffic on port 1440" `
-            -Direction Inbound -Priority 140 -Access Allow -Protocol Tcp `
-            -SourceAddressPrefix * -DestinationAddressPrefix * `
-            -SourcePortRange * -DestinationPortRange 1440
-        $securityRules.Add($rule)
-        $rule = New-AzureRmNetworkSecurityRuleConfig `
-            -Name prepare-allow-management-inbound-1452 `
-            -Description "Allow inbound TCP traffic on port 1452" `
-            -Direction Inbound -Priority 150 -Access Allow -Protocol Tcp `
-            -SourceAddressPrefix * -DestinationAddressPrefix * `
-            -SourcePortRange * -DestinationPortRange 1452
-        $securityRules.Add($rule)
-        $rule = New-AzureRmNetworkSecurityRuleConfig `
+        $rule = New-AzNetworkSecurityRuleConfig `
             -Name prepare-allow-mi_subnet-inbound `
             -Description "Allow inbound inter-node traffic" `
             -Direction Inbound -Priority 160 -Access Allow -Protocol * `
             -SourceAddressPrefix $subnet.AddressPrefix -DestinationAddressPrefix * `
             -SourcePortRange * -DestinationPortRange *
         $securityRules.Add($rule)
-        $rule = New-AzureRmNetworkSecurityRuleConfig `
+        $rule = New-AzNetworkSecurityRuleConfig `
             -Name prepare-allow-health_probe-inbound `
-            -Description "Allow healt probe inbound" `
+            -Description "Allow health probe inbound" `
             -Direction Inbound -Priority 170 -Access Allow -Protocol * `
             -SourceAddressPrefix AzureLoadBalancer -DestinationAddressPrefix * `
             -SourcePortRange * -DestinationPortRange *
         $securityRules.Add($rule)
         #end NSG inbound rules
         #begin NSG outbound rules
-        $rule = New-AzureRmNetworkSecurityRuleConfig `
-            -Name prepare-allow-management-outbound-80 `
-            -Description "Allow outbound TCP traffic on port 80" `
+        $rule = New-AzNetworkSecurityRuleConfig `
+            -Name prepare-allow-management-outbound `
+            -Description "Allow outbound TCP traffic on port 80,443,12000" `
             -Direction Outbound -Priority 110 -Access Allow -Protocol Tcp `
-            -SourceAddressPrefix * -DestinationAddressPrefix * `
-            -SourcePortRange * -DestinationPortRange 80
+            -SourceAddressPrefix * -DestinationAddressPrefix AzureCloud `
+            -SourcePortRange * -DestinationPortRange @(80, 443, 12000)
         $securityRules.Add($rule)
-        $rule = New-AzureRmNetworkSecurityRuleConfig `
-            -Name prepare-allow-management-outbound-443 `
-            -Description "Allow outbound TCP traffic on port 443" `
-            -Direction Outbound -Priority 120 -Access Allow -Protocol Tcp `
-            -SourceAddressPrefix * -DestinationAddressPrefix * `
-            -SourcePortRange * -DestinationPortRange 443
-        $securityRules.Add($rule)
-        $rule = New-AzureRmNetworkSecurityRuleConfig `
-            -Name prepare-allow-management-outbound-12000 `
-            -Description "Allow outbound TCP traffic on port 12000" `
-            -Direction Outbound -Priority 130 -Access Allow -Protocol Tcp `
-            -SourceAddressPrefix * -DestinationAddressPrefix * `
-            -SourcePortRange * -DestinationPortRange 12000
-        $securityRules.Add($rule)
-        $rule = New-AzureRmNetworkSecurityRuleConfig `
+        $rule = New-AzNetworkSecurityRuleConfig `
             -Name prepare-allow-mi_subnet-outbound `
             -Description "Allow outbound inter-node traffic" `
             -Direction Outbound -Priority 140 -Access Allow -Protocol * `
@@ -263,50 +296,6 @@ function DefineSecurityRules{
         #end NSG outbound rules
 
         return $securityRules
-}
-
-function ConvertCidrToUint32Array
-{
-    param(
-        $cidrRange
-    )
-    $cidrRangeParts = $cidrRange.Split(@(".","/"))
-    $ipnum = ([Convert]::ToUInt32($cidrRangeParts[0]) -shl 24) -bor `
-             ([Convert]::ToUInt32($cidrRangeParts[1]) -shl 16) -bor `
-             ([Convert]::ToUInt32($cidrRangeParts[2]) -shl 8) -bor `
-             [Convert]::ToUInt32($cidrRangeParts[3])
-
-    $maskbits = [System.Convert]::ToInt32($cidrRangeParts[4])
-    $mask = 0xffffffff
-    $mask = $mask -shl (32 -$maskbits)
-    $ipstart = $ipnum -band $mask
-    $ipend = $ipnum -bor ($mask -bxor 0xffffffff)
-    return @($ipstart, $ipend)
-}
-
-function ContainsCidr
-{
-    param(
-        $cidrRangeA, 
-        $cidrRangeB
-    )
-    $a = ConvertCidrToUint32Array $cidrRangeA
-    $b = ConvertCidrToUint32Array $cidrRangeB
-
-    return `
-        (($a[0] -le $b[0]) -and ($a[1] -ge $b[1]))
-}
-
-function HasCidrOverlap
-{
-    param($cidrRangeA, $cidrRangeB)
-    $a = ConvertCidrToUint32Array $cidrRangeA
-    $b = ConvertCidrToUint32Array $cidrRangeB
-
-    return `
-        (($a[0] -ge $b[0]) -and ($a[0] -lt $b[1])) -or `
-        (($a[1] -le $b[1]) -and ($a[1] -gt $b[0])) -or `
-        (($a[0] -le $b[0]) -and ($a[1] -ge $b[1]))
 }
 
 function VerifyAddressPrefix {
@@ -485,7 +474,7 @@ function VerifyNSG {
         $result = @{ 
             nsgSecurityRules = New-Object "$NScollections.List``1[$NSnetworkModels.PSSecurityRule]"
             failedSecurityRules = New-Object "$NScollections.List``1[$NSnetworkModels.PSSecurityRule]"
-            success = $true 
+            success = $false 
         }
         Write-Host("Verifying Network security group for subnet '{0}'."-f $subnet.Name)
         $nsg = LoadNetworkSecurityGroup $subnet
@@ -500,8 +489,8 @@ function VerifyNSG {
                     $result['failedSecurityRules'].Add($securityRule)
                 }
             }
-            $result['success'] = $result['failedSecurityRules'].Count -eq 0
         }
+        $result['success'] = $result['failedSecurityRules'].Count -eq 0
         If($true -eq $result['success'])
         {
             Write-Host "Passed Validation - Network security group." -ForegroundColor Green
@@ -525,11 +514,222 @@ function LoadRouteTable {
             $rtSegments = ($subnet.RouteTable.Id).Split("/", [System.StringSplitOptions]::RemoveEmptyEntries)        
             $rtName = $rtSegments[-1].Trim()
             $rtResourceGroup = $rtSegments[3].Trim()
-            $routeTable = Get-AzureRmRouteTable -ResourceGroupName $rtResourceGroup -Name $rtName
+            $routeTable = Get-AzRouteTable -ResourceGroupName $rtResourceGroup -Name $rtName
             Write-Host "Route table loaded." -ForegroundColor Green
             return $routeTable
         }
         return $null
+}
+
+function RequiredRoutes{
+    param (
+        $subnet
+    )
+    
+    $subnet_to_vnetlocal = New-AzRouteConfig -Name "prepare-subnet-to-vnetlocal" -AddressPrefix $subnet.AddressPrefix[0] -NextHopType VnetLocal
+    $mi_13_64_11_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-13-64-11-nexthop-internet" -AddressPrefix 13.64.0.0/11	-NextHopType Internet
+    $mi_13_96_13_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-13-96-13-nexthop-internet" -AddressPrefix 13.96.0.0/13	-NextHopType Internet
+    $mi_13_104_14_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-13-104-14-nexthop-internet" -AddressPrefix 13.104.0.0/14 -NextHopType Internet
+    $mi_20_8_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-20-8-nexthop-internet" -AddressPrefix 20.0.0.0/8 -NextHopType Internet
+    $mi_23_96_13_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-23-96-13-nexthop-internet" -AddressPrefix 23.96.0.0/13 -NextHopType Internet
+    $mi_40_64_10_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-40-64-10-nexthop-internet" -AddressPrefix 40.64.0.0/10 -NextHopType Internet
+    $mi_42_159_16_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-42-159-16-nexthop-internet" -AddressPrefix 42.159.0.0/16 -NextHopType	Internet
+    $mi_51_8_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-51-8-nexthop-internet" -AddressPrefix 51.0.0.0/8 -NextHopType Internet
+    $mi_52_8_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-52-8-nexthop-internet" -AddressPrefix 52.0.0.0/8 -NextHopType Internet
+    $mi_64_4_18_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-64-4-18-nexthop-internet" -AddressPrefix 64.4.0.0/18 -NextHopType Internet
+    $mi_65_52_14_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-65-52-14-nexthop-internet" -AddressPrefix 65.52.0.0/14 -NextHopType Internet
+    $mi_66_119_144_20_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-66-119-144-20-nexthop-internet" -AddressPrefix 66.119.144.0/20 -NextHopType Internet
+    $mi_70_37_17_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-70-37-17-nexthop-internet" -AddressPrefix 70.37.0.0/17	 -NextHopType Internet
+    $mi_70_37_128_18_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-70-37-128-18-nexthop-internet" -AddressPrefix 70.37.128.0/18 -NextHopType Internet
+    $mi_91_190_216_21_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-91-190-216-21-nexthop-internet" -AddressPrefix 91.190.216.0/21 -NextHopType Internet
+    $mi_94_245_64_18_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-94-245-64-18-nexthop-internet" -AddressPrefix	94.245.64.0/18 -NextHopType	Internet
+    $mi_103_9_8_22_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-103-9-8-22-nexthop-internet" -AddressPrefix 103.9.8.0/22	-NextHopType Internet
+    $mi_103_25_156_22_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-103-25-156-22-nexthop-internet" -AddressPrefix 103.25.156.0/22 -NextHopType Internet
+    $mi_103_36_96_22_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-103-36-96-22-nexthop-internet" -AddressPrefix 103.36.96.0/22 -NextHopType Internet
+    $mi_103_255_140_22_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-103-255-140-22-nexthop-internet" -AddressPrefix 103.255.140.0/22 -NextHopType Internet
+    $mi_104_40_13_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-104-40-13-nexthop-internet" -AddressPrefix 104.40.0.0/13	-NextHopType Internet
+    $mi_104_146_15_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-104-146-15-nexthop-internet" -AddressPrefix 104.146.0.0/15 -NextHopType Internet
+    $mi_104_208_13_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-104-208-13-nexthop-internet" -AddressPrefix 104.208.0.0/13 -NextHopType Internet
+    $mi_111_221_16_20_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-111-221-16-20-nexthop-internet" -AddressPrefix 111.221.16.0/20 -NextHopType Internet
+    $mi_111_221_64_18_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-111-221-64-18-nexthop-internet" -AddressPrefix 111.221.64.0/18 -NextHopType Internet
+    $mi_129_75_16_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-129-75-16-nexthop-internet" -AddressPrefix 129.75.0.0/16 -NextHopType Internet
+    $mi_131_253_16_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-131-253-16-nexthop-internet" -AddressPrefix 131.253.0.0/16 -NextHopType Internet
+    $mi_132_245_16_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-132-245-16-nexthop-internet" -AddressPrefix 132.245.0.0/16 -NextHopType Internet
+    $mi_134_170_16_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-134-170-16-nexthop-internet" -AddressPrefix 134.170.0.0/16 -NextHopType Internet
+    $mi_134_177_16_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-134-177-16-nexthop-internet" -AddressPrefix 134.177.0.0/16 -NextHopType Internet
+    $mi_137_116_15_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-137-116-15-nexthop-internet" -AddressPrefix 137.116.0.0/15 -NextHopType Internet
+    $mi_137_135_16_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-137-135-16-nexthop-internet" -AddressPrefix 137.135.0.0/16 -NextHopType Internet
+    $mi_138_91_16_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-138-91-16-nexthop-internet" -AddressPrefix 138.91.0.0/16 -NextHopType Internet
+    $mi_138_196_16_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-138-196-16-nexthop-internet" -AddressPrefix 138.196.0.0/16 -NextHopType Internet
+    $mi_139_217_16_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-139-217-16-nexthop-internet" -AddressPrefix 139.217.0.0/16 -NextHopType Internet
+    $mi_139_219_16_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-139-219-16-nexthop-internet" -AddressPrefix 139.219.0.0/16 -NextHopType Internet
+    $mi_141_251_16_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-141-251-16-nexthop-internet" -AddressPrefix 141.251.0.0/16 -NextHopType Internet
+    $mi_146_147_16_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-146-147-16-nexthop-internet" -AddressPrefix 146.147.0.0/16 -NextHopType Internet
+    $mi_147_243_16_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-147-243-16-nexthop-internet" -AddressPrefix 147.243.0.0/16 -NextHopType Internet
+    $mi_150_171_16_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-150-171-16-nexthop-internet" -AddressPrefix 150.171.0.0/16 -NextHopType Internet
+    $mi_150_242_48_22_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-150-242-48-22-nexthop-internet" -AddressPrefix 150.242.48.0/22 -NextHopType Internet
+    $mi_157_54_15_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-157-54-15-nexthop-internet" -AddressPrefix 157.54.0.0/15 -NextHopType Internet
+    $mi_157_56_14_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-157-56-14-nexthop-internet" -AddressPrefix 157.56.0.0/14 -NextHopType Internet
+    $mi_157_60_16_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-157-60-16-nexthop-internet" -AddressPrefix 157.60.0.0/16 -NextHopType Internet
+    $mi_167_220_16_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-167-220-16-nexthop-internet" -AddressPrefix 167.220.0.0/16 -NextHopType Internet
+    $mi_168_61_16_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-168-61-16-nexthop-internet" -AddressPrefix 168.61.0.0/16 -NextHopType Internet
+    $mi_168_62_15_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-168-62-15-nexthop-internet" -AddressPrefix 168.62.0.0/15 -NextHopType Internet
+    $mi_191_232_13_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-191-232-13-nexthop-internet" -AddressPrefix 191.232.0.0/13 -NextHopType Internet
+    $mi_192_32_16_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-192-32-16-nexthop-internet" -AddressPrefix 192.32.0.0/16 -NextHopType Internet
+    $mi_192_48_225_24_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-192-48-225-24-nexthop-internet" -AddressPrefix 192.48.225.0/24 -NextHopType Internet
+    $mi_192_84_159_24_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-192-84-159-24-nexthop-internet" -AddressPrefix 192.84.159.0/24 -NextHopType Internet
+    $mi_192_84_160_23_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-192-84-160-23-nexthop-internet" -AddressPrefix 192.84.160.0/23 -NextHopType Internet
+    $mi_192_100_102_24_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-192-100-102-24-nexthop-internet" -AddressPrefix 192.100.102.0/24 -NextHopType Internet
+    $mi_192_100_103_24_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-192-100-103-24-nexthop-internet" -AddressPrefix 192.100.103.0/24 -NextHopType Internet
+    $mi_192_197_157_24_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-192-197-157-24-nexthop-internet" -AddressPrefix 192.197.157.0/24 -NextHopType Internet
+    $mi_193_149_64_19_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-193-149-64-19-nexthop-internet" -AddressPrefix 193.149.64.0/19 -NextHopType Internet
+    $mi_193_221_113_24_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-193-221-113-24-nexthop-internet" -AddressPrefix 193.221.113.0/24 -NextHopType Internet
+    $mi_194_69_96_19_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-194-69-96-19-nexthop-internet" -AddressPrefix 194.69.96.0/19 -NextHopType Internet
+    $mi_194_110_197_24_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-194-110-197-24-nexthop-internet" -AddressPrefix 194.110.197.0/24 -NextHopType Internet
+    $mi_198_105_232_22_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-198-105-232-22-nexthop-internet" -AddressPrefix 198.105.232.0/22 -NextHopType Internet
+    $mi_198_200_130_24_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-198-200-130-24-nexthop-internet" -AddressPrefix 198.200.130.0/24	-NextHopType Internet
+    $mi_198_206_164_24_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-198-206-164-24-nexthop-internet" -AddressPrefix 198.206.164.0/24	-NextHopType Internet
+    $mi_199_60_28_24_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-199-60-28-24-nexthop-internet" -AddressPrefix 199.60.28.0/24 -NextHopType Internet
+    $mi_199_74_210_24_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-199-74-210-24-nexthop-internet" -AddressPrefix 199.74.210.0/24 -NextHopType Internet
+    $mi_199_103_90_23_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-199-103-90-23-nexthop-internet" -AddressPrefix 199.103.90.0/23 -NextHopType Internet
+    $mi_199_103_122_24_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-199-103-122-24-nexthop-internet" -AddressPrefix 199.103.122.0/24 -NextHopType Internet
+    $mi_199_242_32_20_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-199-242-32-20-nexthop-internet" -AddressPrefix 199.242.32.0/20 -NextHopType Internet
+    $mi_199_242_48_21_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-199-242-48-21-nexthop-internet" -AddressPrefix 199.242.48.0/21 -NextHopType Internet
+    $mi_202_89_224_20_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-202-89-224-20-nexthop-internet" -AddressPrefix 202.89.224.0/20 -NextHopType Internet
+    $mi_204_13_120_21_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-204-13-120-21-nexthop-internet" -AddressPrefix 204.13.120.0/21 -NextHopType Internet
+    $mi_204_14_180_22_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-204-14-180-22-nexthop-internet" -AddressPrefix 204.14.180.0/22 -NextHopType Internet
+    $mi_204_79_135_24_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-204-79-135-24-nexthop-internet" -AddressPrefix 204.79.135.0/24 -NextHopType Internet
+    $mi_204_79_179_24_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-204-79-179-24-nexthop-internet" -AddressPrefix 204.79.179.0/24 -NextHopType Internet
+    $mi_204_79_181_24_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-204-79-181-24-nexthop-internet" -AddressPrefix 204.79.181.0/24 -NextHopType Internet
+    $mi_204_79_188_24_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-204-79-188-24-nexthop-internet" -AddressPrefix 204.79.188.0/24 -NextHopType Internet
+    $mi_204_79_195_24_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-204-79-195-24-nexthop-internet" -AddressPrefix 204.79.195.0/24 -NextHopType Internet
+    $mi_204_79_196_23_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-204-79-196-23-nexthop-internet" -AddressPrefix 204.79.196.0/23 -NextHopType Internet
+    $mi_204_79_252_24_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-204-79-252-24-nexthop-internet" -AddressPrefix 204.79.252.0/24 -NextHopType Internet
+    $mi_204_152_18_23_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-204-152-18-23-nexthop-internet" -AddressPrefix 204.152.18.0/23 -NextHopType Internet
+    $mi_204_152_140_23_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-204-152-140-23-nexthop-internet" -AddressPrefix 204.152.140.0/23 -NextHopType Internet
+    $mi_204_231_192_24_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-204-231-192-24-nexthop-internet" -AddressPrefix 204.231.192.0/24 -NextHopType Internet
+    $mi_204_231_194_23_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-204-231-194-23-nexthop-internet" -AddressPrefix 204.231.194.0/23 -NextHopType Internet
+    $mi_204_231_197_24_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-204-231-197-24-nexthop-internet" -AddressPrefix 204.231.197.0/24 -NextHopType Internet
+    $mi_204_231_198_23_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-204-231-198-23-nexthop-internet" -AddressPrefix 204.231.198.0/23 -NextHopType Internet
+    $mi_204_231_200_21_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-204-231-200-21-nexthop-internet" -AddressPrefix 204.231.200.0/21 -NextHopType Internet
+    $mi_204_231_208_20_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-204-231-208-20-nexthop-internet" -AddressPrefix 204.231.208.0/20 -NextHopType Internet
+    $mi_204_231_236_24_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-204-231-236-24-nexthop-internet" -AddressPrefix 204.231.236.0/24 -NextHopType Internet
+    $mi_205_174_224_20_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-205-174-224-20-nexthop-internet" -AddressPrefix 205.174.224.0/20 -NextHopType Internet
+    $mi_206_138_168_21_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-206-138-168-21-nexthop-internet" -AddressPrefix 206.138.168.0/21 -NextHopType Internet
+    $mi_206_191_224_19_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-206-191-224-19-nexthop-internet" -AddressPrefix 206.191.224.0/19 -NextHopType Internet
+    $mi_207_46_16_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-207-46-16-nexthop-internet" -AddressPrefix 207.46.0.0/16	-NextHopType Internet
+    $mi_207_68_128_18_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-207-68-128-18-nexthop-internet" -AddressPrefix 207.68.128.0/18 -NextHopType Internet
+    $mi_208_68_136_21_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-208-68-136-21-nexthop-internet" -AddressPrefix 208.68.136.0/21 -NextHopType Internet
+    $mi_208_76_44_22_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-208-76-44-22-nexthop-internet" -AddressPrefix 208.76.44.0/22 -NextHopType Internet
+    $mi_208_84_21_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-208-84-21-nexthop-internet" -AddressPrefix 208.84.0.0/21 -NextHopType Internet
+    $mi_209_240_192_19_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-209-240-192-19-nexthop-internet" -AddressPrefix 209.240.192.0/19 -NextHopType Internet
+    $mi_213_199_128_18_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-213-199-128-18-nexthop-internet" -AddressPrefix 213.199.128.0/18	-NextHopType Internet
+    $mi_216_32_180_22_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-216-32-180-22-nexthop-internet" -AddressPrefix 216.32.180.0/22 -NextHopType Internet
+    $mi_216_220_208_20_nexthop_internet = New-AzRouteConfig -Name "prepare-mi-216-220-208-20-nexthop-internet" -AddressPrefix 216.220.208.0/20 -NextHopType Internet
+    
+    $requiredRoutes = New-Object "$NScollections.List``1[$NSnetworkModels.PSRoute]"
+    $requiredRoutes.Add($subnet_to_vnetlocal)
+    $requiredRoutes.Add($mi_13_64_11_nexthop_internet)
+    $requiredRoutes.Add($mi_13_96_13_nexthop_internet)
+    $requiredRoutes.Add($mi_13_104_14_nexthop_internet)
+    $requiredRoutes.Add($mi_20_8_nexthop_internet)
+    $requiredRoutes.Add($mi_23_96_13_nexthop_internet)
+    $requiredRoutes.Add($mi_40_64_10_nexthop_internet)
+    $requiredRoutes.Add($mi_42_159_16_nexthop_internet)
+    $requiredRoutes.Add($mi_51_8_nexthop_internet)
+    $requiredRoutes.Add($mi_52_8_nexthop_internet)
+    $requiredRoutes.Add($mi_64_4_18_nexthop_internet)
+    $requiredRoutes.Add($mi_65_52_14_nexthop_internet)
+    $requiredRoutes.Add($mi_66_119_144_20_nexthop_internet)
+    $requiredRoutes.Add($mi_70_37_17_nexthop_internet)
+    $requiredRoutes.Add($mi_70_37_128_18_nexthop_internet)
+    $requiredRoutes.Add($mi_91_190_216_21_nexthop_internet)
+    $requiredRoutes.Add($mi_94_245_64_18_nexthop_internet)
+    $requiredRoutes.Add($mi_103_9_8_22_nexthop_internet)
+    $requiredRoutes.Add($mi_103_25_156_22_nexthop_internet)
+    $requiredRoutes.Add($mi_103_36_96_22_nexthop_internet)
+    $requiredRoutes.Add($mi_103_255_140_22_nexthop_internet)
+    $requiredRoutes.Add($mi_104_40_13_nexthop_internet)
+    $requiredRoutes.Add($mi_104_146_15_nexthop_internet)
+    $requiredRoutes.Add($mi_104_208_13_nexthop_internet)
+    $requiredRoutes.Add($mi_111_221_16_20_nexthop_internet)
+    $requiredRoutes.Add($mi_111_221_64_18_nexthop_internet)
+    $requiredRoutes.Add($mi_129_75_16_nexthop_internet)
+    $requiredRoutes.Add($mi_131_253_16_nexthop_internet)
+    $requiredRoutes.Add($mi_132_245_16_nexthop_internet)
+    $requiredRoutes.Add($mi_134_170_16_nexthop_internet)
+    $requiredRoutes.Add($mi_134_177_16_nexthop_internet)
+    $requiredRoutes.Add($mi_137_116_15_nexthop_internet)
+    $requiredRoutes.Add($mi_137_135_16_nexthop_internet)
+    $requiredRoutes.Add($mi_138_91_16_nexthop_internet)
+    $requiredRoutes.Add($mi_138_196_16_nexthop_internet)
+    $requiredRoutes.Add($mi_139_217_16_nexthop_internet)
+    $requiredRoutes.Add($mi_139_219_16_nexthop_internet)
+    $requiredRoutes.Add($mi_141_251_16_nexthop_internet)
+    $requiredRoutes.Add($mi_146_147_16_nexthop_internet)
+    $requiredRoutes.Add($mi_147_243_16_nexthop_internet)
+    $requiredRoutes.Add($mi_150_171_16_nexthop_internet)
+    $requiredRoutes.Add($mi_150_242_48_22_nexthop_internet)
+    $requiredRoutes.Add($mi_157_54_15_nexthop_internet)
+    $requiredRoutes.Add($mi_157_56_14_nexthop_internet)
+    $requiredRoutes.Add($mi_157_60_16_nexthop_internet)
+    $requiredRoutes.Add($mi_167_220_16_nexthop_internet)
+    $requiredRoutes.Add($mi_168_61_16_nexthop_internet)
+    $requiredRoutes.Add($mi_168_62_15_nexthop_internet)
+    $requiredRoutes.Add($mi_191_232_13_nexthop_internet)
+    $requiredRoutes.Add($mi_192_32_16_nexthop_internet)
+    $requiredRoutes.Add($mi_192_48_225_24_nexthop_internet)
+    $requiredRoutes.Add($mi_192_84_159_24_nexthop_internet)
+    $requiredRoutes.Add($mi_192_84_160_23_nexthop_internet)
+    $requiredRoutes.Add($mi_192_100_102_24_nexthop_internet)
+    $requiredRoutes.Add($mi_192_100_103_24_nexthop_internet)
+    $requiredRoutes.Add($mi_192_197_157_24_nexthop_internet)
+    $requiredRoutes.Add($mi_193_149_64_19_nexthop_internet)
+    $requiredRoutes.Add($mi_193_221_113_24_nexthop_internet)
+    $requiredRoutes.Add($mi_194_69_96_19_nexthop_internet)
+    $requiredRoutes.Add($mi_194_110_197_24_nexthop_internet)
+    $requiredRoutes.Add($mi_198_105_232_22_nexthop_internet)
+    $requiredRoutes.Add($mi_198_200_130_24_nexthop_internet)
+    $requiredRoutes.Add($mi_198_206_164_24_nexthop_internet)
+    $requiredRoutes.Add($mi_199_60_28_24_nexthop_internet)
+    $requiredRoutes.Add($mi_199_74_210_24_nexthop_internet)
+    $requiredRoutes.Add($mi_199_103_90_23_nexthop_internet)
+    $requiredRoutes.Add($mi_199_103_122_24_nexthop_internet)
+    $requiredRoutes.Add($mi_199_242_32_20_nexthop_internet)
+    $requiredRoutes.Add($mi_199_242_48_21_nexthop_internet)
+    $requiredRoutes.Add($mi_202_89_224_20_nexthop_internet)
+    $requiredRoutes.Add($mi_204_13_120_21_nexthop_internet)
+    $requiredRoutes.Add($mi_204_14_180_22_nexthop_internet)
+    $requiredRoutes.Add($mi_204_79_135_24_nexthop_internet)
+    $requiredRoutes.Add($mi_204_79_179_24_nexthop_internet)
+    $requiredRoutes.Add($mi_204_79_181_24_nexthop_internet)
+    $requiredRoutes.Add($mi_204_79_188_24_nexthop_internet)
+    $requiredRoutes.Add($mi_204_79_195_24_nexthop_internet)
+    $requiredRoutes.Add($mi_204_79_196_23_nexthop_internet)
+    $requiredRoutes.Add($mi_204_79_252_24_nexthop_internet)
+    $requiredRoutes.Add($mi_204_152_18_23_nexthop_internet)
+    $requiredRoutes.Add($mi_204_152_140_23_nexthop_internet)
+    $requiredRoutes.Add($mi_204_231_192_24_nexthop_internet)
+    $requiredRoutes.Add($mi_204_231_194_23_nexthop_internet)
+    $requiredRoutes.Add($mi_204_231_197_24_nexthop_internet)
+    $requiredRoutes.Add($mi_204_231_198_23_nexthop_internet)
+    $requiredRoutes.Add($mi_204_231_200_21_nexthop_internet)
+    $requiredRoutes.Add($mi_204_231_208_20_nexthop_internet)
+    $requiredRoutes.Add($mi_204_231_236_24_nexthop_internet)
+    $requiredRoutes.Add($mi_205_174_224_20_nexthop_internet)
+    $requiredRoutes.Add($mi_206_138_168_21_nexthop_internet)
+    $requiredRoutes.Add($mi_206_191_224_19_nexthop_internet)
+    $requiredRoutes.Add($mi_207_46_16_nexthop_internet)
+    $requiredRoutes.Add($mi_207_68_128_18_nexthop_internet)
+    $requiredRoutes.Add($mi_208_68_136_21_nexthop_internet)
+    $requiredRoutes.Add($mi_208_76_44_22_nexthop_internet)
+    $requiredRoutes.Add($mi_208_84_21_nexthop_internet)
+    $requiredRoutes.Add($mi_209_240_192_19_nexthop_internet)
+    $requiredRoutes.Add($mi_213_199_128_18_nexthop_internet)
+    $requiredRoutes.Add($mi_216_32_180_22_nexthop_internet)
+    $requiredRoutes.Add($mi_216_220_208_20_nexthop_internet)
+
+    return $requiredRoutes
 }
 
 function VerifyRouteTable {
@@ -539,58 +739,74 @@ function VerifyRouteTable {
         $result = @{ 
             routes = New-Object "$NScollections.List``1[$NSnetworkModels.PSRoute]"
             hasRouteTable = $false
-            hasDefaultRoute = $false
-            allowsInterNodeTraffic = $true
-            hasNoPublicIPRouting = $true
             success = $false 
         }
-        $defaultRoute = New-AzureRmRouteConfig -Name "prepare-default" -AddressPrefix 0.0.0.0/0 -NextHopType Internet
-        Write-Host("Verifying RT for subnet '{0}'."-f $subnet.Name)
+        
+        Write-Host("Verifying Route table for subnet '{0}'."-f $subnet.Name)
+
+        $requiredRoutes = RequiredRoutes $subnet
         $routeTable = LoadRouteTable $subnet
         If(
             $null -ne $routeTable
           )
         {
             $result['hasRouteTable'] = $true
+            $hasCompatibleRoutes = $true
+
             Write-Host("Verifying Route table '{0}'." -f $routeTable.Name)
 
             ForEach($route in $routeTable.Routes)
             {
-                If(
-                    (HasCidrOverlap -cidrRangeA $route.AddressPrefix -cidrRangeB $subnet.AddressPrefix)  -and `
-                    $route.NextHopType -ne "VnetLocal"
-                  )
+                $isCompatible = $true
+                ForEach($requiredRoute in $requiredRoutes)
                 {
-                    $result['allowsInterNodeTraffic'] = $false;
-                    Continue
+                    If(ContainsCidr -cidrRangeA $requiredRoute.AddressPrefix -cidrRangeB $route.AddressPrefix)
+                    {
+                        $isCompatible = $requiredRoute.NextHopType -eq $route.NextHopType
+                        If(-not $isCompatible)
+                        {
+                            break
+                        }
+                    }
                 }
-
-                If($false -eq (IsPrivateCidr -cidrRange $route.AddressPrefix)  -and `
-                    $route.NextHopType -ne "Internet"
-                  )
+                If($isCompatible)
                 {
-                    $result['hasNoPublicIPRouting'] = $false;
-                    Continue
+                    $result.routes.Add($route)
                 }
-
-                If(
-                    $route.AddressPrefix -eq "0.0.0.0/0" -and `
-                    $route.NextHopType -eq "Internet"
-                  )
+                Else
                 {
-                    $result['hasDefaultRoute'] = $true;
+                    $hasCompatibleRoutes = $false
                 }
-
-                $result['routes'].Add($route)
             }
 
+            ForEach($requiredRoute in $requiredRoutes)
+            {
+                $isContained = $false
+                ForEach($route in $routeTable.Routes)
+                {
+                    If(ContainsCidr -cidrRangeA $route.AddressPrefix -cidrRangeB $requiredRoute.AddressPrefix)
+                    {
+                        $isContained = $requiredRoute.NextHopType -eq $route.NextHopType
+                        If($isContained)
+                        {
+                            break
+                        }
+                    }
+                }
+                If(-not $isContained)
+                {
+                    $result.routes.Add($requiredRoute)
+                    $hasCompatibleRoutes = $false
+                }
+            }
 
-            $result['success'] = $result['hasRouteTable'] -and $result['hasDefaultRoute'] -and $result['allowsInterNodeTraffic'] -and $result['hasNoPublicIPRouting']
-        }
-        
-        If($true -ne $result['hasDefaultRoute'])
+            $result['success'] = $result['hasRouteTable'] -and $hasCompatibleRoutes
+        }       
+        Else
         {
-            $result['routes'].Insert(0, $defaultRoute)
+            $result['success'] = $false
+            $result['hasRouteTable'] = $false
+            $result.routes = $requiredRoutes
         }
 
         If($true -eq $result['success'])
@@ -612,13 +828,6 @@ function VerifyRouteTable {
         return $result
 }
 
-
-function PrepareDNSServerList
-{
-    param($virtualNetwork)
-    Write-Host "Adding 168.63.129.16 to DNS servers list."
-    $virtualNetwork.DhcpOptions.DnsServers += "168.63.129.16"
-}
 
 function PrepareServiceEndpoints
 {
@@ -667,7 +876,7 @@ function PrepareNSG
 
     Try
     {
-        $networkSecurityGroup = New-AzureRmNetworkSecurityGroup -Name $networkSecurityGroupName -ResourceGroupName $virtualNetwork.ResourceGroupName -Location $virtualNetwork.Location -SecurityRules $securityRules
+        $networkSecurityGroup = New-AzNetworkSecurityGroup -Name $networkSecurityGroupName -ResourceGroupName $virtualNetwork.ResourceGroupName -Location $virtualNetwork.Location -SecurityRules $securityRules
     }
     Catch
     {
@@ -691,7 +900,7 @@ function PrepareRouteTable
 
     Try
     {
-        $routeTable = New-AzureRmRouteTable -Name $routeTableName -ResourceGroupName $virtualNetwork.ResourceGroupName -Location $virtualNetwork.Location -Route $routes
+        $routeTable = New-AzRouteTable -Name $routeTableName -ResourceGroupName $virtualNetwork.ResourceGroupName -Location $virtualNetwork.Location -Route $routes
     }
     Catch
     {
@@ -709,7 +918,7 @@ function SetVirtualNetwork
     Write-Host "Applying changes to the virtual network."
     Try
     {
-        Set-AzureRmVirtualNetwork -VirtualNetwork $virtualNetwork -ErrorAction Stop -WarningAction SilentlyContinue | Out-Null
+        Set-AzVirtualNetwork -VirtualNetwork $virtualNetwork -ErrorAction Stop -WarningAction SilentlyContinue | Out-Null
     }
     Catch
     {
@@ -718,6 +927,8 @@ function SetVirtualNetwork
 
 }
 
+VerifyPSVersion
+EnsureAzModule
 EnsureLogin
 SelectSubscriptionId -subscriptionId $subscriptionId
 
@@ -727,24 +938,19 @@ $subnet = LoadVirtualNetworkSubnet -virtualNetwork $virtualNetwork -subnetName $
 Write-Host
 
 VerifySubnet $subnet
-$isOkDnsServersList = VerifyDNSServersList $virtualNetwork
 $isOkServiceEndpoints = VerifyServiceEndpoints $subnet
 $nsgVerificationResult = VerifyNSG $subnet
 $isOkNSG = $nsgVerificationResult['success']
 $routeTableVerificationResult = VerifyRouteTable $subnet
 $hasRouteTable = $routeTableVerificationResult['hasRouteTable']
 $isOkRouteTable = $routeTableVerificationResult['success']
-$isValid = $isOkDnsServersList -and $isOkServiceEndpoints -and $isOkNSG -and $isOkRouteTable
+$isValid = $isOkServiceEndpoints -and $isOkNSG -and $isOkRouteTable
 
 If($isValid -ne $true)
 {
     Write-Host
     Write-Host("----------  To prepare the virtual network subnet for Managed Instance this script will: --------------- ")  -ForegroundColor Yellow    
     Write-Host
-    If($isOkDnsServersList -ne $true)
-    {
-        Write-Host "[DNS] Add IP address 168.63.129.16 at the end of DNS servers list." -ForegroundColor Yellow
-    }    
     If($isOkServiceEndpoints -ne $true)
     {
         Write-Host "[Endpoints] Remove all service endpoints." -ForegroundColor Yellow
@@ -761,26 +967,11 @@ If($isValid -ne $true)
     {
         If($hasRouteTable -eq $true)
         {
-            Write-Host "[UDR] Create a copy of associated Route table." -ForegroundColor Yellow
-
-            If($false -eq $routeTableVerificationResult['hasDefaultRoute'])
-            {
-                Write-Host "[UDR] Add 0.0.0.0/0 -> Internet route." -ForegroundColor Yellow
-            }
-
-            If($false -eq $routeTableVerificationResult['allowsInterNodeTraffic'])
-            {
-                Write-Host "[UDR] Remove route(s) that interfere with intercluster traffic." -ForegroundColor Yellow
-            }
-
-            If($false -eq $routeTableVerificationResult['hasNoPublicIPRouting'])
-            {
-                Write-Host "[UDR] Remove route(s) that interfere with direct traffic to public IP addresses." -ForegroundColor Yellow
-            }
+            Write-Host "[UDR] Create modified copy of associated Route table." -ForegroundColor Yellow
         }
         Else
         {
-            Write-Host "[UDR] Create Route table with single 0.0.0.0/0 -> Internet route." -ForegroundColor Yellow
+            Write-Host "[UDR] Create Route table with required routes." -ForegroundColor Yellow
         }
         Write-Host "[UDR] Associate newly created Route table to subnet." -ForegroundColor Yellow
     }   
@@ -800,11 +991,6 @@ If($isValid -ne $true)
 
     If ($applyChanges) 
     { 
-        If($isOkDnsServersList -ne $true)
-        {
-            PrepareDNSServerList $virtualNetwork
-        }    
-
         If($isOkServiceEndpoints -ne $true)
         {
             PrepareServiceEndpoints $subnet
@@ -839,4 +1025,3 @@ Else
     Write-Host "Subnet is already prepared." -ForegroundColor Green
     Write-Host "https://portal.azure.com/#create/Microsoft.SQLManagedInstance"
 }
-
