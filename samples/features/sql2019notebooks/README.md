@@ -4,6 +4,9 @@ In this folder, you will find various notebooks that you can use in [Azure Data 
 The [What's New](https://docs.microsoft.com/sql/sql-server/what-s-new-in-sql-server-ver15) article covers all the *NEW* features in SQL Server 2019.
 
 ## Notebook List
+### Notebooks
+* **[SampleTSQLNotebook.ipynb](https://github.com/microsoft/azuredatastudio/blob/master/samples/notebookSamples/SampleTSQLNotebook.ipynb)** - This is a great place to start if you're curious about what notebooks are and how you can create your own notebooks in Azure Data Studio.
+
 ### Intelligent Query Processing
 *  **[Scalar_UDF_Inlining.ipynb](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/intelligent-query-processing/notebooks/Scalar_UDF_Inlining.ipynb)** - This notebook demonstrates the benefits of Scalar UDF Inlining along with how to find out which UDFs in your database can be inlined.
 * **[Table_Variable_Deferred_Compilation.ipynb](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/intelligent-query-processing/notebooks/Table_Variable_Deferred_Compilation.ipynb)** - In this notebook, you will learn about Table Variable Deferred Compilation which benefit the performance of queries that use table variables on SQL Server 2019.
