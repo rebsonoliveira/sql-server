@@ -111,7 +111,7 @@ exec curl.XPOST @H = @hkey, @d = @body, @url = @endpoint;
 ## Disclaimers
 The code included in this sample is not intended to be a set of best practices on how to build scalable enterprise grade applications. This is beyond the scope of this sample. 
 
-## Apendix
+## Appendix
 
 In order to quickly test the function in your dev environment, you can create and assembly using the following script that imports assembly from binary format. Recommendation it to take the source code, compile it, and execute the script shown above.
 
