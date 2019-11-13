@@ -65,14 +65,12 @@ RETRY_INTERVAL=5
 #
 export DOCKER_REGISTRY="mcr.microsoft.com"
 export DOCKER_REPOSITORY="mssql/bdc"
-export DOCKER_TAG="2019-RC1-ubuntu"
+export DOCKER_TAG="2019-GDR1-ubuntu-16.04"
 
 # Variables used for azdata cluster creation.
 #
-export CONTROLLER_USERNAME=admin
-export CONTROLLER_PASSWORD=$password
-export MSSQL_SA_PASSWORD=$password
-export KNOX_PASSWORD=$password
+export AZDATA_USERNAME=admin
+export AZDATA_PASSWORD=$password
 export ACCEPT_EULA=yes
 export CLUSTER_NAME=mssql-cluster
 export STORAGE_CLASS=local-storage
@@ -100,7 +98,8 @@ IMAGES=(
         mssql-server
         mssql-server-controller
         mssql-server-data
-        mssql-server-ha
+        mssql-ha-operator
+	mssql-ha-supervisor
         mssql-service-proxy
         mssql-ssis-app-runtime
 )
@@ -144,6 +143,9 @@ usermod --append --groups docker $USER
 #
 apt-get install -q -y python3 
 apt-get install -q -y python3-pip
+apt-get install -y libkrb5-dev
+apt-get install -y libsqlite3-dev
+apt-get install -y unixodbc-dev
 
 pip3 install requests --upgrade
 
@@ -173,9 +175,7 @@ sed -i '/swap/s/^\(.*\)$/#\1/g' /etc/fstab
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
 
 cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
-
 deb http://apt.kubernetes.io/ kubernetes-xenial main
-
 EOF
 
 # Install docker and packages to allow apt to use a repository over HTTPS.
@@ -312,7 +312,6 @@ echo "Kubernetes master setup done."
 
 # Pull docker images of SQL Server big data cluster.
 #
-
 echo ""
 echo "############################################################################"
 echo "Starting to pull docker images..." 
@@ -329,11 +328,11 @@ echo "Docker images pulled."
 #
 echo ""
 echo "############################################################################"
-echo "Starting to deploy big data cluster..." 
+echo "Starting to deploy azdata cluster..." 
 
 # Command to create cluster for single node cluster.
 #
-azdata bdc config init --source kubeadm-dev-test  --target kubeadm-custom -f
+azdata bdc config init --source kubeadm-prod  --target kubeadm-custom -f
 azdata bdc config replace -c kubeadm-custom/control.json -j ".spec.docker.repository=$DOCKER_REPOSITORY"
 azdata bdc config replace -c kubeadm-custom/control.json -j ".spec.docker.registry=$DOCKER_REGISTRY"
 azdata bdc config replace -c kubeadm-custom/control.json -j ".spec.docker.imageTag=$DOCKER_TAG"
@@ -342,10 +341,7 @@ azdata bdc config replace -c kubeadm-custom/control.json -j "spec.storage.data.c
 azdata bdc config replace -c kubeadm-custom/control.json -j "spec.storage.logs.className=$STORAGE_CLASS"
 azdata bdc config patch -c kubeadm-custom/control.json -p $STARTUP_PATH/security-patch.json
 azdata bdc config patch -c kubeadm-custom/bdc.json -p $STARTUP_PATH/endpoint-patch.json
-
-azdata bdc create -c kubeadm-custom --accept-eula $ACCEPT_EULA
-
-echo "Big data cluster created." 
+echo "Big data cluster being created..." 
 
 # Setting context to cluster.
 #
@@ -360,10 +356,5 @@ if [ -d "$HOME/.azdata/" ]; then
         sudo chown -R $(id -u $SUDO_USER):$(id -g $SUDO_USER) $HOME/.azdata/
 fi
 
-if [ -d "$HOME/bdcdeploy/" ]; then
-        sudo chown -R $(id -u $SUDO_USER):$(id -g $SUDO_USER) $HOME/bdcdeploy/
-fi
- 
 echo "alias azdata='$BDCDEPLOY_DIR/$VIRTUALENV_NAME/bin/azdata'" >> $HOME/.bashrc
 }| tee $LOG_FILE
-
