@@ -62,7 +62,7 @@ export CLUSTER_NAME=test
 export PV_COUNT="40"
 
 IMAGES=(
-	      mssql-app-service-proxy
+        mssql-app-service-proxy
         mssql-control-watchdog
         mssql-controller
         mssql-dns
@@ -84,7 +84,7 @@ IMAGES=(
         mssql-server-controller
         mssql-server-data
         mssql-ha-operator
-	      mssql-ha-supervisor
+        mssql-ha-supervisor
         mssql-service-proxy
         mssql-ssis-app-runtime
 )
