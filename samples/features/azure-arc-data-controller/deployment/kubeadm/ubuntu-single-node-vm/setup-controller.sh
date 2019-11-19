@@ -21,7 +21,6 @@ while true; do
     echo "Password mismatch. Please try again."
 done
 
-
 # Name of virtualenv variable used.
 #
 export VIRTUALENV_NAME="aadatacontrollervenv"
@@ -29,8 +28,7 @@ export LOG_FILE="aadatacontroller.log"
 export DEBIAN_FRONTEND=noninteractive
 
 # Requirements file.
-#
-export REQUIREMENTS_LINK="https://aka.ms/aadatacontrollerazdata"
+export AZDATA_PRIVATE_PREVIEW_DEB_PACKAGE="https://aka.ms/aadatacontrollerazdata"
 
 # Kube version.
 #
@@ -44,9 +42,9 @@ RETRY_INTERVAL=5
 
 # Variables for pulling dockers.
 #
-export DOCKER_REGISTRY="mcr.microsoft.com"
-export DOCKER_REPOSITORY="azurearcdatacontroller"
-export DOCKER_TAG="2019-AzureArcDataController-Preview"
+export DOCKER_REGISTRY="azurehybriddata.azurecr.io"
+export DOCKER_REPOSITORY="hybrid"
+export DOCKER_TAG="ignite-11-01"
 
 # Github related contstants
 # TODO Change to master after testing.
@@ -57,41 +55,23 @@ GITHUB_AADATACONTROLLER_BRANCH=tina-private-preview
 #
 export AZDATA_USERNAME=admin
 export AZDATA_PASSWORD=$password
+
+export DOMAIN_SERVICE_ACCOUNT_USERNAME=admin
+export DOMAIN_SERVICE_ACCOUNT_PASSWORD=$password
+
+export CONTROLLER_USERNAME=controlleradmin
+export CONTROLLER_PASSWORD=$password
+
+export MSSQL_SA_PASSWORD=$password
+export KNOX_PASSWORD=$password
+
 export ACCEPT_EULA=yes
-export CLUSTER_NAME=test
+export CLUSTER_NAME=mssql-cluster
 export PV_COUNT="40"
-
-IMAGES=(
-        mssql-app-service-proxy
-        mssql-control-watchdog
-        mssql-controller
-        mssql-dns
-        mssql-hadoop
-        mssql-mleap-serving-runtime
-        mssql-mlserver-py-runtime
-        mssql-mlserver-r-runtime
-        mssql-monitor-collectd
-        mssql-monitor-elasticsearch
-        mssql-monitor-fluentbit
-        mssql-monitor-grafana
-        mssql-monitor-influxdb
-        mssql-monitor-kibana
-        mssql-monitor-telegraf
-        mssql-security-domainctl
-        mssql-security-knox
-        mssql-security-support
-        mssql-server
-        mssql-server-controller
-        mssql-server-data
-        mssql-ha-operator
-        mssql-ha-supervisor
-        mssql-service-proxy
-        mssql-ssis-app-runtime
-)
-
 
 # Make a directory for installing the scripts and logs.
 #
+rm -f -r $AZUREARCDATACONTROLLER_DIR
 mkdir -p $AZUREARCDATACONTROLLER_DIR
 cd $AZUREARCDATACONTROLLER_DIR/
 touch $LOG_FILE
@@ -124,26 +104,34 @@ apt-mark hold docker-ce
 
 usermod --append --groups docker $USER
 
-# Install python3, python3-pip, requests.
+# Prompt for private preview repository username and password provided by Microsoft
 #
-apt-get install -q -y python3 
-apt-get install -q -y python3-pip
-apt-get install -y libkrb5-dev
-apt-get install -y libsqlite3-dev
-apt-get install -y unixodbc-dev
+read -p 'Enter Azure Arc Data Controller repo username provided by Microsoft:' AADC_USERNAME
+read -sp 'Enter Azure Arc Data Controller repo password provided by Microsoft:' AADC_PASSWORD
+export DOCKER_USERNAME=$AADC_USERNAME
+export DOCKER_PASSWORD=$AADC_PASSWORD
 
-pip3 install requests --upgrade
+#TODO: Remove after testing
+export DOCKER_USERNAME=azurehybriddata
+export DOCKER_PASSWORD=lmSIm9BwGt3N6s0/om3qf/15S7R64KsY
 
-# Install and create virtualenv.
+# Create working directory
 #
-pip3 install --upgrade virtualenv
-virtualenv -p python3 $VIRTUALENV_NAME
-source $VIRTUALENV_NAME/bin/activate
+rm -f -r setupscript
+mkdir -p setupscript
+cd setupscript/
 
-# Install azdata cli.
+# Download and install azdata package
 #
-pip3 install -r $REQUIREMENTS_LINK
-echo "Packages installed." 
+# TODO: Uncomment when have actual URL with the azdata package.
+#curl azdata_setup.deb -u $AZDATA_PRIVATE_PREVIEW_DEB_PACKAGE
+cp ./../../azdata-cli_15.0.2100-1_all.deb azdata_setup.deb
+sudo dpkg -i azdata_setup.deb
+cd -
+
+azdata --version
+echo "Azdata has been successfully installed."
+
 
 # Load all pre-requisites for Kubernetes.
 #
@@ -256,7 +244,7 @@ kubectl taint nodes ${master_node} node-role.kubernetes.io/master:NoSchedule-
 
 # Local storage provisioning.
 #
-kubectl apply -f https://raw.githubusercontent.com/microsoft/sql-server-samples/$GITHUB_AADATACONTROLLER_BRANCH/samples/features/azure-arc-data-controller/deployment/kubeadm/ubuntu/local-storage-provisioner.yaml
+kubectl apply -f https://raw.githubusercontent.com/ananto-msft/sql-server-samples/$GITHUB_AADATACONTROLLER_BRANCH/samples/features/azure-arc-data-controller/deployment/kubeadm/ubuntu/local-storage-provisioner.yaml
 
 # Install the software defined network.
 #
@@ -264,7 +252,7 @@ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documen
 
 # helm init
 #
-kubectl apply -f https://raw.githubusercontent.com/microsoft/sql-server-samples/$GITHUB_AADATACONTROLLER_BRANCH/samples/features/azure-arc-data-controller/deployment/kubeadm/ubuntu/rbac.yaml
+kubectl apply -f https://raw.githubusercontent.com/ananto-msft/sql-server-samples/$GITHUB_AADATACONTROLLER_BRANCH/samples/features/azure-arc-data-controller/deployment/kubeadm/ubuntu/rbac.yaml
 
 # Verify that the cluster is ready to be used.
 #
@@ -297,20 +285,6 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/
 kubectl create clusterrolebinding kubernetes-dashboard --clusterrole=cluster-admin --serviceaccount=kube-system:kubernetes-dashboard
 echo "Kubernetes master setup done."
 
-# Pull docker images of Azure Arc Data Controller.
-#
-echo ""
-echo "############################################################################"
-echo "Starting to pull docker images..." 
-echo "Pulling images from repository: " $DOCKER_REGISTRY"/"$DOCKER_REPOSITORY
-
-for image in "${IMAGES[@]}";
-do
-    docker pull $DOCKER_REGISTRY/$DOCKER_REPOSITORY/$image:$DOCKER_TAG
-    echo "Docker image" $image " pulled."
-done
-echo "Docker images pulled." 
-
 # Deploy azdata Azure Arc Data Cotnroller create cluster.
 #
 echo ""
@@ -319,17 +293,7 @@ echo "Starting to deploy azdata cluster..."
 
 # Command to create cluster for single node cluster.
 #
-azdata bdc config init --source tina-kubeadm-dev-test  --target tina-kubeadm-custom -f
-azdata bdc config replace -c kubeadm-custom/control.json -j ".spec.docker.repository=$DOCKER_REPOSITORY"
-azdata bdc config replace -c kubeadm-custom/control.json -j ".spec.docker.registry=$DOCKER_REGISTRY"
-azdata bdc config replace -c kubeadm-custom/control.json -j ".spec.docker.imageTag=$DOCKER_TAG"
-azdata bdc config replace -c kubeadm-custom/dusky.json -j ".spec.docker.repository=$DOCKER_REPOSITORY"
-azdata bdc config replace -c kubeadm-custom/dusky.json -j ".spec.docker.registry=$DOCKER_REGISTRY"
-azdata bdc config replace -c kubeadm-custom/dusky.json -j ".spec.docker.imageTag=$DOCKER_TAG"
-azdata bdc config replace -c kubeadm-custom/evergreen.json -j ".spec.docker.repository=$DOCKER_REPOSITORY"
-azdata bdc config replace -c kubeadm-custom/evergreen.json -j ".spec.docker.registry=$DOCKER_REGISTRY"
-azdata bdc config replace -c kubeadm-custom/evergreen.json -j ".spec.docker.imageTag=$DOCKER_TAG"
-azdata control create -c tina-kubeadm-custom --accept-eula $ACCEPT_EULA
+azdata control create -c tina-kubeadm-dev-test --accept-eula $ACCEPT_EULA
 echo "Azure Arc Data Controller cluster created." 
 
 # Setting context to cluster.
@@ -339,8 +303,7 @@ kubectl config set-context --current --namespace $CLUSTER_NAME
 # Login and get endpoint list for the cluster.
 #
 azdata login -n $CLUSTER_NAME
-# TODO: For Tina do we want to expose any endpoints?
-#azdata bdc endpoint list --output table
+azdata bdc endpoint list --output table
 
 if [ -d "$HOME/.azdata/" ]; then
         sudo chown -R $(id -u $SUDO_USER):$(id -g $SUDO_USER) $HOME/.azdata/

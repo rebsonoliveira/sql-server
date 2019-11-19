@@ -7,7 +7,11 @@ fi
 DIR_PREFIX=$1
 
 kubeadm reset --force
+
+# Clean up azdata-cli package.
+#
 unalias azdata
+sudo dpkg --remove --force-all azdata-cli
 
 systemctl stop kubelet
 rm -rf /var/lib/cni/
@@ -66,7 +70,7 @@ fi
 # Clean the mounted volumes.
 #
 
-for i in $(seq 1 30); do
+for i in $(seq 1 40); do
 
   vol="vol$i"
 
@@ -85,3 +89,11 @@ sudo apt-get purge -y kubernetes-cni --allow-change-held-packages
 sudo apt-get purge -y kube* --allow-change-held-packages
 sudo apt -y autoremove
 sudo rm -rf ~/.kube
+
+# Clean up working folders.
+# 
+export AZUREARCDATACONTROLLER_DIR=aadatacontroller
+if [ -d "$AZUREARCDATACONTROLLER_DIR" ]; then
+    echo "Removing working directory $AZUREARCDATACONTROLLER_DIR."
+    rm -f -r $AZUREARCDATACONTROLLER_DIR
+fi
