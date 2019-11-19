@@ -40,9 +40,8 @@ TIMEOUT=600
 RETRY_INTERVAL=5
 
 # Github related contstants
-# TODO Change to master after testing.
 #
-GITHUB_AADATACONTROLLER_BRANCH=tina-private-preview
+GITHUB_AADATACONTROLLER_BRANCH=master
 
 # Variables used for azdata cluster creation.
 #
@@ -280,7 +279,7 @@ echo "Starting to deploy azdata cluster..."
 
 # Command to create cluster for single node cluster.
 #
-azdata control create -c tina-kubeadm-dev-test --accept-eula $ACCEPT_EULA
+azdata control create -c tina-kubeadm-private-preview --accept-eula $ACCEPT_EULA
 echo "Azure Arc Data Controller cluster created." 
 
 # Setting context to cluster.
