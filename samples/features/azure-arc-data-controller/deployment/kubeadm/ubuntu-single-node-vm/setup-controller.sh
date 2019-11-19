@@ -23,7 +23,6 @@ done
 
 # Name of virtualenv variable used.
 #
-export VIRTUALENV_NAME="aadatacontrollervenv"
 export LOG_FILE="aadatacontroller.log"
 export DEBIAN_FRONTEND=noninteractive
 
@@ -39,12 +38,6 @@ KUBE_VERSION=1.15.0
 #
 TIMEOUT=600
 RETRY_INTERVAL=5
-
-# Variables for pulling dockers.
-#
-export DOCKER_REGISTRY="azurehybriddata.azurecr.io"
-export DOCKER_REPOSITORY="hybrid"
-export DOCKER_TAG="ignite-11-01"
 
 # Github related contstants
 # TODO Change to master after testing.
@@ -111,10 +104,6 @@ read -sp 'Enter Azure Arc Data Controller repo password provided by Microsoft:' 
 export DOCKER_USERNAME=$AADC_USERNAME
 export DOCKER_PASSWORD=$AADC_PASSWORD
 
-#TODO: Remove after testing
-export DOCKER_USERNAME=azurehybriddata
-export DOCKER_PASSWORD=lmSIm9BwGt3N6s0/om3qf/15S7R64KsY
-
 # Create working directory
 #
 rm -f -r setupscript
@@ -123,9 +112,7 @@ cd setupscript/
 
 # Download and install azdata package
 #
-# TODO: Uncomment when have actual URL with the azdata package.
-#curl azdata_setup.deb -u $AZDATA_PRIVATE_PREVIEW_DEB_PACKAGE
-cp ./../../azdata-cli_15.0.2100-1_all.deb azdata_setup.deb
+curl --location $AZDATA_PRIVATE_PREVIEW_DEB_PACKAGE --output azdata_setup.deb
 sudo dpkg -i azdata_setup.deb
 cd -
 
@@ -309,5 +296,5 @@ if [ -d "$HOME/.azdata/" ]; then
         sudo chown -R $(id -u $SUDO_USER):$(id -g $SUDO_USER) $HOME/.azdata/
 fi
 
-echo "alias azdata='$AZUREARCDATACONTROLLER_DIR/$VIRTUALENV_NAME/bin/azdata'" >> $HOME/.bashrc
+echo "Cluster successfully setup. Run 'azdata --help' to see all available options."
 }| tee $LOG_FILE
