@@ -12,8 +12,6 @@ In this example, we will deploy Kubernetes over multiple Linux machines (physica
 
 ### Useful resources
 
-[Deploy SQL Server 2019 big data cluster on Kubernetes](https://docs.microsoft.com/en-us/sql/big-data-cluster/deployment-guidance?view=sqlallproducts-allversions)
-
 [Creating a cluster using kubeadm](https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/)
 
 [Troubleshooting kubeadm](https://kubernetes.io/docs/setup/independent/troubleshooting-kubeadm/)
@@ -25,7 +23,3 @@ In this example, we will deploy Kubernetes over multiple Linux machines (physica
 1. After successful initialization of the Kubernetes master, follow the kubeadm join commands output by the setup script on each agent machine
 1. Execute [setup-volumes-agent.sh](setup-volumes-agent.sh/) script on each agent machine to create volumes for local storage
 1. Execute ***kubectl apply -f local-storage-provisioner.yaml*** against the Kubernetes cluster to create the local storage provisioner. This will create a Storage Class named "local-storage".
-1. Now, you can deploy the SQL Server 2019 big data cluster following instructions [here](https://docs.microsoft.com/en-us/sql/big-data-cluster/deployment-guidance?view=sqlallproducts-allversions). 
-Simply type in "local-storage" twice (once for data, once for logs) when facing the following prompt by azdata :
-
-`Kubernetes Storage Class - Config Path: spec.storage.data.className - Description: This indicates the name of the Kubernetes Storage Class to use. You must pre-provision the storage class and the persistent volumes or you can use a built in storage class if the platform you are deploying provides this capability. - Please provide a value:`
