@@ -31,22 +31,16 @@ export AZDATA_PRIVATE_PREVIEW_DEB_PACKAGE="https://aka.ms/aadatacontrollerazdata
 
 # Kube version.
 #
-KUBE_DPKG_VERSION=1.15.0-00
-KUBE_VERSION=1.15.0
+KUBE_DPKG_VERSION=1.16.3-00
+KUBE_VERSION=1.16.3
 
 # Wait for 5 minutes for the cluster to be ready.
 #
 TIMEOUT=600
 RETRY_INTERVAL=5
 
-# Github related contstants
-#
-GITHUB_AADATACONTROLLER_BRANCH=master
-
 # Variables used for azdata cluster creation.
 #
-export AZDATA_USERNAME=admin
-export AZDATA_PASSWORD=$password
 
 export DOMAIN_SERVICE_ACCOUNT_USERNAME=admin
 export DOMAIN_SERVICE_ACCOUNT_PASSWORD=$password
@@ -58,7 +52,7 @@ export MSSQL_SA_PASSWORD=$password
 export KNOX_PASSWORD=$password
 
 export ACCEPT_EULA=yes
-export CLUSTER_NAME=mssql-cluster
+export CLUSTER_NAME=azure-arc-cluster
 export PV_COUNT="40"
 
 # Make a directory for installing the scripts and logs.
@@ -69,7 +63,7 @@ cd $AZUREARCDATACONTROLLER_DIR/
 touch $LOG_FILE
 
 {
-# Install all necessary packages: kuberenetes, docker, python3, python3-pip, request, azdata.
+# Install all necessary packages: kuberenetes, docker, request, azdata.
 #
 echo ""
 echo "######################################################################################"
@@ -187,9 +181,9 @@ sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1
 sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1
 sudo sysctl -w net.ipv6.conf.lo.disable_ipv6=1
 
-echo net.ipv6.conf.all.disable_ipv6=1 > /etc/sysctl.conf
-echo net.ipv6.conf.default.disable_ipv6=1 > /etc/sysctl.conf
-echo net.ipv6.conf.lo.disable_ipv6=1 > /etc/sysctl.conf
+echo net.ipv6.conf.all.disable_ipv6=1 >> /etc/sysctl.conf
+echo net.ipv6.conf.default.disable_ipv6=1 >> /etc/sysctl.conf
+echo net.ipv6.conf.lo.disable_ipv6=1 >> /etc/sysctl.conf
 
 
 sysctl net.bridge.bridge-nf-call-iptables=1
@@ -230,7 +224,7 @@ kubectl taint nodes ${master_node} node-role.kubernetes.io/master:NoSchedule-
 
 # Local storage provisioning.
 #
-kubectl apply -f https://raw.githubusercontent.com/ananto-msft/sql-server-samples/$GITHUB_AADATACONTROLLER_BRANCH/samples/features/azure-arc-data-controller/deployment/kubeadm/ubuntu/local-storage-provisioner.yaml
+kubectl apply -f https://raw.githubusercontent.com/microsoft/sql-server-samples/master/samples/features/azure-arc/deployment/kubeadm/ubuntu/local-storage-provisioner.yaml
 
 # Install the software defined network.
 #
@@ -238,7 +232,7 @@ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documen
 
 # helm init
 #
-kubectl apply -f https://raw.githubusercontent.com/ananto-msft/sql-server-samples/$GITHUB_AADATACONTROLLER_BRANCH/samples/features/azure-arc-data-controller/deployment/kubeadm/ubuntu/rbac.yaml
+kubectl apply -f https://raw.githubusercontent.com/microsoft/sql-server-samples/master/samples/features/azure-arc/deployment/kubeadm/ubuntu/rbac.yaml
 
 # Verify that the cluster is ready to be used.
 #
@@ -279,7 +273,7 @@ echo "Starting to deploy azdata cluster..."
 
 # Command to create cluster for single node cluster.
 #
-azdata control create -c tina-kubeadm-private-preview --accept-eula $ACCEPT_EULA
+azdata control create -n $CLUSTER_NAME -c azure-arc-data-kubeadm-private-preview --accept-eula $ACCEPT_EULA
 echo "Azure Arc Data Controller cluster created." 
 
 # Setting context to cluster.
@@ -289,7 +283,6 @@ kubectl config set-context --current --namespace $CLUSTER_NAME
 # Login and get endpoint list for the cluster.
 #
 azdata login -n $CLUSTER_NAME
-azdata bdc endpoint list --output table
 
 if [ -d "$HOME/.azdata/" ]; then
         sudo chown -R $(id -u $SUDO_USER):$(id -g $SUDO_USER) $HOME/.azdata/

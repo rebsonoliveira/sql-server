@@ -28,7 +28,6 @@ ip link set flannel.1 down
 iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
 
 rm -rf .azdata/
-rm -rf bdcdeploy/
 
 # Remove mounts.
 #
