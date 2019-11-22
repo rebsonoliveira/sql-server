@@ -25,7 +25,7 @@ sudo systemctl reboot
 1. Download the script on the VM you are planning to use for the deployment
 
 ``` bash
-curl --output setup-controller.sh https://raw.githubusercontent.com/ananto-msft/sql-server-samples/master/samples/features/azure-arc-data-controller/deployment/kubeadm/ubuntu-single-node-vm/setup-controller.sh
+curl --output setup-controller.sh https://raw.githubusercontent.com/microsoft/sql-server-samples/master/samples/features/azure-arc/deployment/kubeadm/ubuntu-single-node-vm/setup-controller.sh
 ```
 
 2. Make the script executable
