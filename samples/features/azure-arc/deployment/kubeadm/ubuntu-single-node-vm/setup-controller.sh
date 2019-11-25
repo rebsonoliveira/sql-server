@@ -41,15 +41,8 @@ RETRY_INTERVAL=5
 
 # Variables used for azdata cluster creation.
 #
-
-export DOMAIN_SERVICE_ACCOUNT_USERNAME=admin
-export DOMAIN_SERVICE_ACCOUNT_PASSWORD=$password
-
 export CONTROLLER_USERNAME=controlleradmin
 export CONTROLLER_PASSWORD=$password
-
-export MSSQL_SA_PASSWORD=$password
-export KNOX_PASSWORD=$password
 
 export ACCEPT_EULA=yes
 export CLUSTER_NAME=azure-arc-system
