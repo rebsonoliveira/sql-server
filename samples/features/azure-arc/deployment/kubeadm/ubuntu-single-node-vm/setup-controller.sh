@@ -52,7 +52,7 @@ export MSSQL_SA_PASSWORD=$password
 export KNOX_PASSWORD=$password
 
 export ACCEPT_EULA=yes
-export CLUSTER_NAME=azure-arc-cluster
+export CLUSTER_NAME=azure-arc-system
 export PV_COUNT="40"
 
 # Make a directory for installing the scripts and logs.
