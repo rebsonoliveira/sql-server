@@ -27,7 +27,8 @@ export LOG_FILE="aadatacontroller.log"
 export DEBIAN_FRONTEND=noninteractive
 
 # Requirements file.
-export AZDATA_PRIVATE_PREVIEW_DEB_PACKAGE="https://aka.ms/aadatacontrollerazdata"
+export OSCODENAME=$(lsb_release -cs)
+export AZDATA_PRIVATE_PREVIEW_DEB_PACKAGE="https://aka.ms/azdata-"$OSCODENAME
 
 # Kube version.
 #
@@ -98,6 +99,8 @@ cd setupscript/
 
 # Download and install azdata package
 #
+echo ""
+echo "Downloading azdata installer from" $AZDATA_PRIVATE_PREVIEW_DEB_PACKAGE 
 curl --location $AZDATA_PRIVATE_PREVIEW_DEB_PACKAGE --output azdata_setup.deb
 sudo dpkg -i azdata_setup.deb
 cd -
