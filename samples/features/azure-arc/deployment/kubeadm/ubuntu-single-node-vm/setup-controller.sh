@@ -1,11 +1,6 @@
 #!/bin/bash
 set -Eeuo pipefail
 
-if [ "$EUID" -ne 0 ]
-  then echo "Please run as root"
-  exit
-fi
-
 # This is a script to create single-node Kubernetes cluster and deploy Azure Arc Data Controller on it.
 #
 export AZUREARCDATACONTROLLER_DIR=aadatacontroller
@@ -65,9 +60,9 @@ echo "Starting installing packages..."
 
 # Install docker.
 #
-apt-get update -q
+sudo apt-get update -q
 
-apt --yes install \
+sudo apt --yes install \
     software-properties-common \
     apt-transport-https \
     ca-certificates \
@@ -75,14 +70,14 @@ apt --yes install \
 
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
-add-apt-repository \
+sudo add-apt-repository \
     "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 
-apt update -q
-apt-get install -q --yes docker-ce=18.06.2~ce~3-0~ubuntu --allow-downgrades
-apt-mark hold docker-ce
+sudo apt update -q
+sudo apt-get install -q --yes docker-ce=18.06.2~ce~3-0~ubuntu --allow-downgrades
+sudo apt-mark hold docker-ce
 
-usermod --append --groups docker $USER
+sudo usermod --append --groups docker $USER
 
 # Prompt for private preview repository username and password provided by Microsoft
 #
@@ -97,6 +92,10 @@ rm -f -r setupscript
 mkdir -p setupscript
 cd setupscript/
 
+# Download and install azdata prerequisites
+#
+sudo apt install -y libodbc1 odbcinst odbcinst1debian2 unixodbc
+
 # Download and install azdata package
 #
 echo ""
@@ -108,6 +107,9 @@ cd -
 azdata --version
 echo "Azdata has been successfully installed."
 
+# Install Azure CLI
+#
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
 # Load all pre-requisites for Kubernetes.
 #
@@ -116,14 +118,14 @@ echo "Starting to setup pre-requisites for kubernetes..."
 
 # Setup the kubernetes preprequisites.
 #
-echo $(hostname -i) $(hostname) >> /etc/hosts
+echo $(hostname -i) $(hostname) >> sudo tee -a /etc/hosts
 
 swapoff -a
-sed -i '/swap/s/^\(.*\)$/#\1/g' /etc/fstab
+sudo sed -i '/swap/s/^\(.*\)$/#\1/g' /etc/fstab
 
-curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
 
-cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
+cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
 
 deb http://apt.kubernetes.io/ kubernetes-xenial main
 
@@ -131,17 +133,17 @@ EOF
 
 # Install docker and packages to allow apt to use a repository over HTTPS.
 #
-apt-get update -q
+sudo apt-get update -q
 
-apt-get install -q -y ebtables ethtool
+sudo apt-get install -q -y ebtables ethtool
 
 #apt-get install -y docker.ce
 
-apt-get install -q -y apt-transport-https
+sudo apt-get install -q -y apt-transport-https
 
 # Setup daemon.
 #
-cat > /etc/docker/daemon.json <<EOF
+sudo tee /etc/docker/daemon.json <<EOF
 {
   "exec-opts": ["native.cgroupdriver=systemd"],
   "log-driver": "json-file",
@@ -152,19 +154,19 @@ cat > /etc/docker/daemon.json <<EOF
 }
 EOF
 
-mkdir -p /etc/systemd/system/docker.service.d
+sudo mkdir -p /etc/systemd/system/docker.service.d
 
 # Restart docker.
 #
-systemctl daemon-reload
-systemctl restart docker
+sudo systemctl daemon-reload
+sudo systemctl restart docker
 
-apt-get install -q -y kubelet=$KUBE_DPKG_VERSION kubeadm=$KUBE_DPKG_VERSION kubectl=$KUBE_DPKG_VERSION
+sudo apt-get install -q -y kubelet=$KUBE_DPKG_VERSION kubeadm=$KUBE_DPKG_VERSION kubectl=$KUBE_DPKG_VERSION
 
 # Holding the version of kube packages.
 #
-apt-mark hold kubelet kubeadm kubectl
-curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash
+sudo apt-mark hold kubelet kubeadm kubectl
+curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | sudo bash
 
 . /etc/os-release
 if [ "$UBUNTU_CODENAME" == "bionic" ]; then
@@ -177,12 +179,12 @@ sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1
 sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1
 sudo sysctl -w net.ipv6.conf.lo.disable_ipv6=1
 
-echo net.ipv6.conf.all.disable_ipv6=1 >> /etc/sysctl.conf
-echo net.ipv6.conf.default.disable_ipv6=1 >> /etc/sysctl.conf
-echo net.ipv6.conf.lo.disable_ipv6=1 >> /etc/sysctl.conf
+echo net.ipv6.conf.all.disable_ipv6=1 | sudo tee -a /etc/sysctl.conf
+echo net.ipv6.conf.default.disable_ipv6=1 | sudo tee -a /etc/sysctl.conf
+echo net.ipv6.conf.lo.disable_ipv6=1 | sudo tee -a /etc/sysctl.conf
 
 
-sysctl net.bridge.bridge-nf-call-iptables=1
+sudo sysctl net.bridge.bridge-nf-call-iptables=1
 
 # Setting up the persistent volumes for the kubernetes.
 #
@@ -190,9 +192,9 @@ for i in $(seq 1 $PV_COUNT); do
 
   vol="vol$i"
 
-  mkdir -p /mnt/local-storage/$vol
+  sudo mkdir -p /mnt/local-storage/$vol
 
-  mount --bind /mnt/local-storage/$vol /mnt/local-storage/$vol
+  sudo mount --bind /mnt/local-storage/$vol /mnt/local-storage/$vol
 
 done
 echo "Kubernetes pre-requisites have been completed." 
@@ -208,10 +210,9 @@ echo "Starting to setup Kubernetes master..."
 sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --kubernetes-version=$KUBE_VERSION
 
 mkdir -p $HOME/.kube
-mkdir -p /home/$SUDO_USER/.kube
 
 sudo cp -f /etc/kubernetes/admin.conf $HOME/.kube/config
-sudo chown $(id -u $SUDO_USER):$(id -g $SUDO_USER) $HOME/.kube/config
+sudo chown $(id -u $USER):$(id -g $USER) $HOME/.kube/config
 
 # To enable a single node cluster remove the taint that limits the first node to master only service.
 #
@@ -279,10 +280,6 @@ kubectl config set-context --current --namespace $CLUSTER_NAME
 # Login and get endpoint list for the cluster.
 #
 azdata login -n $CLUSTER_NAME
-
-if [ -d "$HOME/.azdata/" ]; then
-        sudo chown -R $(id -u $SUDO_USER):$(id -g $SUDO_USER) $HOME/.azdata/
-fi
 
 echo "Cluster successfully setup. Run 'azdata --help' to see all available options."
 }| tee $LOG_FILE
