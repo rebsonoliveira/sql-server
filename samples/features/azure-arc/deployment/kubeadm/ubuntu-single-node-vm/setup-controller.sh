@@ -1,20 +1,46 @@
 #!/bin/bash
+
+# Get controller username and password as input. It is used as default for the controller.
+#
+if [ -z "$CONTROLLER_USERNAME" ]
+then
+    read -p "Create Username for Azure Arc Data Controller: " username
+    echo
+    export CONTROLLER_USERNAME=$username
+fi
+if [ -z "$CONTROLLER_PASSWORD" ]
+then
+    while true; do
+        read -s -p "Create Password for Azure Arc Data Controller: " password
+        echo
+        read -s -p "Confirm your Password: " password2
+        echo
+        [ "$password" = "$password2" ] && break
+        echo "Password mismatch. Please try again."
+    done
+    export CONTROLLER_PASSWORD=$password
+fi
+
+# Prompt for private preview repository username and password provided by Microsoft
+#
+if [ -z "$DOCKER_USERNAME" ]
+then
+    read -p 'Enter Azure Arc Data Controller repo username provided by Microsoft:' AADC_USERNAME
+    echo
+    export DOCKER_USERNAME=$AADC_USERNAME
+fi
+if [ -z "$DOCKER_PASSWORD" ]
+then
+    read -sp 'Enter Azure Arc Data Controller repo password provided by Microsoft:' AADC_PASSWORD
+    echo
+    export DOCKER_PASSWORD=$AADC_PASSWORD
+fi
+
 set -Eeuo pipefail
 
 # This is a script to create single-node Kubernetes cluster and deploy Azure Arc Data Controller on it.
 #
 export AZUREARCDATACONTROLLER_DIR=aadatacontroller
-
-# Get password as input. It is used as default for controller, SQL Server Master instance (sa account).
-#
-while true; do
-    read -s -p "Create Password for Azure Arc Data Controller: " password
-    echo
-    read -s -p "Confirm your Password: " password2
-    echo
-    [ "$password" = "$password2" ] && break
-    echo "Password mismatch. Please try again."
-done
 
 # Name of virtualenv variable used.
 #
@@ -37,9 +63,6 @@ RETRY_INTERVAL=5
 
 # Variables used for azdata cluster creation.
 #
-export CONTROLLER_USERNAME=controlleradmin
-export CONTROLLER_PASSWORD=$password
-
 export ACCEPT_EULA=yes
 export CLUSTER_NAME=azure-arc-system
 export PV_COUNT="40"
@@ -78,13 +101,6 @@ sudo apt-get install -q --yes docker-ce=18.06.2~ce~3-0~ubuntu --allow-downgrades
 sudo apt-mark hold docker-ce
 
 sudo usermod --append --groups docker $USER
-
-# Prompt for private preview repository username and password provided by Microsoft
-#
-read -p 'Enter Azure Arc Data Controller repo username provided by Microsoft:' AADC_USERNAME
-read -sp 'Enter Azure Arc Data Controller repo password provided by Microsoft:' AADC_PASSWORD
-export DOCKER_USERNAME=$AADC_USERNAME
-export DOCKER_PASSWORD=$AADC_PASSWORD
 
 # Create working directory
 #
