@@ -32,6 +32,7 @@ The [What's New](https://docs.microsoft.com/sql/sql-server/what-s-new-in-sql-ser
 * **[Storage.ipynb](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/unicode/notebooks/Storage.ipynb)** - In this notebook, you will see how to the storage footprint differences are expressive between Unicode encoded in UTF-8 and UTF-16.
 * **[Perf_Latin.ipynb](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/unicode/notebooks/Perf_Latin.ipynb)** - In this notebook, you will see the performance differences of using string data encoded in UTF-8 and UTF-16 using Latin data.
 * **[Perf_Non-Latin.ipynb](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/unicode/notebooks/Perf_Non-Latin.ipynb)** - In this notebook, you will see the performance differences of using string data encoded in UTF-8 and UTF-16 using non-Latin data.
+* **[CheckStorageReq_CurrDB.ipynb](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/unicode/notebooks/CheckStorageReq_CurrDB.ipynb)** - In this notebook, you will be able to determine the UTF8 storage requirements for all tables and string columns in the database in scope.
 
 ### SQL Server 2019 Querying 1 TRILLION rows
 * **[OneTrillionRowsWarm.ipynb](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/sql2019notebooks/OneTrillionRowsWarm.ipynb)** - This notebook shows how SQL Server 2019 reads **9 BILLION rows/second** using a 1 trillion row table using a warm cache,
