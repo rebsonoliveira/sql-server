@@ -41,7 +41,7 @@ chmod +x setup-controller.sh
 ```
 
 When prompted, provide your input for the password that will be used for all external endpoints: controller, SQL Server master and gateway. The password should be sufficiently complex based on existing rules for SQL Server password.
-In case the setup-controller.sh fails and does not complete successfully, you should first cleanup your enviroment using [cleanup-controller.sh](cleanup-controller.sh/) before redoing the deployment.
+In case the setup-controller.sh fails and does not complete successfully, you should cleanup your enviroment using [cleanup-controller.sh](cleanup-controller.sh/) before retrying the deployment.
 
 ## Cleanup
 
