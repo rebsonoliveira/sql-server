@@ -2,7 +2,7 @@
 
 DIR_PREFIX=$1
 
-kubeadm reset --force
+sudo kubeadm reset --force
 
 # Clean up azdata-cli package.
 #
