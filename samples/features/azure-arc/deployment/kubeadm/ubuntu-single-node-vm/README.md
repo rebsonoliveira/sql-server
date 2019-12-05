@@ -48,7 +48,7 @@ In case the setup-controller.sh fails and does not complete successfully, you sh
 1. The [cleanup-controller.sh](cleanup-controller.sh/) script is provided as convenience to reset the environment in case of errors. However, we recommend that you use a virtual machine for testing purposes and use the snapshot capability in your hyper-visor to rollback the virtual machine to a clean state.
 
 ``` bash
-curl --output setup-controller.sh https://raw.githubusercontent.com/ananto-msft/sql-server-samples/master/samples/features/azure-arc/deployment/kubeadm/ubuntu-single-node-vm/cleanup-controller.sh
+curl --output cleanup-controller.sh https://raw.githubusercontent.com/ananto-msft/sql-server-samples/master/samples/features/azure-arc/deployment/kubeadm/ubuntu-single-node-vm/cleanup-controller.sh
 ```
 
 2. Make the script executable
