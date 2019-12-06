@@ -1,25 +1,46 @@
 #!/bin/bash
-set -Eeuo pipefail
 
-if [ "$EUID" -ne 0 ]
-  then echo "Please run as root"
-  exit
+# Get controller username and password as input. It is used as default for the controller.
+#
+if [ -z "$CONTROLLER_USERNAME" ]
+then
+    read -p "Create Username for Azure Arc Data Controller: " username
+    echo
+    export CONTROLLER_USERNAME=$username
 fi
+if [ -z "$CONTROLLER_PASSWORD" ]
+then
+    while true; do
+        read -s -p "Create Password for Azure Arc Data Controller: " password
+        echo
+        read -s -p "Confirm your Password: " password2
+        echo
+        [ "$password" = "$password2" ] && break
+        echo "Password mismatch. Please try again."
+    done
+    export CONTROLLER_PASSWORD=$password
+fi
+
+# Prompt for private preview repository username and password provided by Microsoft
+#
+if [ -z "$DOCKER_USERNAME" ]
+then
+    read -p 'Enter Azure Arc Data Controller repo username provided by Microsoft:' AADC_USERNAME
+    echo
+    export DOCKER_USERNAME=$AADC_USERNAME
+fi
+if [ -z "$DOCKER_PASSWORD" ]
+then
+    read -sp 'Enter Azure Arc Data Controller repo password provided by Microsoft:' AADC_PASSWORD
+    echo
+    export DOCKER_PASSWORD=$AADC_PASSWORD
+fi
+
+set -Eeuo pipefail
 
 # This is a script to create single-node Kubernetes cluster and deploy Azure Arc Data Controller on it.
 #
 export AZUREARCDATACONTROLLER_DIR=aadatacontroller
-
-# Get password as input. It is used as default for controller, SQL Server Master instance (sa account).
-#
-while true; do
-    read -s -p "Create Password for Azure Arc Data Controller: " password
-    echo
-    read -s -p "Confirm your Password: " password2
-    echo
-    [ "$password" = "$password2" ] && break
-    echo "Password mismatch. Please try again."
-done
 
 # Name of virtualenv variable used.
 #
@@ -27,7 +48,8 @@ export LOG_FILE="aadatacontroller.log"
 export DEBIAN_FRONTEND=noninteractive
 
 # Requirements file.
-export AZDATA_PRIVATE_PREVIEW_DEB_PACKAGE="https://aka.ms/aadatacontrollerazdata"
+export OSCODENAME=$(lsb_release -cs)
+export AZDATA_PRIVATE_PREVIEW_DEB_PACKAGE="https://aka.ms/azdata-"$OSCODENAME
 
 # Kube version.
 #
@@ -41,9 +63,6 @@ RETRY_INTERVAL=5
 
 # Variables used for azdata cluster creation.
 #
-export CONTROLLER_USERNAME=controlleradmin
-export CONTROLLER_PASSWORD=$password
-
 export ACCEPT_EULA=yes
 export CLUSTER_NAME=azure-arc-system
 export PV_COUNT="40"
@@ -64,9 +83,9 @@ echo "Starting installing packages..."
 
 # Install docker.
 #
-apt-get update -q
+sudo apt-get update -q
 
-apt --yes install \
+sudo apt --yes install \
     software-properties-common \
     apt-transport-https \
     ca-certificates \
@@ -74,21 +93,14 @@ apt --yes install \
 
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
-add-apt-repository \
+sudo add-apt-repository \
     "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 
-apt update -q
-apt-get install -q --yes docker-ce=18.06.2~ce~3-0~ubuntu --allow-downgrades
-apt-mark hold docker-ce
+sudo apt update -q
+sudo apt-get install -q --yes docker-ce=18.06.2~ce~3-0~ubuntu --allow-downgrades
+sudo apt-mark hold docker-ce
 
-usermod --append --groups docker $USER
-
-# Prompt for private preview repository username and password provided by Microsoft
-#
-read -p 'Enter Azure Arc Data Controller repo username provided by Microsoft:' AADC_USERNAME
-read -sp 'Enter Azure Arc Data Controller repo password provided by Microsoft:' AADC_PASSWORD
-export DOCKER_USERNAME=$AADC_USERNAME
-export DOCKER_PASSWORD=$AADC_PASSWORD
+sudo usermod --append --groups docker $USER
 
 # Create working directory
 #
@@ -96,8 +108,14 @@ rm -f -r setupscript
 mkdir -p setupscript
 cd setupscript/
 
+# Download and install azdata prerequisites
+#
+sudo apt install -y libodbc1 odbcinst odbcinst1debian2 unixodbc
+
 # Download and install azdata package
 #
+echo ""
+echo "Downloading azdata installer from" $AZDATA_PRIVATE_PREVIEW_DEB_PACKAGE 
 curl --location $AZDATA_PRIVATE_PREVIEW_DEB_PACKAGE --output azdata_setup.deb
 sudo dpkg -i azdata_setup.deb
 cd -
@@ -105,6 +123,9 @@ cd -
 azdata --version
 echo "Azdata has been successfully installed."
 
+# Install Azure CLI
+#
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
 # Load all pre-requisites for Kubernetes.
 #
@@ -113,14 +134,14 @@ echo "Starting to setup pre-requisites for kubernetes..."
 
 # Setup the kubernetes preprequisites.
 #
-echo $(hostname -i) $(hostname) >> /etc/hosts
+echo $(hostname -i) $(hostname) >> sudo tee -a /etc/hosts
 
 swapoff -a
-sed -i '/swap/s/^\(.*\)$/#\1/g' /etc/fstab
+sudo sed -i '/swap/s/^\(.*\)$/#\1/g' /etc/fstab
 
-curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
 
-cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
+cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
 
 deb http://apt.kubernetes.io/ kubernetes-xenial main
 
@@ -128,17 +149,17 @@ EOF
 
 # Install docker and packages to allow apt to use a repository over HTTPS.
 #
-apt-get update -q
+sudo apt-get update -q
 
-apt-get install -q -y ebtables ethtool
+sudo apt-get install -q -y ebtables ethtool
 
 #apt-get install -y docker.ce
 
-apt-get install -q -y apt-transport-https
+sudo apt-get install -q -y apt-transport-https
 
 # Setup daemon.
 #
-cat > /etc/docker/daemon.json <<EOF
+sudo tee /etc/docker/daemon.json <<EOF
 {
   "exec-opts": ["native.cgroupdriver=systemd"],
   "log-driver": "json-file",
@@ -149,19 +170,19 @@ cat > /etc/docker/daemon.json <<EOF
 }
 EOF
 
-mkdir -p /etc/systemd/system/docker.service.d
+sudo mkdir -p /etc/systemd/system/docker.service.d
 
 # Restart docker.
 #
-systemctl daemon-reload
-systemctl restart docker
+sudo systemctl daemon-reload
+sudo systemctl restart docker
 
-apt-get install -q -y kubelet=$KUBE_DPKG_VERSION kubeadm=$KUBE_DPKG_VERSION kubectl=$KUBE_DPKG_VERSION
+sudo apt-get install -q -y kubelet=$KUBE_DPKG_VERSION kubeadm=$KUBE_DPKG_VERSION kubectl=$KUBE_DPKG_VERSION
 
 # Holding the version of kube packages.
 #
-apt-mark hold kubelet kubeadm kubectl
-curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash
+sudo apt-mark hold kubelet kubeadm kubectl
+curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | sudo bash
 
 . /etc/os-release
 if [ "$UBUNTU_CODENAME" == "bionic" ]; then
@@ -174,12 +195,12 @@ sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1
 sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1
 sudo sysctl -w net.ipv6.conf.lo.disable_ipv6=1
 
-echo net.ipv6.conf.all.disable_ipv6=1 >> /etc/sysctl.conf
-echo net.ipv6.conf.default.disable_ipv6=1 >> /etc/sysctl.conf
-echo net.ipv6.conf.lo.disable_ipv6=1 >> /etc/sysctl.conf
+echo net.ipv6.conf.all.disable_ipv6=1 | sudo tee -a /etc/sysctl.conf
+echo net.ipv6.conf.default.disable_ipv6=1 | sudo tee -a /etc/sysctl.conf
+echo net.ipv6.conf.lo.disable_ipv6=1 | sudo tee -a /etc/sysctl.conf
 
 
-sysctl net.bridge.bridge-nf-call-iptables=1
+sudo sysctl net.bridge.bridge-nf-call-iptables=1
 
 # Setting up the persistent volumes for the kubernetes.
 #
@@ -187,9 +208,9 @@ for i in $(seq 1 $PV_COUNT); do
 
   vol="vol$i"
 
-  mkdir -p /mnt/local-storage/$vol
+  sudo mkdir -p /mnt/local-storage/$vol
 
-  mount --bind /mnt/local-storage/$vol /mnt/local-storage/$vol
+  sudo mount --bind /mnt/local-storage/$vol /mnt/local-storage/$vol
 
 done
 echo "Kubernetes pre-requisites have been completed." 
@@ -205,10 +226,9 @@ echo "Starting to setup Kubernetes master..."
 sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --kubernetes-version=$KUBE_VERSION
 
 mkdir -p $HOME/.kube
-mkdir -p /home/$SUDO_USER/.kube
 
 sudo cp -f /etc/kubernetes/admin.conf $HOME/.kube/config
-sudo chown $(id -u $SUDO_USER):$(id -g $SUDO_USER) $HOME/.kube/config
+sudo chown $(id -u $USER):$(id -g $USER) $HOME/.kube/config
 
 # To enable a single node cluster remove the taint that limits the first node to master only service.
 #
@@ -266,7 +286,7 @@ echo "Starting to deploy azdata cluster..."
 
 # Command to create cluster for single node cluster.
 #
-azdata control create -n $CLUSTER_NAME -c azure-arc-kubeadm-private-preview --accept-eula $ACCEPT_EULA
+azdata control create -n $CLUSTER_NAME -c azure-arc-kubeadm-private-preview-acr --accept-eula $ACCEPT_EULA
 echo "Azure Arc Data Controller cluster created." 
 
 # Setting context to cluster.
@@ -276,10 +296,6 @@ kubectl config set-context --current --namespace $CLUSTER_NAME
 # Login and get endpoint list for the cluster.
 #
 azdata login -n $CLUSTER_NAME
-
-if [ -d "$HOME/.azdata/" ]; then
-        sudo chown -R $(id -u $SUDO_USER):$(id -g $SUDO_USER) $HOME/.azdata/
-fi
 
 echo "Cluster successfully setup. Run 'azdata --help' to see all available options."
 }| tee $LOG_FILE

@@ -1,39 +1,37 @@
 #!/bin/bash
 
-if [ "$EUID" -ne 0 ]
-  then echo "Please run as root"
-  exit
-fi
 DIR_PREFIX=$1
 
-kubeadm reset --force
+sudo kubeadm reset --force
 
 # Clean up azdata-cli package.
 #
 unalias azdata
+unalias az
 sudo dpkg --remove --force-all azdata-cli
+sudo dpkg --remove --force-all azure-cli
 
-systemctl stop kubelet
-rm -rf /var/lib/cni/
-rm -rf /var/lib/etcd/
-rm -rf /run/flannel/
-rm -rf /var/lib/kubelet/*
-rm -rf /etc/cni/
-rm -rf /etc/kubernetes/
+sudo systemctl stop kubelet
+sudo rm -rf /var/lib/cni/
+sudo rm -rf /var/lib/etcd/
+sudo rm -rf /run/flannel/
+sudo rm -rf /var/lib/kubelet/*
+sudo rm -rf /etc/cni/
+sudo rm -rf /etc/kubernetes/
 
-ip link set cni0 down
+sudo ip link set cni0 down
 #brctl delbr cni0
-ip link set flannel.1 down
+sudo ip link set flannel.1 down
 #brctl delbr flannel.1
-iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
+sudo iptables -F && sudo iptables -t nat -F && sudo iptables -t mangle -F && sudo iptables -X
 
-rm -rf .azdata/
+sudo rm -rf .azdata/
 
 # Remove mounts.
 #
 SERVICE_STOP_FAILED=0
 
-systemctl | grep "/var/lib/kubelet/pods" | while read -r line; do
+sudo systemctl | grep "/var/lib/kubelet/pods" | while read -r line; do
 
     # Retrieve the mount path
     #
@@ -50,7 +48,7 @@ systemctl | grep "/var/lib/kubelet/pods" | while read -r line; do
         echo "Mount "$MOUNT_PATH" no longer exists."
         echo "Stopping orphaned mount service: '$SERVICE'"
 
-        systemctl stop $SERVICE
+        sudo systemctl stop $SERVICE
 
         if [ $? -ne 0 ]; then
             SERVICE_STOP_FAILED=1

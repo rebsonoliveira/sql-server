@@ -4,11 +4,11 @@ In this example, we will deploy Kubernetes over multiple Linux machines (physica
 
 ## Pre-requisites
 
-1. Multiple Ubuntu Linux machines or virtual machines. Recommended configuration is 8 CPUs, 32 GB memory each and at least 100 GB storage for each machine. Minimum number of machines required is three machines
+1. Multiple Ubuntu Linux machines or virtual machines. Recommended configuration is 8 CPUs, 32 GB memory each and at least 128 GB storage for each machine. Minimum number of machines required is three machines
 1. Designate one machine as the Kubernetes master
 1. Rest of the machines will be used as the Kubernetes agents
 
-**NOTE: Ensure there is sufficient local storage on your agents. Each volume will use up to 10GB by default. The script creates 25 volumes. Not all of the volumes will be used since it depends on the number of pods being deployed on each agent node. It is recommended to have at least 200 GB of storage on the agent nodes**
+**NOTE: Ensure there is sufficient local storage on your agents. Each volume will use up to 10GB by default. The script creates 40 volumes. Not all of the volumes will be used since it depends on the number of pods being deployed on each agent node. It is recommended to have at least 200 GB of storage on the agent nodes**
 
 ### Useful resources
 
