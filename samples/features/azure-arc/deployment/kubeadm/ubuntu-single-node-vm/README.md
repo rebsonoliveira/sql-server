@@ -6,7 +6,7 @@ Using this sample bash script, you will deploy a single node Kubernetes cluster 
 ## Pre-requisites
 
 1. A vanilla Ubuntu 16.04 or 18.04 virtual or physical machine. All dependencies will be setup by the script. Using Azure Linux VMs is not yet supported.
-1. Machine should have at least 16 CPUs, 96GB RAM and 100GB disk space. After installing the images you will be left with 50GB for data/logs across all components.
+1. Machine should have at least 8 CPUs, 32GB RAM and 128GB disk space. After installing the images you will be left with 50GB for data/logs across all components.
 1. Update existing packages using commands below to ensure that the OS image is up to date
 
 ``` bash
@@ -16,7 +16,7 @@ sudo systemctl reboot
 
 ## Recommended Virtual Machine settings
 
-1. Use static memory configuration for the virtual machine. For example, in hyper-v installations do not use dynamic memory allocation but instead allocate the recommended 64 GB or higher.
+1. Use static memory configuration for the virtual machine. For example, in hyper-v installations do not use dynamic memory allocation but instead allocate the recommended 32 GB or higher.
 
 1. Use checkpoint or snapshot capability in your hyper visor so that you can rollback the virtual machine to a clean state.
 
