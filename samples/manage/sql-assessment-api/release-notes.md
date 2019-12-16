@@ -8,9 +8,28 @@ Download: [SMO NuGet Package](https://www.nuget.org/packages/Microsoft.SqlServer
 
 You can use GitHub issues to provide feedback to the product team.
 
+## December 2019 - 21.1.18218
+
+Version: SqlServer module 21.1.18206, SqlManagementObjects (SMO) package wasn't updated
+
+### What's new
+
+- Added .DLL with types to get rid of recompilation of CLR probes assemblies every time when new version of solution is released
+- Updated Deprecated Fetures rules and Index rules to not run them against system DBs
+- Updated rules High CPU Usage: kept only one, added overridable threshold
+- Updated some rules to not run them against SQL Server 2008Updated some rules to not run them against SQL Server 2008
+- Added timestamp property to rule object
+
+### Bug fixes
+
+Error "Missing data item 'FilterDefinition'" when overriding Exclusion DB List
+Probe of rule Missed Indexes returns nothing
+FullBackup rule has threshold in days but gets backup age in hours
+When database can't be accessed and it's disabled for assessment, it throws access errors when performing assessment
+
 ## GA - November 2019 - 21.1.18206
 
-Version: SqlServer module 21.1.18206, SqlManagementObjects (SMO) package coming soon  
+Version: SqlServer module 21.1.18206, SqlManagementObjects (SMO) package 150.208.0
 
 ### What's new
 
