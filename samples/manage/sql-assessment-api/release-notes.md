@@ -17,7 +17,7 @@ Version: SqlServer module 21.1.18206, SqlManagementObjects (SMO) package wasn't 
 - Added .DLL with types to get rid of recompilation of CLR probes assemblies every time when new version of solution is released
 - Updated Deprecated Fetures rules and Index rules to not run them against system DBs
 - Updated rules High CPU Usage: kept only one, added overridable threshold
-- Updated some rules to not run them against SQL Server 2008Updated some rules to not run them against SQL Server 2008
+- Updated some rules to not run them against SQL Server 2008
 - Added timestamp property to rule object
 
 ### Bug fixes
