@@ -22,10 +22,10 @@ Version: SqlServer module 21.1.18206, SqlManagementObjects (SMO) package wasn't 
 
 ### Bug fixes
 
-Error "Missing data item 'FilterDefinition'" when overriding Exclusion DB List
-Probe of rule Missed Indexes returns nothing
-FullBackup rule has threshold in days but gets backup age in hours
-When database can't be accessed and it's disabled for assessment, it throws access errors when performing assessment
+- Error "Missing data item 'FilterDefinition'" when overriding Exclusion DB List
+- Probe of rule Missed Indexes returns nothing
+- FullBackup rule has threshold in days but gets backup age in hours
+- When database can't be accessed and it's disabled for assessment, it throws access errors when performing assessment
 
 ## GA - November 2019 - 21.1.18206
 
