@@ -75,7 +75,8 @@ public partial class Curl
         {
             var header = H.ToSqlString().Value;
             if (!string.IsNullOrWhiteSpace(header))
-                client.Headers.Add(header);
+                foreach(string h in header.Split(';'))
+                    client.Headers.Add(h);
         }
     }
 };

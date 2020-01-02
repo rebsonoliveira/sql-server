@@ -1,12 +1,12 @@
-declare @db_name sysname = 'master'
+USE <database_name, , > --> put the database name here like WideWorldImporters
 
 begin
 declare @result NVARCHAR(MAX);
-set @result = (select compatibility_level, recovery_model_desc, snapshot_isolation_state_desc, is_read_committed_snapshot_on, 
+set @result = (select database_name = name, compatibility_level, recovery_model_desc, snapshot_isolation_state_desc, is_read_committed_snapshot_on, 
 					is_auto_update_stats_on, is_auto_update_stats_async_on, delayed_durability_desc,
 					is_encrypted, is_auto_create_stats_incremental_on, is_arithabort_on, is_ansi_warnings_on, is_parameterization_forced
 from sys.databases
-where name = @db_name 
+where name = db_name()
 for xml raw('db'), elements);
 set @result += (select compatibility_level, snapshot_isolation_state_desc, is_read_committed_snapshot_on, 
 					is_auto_update_stats_on, is_auto_update_stats_async_on, delayed_durability_desc,
@@ -53,6 +53,8 @@ where name in ('cost threshold for parallelism','cursor threshold','fill factor 
 for xml raw, elements
 );
 set @result += (select name = 'version', value = @@VERSION for xml raw, elements)
+set @result += (select name = 'script version', value = '1.0' for xml raw, elements)
+set @result += (select name = 'date', value = GETUTCDATE() for xml raw, elements)
 
 set @result += isnull
 ((SELECT scheduler_count, scheduler_total_count FROM sys.dm_os_sys_info
@@ -66,6 +68,25 @@ isnull((SELECT name = REPLACE([type], 'MEMORYCLERK_', 'MEMORY:')
    GROUP BY type
    HAVING sum(pages_kb) /1024. /1024 > 1
    for xml raw, elements),'');
+
+set @result += 
+isnull((
+	select name = 'INDEX:'+schema_name(schema_id)+'.'+object_name(t.object_id)+'.'+ix.name,
+		value = concat(ix.type_desc COLLATE SQL_Latin1_General_CP1_CI_AS,
+		'/disabled:',is_disabled,'/row_locks:',allow_row_locks,'/page_locks:',allow_page_locks,'/filter:',filter_definition,'/compression_delay:',compression_delay)
+	from sys.indexes ix
+		join sys.tables t on t.object_id = ix.object_id
+	where ix.type <> 0
+for xml raw, elements),'');
+
+set @result += 
+isnull((
+	select	name = 'JOB::'+j.name + '/' + s.step_name, 
+			value = subsystem
+	from msdb.dbo.sysjobs j
+		join msdb.dbo.sysjobsteps s on j.job_id = s.job_id
+for xml raw, elements),'');
+
 
 select cast(@result as xml);
 

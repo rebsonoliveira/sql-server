@@ -14,7 +14,7 @@ SQL Server Big Data cluster bundles Spark and HDFS together with SQL server. Azu
 
 [Data Transfer - Spark to SQL using Spark JDBC connector](data-virtualization/spark_to_sql_jdbc.ipynb/)
 
-[Data Transfer - Spark to SQL using MSSQL Spark connector](data-virtualization/mssql_spark_connector.ipynb/)
+[Data Transfer - Spark to SQL using MSSQL Spark connector](data-virtualization/mssql_spark_connector_non_ad_pyspark.ipynb/)
 
 [Configure  - Configure a spark session using a notebook](config-install/configure_spark_session.ipynb/)
 

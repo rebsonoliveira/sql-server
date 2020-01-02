@@ -1,13 +1,26 @@
 { 
-	"checks":[ 
+	"schemaVersion": "1.0",
+	"version": "0.2",
+	"name": "Custom Overrides", 
+	"rules":[ 
 		{
-			"id": "SqlServer.Database.AutoCreateStats", 
+			"id": "LatestCU", 
+			"itemType": "override",
 			"enabled": false 
 		}, 
 		{ 
-			"select": ["TraceFlag"], 
+			"id": ["TraceFlag"], 
+			"itemType": "override",
 			"enabled": false 
-		} 
+		}, 
+		{
+			"id": ["DefaultRuleset"],
+			"itemType": "override",
+			"targetFilter": {
+				"type": "Database",
+				"name": "/^(DBName1|DBName2)$/"
+			},
+			"enabled": false
+		}
 	] 
 }
-
