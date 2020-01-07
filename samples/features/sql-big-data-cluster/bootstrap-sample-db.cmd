@@ -39,7 +39,7 @@ if NOT EXIST tpcxbb_1gb.bak (
 )
 
 set SQLCMDSERVER=%SQL_MASTER_INSTANCE%
-set SQLCMDUSER=sa
+set SQLCMDUSER=admin
 set SQLCMDPASSWORD=%SQL_MASTER_SA_PASSWORD%
 for /F "usebackq tokens=1,2" %%v in (`sqlcmd -I -b -h-1 -W -Q "SET NOCOUNT ON; SELECT @@SERVERNAME, SERVERPROPERTY('IsHadrEnabled');"`) do (
 	SET MASTER_POD_NAME=%%v
@@ -97,13 +97,13 @@ for %%F in (web_clickstreams inventory customer) do (
     if NOT EXIST %%F.csv (
         echo Exporting %%F data...
         if /i %%F EQU web_clickstreams (set DELIMITER=,) else (SET DELIMITER=^|)
-        %DEBUG% bcp sales.dbo.%%F out "%%F.csv" -S %SQLCMDSERVER% -Usa -P%SQL_MASTER_SA_PASSWORD% -c -t"!DELIMITER!" -o "%%F.out" -e "%%F.err" || goto exit
+        %DEBUG% bcp sales.dbo.%%F out "%%F.csv" -S %SQLCMDSERVER% -Uadmin -P%SQL_MASTER_SA_PASSWORD% -c -t"!DELIMITER!" -o "%%F.out" -e "%%F.err" || goto exit
     )
 )
 
 if NOT EXIST product_reviews.csv (
     echo Exporting product_reviews data...
-    %DEBUG% bcp "select pr_review_sk, replace(replace(pr_review_content, ',', ';'), char(34), '') as pr_review_content from sales.dbo.product_reviews" queryout "product_reviews.csv" -S %SQLCMDSERVER% -Usa -P%SQL_MASTER_SA_PASSWORD% -c -t, -o "product_reviews.out" -e "product_reviews.err" || goto exit
+    %DEBUG% bcp "select pr_review_sk, replace(replace(pr_review_content, ',', ';'), char(34), '') as pr_review_content from sales.dbo.product_reviews" queryout "product_reviews.csv" -S %SQLCMDSERVER% -Uadmin -P%SQL_MASTER_SA_PASSWORD% -c -t, -o "product_reviews.out" -e "product_reviews.err" || goto exit
 )
 
 REM Copy the data file to HDFS
