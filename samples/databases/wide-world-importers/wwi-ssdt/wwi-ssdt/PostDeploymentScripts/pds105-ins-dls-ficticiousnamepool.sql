@@ -860,7 +860,7 @@ VALUES
   , ('Nichole  Deslauriers', 'Nichole ', 'Deslauriers', 'n.deslauriers@')
   , ('Cezar Pavel', 'Cezar', 'Pavel', 'c_pavel@')
   , ('Daniella Cavalcante', 'Daniella', 'Cavalcante', 'd_cavalcante@')
-  , ('Bernadette    Potvin', 'Bernadette   ', 'Potvin', 'bernadette   @')
+  , ('Bernadette Potvin', 'Bernadette', 'Potvin', 'bernadette@')
   , ('Vicente ChÃ¡vez', 'Vicente', 'ChÃ¡vez', 'v_chã¡vez@')
   , ('Isidora Urias', 'Isidora', 'Urias', 'isidora@')
   , ('Coralie Brasseur', 'Coralie', 'Brasseur', 'coralie@')

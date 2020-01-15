@@ -1,27 +1,16 @@
-# Data virtualization in SQL Server 2019 big data cluster
+# Data virtualization in SQL Server 2019 and SQL Server 2019 big data cluster
 
-In SQL Server 2019 big data clusters, the SQL Server engine has gained the ability to natively read HDFS files, such as CSV and parquet files, by using SQL Server instances collocated on each of the HDFS data nodes to filter and aggregate data locally in parallel across all of the HDFS data nodes. SQL Server 2019 introduces new ODBC connectors to data sources like SQL Server, Oracle, MongoDB and Teradata.
+In **SQL Server 2019 big data clusters**, the SQL Server engine has gained the ability to natively read HDFS files, such as CSV and parquet files, by using SQL Server instances collocated on each of the HDFS data nodes to filter and aggregate data locally in parallel across all of the HDFS data nodes. **SQL Server 2019** also introduces **new ODBC connectors** to data sources like SQL Server, Oracle, MongoDB and Teradata.
 
 ## Query data in HDFS from SQL Server master
 
-In this example, you are going to create an external table in the SQL Server Master instance that points to data in HDFS within the SQL Server Big data cluster. Then you will join the data in the external table with high value data in SQL Master instance.
+**Applies to: SQL Server 2019 big data cluster**
 
-### Instructions
-
-1. Connect to SQL Server Master instance.
-
-1. Execute the [external-table-hdfs-csv.sql](external-table-hdfs-csv.sql). This script demonstrates how to read CSV file(s) stored in HDFS.
-
-1. Before you use execute the *external-table-hdfs-parquet.sql* script, make sure you run the [../spark/spark-sql.ipynb](../spark/spark-sql.ipynb/) notebook to generate the sample parquet file. Execute the [external-table-hdfs-parquet.sql](external-table-hdfs-parquet.sql). This script demonstrates how to read parquet file(s) stored in HDFS. 
+In SQL Server 2019 big data cluster, the storage pool consists of HDFS data node with SQL Server & Spark endpoints. The [storage-pool](storage-pool) folder contains SQL scripts that demonstrate how to query data residing in HDFS data inside a big data cluster. The [hadoop](hadoop) folder contains SQL scripts that demonstrate how to query data residing in HDFS data using the HADOOP data source for
+operations that are not yet supported with storage pool (ex: export data to HDFS).
 
 ## Query data in Oracle from SQL Server master
 
-In this example, you are going to create an external table in SQL Server Master instance over the inventory table that sits on an Oracle server.
+**Applies to: SQL Server 2019 on Windows or Linux, SQL Server 2019 big data cluster**
 
-**Before you begin**, you need to have an Oracle instance and credentials. Execute the SQL script [inventory-ora.sql](inventory-ora.sql/) in Oracle to create the table and import the "inventory.csv" file created by the bootstrap sample database.
-
-### Instructions
-
-1. Connect to SQL Server Master instance.
-
-1. Execute the SQL [external-table-oracle.sql](external-table-oracle.sql/).
+The [oracle](oracle) folder contains SQL scripts that demonstrate how to query data residing in Oracle instance.

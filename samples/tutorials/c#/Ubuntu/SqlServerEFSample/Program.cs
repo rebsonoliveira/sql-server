@@ -32,7 +32,7 @@ namespace SqlServerEFSample
                     Console.WriteLine("\nCreated User: " + newUser.ToString());
 
                     // Create demo: Create a Task instance and save it to the database
-                    Task newTask = new Task() { Title = "Ship Helsinki", IsComplete = false, DueDate = DateTime.Parse("04-01-2017") };
+                    Task newTask = new Task() { Title = "Ship Helsinki", IsComplete = false, DueDate = DateTime.ParseExact("04-01-2017", "MM-dd-yyyy", CultureInfo.InvariantCulture) };
                     context.Tasks.Add(newTask);
                     context.SaveChanges();
                     Console.WriteLine("\nCreated Task: " + newTask.ToString());
@@ -56,13 +56,13 @@ namespace SqlServerEFSample
                     // Update demo: change the 'dueDate' of a task
                     Task taskToUpdate = context.Tasks.First(); // get the first task
                     Console.WriteLine("\nUpdating task: " + taskToUpdate.ToString());
-                    taskToUpdate.DueDate = DateTime.Parse("06-30-2016");
+                    taskToUpdate.DueDate = DateTime.ParseExact("06-30-2016", "MM-dd-yyyy", CultureInfo.InvariantCulture);
                     context.SaveChanges();
                     Console.WriteLine("dueDate changed: " + taskToUpdate.ToString());
 
                     // Delete demo: delete all tasks with a dueDate in 2016
                     Console.WriteLine("\nDeleting all tasks with a dueDate in 2016");
-                    DateTime dueDate2016 = DateTime.Parse("12-31-2016");
+                    DateTime dueDate2016 = DateTime.ParseExact("12-31-2016", "MM-dd-yyyy", CultureInfo.InvariantCulture);
                     query = from t in context.Tasks
                             where t.DueDate < dueDate2016
                             select t;
