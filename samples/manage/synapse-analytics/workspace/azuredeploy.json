@@ -25,22 +25,6 @@
         "tagValues": {
             "defaultValue": {},
             "type": "Object"
-        }
-    },
-    "variables": {
-        "storageBlobDataContributorRoleID": "ba92f5b4-2d11-453d-a403-e96b0029c9fe",
-        "defaultDataLakeStorageAccountUrl": "[concat('https://', parameters('defaultDataLakeStorageAccountName'), '.dfs.core.windows.net')]",
-        "setWorkspaceIdentityRbacOnFilesystem": {
-            "defaultValue": true,
-            "type": "Bool"
-        },
-        "allowAllConnections": {
-            "defaultValue": true,
-            "type": "Bool"
-        },
-        "poolSubnetId": {
-            "defaultValue": "",
-            "type": "String"
         },
         "storageSubscriptionID": {
             "defaultValue": "[subscription().subscriptionId]",
@@ -52,6 +36,14 @@
         },
         "storageLocation": {
             "defaultValue": "[resourceGroup().location]",
+            "type": "String"
+        }
+    },
+    "variables": {
+        "storageBlobDataContributorRoleID": "ba92f5b4-2d11-453d-a403-e96b0029c9fe",
+        "defaultDataLakeStorageAccountUrl": "[concat('https://', parameters('defaultDataLakeStorageAccountName'), '.dfs.core.windows.net')]",
+        "poolSubnetId": {
+            "defaultValue": "",
             "type": "String"
         }
     },
@@ -89,7 +81,7 @@
                         "startIpAddress": "0.0.0.0",
                         "endIpAddress": "255.255.255.255"
                     },
-                    "condition": "[variables('allowAllConnections')]"
+                    "condition": true
                 }
             ]
         },
@@ -122,9 +114,9 @@
                     ]
                 }
             },
-            "subscriptionId": "[variables('storageSubscriptionID')]",
-            "resourceGroup": "[variables('storageResourceGroupName')]",
-            "condition": "[variables('setWorkspaceIdentityRbacOnFilesystem')]"
+            "subscriptionId": "[parameters('storageSubscriptionID')]",
+            "resourceGroup": "[parameters('storageResourceGroupName')]",
+            "condition": true
         }
     ],
     "outputs": {}
