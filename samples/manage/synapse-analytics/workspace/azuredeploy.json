@@ -13,6 +13,7 @@
             "type": "String"
         },
         "defaultDataLakeStorageFilesystemName": {
+            "defaultValue": "workspace",
             "type": "String"
         },
         "sqlAdministratorLogin": {
@@ -22,6 +23,7 @@
             "type": "SecureString"
         },
         "setWorkspaceIdentityRbacOnFilesystem": {
+            "defaultValue": true,
             "type": "Bool"
         },
         "allowAllConnections": {
@@ -72,7 +74,7 @@
                     "computeSubnetId": "[parameters('poolSubnetId')]"
                 },
                 "sqlAdministratorLogin": "[parameters('sqlAdministratorLogin')]",
-                "sqlAdministratorLoginPassword": "[parameters('sqlAdministratorLoginPassword')]"
+                "sqlAdministratorLoginPassword": "[parameters('sqlAdministratorPassword')]"
             },
             "resources": [
                 {
