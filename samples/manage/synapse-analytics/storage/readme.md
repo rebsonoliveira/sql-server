@@ -9,4 +9,7 @@ This template deploys Azure Storage account for Synapse workspace
 <img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.png"/>
 </a>
 
+When you create storage, use [this link](https://portal.azure.com/?feature.customportal=false&feature.canmodifystamps=true&SqlAzureExtension=synapse&microsoft_azure_synapse_assettypeoptions=%7B%22SynapseWorkspace%22%3A%7B%22options%22%3A%22%22%7D%2C%22SparkPool%22%3A%7B%22options%22%3A%22hideassettype%22%7D%7D&microsoft_azure_marketplace_ItemHideKey=SynapseExtensionPreview#blade/Microsoft_Azure_Marketplace/MarketplaceOffersBlade/selectedMenuItemId/home/searchQuery/Azure%2BSynapse%2BAnalytics%2B(preview)
+) to create Azure Synapse Analytics workspace (not former DataWarehouse) and assign the Azure Storage account created with this template.
+
 `Tags: Azure, Synapse, Storage`

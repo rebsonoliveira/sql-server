@@ -22,6 +22,14 @@
         "sqlAdministratorPassword": {
             "type": "SecureString"
         },
+        "tagValues": {
+            "defaultValue": {},
+            "type": "Object"
+        }
+    },
+    "variables": {
+        "storageBlobDataContributorRoleID": "ba92f5b4-2d11-453d-a403-e96b0029c9fe",
+        "defaultDataLakeStorageAccountUrl": "[concat('https://', parameters('defaultDataLakeStorageAccountName'), '.dfs.core.windows.net')]",
         "setWorkspaceIdentityRbacOnFilesystem": {
             "defaultValue": true,
             "type": "Bool"
@@ -33,10 +41,6 @@
         "poolSubnetId": {
             "defaultValue": "",
             "type": "String"
-        },
-        "tagValues": {
-            "defaultValue": {},
-            "type": "Object"
         },
         "storageSubscriptionID": {
             "defaultValue": "[subscription().subscriptionId]",
@@ -50,10 +54,6 @@
             "defaultValue": "[resourceGroup().location]",
             "type": "String"
         }
-    },
-    "variables": {
-        "storageBlobDataContributorRoleID": "ba92f5b4-2d11-453d-a403-e96b0029c9fe",
-        "defaultDataLakeStorageAccountUrl": "[concat('https://', parameters('defaultDataLakeStorageAccountName'), '.dfs.core.windows.net')]"
     },
     "resources": [
         {
@@ -71,7 +71,7 @@
                     "filesystem": "[parameters('defaultDataLakeStorageFilesystemName')]"
                 },
                 "virtualNetworkProfile": {
-                    "computeSubnetId": "[parameters('poolSubnetId')]"
+                    "computeSubnetId": "[variables('poolSubnetId')]"
                 },
                 "sqlAdministratorLogin": "[parameters('sqlAdministratorLogin')]",
                 "sqlAdministratorLoginPassword": "[parameters('sqlAdministratorPassword')]"
@@ -89,7 +89,7 @@
                         "startIpAddress": "0.0.0.0",
                         "endIpAddress": "255.255.255.255"
                     },
-                    "condition": "[parameters('allowAllConnections')]"
+                    "condition": "[variables('allowAllConnections')]"
                 }
             ]
         },
@@ -122,9 +122,9 @@
                     ]
                 }
             },
-            "subscriptionId": "[parameters('storageSubscriptionID')]",
-            "resourceGroup": "[parameters('storageResourceGroupName')]",
-            "condition": "[parameters('setWorkspaceIdentityRbacOnFilesystem')]"
+            "subscriptionId": "[variables('storageSubscriptionID')]",
+            "resourceGroup": "[variables('storageResourceGroupName')]",
+            "condition": "[variables('setWorkspaceIdentityRbacOnFilesystem')]"
         }
     ],
     "outputs": {}
