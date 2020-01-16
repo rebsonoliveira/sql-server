@@ -10,11 +10,17 @@
             "type": "String"
         },
         "defaultDataLakeStorageAccountName": {
-            "type": "String"
+            "type": "String",
+            "metadata": {
+                "description": "Data Lake Storage account that you will use for Synapse Workspace."
+            }
         },
         "defaultDataLakeStorageFilesystemName": {
             "defaultValue": "workspace",
-            "type": "String"
+            "type": "String",
+            "metadata": {
+                "description": "container in Data Lake Storage account that you will use for Synapse Workspace."
+            }
         },
         "sqlAdministratorLogin": {
             "type": "String"
@@ -23,20 +29,29 @@
             "type": "SecureString"
         },
         "tagValues": {
-            "defaultValue": {},
+            "defaultValue": {"createdWith":"Azure Resource Manager template"},
             "type": "Object"
         },
         "storageSubscriptionID": {
             "defaultValue": "[subscription().subscriptionId]",
-            "type": "String"
+            "type": "String",
+            "metadata": {
+                "description": "Do not change this value if Data Lake Storage is placed in the same subscription as Synapse Workspace(recommended)."
+            }
         },
         "storageResourceGroupName": {
             "defaultValue": "[resourceGroup().name]",
-            "type": "String"
+            "type": "String",
+            "metadata": {
+                "description": "Do not change this value if Data Lake Storage is placed in the same resource group as Synapse Workspace."
+            }
         },
         "storageLocation": {
             "defaultValue": "[resourceGroup().location]",
-            "type": "String"
+            "type": "String",
+            "metadata": {
+                "description": "Do not change this value if Data Lake Storage is placed in the same region as Synapse Workspace(recommended)."
+            }
         }
     },
     "variables": {
