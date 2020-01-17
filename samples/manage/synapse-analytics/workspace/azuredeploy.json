@@ -16,17 +16,24 @@
             }
         },
         "defaultDataLakeStorageFilesystemName": {
-            "defaultValue": "workspace",
-            "type": "String",
-            "metadata": {
-                "description": "container in Data Lake Storage account that you will use for Synapse Workspace."
-            }
+            "type": "String"
         },
         "sqlAdministratorLogin": {
             "type": "String"
         },
         "sqlAdministratorPassword": {
             "type": "SecureString"
+        },
+        "setWorkspaceIdentityRbacOnFilesystem": {
+            "type": "Bool"
+        },
+        "allowAllConnections": {
+            "defaultValue": true,
+            "type": "Bool"
+        },
+        "poolSubnetId": {
+            "defaultValue": "",
+            "type": "String"
         },
         "tagValues": {
             "defaultValue": {"createdWith":"Azure Resource Manager template"},
@@ -81,7 +88,7 @@
                     "computeSubnetId": "[variables('poolSubnetId')]"
                 },
                 "sqlAdministratorLogin": "[parameters('sqlAdministratorLogin')]",
-                "sqlAdministratorLoginPassword": "[parameters('sqlAdministratorPassword')]"
+                "sqlAdministratorLoginPassword": "[parameters('sqlAdministratorLoginPassword')]"
             },
             "resources": [
                 {
