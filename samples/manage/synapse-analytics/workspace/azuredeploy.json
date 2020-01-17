@@ -6,14 +6,10 @@
             "type": "String"
         },
         "location": {
-            "defaultValue": "[resourceGroup().location]",
             "type": "String"
         },
         "defaultDataLakeStorageAccountName": {
-            "type": "String",
-            "metadata": {
-                "description": "Data Lake Storage account that you will use for Synapse Workspace."
-            }
+            "type": "String"
         },
         "defaultDataLakeStorageFilesystemName": {
             "type": "String"
@@ -21,7 +17,7 @@
         "sqlAdministratorLogin": {
             "type": "String"
         },
-        "sqlAdministratorPassword": {
+        "sqlAdministratorLoginPassword": {
             "type": "SecureString"
         },
         "setWorkspaceIdentityRbacOnFilesystem": {
@@ -36,38 +32,25 @@
             "type": "String"
         },
         "tagValues": {
-            "defaultValue": {"createdWith":"Azure Resource Manager template"},
+            "defaultValue": {},
             "type": "Object"
         },
         "storageSubscriptionID": {
             "defaultValue": "[subscription().subscriptionId]",
-            "type": "String",
-            "metadata": {
-                "description": "Do not change this value if Data Lake Storage is placed in the same subscription as Synapse Workspace(recommended)."
-            }
+            "type": "String"
         },
         "storageResourceGroupName": {
             "defaultValue": "[resourceGroup().name]",
-            "type": "String",
-            "metadata": {
-                "description": "Do not change this value if Data Lake Storage is placed in the same resource group as Synapse Workspace."
-            }
+            "type": "String"
         },
         "storageLocation": {
             "defaultValue": "[resourceGroup().location]",
-            "type": "String",
-            "metadata": {
-                "description": "Do not change this value if Data Lake Storage is placed in the same region as Synapse Workspace(recommended)."
-            }
+            "type": "String"
         }
     },
     "variables": {
         "storageBlobDataContributorRoleID": "ba92f5b4-2d11-453d-a403-e96b0029c9fe",
-        "defaultDataLakeStorageAccountUrl": "[concat('https://', parameters('defaultDataLakeStorageAccountName'), '.dfs.core.windows.net')]",
-        "poolSubnetId": {
-            "defaultValue": "",
-            "type": "String"
-        }
+        "defaultDataLakeStorageAccountUrl": "[concat('https://', parameters('defaultDataLakeStorageAccountName'), '.dfs.core.windows.net')]"
     },
     "resources": [
         {
@@ -85,7 +68,7 @@
                     "filesystem": "[parameters('defaultDataLakeStorageFilesystemName')]"
                 },
                 "virtualNetworkProfile": {
-                    "computeSubnetId": "[variables('poolSubnetId')]"
+                    "computeSubnetId": "[parameters('poolSubnetId')]"
                 },
                 "sqlAdministratorLogin": "[parameters('sqlAdministratorLogin')]",
                 "sqlAdministratorLoginPassword": "[parameters('sqlAdministratorLoginPassword')]"
@@ -102,7 +85,8 @@
                     "properties": {
                         "startIpAddress": "0.0.0.0",
                         "endIpAddress": "255.255.255.255"
-                    }
+                    },
+                    "condition": "[parameters('allowAllConnections')]"
                 }
             ]
         },
@@ -136,7 +120,8 @@
                 }
             },
             "subscriptionId": "[parameters('storageSubscriptionID')]",
-            "resourceGroup": "[parameters('storageResourceGroupName')]"
+            "resourceGroup": "[parameters('storageResourceGroupName')]",
+            "condition": "[parameters('setWorkspaceIdentityRbacOnFilesystem')]"
         }
     ],
     "outputs": {}

@@ -3,22 +3,19 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": ""
+            "value": "jphome1"
         },
         "location": {
-            "value": ""
+            "value": "westeurope"
         },
         "defaultDataLakeStorageAccountName": {
-            "value": ""
+            "value": "jphome1"
         },
         "defaultDataLakeStorageFilesystemName": {
             "value": "workspace"
         },
         "sqlAdministratorLogin": {
-            "value": ""
-        },
-        "sqlAdministratorLoginPassword": {
-            "value": null
+            "value": "cloudSA"
         },
         "setWorkspaceIdentityRbacOnFilesystem": {
             "value": true
@@ -33,13 +30,13 @@
             "value": {}
         },
         "storageSubscriptionID": {
-            "value": ""
+            "value": "9932f414-50cd-474d-8a1a-bf0649225d73"
         },
         "storageResourceGroupName": {
-            "value": ""
+            "value": "jphome1"
         },
         "storageLocation": {
-            "value": ""
+            "value": "westeurope"
         }
     }
 }
