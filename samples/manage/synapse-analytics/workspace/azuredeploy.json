@@ -9,15 +9,22 @@
             "type": "String"
         },
         "defaultDataLakeStorageAccountName": {
-            "type": "String"
+            "type": "String",
+            "metadata": {
+                "description": "Data Lake Storage account that you will use for Synapse Workspace."
+            }
         },
         "defaultDataLakeStorageFilesystemName": {
-            "type": "String"
+            "defaultValue": "workspace",
+            "type": "String",
+            "metadata": {
+                "description": "Container in Data Lake Storage account that you will use for Synapse Workspace."
+            }
         },
         "sqlAdministratorLogin": {
             "type": "String"
         },
-        "sqlAdministratorLoginPassword": {
+        "sqlAdministratorPassword": {
             "type": "SecureString"
         },
         "setWorkspaceIdentityRbacOnFilesystem": {
@@ -37,15 +44,24 @@
         },
         "storageSubscriptionID": {
             "defaultValue": "[subscription().subscriptionId]",
-            "type": "String"
+            "type": "String",
+            "metadata": {
+                "description": "Do not change this value if Data Lake Storage is placed in the same subscription as Synapse Workspace(recommended)."
+            }
         },
         "storageResourceGroupName": {
             "defaultValue": "[resourceGroup().name]",
-            "type": "String"
+            "type": "String",
+            "metadata": {
+                "description": "Do not change this value if Data Lake Storage is placed in the same resource group as Synapse Workspace."
+            }
         },
         "storageLocation": {
             "defaultValue": "[resourceGroup().location]",
-            "type": "String"
+            "type": "String",
+            "metadata": {
+                "description": "Do not change this value if Data Lake Storage is placed in the same region as Synapse Workspace(recommended)."
+            }
         }
     },
     "variables": {
@@ -71,7 +87,7 @@
                     "computeSubnetId": "[parameters('poolSubnetId')]"
                 },
                 "sqlAdministratorLogin": "[parameters('sqlAdministratorLogin')]",
-                "sqlAdministratorLoginPassword": "[parameters('sqlAdministratorLoginPassword')]"
+                "sqlAdministratorLoginPassword": "[parameters('sqlAdministratorPassword')]"
             },
             "resources": [
                 {
