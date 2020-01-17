@@ -80,7 +80,7 @@
                     "type": "firewallrules",
                     "apiVersion": "2019-06-01-preview",
                     "name": "allowAll",
-                    "location": "[parameters('location')]",
+                    "location": "[resourceGroup().location]",
                     "dependsOn": [
                         "[concat('Microsoft.Synapse/workspaces/', parameters('name'))]"
                     ],
