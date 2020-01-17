@@ -6,7 +6,11 @@
             "type": "String"
         },
         "location": {
-            "type": "String"
+            "defaultValue": "[resourceGroup().location]",
+            "type": "String",
+            "metadata": {
+                "description": "Do not change this value."
+            }
         },
         "defaultDataLakeStorageAccountName": {
             "type": "String",
@@ -28,6 +32,7 @@
             "type": "SecureString"
         },
         "setWorkspaceIdentityRbacOnFilesystem": {
+            "defaultValue": true,
             "type": "Bool"
         },
         "allowAllConnections": {
@@ -39,7 +44,7 @@
             "type": "String"
         },
         "tagValues": {
-            "defaultValue": {},
+            "defaultValue": {"Created with":"Azure Resource Manager deploment template"},
             "type": "Object"
         },
         "storageSubscriptionID": {
