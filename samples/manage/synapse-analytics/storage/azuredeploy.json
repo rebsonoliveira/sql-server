@@ -4,10 +4,6 @@
     "parameters": {
         "storageAccount": {
             "type": "string"
-        },
-        "location": {
-            "defaultValue": "[resourceGroup().location]",
-            "type": "string"
         }
     },
     "variables": {},
@@ -16,9 +12,10 @@
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "2019-04-01",
             "name": "[parameters('storageAccount')]",
-            "location": "[parameters('location')]",
+            "location": "[resourceGroup().location]",
             "tags": {
-                "owner": "SynapsePreview"
+                "Type": "Synapse Data Lake Storage",
+                "Created with":"Synapse Azure Resource Manager deploment template"
             },
             "sku": {
                 "name": "Standard_RAGRS",

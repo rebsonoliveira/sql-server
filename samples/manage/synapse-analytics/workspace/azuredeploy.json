@@ -25,7 +25,7 @@
             "type": "SecureString"
         },
         "tagValues": {
-            "defaultValue": {"Created with":"Azure Resource Manager deploment template"},
+            "defaultValue": {"Created with":"Synapse Azure Resource Manager deploment template"},
             "type": "Object"
         },
         "storageSubscriptionID": {
