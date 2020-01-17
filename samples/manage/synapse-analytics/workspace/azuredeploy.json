@@ -31,18 +31,6 @@
         "sqlAdministratorPassword": {
             "type": "SecureString"
         },
-        "setWorkspaceIdentityRbacOnFilesystem": {
-            "defaultValue": true,
-            "type": "Bool"
-        },
-        "allowAllConnections": {
-            "defaultValue": true,
-            "type": "Bool"
-        },
-        "poolSubnetId": {
-            "defaultValue": "",
-            "type": "String"
-        },
         "tagValues": {
             "defaultValue": {"Created with":"Azure Resource Manager deploment template"},
             "type": "Object"
@@ -89,7 +77,7 @@
                     "filesystem": "[parameters('defaultDataLakeStorageFilesystemName')]"
                 },
                 "virtualNetworkProfile": {
-                    "computeSubnetId": "[parameters('poolSubnetId')]"
+                    "computeSubnetId": ""
                 },
                 "sqlAdministratorLogin": "[parameters('sqlAdministratorLogin')]",
                 "sqlAdministratorLoginPassword": "[parameters('sqlAdministratorPassword')]"
@@ -106,8 +94,7 @@
                     "properties": {
                         "startIpAddress": "0.0.0.0",
                         "endIpAddress": "255.255.255.255"
-                    },
-                    "condition": "[parameters('allowAllConnections')]"
+                    }
                 }
             ]
         },
@@ -141,8 +128,7 @@
                 }
             },
             "subscriptionId": "[parameters('storageSubscriptionID')]",
-            "resourceGroup": "[parameters('storageResourceGroupName')]",
-            "condition": "[parameters('setWorkspaceIdentityRbacOnFilesystem')]"
+            "resourceGroup": "[parameters('storageResourceGroupName')]"
         }
     ],
     "outputs": {}
