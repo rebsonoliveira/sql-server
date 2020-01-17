@@ -95,8 +95,7 @@
                     "properties": {
                         "startIpAddress": "0.0.0.0",
                         "endIpAddress": "255.255.255.255"
-                    },
-                    "condition": true
+                    }
                 }
             ]
         },
@@ -130,8 +129,7 @@
                 }
             },
             "subscriptionId": "[parameters('storageSubscriptionID')]",
-            "resourceGroup": "[parameters('storageResourceGroupName')]",
-            "condition": true
+            "resourceGroup": "[parameters('storageResourceGroupName')]"
         }
     ],
     "outputs": {}
