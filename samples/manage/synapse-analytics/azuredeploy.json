@@ -24,7 +24,7 @@
             "properties": {
               "mode": "Incremental",
               "templateLink": {
-                "uri": "[uri(deployment().properties.templateLink.uri, '/storage/azuredeployment.json')]",
+                "uri": "[uri(deployment().properties.templateLink.uri, '/JocaPC/sql-server-samples/synapse/samples/manage/synapse-analytics/storage/azuredeployment.json')]",
                 "contentVersion": "1.0.0.0"
               },
               "parameters":{
@@ -39,7 +39,7 @@
             "properties": {
               "mode": "Incremental",
               "templateLink": {
-                "uri": "[uri(deployment().properties.templateLink.uri, '/workspace/azuredeploy.json')]",
+                "uri": "[uri(deployment().properties.templateLink.uri, '/JocaPC/sql-server-samples/synapse/samples/manage/synapse-analytics/workspace/azuredeploy.json')]",
                 "contentVersion": "1.0.0.0"
               },
               "parameters":{
