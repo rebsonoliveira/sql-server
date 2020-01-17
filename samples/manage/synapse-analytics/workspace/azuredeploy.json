@@ -5,13 +5,6 @@
         "name": {
             "type": "String"
         },
-        "location": {
-            "defaultValue": "[resourceGroup().location]",
-            "type": "String",
-            "metadata": {
-                "description": "Do not change this value."
-            }
-        },
         "defaultDataLakeStorageAccountName": {
             "type": "String",
             "metadata": {
@@ -66,7 +59,7 @@
             "type": "Microsoft.Synapse/workspaces",
             "apiVersion": "2019-06-01-preview",
             "name": "[parameters('name')]",
-            "location": "[parameters('location')]",
+            "location": "[resourceGroup().location]",
             "tags": "[parameters('tagValues')]",
             "identity": {
                 "type": "SystemAssigned"
