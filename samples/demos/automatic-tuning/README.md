@@ -1,32 +1,53 @@
-This is a repro package to demonstrate the Automatic Tuning (Auto Plan Correction) in SQL Server 2017. 
-This feature is using telemtry from the Query Store feature we launched with Azure SQL Database and SQL Server 2016 to provide built-in intelligence.
+﻿# Auto Tuning Performance Improvement Sample
 
-This repro assumes the following:
+This Windows Forms sample application built on .NET Framework 4.6 demonstrates the benefits of using SQL Server Automatic Tuning. You can compare the performance difference between enabling Automatic Tuning or leaveing it disabled, while running a workload that introduces a parameter sniffing regression.
 
-- SQL Server 2017 installed (pick at minimum Database Engine) on Windows. This feature requires Developer or Enterprise Edition.
-- You have installed SQL Server Management Studio or SQL Operations Studio (https://docs.microsoft.com/en-us/sql/sql-operations-studio/download)
-- You have downloaded the RML Utilities from https://www.microsoft.com/en-us/download/details.aspx?id=4511.
-- These demos use a named instance called SQL2017. You will need to edit the .cmd scripts which connect to SQL Server to change to a default instance or whatever named instance you have installed.
+<a name=about-this-sample></a>
 
-0. Install ostress from the package RML_Setup_AMD64.msi. Add C:\Program Files\Microsoft Corporation\RMLUtils to your path.
+## About this sample
 
-1. Restore the WideWorldImporters database backup to your SQL Server 2017 instance. The WideWorldImporters can be found in https://github.com/Microsoft/sql-server-samples/tree/master/samples/databases/wide-world-importers
+<!-- Delete the ones that don't apply -->
+* **Applies to:** SQL Server 2017 (or higher), Azure SQL Database
+* **Key features:** Automatic Tuning
+* **Workload:** Reporting
+* **Programming Language:** T-SQL, C#
+* **Authors:** Pedro Lopes
 
-2. Run Scenario.cmd to customize the WideWorldImporters database and start the demo. Leave it running...
+![AAuto Tuning Demo](./media/auto-tuning.PNG "WideWorldImporters Report")
 
-3. Setup Performance Monitor on Windows to track SQL Statistics/Batch Requests/sec
+## Running this sample
+1. Before you can run this sample, you must have the following perquisites:
+	- SQL Server 2017 (or higher)
+	- Visual Studio 2015 (or higher) with the latest SSDT installed.
 
-4. While Scenario.cmd is running, run Regression.cmd (you may need to run this a few times for timing reasons). Notice the drop in batch requests/sec which shows a performance regression in your workload.
+2. Clone this repository using Git, or download the zip file.
 
-5. Load recommendations.sql into SQL Server Management Studio or SQL Operations Studio and review the results. Notice the time difference under the reason column and value of state_transition_reason which should be AutomaticTuningOptionNotEnabled. This means we found a regression but are recommending it only, not automatically fixing it. The script column shows a query that could be used to fix the problem.
+3. From Visual Studio, open the **AutoTuningDemo.sln** file from the root directory.
 
-6. Stop Scenario.cmd workload by pressing CTRL+C, and then choose "N" when prompted to terminate the batch.
+4. In Visual Studio Build menu, select **Build Solution** (or Press F6).
 
-7. Now let's see what happens with automatic plan correction which uses this command in SQL Server 2017:
+5. In the **App.config** file, located in the project root, find the **WideWorldImporters** app setting and edit the connectionString if needed. Currently it is configured to connect to the local default SQL Server Instance using Integrated Security.
 
-ALTER DATABASE <db>
-SET AUTOMATIC_TUNING ( FORCE_LAST_GOOD_PLAN = ON )
+6. Publish the WideWorldImporters Database
+  - Right click on the WideWorldImporters SQL Server Database Project and Select **Publish**
+  - Click Edit... to choose your connection string
+  - Click Publish
+  - Note: For publishing to Azure SQL you need to change the DB project target platform to **Microsoft Azure SQL Database V12**
 
-8. Run Auto_tune.cmd which uses the above command to set automatic plan correct ON for WideWorldImporters, and starts same workload as Scenario.cmd
+7. Build the app for release and run it. Do not use the debugger, as that will slow down the app.
 
-9. Repeat steps 4-6 as above. In Performance Monitor you will see the batch requests/sec dip but within a second go right back up. This is because SQL Server detected the regression and automatically reverted to "last known good" or the last known good query plan as found in the Query Store. Note in the output of recommendations.sql the state_transition_reason now says LastGoodPlanForced.
+8. Start the workload with the **Start** button, and run for a while to show perf profile. Then press the **Regress** button to introduce the problem and observe the throughput going down. 
+
+9. Run for a while to show perf profile of regressed workload, and then press the **Auto Tuning** button and observe the system going back to a previously good plan captured by Query Store, and throughput is restored to initial Baseline status. You can tweak aspects of the workload (e.g., number of threads) through the configuration form accessed using the "Options" menu. No need to recompile or restart the application.
+
+10. Publish the database project to the same database – the tool will take care of making the necessary changes.
+
+When deploying to Azure SQL Database, make sure to run the app in an Azure VM in the same region as the database.
+
+For any feedback on the sample, contact: sqlserversamples@microsoft.com
+
+## About the code
+The code included in this sample is not intended to be a set of best practices on how to build scalable enterprise grade applications. This is beyond the scope of this quick start sample.
+
+## More information
+- [Automatic tuning](https://docs.microsoft.com/sql/relational-databases/automatic-tuning/automatic-tuning)

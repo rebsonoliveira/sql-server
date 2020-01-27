@@ -11,6 +11,9 @@
     <None Remove="wwwroot\public\**" />
   </ItemGroup>
   <ItemGroup>
+    <Content Remove="wwwroot\OData.tt" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore" Version="2.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.3" />
@@ -23,6 +26,12 @@
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="wwwroot\OData.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>OData.yaml</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Update="Controllers\ODataController.tt">
@@ -54,5 +63,12 @@
     <Folder Include="wwwroot\lib\jquery-ui\" />
     <Folder Include="wwwroot\lib\nvd3-new\" />
     <Folder Include="wwwroot\lib\nvd3\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="wwwroot\OData.yaml">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>OData.tt</DependentUpon>
+    </Content>
   </ItemGroup>
 </Project>

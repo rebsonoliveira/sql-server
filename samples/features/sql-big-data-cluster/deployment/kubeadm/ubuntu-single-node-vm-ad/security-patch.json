@@ -1,29 +1,28 @@
 {
   "patch": [
     {
-      "op": "add",
+      "op": "replace",
       "path": "security",
       "value": {
-        "ouDistinguishedName":"OU=bdc,DC=contoso,DC=local",
+        "ouDistinguishedName":"OU=bdc,DC=megalomania,DC=local",
         "dnsIpAddresses": ["00.00.000.00"],
         "domainControllerFullyQualifiedDns": ["DC.CONTOSO.LOCAL"],
-        "realm":"CONTOSO.LOCAL",
         "domainDnsName":"contoso.local",
-        "bdcAdminPrincipals": [
-          "Domain Admins", "Enterprise Admins"
+        "clusterAdmins": [
+          "bdcadminsgroup"
         ],
-        "bdcUserPrincipals": [
-          "Domain Users"
+        "clusterUsers": [
+          "bdcusersgroup"
         ]
       }
     },
     {
-      "op": "add",
+      "op": "replace",
       "path": "spec.endpoints[0].dnsName",
       "value": "controller.contoso.local"
     },
     {
-      "op": "add",
+      "op": "replace",
       "path": "spec.endpoints[1].dnsName",
       "value": "serviceproxy.contoso.local"
     }

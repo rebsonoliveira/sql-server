@@ -2,10 +2,9 @@
 
 Assess your SQL Server configuration for best practices in 2 simple steps.
 
-
 ### 1. Setup
 
-You just need to install PowerShell SqlServer module using the following command. Get-Module will show you the version you have installed. 21.2.18179 is the latest version and CTP2 for SQL Assessment API.
+You just need to install [PowerShell SqlServer module](https://www.powershellgallery.com/packages/SqlServer) using the following command. Get-Module will show you the version you have installed. 21.1.18206 is the latest version and GA for SQL Assessment API.
 
 ```PowerShell
 Install-Module -Name SqlServer -AllowClobber -Force
@@ -29,9 +28,9 @@ You will see in the results that each rule has some properties (not the full lis
 - Message property explains the recommendation but if you need more info, there is a HelpLink property that points at documentation on the subject.
 - Origin shows which ruleset and version the recommendation is coming from
 
-See config.json for a full list of rules and properties.
+See [config.json](./config.json) for a full list of rules and properties.
 
-If you want to get recommendations for all databases on the local instance, you can run this command.
+If you want to get recommendations for all databases on the local instance, run this command.
 
 ```PowerShell
 Get-SqlDatabase -ServerInstance 'localhost' | Invoke-SqlAssessment

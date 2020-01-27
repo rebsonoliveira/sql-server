@@ -47,7 +47,8 @@ images = ['mssql-app-service-proxy',
            'mssql-server'
            'mssql-server-controller'
            'mssql-server-data'
-           'mssql-server-ha'
+           'mssql-ha-operator'
+           'mssql-ha-supervisor'
            'mssql-service-proxy'
            'mssql-ssis-app-runtime']
 
