@@ -7,6 +7,10 @@
 
 -- This demo is on SQL Server 2017 and Azure SQL DB
 
+-- Last updated 1/29/2020 (Credit: Milos Radivojevic)
+--		Changed @event to varchar(30) from varchar(15)
+--		Added date range to 'Mild Recession' branch
+
 -- Email IntelligentQP@microsoft.com for questions\feedback
 -- ******************************************************** --
 
@@ -17,7 +21,8 @@
 USE [WideWorldImportersDW];
 GO
 
-CREATE OR ALTER FUNCTION [Fact].[ufn_WhatIfOutlierEventQuantity](@event VARCHAR(15), @beginOrderDateKey DATE, @endOrderDateKey DATE)
+CREATE OR ALTER FUNCTION [Fact].[ufn_WhatIfOutlierEventQuantity]
+(@event VARCHAR(30), @beginOrderDateKey DATE, @endOrderDateKey DATE)
 RETURNS @OutlierEventQuantity TABLE (
 	[Order Key] [bigint],
 	[City Key] [int] NOT NULL,
@@ -48,6 +53,7 @@ BEGIN
 	FROM [Fact].[Order] AS [o]
 	INNER JOIN [Dimension].[City] AS [c]
 		ON [c].[City Key] = [o].[City Key]
+	WHERE [o].[Order Date Key] BETWEEN @beginOrderDateKey AND @endOrderDateKey
 
 	IF @event = 'Hurricane - South Atlantic'
     INSERT  @OutlierEventQuantity
