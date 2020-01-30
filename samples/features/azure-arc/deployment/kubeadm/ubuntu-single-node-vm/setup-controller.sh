@@ -290,7 +290,7 @@ echo "Starting to deploy azdata cluster..."
 
 # Command to create cluster for single node cluster.
 #
-azdata control create -n $CLUSTER_NAME -c azure-arc-kubeadm-private-preview-acr --accept-eula $ACCEPT_EULA
+azdata control create -n $CLUSTER_NAME -c azure-arc-kubeadm-private-preview --accept-eula $ACCEPT_EULA
 echo "Azure Arc Data Controller cluster created." 
 
 # Setting context to cluster.
