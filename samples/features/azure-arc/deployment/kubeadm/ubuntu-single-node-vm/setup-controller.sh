@@ -2,13 +2,13 @@
 
 # Get controller username and password as input. It is used as default for the controller.
 #
-if [ -z "$CONTROLLER_USERNAME" ]
+if [ -z "$AZDATA_USERNAME" ]
 then
     read -p "Create Username for Azure Arc Data Controller: " username
     echo
-    export CONTROLLER_USERNAME=$username
+    export AZDATA_USERNAME=$username
 fi
-if [ -z "$CONTROLLER_PASSWORD" ]
+if [ -z "$AZDATA_PASSWORD" ]
 then
     while true; do
         read -s -p "Create Password for Azure Arc Data Controller: " password
@@ -18,7 +18,7 @@ then
         [ "$password" = "$password2" ] && break
         echo "Password mismatch. Please try again."
     done
-    export CONTROLLER_PASSWORD=$password
+    export AZDATA_PASSWORD=$password
 fi
 
 # Prompt for private preview repository username and password provided by Microsoft
@@ -110,7 +110,7 @@ cd setupscript/
 
 # Download and install azdata prerequisites
 #
-sudo apt install -y libodbc1 odbcinst odbcinst1debian2 unixodbc
+sudo apt install -y libodbc1 odbcinst odbcinst1debian2 unixodbc apt-transport-https libkrb5-dev
 
 # Download and install azdata package
 #
