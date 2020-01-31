@@ -136,7 +136,7 @@ echo "Starting to setup pre-requisites for kubernetes..."
 #
 echo $(hostname -i) $(hostname) >> sudo tee -a /etc/hosts
 
-swapoff -a
+sudo swapoff -a
 sudo sed -i '/swap/s/^\(.*\)$/#\1/g' /etc/fstab
 
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
