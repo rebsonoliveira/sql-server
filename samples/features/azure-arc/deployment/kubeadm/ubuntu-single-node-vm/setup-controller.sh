@@ -2,13 +2,13 @@
 
 # Get controller username and password as input. It is used as default for the controller.
 #
-if [ -z "$CONTROLLER_USERNAME" ]
+if [ -z "$AZDATA_USERNAME" ]
 then
     read -p "Create Username for Azure Arc Data Controller: " username
     echo
-    export CONTROLLER_USERNAME=$username
+    export AZDATA_USERNAME=$username
 fi
-if [ -z "$CONTROLLER_PASSWORD" ]
+if [ -z "$AZDATA_PASSWORD" ]
 then
     while true; do
         read -s -p "Create Password for Azure Arc Data Controller: " password
@@ -18,7 +18,7 @@ then
         [ "$password" = "$password2" ] && break
         echo "Password mismatch. Please try again."
     done
-    export CONTROLLER_PASSWORD=$password
+    export AZDATA_PASSWORD=$password
 fi
 
 # Prompt for private preview repository username and password provided by Microsoft
@@ -49,7 +49,7 @@ export DEBIAN_FRONTEND=noninteractive
 
 # Requirements file.
 export OSCODENAME=$(lsb_release -cs)
-export AZDATA_PRIVATE_PREVIEW_DEB_PACKAGE="https://aka.ms/azdata-"$OSCODENAME
+export AZDATA_PRIVATE_PREVIEW_DEB_PACKAGE="https://aka.ms/jan-2020-azdata-"$OSCODENAME
 
 # Kube version.
 #
@@ -65,7 +65,7 @@ RETRY_INTERVAL=5
 #
 export ACCEPT_EULA=yes
 export CLUSTER_NAME=azure-arc-system
-export PV_COUNT="40"
+export PV_COUNT="80"
 
 # Make a directory for installing the scripts and logs.
 #
@@ -110,7 +110,7 @@ cd setupscript/
 
 # Download and install azdata prerequisites
 #
-sudo apt install -y libodbc1 odbcinst odbcinst1debian2 unixodbc
+sudo apt install -y libodbc1 odbcinst odbcinst1debian2 unixodbc apt-transport-https libkrb5-dev
 
 # Download and install azdata package
 #
@@ -136,7 +136,7 @@ echo "Starting to setup pre-requisites for kubernetes..."
 #
 echo $(hostname -i) $(hostname) >> sudo tee -a /etc/hosts
 
-swapoff -a
+sudo swapoff -a
 sudo sed -i '/swap/s/^\(.*\)$/#\1/g' /etc/fstab
 
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
@@ -290,7 +290,7 @@ echo "Starting to deploy azdata cluster..."
 
 # Command to create cluster for single node cluster.
 #
-azdata control create -n $CLUSTER_NAME -c azure-arc-kubeadm-private-preview-acr --accept-eula $ACCEPT_EULA
+azdata control create -n $CLUSTER_NAME -c azure-arc-kubeadm-private-preview --accept-eula $ACCEPT_EULA
 echo "Azure Arc Data Controller cluster created." 
 
 # Setting context to cluster.
