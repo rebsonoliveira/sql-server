@@ -4,7 +4,7 @@
 -- See https://aka.ms/IQP for more background
 -- Demo scripts: https://aka.ms/IQPDemos 
 
--- This demo is on SQL Server 2019 Public Preview and works in Azure SQL DB too
+-- This demo is on SQL Server 2019 and Azure SQL DB 
 -- SSMS v17.9 or higher
 
 -- Email IntelligentQP@microsoft.com for questions\feedback
@@ -30,8 +30,7 @@ GO
 -- Include actual execution plan
 -- Execute once to see spills (row mode)
 -- Execute a second time to see correction
-SELECT   
-	fo.[Order Key], fo.Description,
+SELECT fo.[Order Key], fo.Description,
 	si.[Lead Time Days]
 FROM Fact.OrderHistory AS fo
 INNER HASH JOIN Dimension.[Stock Item] AS si 

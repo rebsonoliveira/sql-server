@@ -22,7 +22,7 @@ USE [WideWorldImportersDW];
 GO
 
 CREATE OR ALTER FUNCTION [Fact].[ufn_WhatIfOutlierEventQuantity]
-(@event VARCHAR(30), @beginOrderDateKey DATE, @endOrderDateKey DATE)
+	(@event VARCHAR(30), @beginOrderDateKey DATE, @endOrderDateKey DATE)
 RETURNS @OutlierEventQuantity TABLE (
 	[Order Key] [bigint],
 	[City Key] [int] NOT NULL,
@@ -68,13 +68,13 @@ BEGIN
 	INNER JOIN [Dimension].[City] AS [c]
 		ON [c].[City Key] = [o].[City Key]
 	WHERE [c].[State Province] IN
-	('Florida', 'Georgia', 'Maryland', 'North Carolina',
-	'South Carolina', 'Virginia', 'West Virginia',
-	'Delaware')
+		('Florida', 'Georgia', 'Maryland', 'North Carolina',
+		'South Carolina', 'Virginia', 'West Virginia',
+		'Delaware')
 	AND [o].[Order Date Key] BETWEEN @beginOrderDateKey AND @endOrderDateKey
 
 	IF @event = 'Hurricane - East South Central'
-    INSERT  @OutlierEventQuantity
+    INSERT @OutlierEventQuantity
 	SELECT [o].[Order Key], [o].[City Key], [o].[Customer Key],
            [o].[Stock Item Key], [o].[Order Date Key], [o].[Picked Date Key],
            [o].[Salesperson Key], [o].[Picker Key], 
@@ -86,14 +86,14 @@ BEGIN
 	INNER JOIN [Dimension].[City] AS [c]
 		ON [c].[City Key] = [o].[City Key]
 	INNER JOIN [Dimension].[Stock Item] AS [si]
-	ON [si].[Stock Item Key] = [o].[Stock Item Key]
+		ON [si].[Stock Item Key] = [o].[Stock Item Key]
 	WHERE [c].[State Province] IN
 	('Alabama', 'Kentucky', 'Mississippi', 'Tennessee')
 	AND [si].[Buying Package] = 'Carton'
 	AND [o].[Order Date Key] BETWEEN @beginOrderDateKey AND @endOrderDateKey
 
 	IF @event = 'Hurricane - West South Central'
-    INSERT  @OutlierEventQuantity
+    INSERT @OutlierEventQuantity
 	SELECT [o].[Order Key], [o].[City Key], [o].[Customer Key],
            [o].[Stock Item Key], [o].[Order Date Key], [o].[Picked Date Key],
            [o].[Salesperson Key], [o].[Picker Key], 
@@ -107,7 +107,7 @@ BEGIN
 	INNER JOIN [Dimension].[City] AS [c]
 		ON [c].[City Key] = [o].[City Key]
 	INNER JOIN [Dimension].[Customer] AS [cu]
-	ON [cu].[Customer Key] = [o].[Customer Key]
+		ON [cu].[Customer Key] = [o].[Customer Key]
 	WHERE [c].[State Province] IN
 	('Arkansas', 'Louisiana', 'Oklahoma', 'Texas')
 	AND [o].[Order Date Key] BETWEEN @beginOrderDateKey AND @endOrderDateKey

@@ -5,7 +5,7 @@
 
 -- Demo scripts: https://aka.ms/IQPDemos 
 
--- Demo uses SQL Server 2019 Public Preview and also works on Azure SQL DB
+-- Demo uses SQL Server 2019 and Azure SQL DB
 
 -- Email IntelligentQP@microsoft.com for questions\feedback
 -- ******************************************************** --
@@ -23,28 +23,27 @@ GO
 
 /*
 Adapted from SQL Server Books Online
-https://docs.microsoft.com/sql/relational-databases/user-defined-functions/scalar-udf-inlining?view=sqlallproducts-allversions 
+https://docs.microsoft.com/sql/relational-databases/user-defined-functions/scalar-udf-inlining
 */
 CREATE OR ALTER FUNCTION 
 	dbo.ufn_customer_category(@CustomerKey INT) 
 RETURNS CHAR(10) AS
 BEGIN
-  DECLARE @total_amount DECIMAL(18,2);
-  DECLARE @category CHAR(10);
+	DECLARE @total_amount DECIMAL(18,2);
+	DECLARE @category CHAR(10);
 
-  SELECT @total_amount = 
-	SUM([Total Including Tax]) 
+	SELECT @total_amount = SUM([Total Including Tax]) 
 	FROM [Fact].[OrderHistory]
 	WHERE [Customer Key] = @CustomerKey;
 
-  IF @total_amount < 500000
-    SET @category = 'REGULAR';
-  ELSE IF @total_amount < 1000000
-    SET @category = 'GOLD';
-  ELSE 
-    SET @category = 'PLATINUM';
+	IF @total_amount < 500000
+		SET @category = 'REGULAR';
+	ELSE IF @total_amount < 1000000
+		SET @category = 'GOLD';
+	ELSE 
+		SET @category = 'PLATINUM';
 
-  RETURN @category;
+	RETURN @category;
 END
 GO
 

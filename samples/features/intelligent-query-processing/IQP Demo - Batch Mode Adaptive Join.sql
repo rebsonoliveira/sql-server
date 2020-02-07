@@ -35,13 +35,15 @@ DELETE [Fact].[Order]
 WHERE Quantity = 361;
 
 INSERT [Fact].[Order] 
-([City Key], [Customer Key], [Stock Item Key], [Order Date Key], [Picked Date Key], [Salesperson Key], [Picker Key], [WWI Order ID], [WWI Backorder ID], Description, Package, Quantity, [Unit Price], [Tax Rate], [Total Excluding Tax], [Tax Amount], [Total Including Tax], [Lineage Key])
+	([City Key], [Customer Key], [Stock Item Key], [Order Date Key], [Picked Date Key], [Salesperson Key], 
+	[Picker Key], [WWI Order ID], [WWI Backorder ID], Description, Package, Quantity, [Unit Price], [Tax Rate], 
+	[Total Excluding Tax], [Tax Amount], [Total Including Tax], [Lineage Key])
 SELECT TOP 5 [City Key], [Customer Key], [Stock Item Key],
- [Order Date Key], [Picked Date Key], [Salesperson Key], 
- [Picker Key], [WWI Order ID], [WWI Backorder ID], 
- Description, Package, 361, [Unit Price], [Tax Rate], 
- [Total Excluding Tax], [Tax Amount], [Total Including Tax], 
- [Lineage Key]
+	[Order Date Key], [Picked Date Key], [Salesperson Key], 
+	[Picker Key], [WWI Order ID], [WWI Backorder ID], 
+	Description, Package, 361, [Unit Price], [Tax Rate], 
+	[Total Excluding Tax], [Tax Amount], [Total Including Tax], 
+	[Lineage Key]
 FROM [Fact].[Order];
 GO
 

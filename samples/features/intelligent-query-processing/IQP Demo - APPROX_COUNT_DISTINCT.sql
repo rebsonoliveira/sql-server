@@ -5,7 +5,7 @@
 
 -- Demo scripts: https://aka.ms/IQPDemos 
 
--- Demo uses SQL Server 2019 Public Preview and also works on Azure SQL DB
+-- Demo uses SQL Server 2019 and Azure SQL DB
 
 -- Email IntelligentQP@microsoft.com for questions\feedback
 -- ******************************************************** --

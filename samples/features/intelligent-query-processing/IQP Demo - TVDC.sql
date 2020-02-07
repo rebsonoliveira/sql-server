@@ -5,7 +5,7 @@
 
 -- Demo scripts: https://aka.ms/IQPDemos 
 
--- This demo is on SQL Server 2019 Public Preview and works in Azure SQL DB too
+-- This demo is on SQL Server 2019 and Azure SQL DB
 
 -- Email IntelligentQP@microsoft.com for questions\feedback
 -- ******************************************************** --
@@ -34,7 +34,7 @@ WHERE  [Quantity] > 99;
 
 -- Look at estimated rows, speed, join algorithm
 SELECT oh.[Order Key], oh.[Order Date Key],
-	   oh.[Unit Price], o.Quantity
+   oh.[Unit Price], o.Quantity
 FROM Fact.OrderHistoryExtended AS oh
 INNER JOIN @Order AS o
 	ON o.[Order Key] = oh.[Order Key]
@@ -59,11 +59,11 @@ DECLARE @Order TABLE
 INSERT @Order
 SELECT [Order Key], [Quantity]
 FROM [Fact].[OrderHistory]
-WHERE  [Quantity] > 99;
+WHERE [Quantity] > 99;
 
 -- Look at estimated rows, speed, join algorithm
 SELECT oh.[Order Key], oh.[Order Date Key],
-	   oh.[Unit Price], o.Quantity
+	oh.[Unit Price], o.Quantity
 FROM Fact.OrderHistoryExtended AS oh
 INNER JOIN @Order AS o
 	ON o.[Order Key] = oh.[Order Key]
